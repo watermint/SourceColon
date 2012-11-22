@@ -32,7 +32,7 @@ import org.opensolaris.opengrok.util.TestRepository;
 import static org.junit.Assert.*;
 
 /**
- * Unit tests for the {@code PageConfig} class.
+ * Unit tests for the {@code PageConfig} class.
  */
 public class PageConfigTest {
     private static TestRepository repository = new TestRepository();

@@ -1,4 +1,5 @@
-defaultTasks 'clean', 'compile'
+defaultTasks 'cleanup', 'compile'
+apply plugin: 'java'
 
 configurations {
     generatesrc
@@ -11,18 +12,24 @@ repositories {
 
 dependencies {
     generatesrc 'de.jflex:maven-jflex-plugin:1.4.3'
+    compile 'org.apache.lucene:lucene-core:3.0.2'
+    compile 'org.apache.lucene:lucene-spellchecker:3.0.2'
+    compile 'org.apache.bcel:bcel:5.2'
+    compile 'org.apache.ant:ant:1.8.1'
+    compile 'javax.servlet:servlet-api:2.5'
+    testCompile 'junit:junit:4.8.2'
 }
 
 ext {
     base         = '.'
     src          = new File(base, 'src')
-    build        = new File(base, 'build')
+    workspace    = new File(base, 'build')
     dist         = new File(base, '/dist')
-    generatedsrc = new File(build, '/generatedsrc')
-    workingdirs  = [build, generatedsrc, dist]
+    generatedsrc = new File(workspace, '/generatedsrc')
+    workingdirs  = [workspace, generatedsrc, dist]
 }
 
-task clean << {
+task cleanup << {
     delete project.ext.workingdirs
 }
 
@@ -40,6 +47,17 @@ task generatesrc(dependsOn: prepare) << {
     }
 }
 
-task compile(dependsOn: generatesrc) << {
-
+sourceSets {
+    main {
+        java {
+            srcDir project.ext.src
+            srcDir project.ext.generatedsrc
+            srcDir project.base + '/jrcs'
+        }
+    }
+    test {
+        java {
+            srcDir project.base + '/test/java'
+        }
+    }
 }

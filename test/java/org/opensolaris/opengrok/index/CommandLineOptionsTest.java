@@ -83,7 +83,6 @@ public class CommandLineOptionsTest {
         }
 
         assertNotNull(instance.getUsage());
-        assertNotNull(instance.getManPage());
     }
     
     @Test
