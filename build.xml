@@ -274,7 +274,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
            compression="gzip">
             <tarfileset dir="." prefix="${distname}-${version}/doc">
                 <include name="README.txt"/>
-                <include name="CHANGES.txt"/>
                 <include name="LICENSE.txt"/>
                 <include name="NOTICE.txt"/>
                 <include name="paths.tsv"/>
