@@ -96,10 +96,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
     <property name="distname" value="opengrok"/>
     <property name="src.dir" location="src"/>
     <property name="src.generatedsrc.dir" location="generatedsrc"/>
-    
-    <property name="findbugs.home" value="${user.home}/.ant/lib/findbugs"/>
-    <property name="checkstyle.home" value="${user.home}/.ant/lib/checkstyle"/>
-    <property name="pmd.home" value="${user.home}/.ant/lib/pmd"/>
 
     <property name="test.repositories" value="testdata/repositories"/>
     <property name="test.sources" value="testdata/sources"/>
@@ -123,23 +119,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
         <pathelement path="${java.class.path}"/>
         <pathelement path="lib"/>
         <pathelement path="../lib"/>
-    </path>
-
-    <path id="findbugs.lib.search.path">
-        <pathelement path="${findbugs.home}/lib/"/>
-        <pathelement path="${java.class.path}"/>
-        <pathelement path="lib/findbugs/lib/"/>
-    </path>
-
-    <path id="checkstyle.lib.search.path">
-        <pathelement path="${checkstyle.home}/"/>
-        <pathelement path="${java.class.path}"/>
-    </path>
-
-    <path id="pmd.lib.search.path">
-        <pathelement path="${pmd.home}/lib/"/>
-        <pathelement path="${java.class.path}"/>
-        <pathelement path="lib/pmd/lib/"/>
     </path>
 
     <available file="JFlex.jar" type="file" property="JFlex.present">
@@ -330,161 +309,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
             <arg value="${dist.dir}/${distname}-${version}-src.tar.gz"/>
         </exec>
     </target>
-    
-    <target name="-check_findbugs" description="Check that findbugs jar files are present">
-        <available file="findbugs.jar" type="file" property="findbugs.jar.present">
-            <filepath refid="findbugs.lib.search.path"/>
-        </available>
-        <fail unless="findbugs.jar.present" message="Please install Findbugs findbugs.jar in ~/.ant/lib-directory (or in ant classpath) to run Findbugs, see README"/>
-
-        <available file="findbugs-ant.jar" type="file" property="findbugs-ant.jar.present">
-            <filepath refid="findbugs.lib.search.path"/>
-        </available>
-        <fail unless="findbugs-ant.jar.present" message="Please install Findbugs findbugs-ant.jar in ~/.ant/lib-directory (or in ant classpath) to run Findbugs, see README"/>
-    </target>
-    
-    <target name="findbugs" depends="jar, -check_findbugs" description="Runs Findbugs on the OpenGrok source code and generate HTML output">
-        <path id="findbugs.lib" >
-            <pathelement location="${findbugs.home}/lib/findbugs.jar"/>
-            <pathelement location="${findbugs.home}/lib/findbugs-ant.jar"/>
-        </path>
-        <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib"/>
-        <mkdir dir="findbugs"/>
-        <findbugs projectname="OpenGrok" home="${findbugs.home}" output="html" excludeFilter="tools/findbugs_filter.xml" outputFile="findbugs/findbugs.html" jvmargs="-Xmx512m">
-            <auxClasspath>
-                <fileset dir="${dist.dir}/lib/">
-                    <include name="*.jar"/>
-                </fileset>
-            </auxClasspath>
-            <sourcePath path="src" />
-            <class location="${dist.dir}/opengrok.jar" />
-        </findbugs>
-    </target>
-    
-    <target name="findbugs-xml" depends="jar, -check_findbugs" description="Runs Findbugs on the OpenGrok source code and generate XML output">
-        <path id="findbugs.lib" >
-            <pathelement location="${findbugs.home}/lib/findbugs.jar"/>
-            <pathelement location="${findbugs.home}/lib/findbugs-ant.jar"/>
-        </path>
-        <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib"/>
-        <mkdir dir="findbugs"/>
-        <findbugs projectname="OpenGrok" home="${findbugs.home}" output="xml" excludeFilter="tools/findbugs_filter.xml" outputFile="findbugs/findbugs.xml" jvmargs="-Xmx512m">
-            <auxClasspath>
-                <fileset dir="${dist.dir}/lib/">
-                    <include name="*.jar"/>
-                </fileset>
-            </auxClasspath>
-            <sourcePath path="src" />
-            <class location="${dist.dir}/opengrok.jar" />
-        </findbugs>
-    </target>
-    
-    <target name="-check_checkstyle" description="Check that checkstyle jar files are present">
-        <available file="checkstyle-all.jar" type="file" property="checkstyle.jar.present">
-            <filepath refid="checkstyle.lib.search.path"/>
-        </available>
-        <fail unless="checkstyle.jar.present" message="Please install checkstyle-all.jar in lib-directory  (or in ant classpath) to run Checkstyle, see README."/>
-    </target>
-    
-    <target name="checkstyle" depends="compile, -check_checkstyle" description="Run checkstyle on OpenGrok source code">
-        <taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-all.jar"/>
-        <checkstyle config="checkstyle/style.xml" failOnViolation="false">
-            <fileset dir="src" includes="**/*.java"/>
-            <fileset dir="test" includes="**/*.java"/>
-            <formatter type="plain"/>
-            <formatter type="plain"  toFile="checkstyle/checkstyle_errors.txt"/>
-            <formatter type="xml" toFile="checkstyle/checkstyle_errors.xml"/>
-        </checkstyle>
-    </target>
-
-    <target name="-check_pmd" description="Check that pmd jar files are present">
-        <available file="pmd.jar" type="file" property="pmd.jar.present">
-            <filepath refid="pmd.lib.search.path"/>
-        </available>
-        <fail unless="pmd.jar.present" message="Please install pmd.jar in lib-directory  (or in ant classpath) to run PMD, see README."/>
-    </target>
-    
-    <target name="pmd" depends="compile, -check_pmd" description="Run PMD on OpenGrok source code">
-        <path id="pmd.lib" >
-            <pathelement location="${pmd.home}/lib/pmd.jar"/>
-            <pathelement location="${pmd.home}/lib/jaxen.jar"/>
-        </path>
-        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.lib"/>
-        <mkdir dir="pmd"/>
-        <pmd targetjdk="1.6" failuresPropertyName="pmd.num.warnings" rulesetfiles="tools/pmd_ruleset.xml">
-            <formatter type="html" toFile="pmd/pmd_report.html"/>
-            <formatter type="xml" toFile="pmd/pmd_report.xml"/>
-            <fileset dir="src" includes="**/*.java"/>
-<!--            <fileset dir="test" includes="**/*.java"/> -->
-<!--            <fileset dir="web" includes="**/*.jsp"/>
-                <fileset dir="web" includes="**/*.jspf"/> -->
-        </pmd>
-        <echo message="PMD finished, found ${pmd.num.warnings} warnings, see pmd/pmd_report.html"/>
-    </target>
-
-    <target name="cpd-xml" depends="compile, -check_pmd" description="Run CPD on OpenGrok source code, print output in xml">
-        <path id="pmd.lib" >
-            <pathelement location="${pmd.home}/lib/pmd.jar"/>
-            <pathelement location="${pmd.home}/lib/jaxen.jar"/>
-        </path>
-        <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.lib"/>
-        <cpd minimumTokenCount="100" format="xml" outputFile="pmd/cpd_report.xml">
-            <fileset dir="src">
-                <include name="**/*.java"/>
-            </fileset>
-            <fileset dir="test">
-                <include name="**/*.java"/>
-            </fileset>
-        </cpd>
-    </target>
-
-    <target name="cpd" depends="compile, -check_pmd" description="Run CPD on OpenGrok source code">
-        <path id="pmd.lib" >
-            <pathelement location="${pmd.home}/lib/pmd.jar"/>
-            <pathelement location="${pmd.home}/lib/jaxen.jar"/>
-        </path>
-        <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.lib"/>
-        <cpd minimumTokenCount="100" outputFile="pmd/cpd_report.txt">
-            <fileset dir="src">
-                <include name="**/*.java"/>
-            </fileset>
-            <fileset dir="test">
-                <include name="**/*.java"/>
-            </fileset>
-        </cpd>
-    </target>
-
-    <target name="-check_emma" description="Check that emma jar files are present">
-        <available file="emma.jar" type="file" property="emma.jar.present">
-            <filepath refid="lib.search.path"/>
-        </available>
-        <fail unless="emma.jar.present" message="Please install emma.jar in lib-directory  (or in ant classpath) to run Emma, see README."/>
-
-        <available file="emma_ant.jar" type="file" property="emma_ant.jar.present">
-            <filepath refid="lib.search.path"/>
-        </available>
-        <fail unless="emma_ant.jar.present" message="Please install emma_ant.jar in lib-directory  (or in ant classpath) to run Emma, see README."/>
-    </target>
-    
-    <target name="emma-instrument" depends="compile, -check_emma" description="Instruments the source code for Emma code coverage analysis">
-        <path id="emma.lib" >
-            <pathelement location="lib/emma.jar"/>
-            <pathelement location="lib/emma_ant.jar"/>
-        </path>
-        <taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
-        <mkdir dir="${coverage.dir}" />
-        <emma enabled="true">
-            <instr instrpath="build/classes"
-                       metadatafile="${coverage.dir}/coverage.em"
-                       mode="overwrite"
-                       filter="+org.opensolaris.*,-org.opensolaris.opengrok.management.client.*"/>
-        </emma>
-    </target>
-    
-    <target name="-pre-compile-test">
-        <property name="test-sys-prop.emma.coverage.out.file" value="${coverage.dir}/coverage.ec"/>
-        <property name="test-sys-prop.emma.coverage.out.merge" value="true"/>
-    </target>
 
     <target name="-post-compile-test">
         <antcall target="-create-svn-repository"/>
@@ -568,43 +392,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
         <delete dir="${test.svn}"/>
         <delete dir="${test.razor}"/>
         <delete file="${test.cvs.repo}/CVS/Root"/>
-    </target>
-
-    <target name="emma-report" description="Analyze" depends="-check_emma">
-        <taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
-        <emma enabled="true" >
-            <report sourcepath="${src.dir},${src.generatedsrc.dir}">
-                <!-- collect all EMMA data dumps (metadata and runtime): -->
-                <infileset dir="${coverage.dir}" includes="*.em, *.ec"/>
-                <txt outfile="${coverage.dir}/coverage.txt"/>
-                <xml outfile="${coverage.dir}/coverage.xml"/>
-                <html  outfile="${coverage.dir}/index.html"/>
-            </report>
-        </emma>
-    </target>
-    
-    <target name="code-coverage" depends="clean, emma-instrument, test, emma-report" description="Make test code coverage reports based on the OpenGrok unit tests"/>
-
-    <target name="jdepend" depends="compile" description="Run JDepend dependency checking">
-        <mkdir dir="jdepend"/>
-        <java classname="jdepend.xmlui.JDepend" failonerror="true" fork="true">
-            <arg value="-file"/>
-            <arg value="jdepend/report.xml"/>
-            <arg value="${build.classes.dir}"/>
-            <classpath>
-                <pathelement location="${user.home}/.ant/lib/jdepend/lib/jdepend.jar"/>
-                <pathelement path="${java.class.path}"/>
-            </classpath>            
-        </java>
-        <java classname="jdepend.textui.JDepend" failonerror="true" fork="true">
-            <arg value="-file"/>
-            <arg value="jdepend/report.txt"/>
-            <arg value="${build.classes.dir}"/>
-            <classpath>
-                <pathelement location="${user.home}/.ant/lib/jdepend/lib/jdepend.jar"/>
-                <pathelement path="${java.class.path}"/>
-            </classpath>            
-        </java>
     </target>
 
     <!-- Generate HTML test report -->
@@ -735,5 +522,5 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
         </javac>
     </target>
 
-    <target name="all" depends="clean,jar,compile.jsp,test,javadoc,pmd,findbugs-xml,checkstyle" />
+    <target name="all" depends="clean,jar,compile.jsp,test,javadoc" />
 </project>
