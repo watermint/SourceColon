@@ -10,6 +10,15 @@ repositories {
     mavenLocal()
 }
 
+ext {
+    base         = '.'
+    src          = new File(base, 'src')
+    workspace    = new File(base, 'build')
+    dist         = new File(base, '/dist')
+    generatedsrc = new File(workspace, '/generatedsrc')
+    workingdirs  = [workspace, generatedsrc, dist]
+}
+
 dependencies {
     generatesrc 'de.jflex:maven-jflex-plugin:1.4.3'
     compile 'org.apache.lucene:lucene-core:3.0.2'
@@ -18,15 +27,6 @@ dependencies {
     compile 'org.apache.ant:ant:1.8.1'
     compile 'javax.servlet:servlet-api:2.5'
     testCompile 'junit:junit:4.8.2'
-}
-
-ext {
-    base         = '.'
-    src          = new File(base, 'src')
-    workspace    = new File(base, 'build')
-    dist         = new File(base, '/dist')
-    generatedsrc = new File(workspace, '/generatedsrc')
-    workingdirs  = [workspace, generatedsrc, dist]
 }
 
 task cleanup << {
@@ -39,12 +39,16 @@ task prepare << {
     }
 }
 
-task generatesrc(dependsOn: prepare) << {
+task jflex(dependsOn: prepare) << {
     ant.taskdef(name: 'jflex', classname: 'JFlex.anttask.JFlexTask', classpath: configurations.generatesrc.asPath)
 
     fileTree(dir: project.ext.src).include('**/*.lex').each { File f ->
         ant.jflex(destdir: project.ext.generatedsrc, file: f)
     }
+}
+
+compileJava {
+    dependsOn jflex
 }
 
 sourceSets {
@@ -61,3 +65,4 @@ sourceSets {
         }
     }
 }
+
