@@ -126,7 +126,7 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
     </available>
     <fail unless="JFlex.present" message="Please download JFlex (http://jflex.de/) and put JFlex.jar it into ./lib directory (or in ant classpath)."/>
 
-    <taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpathref="lib.search.path"/>    
+    <taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpathref="lib.search.path"/>
     <target name="jflex">
         <mkdir dir="${src.generatedsrc.dir}"/>
         <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/plain/PlainXref.lex" destdir="${src.generatedsrc.dir}"/>
@@ -311,18 +311,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
     </target>
 
     <target name="-post-compile-test">
-        <antcall target="-create-svn-repository"/>
-        <antcall target="-create-razor-repository"/>
-        <!-- Change root in CVS test repository -->
-        <!-- Strange indentation in line two levels below to get newline correctly -->
-        <concat destfile="${test.cvs.repo}/CVS/Root" append="no" force="yes" eol="unix">${basedir}/${test.cvs.root}/
-        </concat>
-        <!-- Generate ZIP files used for unit testing mercurial/.hg and mercurial/.hgignore are renamed -->
-        <copy todir="${test.hg}/.hg">
-            <fileset dir="${test.hg}/hg"/>
-        </copy>
-        <copy file="${test.hg}/hgignore" tofile="${test.hg}/.hgignore"/>
-        
         <zip destfile="${build.test.classes.dir}/org/opensolaris/opengrok/index/source.zip"
               basedir="${test.sources}"
               update="false"
@@ -336,62 +324,8 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
         <antcall target="-delete-generated-repository-files"/>
     </target>
 
-    <target name="-create-svn-repository">
-        <delete dir="${test.svn}"/>
-        <delete dir="${build.test.reposroots}/svn"/>
-        <mkdir dir="${build.test.reposroots}"/>
-        <exec executable="svnadmin" failifexecutionfails="true">
-            <arg value="create"/>
-            <arg value="${build.test.reposroots}/svn"/>
-        </exec>
-      
-      <!-- need absolute path for svn url -->
-        <pathconvert property="test.svn.url">
-            <map from="" to="file://"/>
-            <path location="${build.test.reposroots}/svn"/>
-        </pathconvert>
-
-        <exec executable="svn" failifexecutionfails="false">
-            <arg value="import"/>
-            <arg value="${test.sources}"/>
-            <arg value="${test.svn.url}"/>
-            <arg value="-m"/>
-            <arg value="Initial import"/>
-        </exec>
-        <exec executable="svn" failifexecutionfails="false">
-            <arg value="checkout"/>
-            <arg value="${test.svn.url}"/>
-            <arg value="${test.svn}"/>
-        </exec>
-    </target>
-    
-    <target name="-create-razor-repository">
-        <delete dir="${test.razor}"/>
-        <copy todir="${test.razor}/Razor-Simple">
-            <fileset dir="ext/SampleRazorRepository/UserSandbox"/>
-        </copy>
-        <copy todir="${test.razor}/Razor-Simple/SimpleCProgram/.razor">
-            <fileset dir="ext/SampleRazorRepository/Repository/OpenGrokSample/RAZOR_UNIVERSE/DOMAIN_01/Simple"/>
-        </copy>
-
-      <!--
-          The support for binaries in Razor repositories is not fully
-          functional, so the next copy target is commented out for now.
-        -->
-
-      <!--copy todir="${test.razor}/Razor-Simple/SimpleCProgram-BinaryRelease/.razor">
-        <fileset dir="ext/SampleRazorRepository/Repository/OpenGrokSample/RAZOR_UNIVERSE/DOMAIN_01/Simple"/>
-      </copy-->
-
-    </target>
-
     <!-- clean up generated test repositories -->
     <target name="-delete-generated-repository-files">
-        <delete dir="${test.hg}/.hg"/>
-        <delete file="${test.hg}/.hgignore"/>
-        <delete dir="${test.svn}"/>
-        <delete dir="${test.razor}"/>
-        <delete file="${test.cvs.repo}/CVS/Root"/>
     </target>
 
     <!-- Generate HTML test report -->
@@ -435,38 +369,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
         <fileset dir="lib">
             <patternset refid="libs" />
         </fileset>
-    </path>
-    <property name="AS_HOME" value="glassfish"/>
-    <path id="classpath.j2ee">
-        <fileset dir="${AS_HOME}/modules">
-            <include name="javaee.jar" />
-			<!-- for the **/auth/* stuff, only -->
-            <include name="appserv-rt.jar" />
-            <include name="appserv-deployment-client.jar" />
-        </fileset>
-    </path>
-    <path id="classpath.jspc">
-        <fileset dir="${AS_HOME}/modules">
-            <include name="javax.servlet.jar"/>
-            <include name="javax.servlet.jsp.jar"/>
-            <include name="jsp-impl.jar"/>
-            <include name="el-impl.jar"/>
-            <include name="javax.servlet.jsp.jstl.jar"/>
-            <include name="jstl-impl.jar"/>
-            <include name="jsf-api.jar"/>
-            <include name="jsf-impl.jar"/>
-            <include name="tools.jar"/>
-        </fileset>
-    </path>
-
-    <path id="classpath.web">
-        <path refid="classpath.j2ee"/>
-        <path refid="classpath.base"/>
-    </path>
-
-    <path id="classpath.jsp">
-        <path refid="classpath.jspc"/>
-        <path refid="classpath.web"/>
     </path>
 
     <target name="-jsp.check" depends="init">
