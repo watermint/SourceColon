@@ -1,4 +1,4 @@
-defaultTasks 'cleanup', 'build'
+defaultTasks 'build'
 apply plugin: 'java'
 
 configurations {
@@ -58,6 +58,10 @@ task testData(dependsOn: prepare) {
 
 compileJava {
     dependsOn jflex
+}
+
+clean {
+    dependsOn cleanup
 }
 
 test {
