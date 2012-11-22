@@ -1,7 +1,8 @@
-defaultTasks 'build'
+defaultTasks 'all'
 
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'jetty'
 
 configurations {
     generatesrc
@@ -56,6 +57,9 @@ task testData(dependsOn: prepare) {
         fileset(dir: project.ext.base + '/test/data/sources') {
         }
     }
+}
+
+task all(dependsOn: [build, jar, war]) {
 }
 
 compileJava {

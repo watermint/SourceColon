@@ -159,7 +159,6 @@ public final class Configuration {
         setQuickContextScan(true);
         setIgnoredNames(new IgnoredNames());
         setIncludedNames(new Filter());
-        setUserPage("http://www.opensolaris.org/viewProfile.jspa?username=");
         setBugPage("http://bugs.opensolaris.org/bugdatabase/view_bug.do?bug_id=");
         setBugPattern("\\b([12456789][0-9]{6})\\b");
         setReviewPage("http://arc.opensolaris.org/caselog/PSARC/");

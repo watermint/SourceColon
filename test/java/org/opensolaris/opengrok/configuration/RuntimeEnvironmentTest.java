@@ -256,24 +256,6 @@ public class RuntimeEnvironmentTest {
     }
 
     @Test
-    public void testUserPage() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        String page = "http://www.opensolaris.org/viewProfile.jspa?username=";
-        assertEquals(page, instance.getUserPage());
-        instance.setUserPage(page.substring(5));
-        assertEquals(page.substring(5), instance.getUserPage());
-    }
-
-    @Test
-    public void testBugPage() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        String page = "http://bugs.opensolaris.org/bugdatabase/view_bug.do?bug_id=";
-        assertEquals(page, instance.getBugPage());
-        instance.setBugPage(page.substring(5));
-        assertEquals(page.substring(5), instance.getBugPage());
-    }
-
-    @Test
     public void testBugPattern() {
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
         String page = "\\b([12456789][0-9]{6})\\b";
