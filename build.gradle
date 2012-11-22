@@ -69,7 +69,6 @@ sourceSets {
         java {
             srcDir project.ext.src
             srcDir project.ext.generatedsrc
-            srcDir project.base + '/jrcs'
         }
     }
     test {
