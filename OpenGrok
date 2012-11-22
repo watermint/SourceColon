@@ -1,0 +1,884 @@
+#!/bin/sh
+#
+# OpenGrok Wrapper (initial setup and cron job updating)
+#
+# Supported Operating Systems:
+#   - Solaris 10  (SunOS 5.10)
+#   - Solaris 11  (SunOS 5.11)
+#   - Debian      (Linux)
+#
+# Supported Deployment Engines:
+#   - Tomcat 6
+#   - Tomcat 5.5
+#   - Glassfish
+#
+# Supported Environment Variables:
+#   - OPENGROK_NON_INTERACTIVE    Suppress Progress and Warnings Messages (*)
+#   - OPENGROK_STANDARD_ENV       Run Time Shell Environment (Shell Script)
+#   - OPENGROK_CONFIGURATION      User Configuration (Shell Script)
+#
+# Supported Environment Variables for configuring the default setup:
+#   - OPENGROK_DISTRIBUTION_BASE  Base Directory of the OpenGrok Distribution
+#   - OPENGROK_INSTANCE_BASE      Base Directory of the OpenGrok User Data Area
+#   - EXUBERANT_CTAGS             Full Path to Exuberant CTags
+#   - JAVA_HOME                   Full Path to Java Installation Root
+#   - JAVA                        Full Path to java binary
+#   - JAVA_OPTS                   Java options
+#   - OPENGROK_APP_SERVER         Application Server ("Tomcat" or "Glassfish")
+#   - OPENGROK_WAR_TARGET_TOMCAT  Tomcat Specific WAR Target Directory
+#   - OPENGROK_WAR_TARGET_GLASSFISH Glassfish Specific WAR Target Directory
+#   - OPENGROK_WAR_TARGET         Fallback WAR Target Directory
+#   - OPENGROK_TOMCAT_BASE        Base Directory for Tomcat (contains webapps)
+#   - OPENGROK_GLASSFISH_BASE     Base Directory for Glassfish
+#                                 (contains domains)
+#   - OPENGROK_GLASSFISH_DOMAIN   Preferred Glassfish Domain Name
+#   - OPENGROK_VERBOSE            Enable Verbose Mode in opengrok.jar (*)
+#   - OPENGROK_PROGRESS           Shows progress in %(percentage) of working
+#                                 through project, it's good to have Verbose
+#                                 Mode enabled too, cost of this is one more
+#                                 traversal of the project before indexing it(*)
+#   - OPENGROK_REMOTE_REPOS       Disable History Cache for (remote)
+#                                 Repositories (*)
+#   - OPENGROK_SCAN_REPOS         Disable Scan for repositories (*)
+#   - OPENGROK_SCAN_DEPTH         how deep should scanning for repos go
+#                                 (by default 3 directories from SRC_ROOT)
+#   - OPENGROK_WEBAPP_CFGADDR     Web app address to send configuration to
+#                                 (use "none" to avoid sending it to web app)
+#   - OPENGROK_WPREFIX            Disable wildcard prefix search query
+#                                 support (*)
+#   - OPENGROK_DERBY              if set, then indexer tries to use derby as
+#                                 historycache (see derby command of this
+#                                 script)
+#   - READ_XML_CONFIGURATION      file with read only configuration
+#                                 - temporary workaround for bug # 327
+#
+# Notes:
+#   (*) Any Non-Empty String will enable these options
+#
+
+#
+# Copyright (c) 2008, 2012, Oracle and/or its affiliates. All rights reserved.
+#
+
+#
+# Print usage to stderr and exit.
+#
+Usage()
+{
+    progname=`basename $0`
+
+    exec >&2
+    echo ""
+    echo "Usage: ${progname} <deploy|derby|update|updateQuietly|usage>"
+    echo "       ${progname} index [<directory>]"
+    echo ""
+    echo "  Optional environment variables:"
+    echo "    OPENGROK_CONFIGURATION - location of your configuration"
+    echo "      e.g. $ OPENGROK_CONFIGURATION=/var/opengrok/myog.conf ${0} ... "
+    echo ""
+    echo "    See the code for more information on configuration options /" \
+        "variables"
+    echo ""
+
+    exit 1
+}
+
+#
+# Runtime Configuration
+#
+if [ -f "/bin/uname" ]
+then
+    OS_NAME="`/bin/uname -s`"
+    OS_VERSION="`/bin/uname -r`"
+else
+    OS_NAME="`/usr/bin/uname -s`"
+    OS_VERSION="`/usr/bin/uname -r`"
+fi
+
+# TODO: Handle symlinks correctly (especially in ${0})
+SCRIPT_DIRECTORY="`dirname ${0}`"
+SCRIPT_DIRECTORY="`cd ${SCRIPT_DIRECTORY}; pwd`"
+
+#
+# Default Instance Configuration
+#
+
+DefaultInstanceConfiguration()
+{
+    # Use the built-in defaults. This section can be copied to its own
+    # file and tailored to your local requirements. Then simply set
+    # OPENGROK_CONFIGURATION=/path/to/your/configuration, before using
+    # this wrapper. It will save you hand editing in your settings
+    # on each new release. A sample cron(1M) entry might look like:
+    # 15 0 * * * OPENGROK_CONFIGURATION=/pkgs/etc/OpenGrok.sh /pkgs/sbin/OpenGrok updateQuietly
+
+    # Note: It is not really possible to ever provided defaults for
+    # these values which will run in every UNIX-like environment.
+    # So I have provided a set which are functional for a given
+    # environment on which you can based you own configuration.
+
+    # This has been updated to support more environment variables and
+    # operating systems, if you have any reasonably generic
+    # improvements please feel free to submit a patch.
+
+    OPENGROK_INSTANCE_BASE="${OPENGROK_INSTANCE_BASE:-/var/opengrok}"
+
+    LOGGER_CONFIG_FILE="logging.properties"
+
+    if [ -z "${OPENGROK_DISTRIBUTION_BASE}" ]
+    then
+        if [ -d "${SCRIPT_DIRECTORY}/dist" -a \
+             -f "${SCRIPT_DIRECTORY}/dist/opengrok.jar" -a \
+             -f "${SCRIPT_DIRECTORY}/dist/source.war" \
+           ]
+        then
+            # Handle Developer Build Environments
+            OPENGROK_DISTRIBUTION_BASE="${SCRIPT_DIRECTORY}/dist"
+            LOGGER_CONF_SOURCE="${SCRIPT_DIRECTORY}/${LOGGER_CONFIG_FILE}"
+        else
+            # Handle Binary Distributions
+            OPENGROK_DISTRIBUTION_BASE="${SCRIPT_DIRECTORY}/../lib"
+            LOGGER_CONF_SOURCE="${OPENGROK_DISTRIBUTION_BASE}/../doc/"
+            LOGGER_CONF_SOURCE="${LOGGER_CONF_SOURCE}${LOGGER_CONFIG_FILE}"
+        fi
+    fi
+
+    # REQUIRED: Source Code/Repository Root
+    #           (your source code or the root of all repositories)
+    SRC_ROOT="${OPENGROK_INSTANCE_BASE}/src"
+
+    # REQUIRED: OpenGrok Generate Data Root
+    #           (for Lucene index and hypertext cross-references)
+    #           This area is rebuilt by "update" / "updateQuietly"
+    DATA_ROOT="${OPENGROK_INSTANCE_BASE}/data"
+
+    # OPTIONAL: User Provided Source Path to Description Mapping (Tab Separated Value)
+    #           (The user maintained source of the generated EftarFile file)
+    PATH_DESC="${OPENGROK_INSTANCE_BASE}/etc/paths.tsv"
+
+    # REQUIRED: XML Configuration
+    #           (the configuration used by Web/GUI interfaces)
+    XML_CONFIGURATION="${OPENGROK_INSTANCE_BASE}/etc/configuration.xml"
+
+    # OPTIONAL: read only XML config, if it exists, it will be read
+    READ_XML_CONFIGURATION="${READ_XML_CONFIGURATION:-}"
+
+    if [ -f "${READ_XML_CONFIGURATION}" ] ; then
+        READ_XML_CONF="-R ${READ_XML_CONFIGURATION}"
+    fi
+
+    # REQUIRED: Logger Configuration
+    LOGGER_CONFIG_PATH="${OPENGROK_INSTANCE_BASE}/${LOGGER_CONFIG_FILE}"
+    LOGGER_PROPERTIES="-Djava.util.logging.config.file=${LOGGER_CONFIG_PATH}"
+
+    # REQUIRED: Java Archive of OpenGrok (Installation Location)
+    OPENGROK_JAR="${OPENGROK_DISTRIBUTION_BASE}/opengrok.jar"
+
+    # REQUIRED(deploy): Web Archive of OpenGrok (Distribution Location)
+    #           (user building from source code will find this and other key
+    #            files in the "dist" directory after the build is completed)
+    OPENGROK_DIST_WAR="${OPENGROK_DISTRIBUTION_BASE}/source.war"
+
+    # REQUIRED: Exuberant CTags (http://ctags.sf.net)
+    EXUBERANT_CTAGS="${EXUBERANT_CTAGS:-`FindExuberantCTags`}"
+
+    # REQUIRED: Java Home
+    JAVA_HOME="${JAVA_HOME:-`FindJavaHome`}"
+    export JAVA_HOME
+
+    # REQUIRED: Java Virtual Machine
+    JAVA="${JAVA:-$JAVA_HOME/bin/java}"
+
+    # DEVELOPMENT: Debug option, if enabled current indexer will listen on the
+    # port 8010 until a debugger connects
+    #JAVA_DEBUG="-agentlib:jdwp=transport=dt_socket"
+    #JAVA_DEBUG="$JAVA_DEBUG,server=y,address=8010,suspend=y"
+
+    # OPTIONAL: Ignore these patterns as names of files or directories
+    #IGNORE_PATTERNS="-i dummy"
+
+    # OPTIONAL: Enable Projects
+    #           (Every directory in SRC_ROOT is considered a separate project)
+    ENABLE_PROJECTS="-P"
+
+    # OPTIONAL: Scanning Options (for Mercurial repositories)
+    SCAN_FOR_REPOSITORY="-S"
+    if [ -n "${OPENGROK_SCAN_REPOS}" ]
+    then
+        SCAN_FOR_REPOSITORY=""
+    fi
+
+    # OPTIONAL: Remote Repository Support (CVS or SVN)
+    #           (Can be very time demanding, uncomment if needed)
+    REMOTE_REPOSITORIES="-r on"
+    if [ -n "${OPENGROK_REMOTE_REPOS}" ]
+    then
+        REMOTE_REPOSITORIES=""
+    fi
+
+    # OPTIONAL: override depth of scanning for repositories
+    if [ -n "${OPENGROK_SCAN_DEPTH}" ]
+    then
+        SCAN_DEPTH="-z${OPENGROK_SCAN_DEPTH}"
+    fi
+
+    # OPTIONAL: Allow Leading Wildcard Searches
+    #           (default: on)
+    LEADING_WILDCARD="-a on"
+    if [ -n "${OPENGROK_WPREFIX}" ]
+    then
+        LEADING_WILDCARD=""
+    fi
+
+    # OPTIONAL: Web Site Look & Feel
+    #           (Options: default, offwhite and polished.
+    #            Note the quoting requirements)
+    #SKIN='-L "default"'
+
+    # OPTIONAL: Set Maximum Indexed Words Per File
+    # Note, that you might run out of memory, then either increase JVM memory
+    # as noted in JAVA_OPTS, or set this limit(if you don't mind opengrok not
+    # indexing the rest of the file, once the limit is reached)
+    #           (default: unlimited)
+    #MAX_INDEXED_WORDS="-m 100000"
+
+    # OPTIONAL: Configuration Address (host:port)
+    #           (conf/web.xml default is localhost:2424)
+    WEBAPP_CONFIG=""
+    if [ -n "${OPENGROK_WEBAPP_CFGADDR}" ]; then
+        WEBAPP_CONFIG_ADDRESS=${OPENGROK_WEBAPP_CFGADDR}
+	if [ "${OPENGROK_WEBAPP_CFGADDR}" == "none" ]; then
+	    WEBAPP_CONFIG_ADDRESS=""
+	fi
+    else
+        WEBAPP_CONFIG_ADDRESS="localhost:2424"
+    fi
+
+    if [ -n "${WEBAPP_CONFIG_ADDRESS}" ]; then
+        WEBAPP_CONFIG="-U ${WEBAPP_CONFIG_ADDRESS}"
+    fi
+
+    # OPTIONAL: JVM Options
+    JAVA_OPTS="${JAVA_OPTS:--Xmx2048m}"
+
+    # OPTIONAL: Full Path to History Utilities
+    HG="`Which hg`"
+    CVS="`Which cvs`"
+    SVN="`Which svn`"
+    SCCS="`Which sccs`"
+    CLEARCASE="`Which cleartool`"
+    GIT="`Which git`"
+    P4="`Which p4`"
+    MTN="`Which mtn`"
+    BZR="`Which bzr`"
+
+    # OPTIONAL: Override Built-in Properties
+    # Assumption: We should not set properties to the empty string
+    PROPERTIES="\
+${HG:+-Dorg.opensolaris.opengrok.history.Mercurial=$HG} \
+${CVS:+-Dorg.opensolaris.opengrok.history.cvs=$CVS} \
+${SVN:+-Dorg.opensolaris.opengrok.history.Subversion=$SVN} \
+${SCCS:+-Dorg.opensolaris.opengrok.history.SCCS=$SCCS} \
+${CLEARCASE:+-Dorg.opensolaris.opengrok.history.ClearCase=$CLEARCASE} \
+${GIT:+-Dorg.opensolaris.opengrok.history.git=$GIT} \
+${P4:+-Dorg.opensolaris.opengrok.history.Perforce=$P4} \
+${MTN:+-Dorg.opensolaris.opengrok.history.Monotone=$MTN} \
+${BZR:+-Dorg.opensolaris.opengrok.history.Bazaar=$BZR} \
+"
+
+    # OPTIONAL: Store The History Cache in Java DB (derby),
+    #           instead of file system (in gzipped xml files).
+    #
+    # Requirements:
+    #   - derbyclient.jar      - See README.txt for more details
+    #   - Running Derby Server - Defaults to localhost:1527
+    #
+    if [ -n "${OPENGROK_DERBY}" ]
+    then
+        DERBY_HISTORY_CACHE="-D"
+    fi
+
+    # DELIVERED: An update program for EftarFile
+    # Usage: <class> inputFile [inputFile ...] outputFile
+    # EftarFile == An Extremely Fast Tagged Attribute Read-only File System
+    EFTAR_UPDATE="org.opensolaris.opengrok.web.EftarFile"
+
+    # HARDCODED: Generated EftarFile (See web/*.jsp)
+    EFTAR_OUTPUT_FILE="${DATA_ROOT}/index/dtags.eftar"
+
+    # Be Quiet? (set indirectly by command line arguments in the main program)
+    #QUIET=""
+
+    # or alternatively, Be Verbose!
+    #VERBOSE="-v"
+
+    if [ -n "${OPENGROK_VERBOSE}" ]
+    then
+        VERBOSE="-v"
+        QUIET=""
+    fi
+
+    if [ -n "${OPENGROK_PROGRESS}" ]
+    then
+        PROGRESS="-C"
+    fi
+}
+
+#
+# Helper Functions - Logging
+#
+# In general, non-interactive use like cron jobs and automated
+# installation environments should not generate unnecessary
+# progress information or warnings, as usage and configuration
+# will have generally been debugged prior to automation.
+#
+
+Progress()
+{
+    if [ -z "${OPENGROK_NON_INTERACTIVE}" ]
+    then
+        echo "${@}"
+    fi
+}
+
+Warning()
+{
+    if [ -z "${OPENGROK_NON_INTERACTIVE}" ]
+    then
+        echo "WARNING: ${@}" 1>&2
+    fi
+}
+
+Error()
+{
+    echo "ERROR: ${@}" 1>&2
+}
+
+FatalError()
+{
+    exec >&2
+    echo ""
+    echo "FATAL ERROR: ${@} - Aborting!"
+    echo ""
+
+    ${DO} exit 2
+}
+
+#
+# Helper Functions - Autodetection of Runtime Environment
+#
+
+Which()
+{
+    path="`which ${1} 2>/dev/null`"
+
+    if [ -x "${path}" ]
+    then
+        echo "${path}"
+    fi
+}
+
+LocateBinary() {
+    for f in $@
+    do
+	file=`which "$f" 2>/dev/null | grep -v '^no '`
+	if test -n "$file" -a -x "$file"
+	then
+	    echo $file
+	    return 0
+	fi
+    done
+
+    echo ""
+    return 1
+}
+
+FindExuberantCTags()
+{
+    binary=`LocateBinary ctags-exuberant exctags ctags`
+    if test $? -eq 1
+    then
+        Error "Unable to determine Exuberant CTags command name" \
+            "for ${OS_NAME} ${OS_VERSION}"
+        return
+    fi
+
+    # Verify that this really is Exuberant Ctags
+    $binary --version 2>&1 | grep "Exuberant Ctags" > /dev/null
+    if test $? -ne 0
+    then
+        Error "Unable to determine Exuberant CTags command name" \
+            "for ${OS_NAME} ${OS_VERSION}\n(${binary} is not Exuberant CTags)"
+        return
+    fi
+
+    echo ${binary}
+}
+
+FindJavaHome()
+{
+    javaHome=""
+    case "${OS_NAME}:${OS_VERSION}" in
+        SunOS:5.10) javaHome="/usr/jdk/instances/jdk1.6.0" ;;
+        SunOS:5.11) javaHome="/usr/jdk/latest"             ;;
+        Linux:*)
+            if [ -f /etc/alternatives/java ]
+            then
+               javaHome=`ls -l /etc/alternatives/java | cut -f 2 -d \> `
+               javaHome=`dirname $javaHome`
+               javaHome=`dirname $javaHome`
+            else
+               for dir in /usr/lib/jvm/sun-jdk-1.6 \
+                          /usr/lib/jvm/sun-jre-1.6 \
+                          /usr/lib/jvm/java-6-sun
+               do
+                  if [ -f ${dir}/bin/java ]
+                  then
+                     javaHome=$dir
+                     break;
+                  fi
+               done
+            fi
+            ;;
+    esac
+
+    if [ -z "${javaHome}" ]
+    then
+        Error "Unable to determine Java 6 Home" \
+              "for ${OS_NAME} ${OS_VERSION}"
+        return
+    fi
+
+    if [ ! -d "${javaHome}" ]
+    then
+        Error "Missing Java Home ${javaHome}"
+        return
+    fi
+
+    echo "${javaHome}"
+}
+
+FindApplicationServerType()
+{
+    # Use this function to determine which environment the deploy the
+    # web application function into. Some users (especially
+    # developers) will have many deployment environments or will wish
+    # to specify directly the application server to deploy to.
+
+    # Either use the environment variable OPENGROK_APP_SERVER or
+    # reimplement this function in your configuration file (as
+    # specified by OPENGROK_CONFIGURATION)
+
+    if [ -n "${OPENGROK_APP_SERVER}" ]
+    then
+        echo "${OPENGROK_APP_SERVER}"
+        return
+    fi
+
+    # This implementation favours Tomcat, but needs a lot of work,
+    # especially if Glassfish is perferrerd or it is under the control
+    # of SMF (Service Management Facility)
+
+    # Maybe a better implementation would be to call Application
+    # Server specific WAR Directory and see if they exist.
+
+    if [    -d "/var/tomcat6/webapps"        \
+         -o -d "/var/lib/tomcat6/webapps"    \
+         -o -d "/var/lib/tomcat5/webapps"    \
+         -o -d "/var/lib/tomcat5.5/webapps"  \
+       ]
+    then
+        echo "Tomcat"
+        return
+    fi
+
+    if [ -x "/etc/init.d/appserv" -a -d "/var/appserver/domains" ]
+    then
+        echo "Glassfish"
+        return
+    fi
+
+    # Assume Tomcat
+    echo "Tomcat"
+}
+
+DetermineWarDirectoryTomcat()
+{
+    if [ -n "${OPENGROK_WAR_TARGET_TOMCAT}" ]
+    then
+        echo "${OPENGROK_WAR_TARGET_TOMCAT}"
+        return
+    elif [ -n "${OPENGROK_WAR_TARGET}" ]
+    then
+        echo "${OPENGROK_WAR_TARGET}"
+        return
+    fi
+
+    for prefix in               \
+        ${OPENGROK_TOMCAT_BASE} \
+        /var/tomcat6            \
+        /var/lib/tomcat6        \
+        /var/lib/tomcat5        \
+        /var/lib/tomcat5.5
+    do
+        if [ -d "${prefix}/webapps" ]
+        then
+            echo "${prefix}/webapps"
+            return
+        fi
+    done
+}
+
+DetermineWarDirectoryGlassfish()
+{
+
+    if [ -n "${OPENGROK_WAR_TARGET_GLASSFISH}" ]
+    then
+        echo "${OPENGROK_WAR_TARGET_GLASSFISH}"
+        return
+    elif [ -n "${OPENGROK_WAR_TARGET}" ]
+    then
+        echo "${OPENGROK_WAR_TARGET}"
+        return
+    fi
+
+    for prefix in                       \
+        ${OPENGROK_GLASSFISH_BASE}      \
+        /var/appserver
+    do
+        if [ -d "${prefix}/domains" ]
+        then
+            if [ -z "${domainDirectory}" ]
+            then
+                domainDirectory="${prefix}/domains"
+            fi
+        fi
+    done
+
+    if [ -z "${domainDirectory}" ]
+    then
+        return
+    fi
+
+    # User Specified Domain
+    if [ -n "${OPENGROK_GLASSFISH_DOMAIN}" ]
+    then
+        directory="${domainDirectory}/${OPENGROK_GLASSFISH_DOMAIN}/autodeploy"
+
+        if [ ! -d "${directory}" ]
+        then
+            FatalError "Missing Specified Glassfish Domain " \
+	        "${OPENGROK_GLASSFISH_DOMAIN}"
+        fi
+
+        echo "${directory}"
+        return
+    fi
+
+    # Arbitrary Domain Selection
+    firstDomain=`ls -1 ${domainDirectory} | head -1`
+
+    if [ -z "${firstDomain}" ]
+    then
+        FatalError "Failed to dynamically determine Glassfish Domain from " \
+	    "${domainDirectory}"
+    fi
+
+    echo "${domainDirectory}/${firstDomain}/autodeploy"
+}
+
+#
+# Implementation
+#
+# The variable "DO" can usefully be set to "echo" to aid in script debugging
+#
+
+LoadStandardEnvironment()
+{
+    # Setup a standard execution environment (if required)
+
+    cronexec="/pkgs/sbin/CronExecutionEnvironment.sh"
+    OPENGROK_STANDARD_ENV="${OPENGROK_STANDARD_ENV:-$cronexec}"
+
+    if [ -f "${OPENGROK_STANDARD_ENV}" ]
+    then
+        Progress "Loading ${OPENGROK_STANDARD_ENV} ..."
+        . "${OPENGROK_STANDARD_ENV}"
+    fi
+}
+
+#
+# Load default configuration and then merge with user specified configuration.
+#
+LoadInstanceConfiguration()
+{
+    # Note: As all functions have been defined by the time this routine
+    # is called, your configuration can, if desired, override functions
+    # in addition to setting the variables mentioned in the function
+    # DefaultInstanceConfiguration(), this maybe useful to override
+    # functionality used to determine the default deployment environment
+    # find dependencies or validate the configuration, for example.
+
+    Progress "Loading the default instance configuration ..."
+    DefaultInstanceConfiguration
+    if [ -n "${OPENGROK_CONFIGURATION}" -a -f "${OPENGROK_CONFIGURATION}" ]
+    then
+        # Load the Local OpenGrok Configuration Environment
+        Progress "Loading ${OPENGROK_CONFIGURATION} ..."
+        . "${OPENGROK_CONFIGURATION}"
+    fi
+}
+
+ValidateConfiguration()
+{
+    if [ ! -x "${EXUBERANT_CTAGS}" ]
+    then
+        FatalError "Missing Dependent Application - Exuberant CTags"
+    fi
+
+    if [ ! -d "${SRC_ROOT}" ]
+    then
+        FatalError "OpenGrok Source Path ${SRC_ROOT} doesn't exist"
+    fi
+
+    if [ -n "${QUIET}" -a -n "${VERBOSE}" ]
+    then
+        Warning "Both Quiet and Verbose Mode Enabled - Choosing Verbose"
+        QUIET=""
+        VERBOSE="-v"
+    fi
+
+    if [ -n "${OPENGROK_DERBY}" ]
+    then
+        Warning "CHECK: derbyclient.jar needs to be in where the rest of " \
+	    "opengrok used jars are and in unpacked source.war in WEB-INF/lib !"
+    fi
+}
+
+CreateRuntimeRequirements()
+{
+    if [ ! -d "${DATA_ROOT}" ]
+    then
+        Warning  "OpenGrok generated data path ${DATA_ROOT} doesn't exist"
+        Progress "  Attempting to create generated data directory ... "
+        ${DO} mkdir -p "${DATA_ROOT}"
+    fi
+    if [ ! -d "${DATA_ROOT}" ]
+    then
+        FatalError "OpenGrok data path ${DATA_ROOT} doesn't exist"
+    fi
+
+    if [ ! -d "${OPENGROK_INSTANCE_BASE}/etc" ]
+    then
+        Warning  "OpenGrok generated etc path ${OPENGROK_INSTANCE_BASE}/etc " \
+	    "doesn't exist"
+        Progress "  Attempting to create generated etc directory ... "
+        ${DO} mkdir -p "${OPENGROK_INSTANCE_BASE}/etc"
+    fi
+    if [ ! -d "${OPENGROK_INSTANCE_BASE}/etc" ]
+    then
+        FatalError "OpenGrok etc path ${OPENGROK_INSTANCE_BASE}/etc " \
+	    "doesn't exist"
+    fi
+
+    if [ -n "${LOGGER_CONFIG_PATH}" -a ! -f "${LOGGER_CONFIG_PATH}" ]
+    then
+        Progress "  Creating default ${LOGGER_CONFIG_PATH} ... "
+        if [ ! -f "${LOGGER_CONF_SOURCE}" ]
+        then
+            Warning "Can't find distribution logging configuration"   \
+                      "(${LOGGER_CONF_SOURCE}) to install as default" \
+                      "logging configuration (${LOGGER_CONFIG_PATH})"
+        else
+            filename="opengrok%g.%u.log"
+            fullpath="${OPENGROK_INSTANCE_BASE}/log/opengrok%g.%u.log"
+            ${DO} grep -v java.util.logging.FileHandler.pattern \
+	        "${LOGGER_CONF_SOURCE}" > "${LOGGER_CONFIG_PATH}"
+            ${DO} grep java.util.logging.FileHandler.pattern \
+	        "${LOGGER_CONF_SOURCE}" | \
+		sed "s|$filename|$fullpath|g" >> "${LOGGER_CONFIG_PATH}"
+	     if [ ! -d ${OPENGROK_INSTANCE_BASE}/log ]
+             then
+                 ${DO} mkdir ${OPENGROK_INSTANCE_BASE}/log
+             fi
+        fi
+    fi
+
+    if [ -n "${OPENGROK_DERBY}" ]
+    then
+        if [ ! -d "${OPENGROK_INSTANCE_BASE}/derby" ]
+        then
+            Warning "OpenGrok generated derby path " \
+	        "${OPENGROK_INSTANCE_BASE}/derby doesn't exist"
+            Progress "  Attempting to create generated derby directory ... "
+            ${DO} mkdir -p ${OPENGROK_INSTANCE_BASE}/derby
+        fi
+    fi
+}
+
+StdInvocation()
+{
+    ${DO} ${JAVA} ${JAVA_OPTS} ${PROPERTIES}                    \
+        ${LOGGER_PROPERTIES}                                    \
+        ${JAVA_DEBUG}                                           \
+        -jar ${OPENGROK_JAR}                                    \
+        ${IGNORE_PATTERNS} ${ENABLE_PROJECTS}                   \
+        ${DERBY_HISTORY_CACHE}                                  \
+        ${SCAN_FOR_REPOSITORY} ${REMOTE_REPOSITORIES}           \
+        ${SCAN_DEPTH}                                           \
+        ${VERBOSE} ${QUIET}                                     \
+        ${PROGRESS}                                             \
+        ${EXUBERANT_CTAGS:+-c} ${EXUBERANT_CTAGS}               \
+        ${MAX_INDEXED_WORDS} ${SKIN} ${LEADING_WILDCARD}        \
+        ${READ_XML_CONF}                                        \
+        -W ${XML_CONFIGURATION}                                 \
+        ${WEBAPP_CONFIG}                                        \
+        -s ${SRC_ROOT} -d ${DATA_ROOT}                          \
+        "${@}"
+}
+
+UpdateGeneratedData()
+{
+    StdInvocation -H
+}
+
+UpdateDescriptionCache()
+{
+    # OPTIONAL : Update the EftarFile data
+
+    if [ -n "${PATH_DESC}" -a -s "${PATH_DESC}" ]
+    then
+        ${DO} ${JAVA} -classpath ${OPENGROK_JAR}                \
+            ${EFTAR_UPDATE} ${PATH_DESC} ${EFTAR_OUTPUT_FILE}
+    fi
+}
+
+OpenGrokUsage()
+{
+    echo "Options for opengrok.jar:" 1>&2
+    ${DO} ${JAVA} ${JAVA_OPTS} -jar ${OPENGROK_JAR} '-?'
+}
+
+DeployWar()
+{
+    applicationServer="`FindApplicationServerType`"
+
+    case "${applicationServer}" in
+
+        Tomcat)    warTarget="`DetermineWarDirectoryTomcat`"    ;;
+        Glassfish) warTarget="`DetermineWarDirectoryGlassfish`" ;;
+
+        *) FatalError "Unsupported Application Server ${applicationServer}" ;;
+
+    esac
+
+    if [ -z "${warTarget}" ]
+    then
+        FatalError "Unable to determine Deployment Directory for " \
+	    "${applicationServer}"
+    fi
+
+    if [ ! -f "${OPENGROK_DIST_WAR}" ]
+    then
+        FatalError "Missing Web Application Archive ${OPENGROK_DIST_WAR}"
+    fi
+
+    if [ ! -d "${warTarget}" ]
+    then
+        FatalError "Missing Deployment Directory ${warTarget}"
+    fi
+
+    Progress "Installing ${OPENGROK_DIST_WAR} to ${warTarget} ..."
+    ${DO} cp -p "${OPENGROK_DIST_WAR}" "${warTarget}/"
+    if [ $? != 0 ]
+    then
+        FatalError "Web Application Installation FAILED"
+    fi
+
+    Progress
+    Progress "Start your application server (${applicationServer}), " \
+        "if it is not already"
+    Progress "running, or wait until it loads the just installed web " \
+        "application."
+    Progress
+    Progress "OpenGrok should be available on <HOST>:<PORT>/source"
+    Progress "  where HOST and PORT are configured in ${applicationServer}."
+    Progress
+}
+
+DerbyServer()
+{
+    case "${OS_NAME}:${OS_VERSION}" in
+        SunOS:5.10) Error "unsupported OS" ;;
+        SunOS:5.11)
+                    /sbin/svcadm enable javadb
+                     ;;
+        Linux:*)
+                    mkdir -p $DATA_ROOT/derby
+                    java -Dderby.system.home=$DATA_ROOT/derby \
+		        -jar /usr/lib/jvm/java-6-sun/db/lib/derbynet.jar start
+                     ;;
+        *)          Error "unsupported OS" ;;
+    esac
+}
+
+#
+# Main Program
+#
+
+if [ $# -eq 0 -o $# -gt 2 ]
+then
+    Usage
+fi
+
+LoadStandardEnvironment
+
+LoadInstanceConfiguration
+
+case "${1}" in
+    deploy)
+        DeployWar
+        ;;
+
+    derby)
+        ValidateConfiguration
+        CreateRuntimeRequirements
+        DerbyServer
+        ;;
+
+    update)
+        ValidateConfiguration
+        CreateRuntimeRequirements
+        UpdateGeneratedData
+        UpdateDescriptionCache
+        ;;
+
+    updateQuietly)
+        ValidateConfiguration
+        CreateRuntimeRequirements
+        QUIET="-q"
+        VERBOSE=""
+        UpdateGeneratedData
+        UpdateDescriptionCache
+        ;;
+
+    index)
+        if [ -n "${2}" ]
+        then
+            SRC_ROOT="${2}"
+        fi
+        ValidateConfiguration
+        CreateRuntimeRequirements
+        UpdateGeneratedData
+        UpdateDescriptionCache
+        ;;
+
+    usage)
+        OpenGrokUsage
+        Usage
+        ;;
+
+    *)
+        Usage
+        ;;
+esac

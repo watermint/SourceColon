@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : document.xml
+    Created on : September 3, 2008, 10:53 PM
+    Author     : austvik
+    Description:
+        Be document used to test opengrok.
+-->
+<root>
+  Text inside tag.
+  <tag1 short="true" long='false'/>
+  <tag2 attr="val" attr2="val2">This &lt;tag&gt; is cool &amp; pretty.</tag2>
+  Some text in the end again here..
+  <a href="mailto:username@example.com">mail username</a>
+  Some strange <a href="http://www.example.com/">characters</a>: Æ Ø Å æ ø å
+     <![CDATA[
+      <html>
+          This is actually just data..
+      </html>
+   ]]>
+   <br />
+   Other encoding: &#x26;  &quot; &apos;
+   URL: http://www.example.com/example.html
+   Email: username2@example.com
+</root>

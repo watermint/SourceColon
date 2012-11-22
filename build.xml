@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+
+CDDL HEADER START
+
+The contents of this file are subject to the terms of the
+Common Development and Distribution License (the "License").  
+You may not use this file except in compliance with the License.
+
+See LICENSE.txt included in this distribution for the specific
+language governing permissions and limitations under the License.
+
+When distributing Covered Code, include this CDDL HEADER in each
+file and include the License file at LICENSE.txt.
+If applicable, add the following below this CDDL HEADER, with the
+fields enclosed by brackets "[]" replaced with your own identifying
+information: Portions Copyright [yyyy] [name of copyright owner]
+
+CDDL HEADER END
+
+Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
+
+-->
+<project name="OpenGrok" default="jar" basedir=".">
+    <description>Builds, tests, and runs the project opengrok.</description>
+    <property name="build.sysclasspath" value="ignore"/>
+    <property file="${user.home}/config/ant/${ant.project.name}.properties" />
+    <property file="${user.home}/config/ant/global.properties" />
+    <property file="/local/share/javax/global.properties" />
+
+    <import file="nbproject/build-impl.xml"/>
+
+    <import file="nbproject/profiler-build-impl.xml"/>    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="opengrok-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+    -->
+
+    <property name="version" value="0.11.1"/>
+    <property name="distname" value="opengrok"/>
+    <property name="src.dir" location="src"/>
+    <property name="src.generatedsrc.dir" location="generatedsrc"/>
+    
+    <property name="findbugs.home" value="${user.home}/.ant/lib/findbugs"/>
+    <property name="checkstyle.home" value="${user.home}/.ant/lib/checkstyle"/>
+    <property name="pmd.home" value="${user.home}/.ant/lib/pmd"/>
+
+    <property name="test.repositories" value="testdata/repositories"/>
+    <property name="test.sources" value="testdata/sources"/>
+    <property name="test.cvs" value="${test.repositories}/cvs"/>
+    <property name="test.cvs.repo" value="${test.cvs}/cvsrepo"/>
+    <property name="test.cvs.root" value="${test.cvs}/cvsroot"/>
+    <property name="test.hg" value="${test.repositories}/mercurial"/>
+    <property name="test.svn" value="${test.repositories}/svn"/>
+    <property name="test.razor" value="${test.repositories}/razor"/>
+
+    <available property="compileSystrayClient" classname="java.awt.TrayIcon"/>
+
+    <target name="-exclude-client" unless="compileSystrayClient">	    
+        <echo>JDK doesn't have java.awt.TrayIcon, excluding building of systray client ... </echo>
+        <property name="excludes" value="org/opensolaris/opengrok/management/client/**"/> 
+    </target>
+    
+                 
+    <path id="lib.search.path">
+        <pathelement path="${user.home}/.ant/lib"/>
+        <pathelement path="${java.class.path}"/>
+        <pathelement path="lib"/>
+        <pathelement path="../lib"/>
+    </path>
+
+    <path id="findbugs.lib.search.path">
+        <pathelement path="${findbugs.home}/lib/"/>
+        <pathelement path="${java.class.path}"/>
+        <pathelement path="lib/findbugs/lib/"/>
+    </path>
+
+    <path id="checkstyle.lib.search.path">
+        <pathelement path="${checkstyle.home}/"/>
+        <pathelement path="${java.class.path}"/>
+    </path>
+
+    <path id="pmd.lib.search.path">
+        <pathelement path="${pmd.home}/lib/"/>
+        <pathelement path="${java.class.path}"/>
+        <pathelement path="lib/pmd/lib/"/>
+    </path>
+
+    <available file="JFlex.jar" type="file" property="JFlex.present">
+        <filepath refid="lib.search.path"/>
+    </available>
+    <fail unless="JFlex.present" message="Please download JFlex (http://jflex.de/) and put JFlex.jar it into ./lib directory (or in ant classpath)."/>
+
+    <taskdef classname="JFlex.anttask.JFlexTask" name="jflex" classpathref="lib.search.path"/>    
+    <target name="jflex">
+        <mkdir dir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/plain/PlainXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/c/CSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/c/CXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/c/CxxSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/c/CxxXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/fortran/FortranSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/fortran/FortranXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/java/JavaSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/java/JavaXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/javascript/JavaScriptSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/javascript/JavaScriptXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/python/PythonSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/python/PythonXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/perl/PerlSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/perl/PerlXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/php/PhpSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/php/PhpXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/lisp/LispSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/lisp/LispXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/tcl/TclSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/tcl/TclXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/plain/PlainFullTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/plain/PlainSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/plain/PlainXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/plain/XMLXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/sql/SQLXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/document/TroffXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/document/TroffFullTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/sh/ShSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/sh/ShXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/vb/VBSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/vb/VBXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/csharp/CSharpSymbolTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/analysis/csharp/CSharpXref.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/search/context/HistoryLineTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+        <jflex file="${src.dir}/org/opensolaris/opengrok/search/context/PlainLineTokenizer.lex" destdir="${src.generatedsrc.dir}"/>
+    </target>
+    
+    <property name="hg" value="hg"/>
+
+    <!-- Get the id of the changeset we're building from using a
+         Mercurial command.
+      -->
+    <target name="-get-changeset-from-command"
+            depends="-check-is-hg-repo" if="build.from.repo">
+        <exec executable="${hg}"
+              failifexecutionfails="no"
+              outputproperty="changeset">
+            <arg value="identify"/>
+            <arg value="--id"/>
+        </exec>
+    </target>
+
+    <!-- Check if we build from a checked out copy of the repository,
+         so that we have history information from Mercurial available.
+      -->
+    <target name="-check-is-hg-repo">
+        <available property="build.from.repo" file=".hg" type="dir"/>
+    </target>
+
+    <!-- Get the id of the changeset we're building from by reading
+         .hg_archival.txt file created by hg archive. This will only
+         be used when we're not building from a checked out copy of
+         the repository, for example the source distribution.
+      -->
+    <target name="-get-changeset-from-file"
+            depends="-check-is-hg-repo" unless="build.from.repo">
+        <tempfile property="hg.archival.temp" deleteonexit="true"/>
+        <copy file=".hg_archival.txt" tofile="${hg.archival.temp}"/>
+        <replaceregexp file="${hg.archival.temp}" flags="s"
+                     match=".*node: ([0-9a-f]{12}).*"
+                     replace="\1"/>
+        <loadfile srcFile="${hg.archival.temp}" property="changeset"/>
+    </target>
+
+    <target name="-update-build-info"
+            depends="-get-changeset-from-command,-get-changeset-from-file">
+        <mkdir dir="${build.classes.dir}/org/opensolaris/opengrok"/>
+        <propertyfile
+            file="${build.classes.dir}/org/opensolaris/opengrok/info.properties">
+            <entry  key="version" value="${version}"/>
+            <entry  key="changeset" value="${changeset}"/>
+        </propertyfile>        
+    </target>
+        
+    <property name="coverage.dir" value="${basedir}/coverage"/>
+    <target name="-pre-compile" depends="jrcs,jflex"/>
+    <target name="-post-clean">
+        <delete dir="${src.generatedsrc.dir}"/>
+        <delete file="${manifest.file}"/>
+        <delete dir="${coverage.dir}"/>
+        <antcall target="-delete-generated-repository-files"/>
+    </target>
+
+    <!--
+        Create an empty manifest file so that nbproject/build-impl.xml
+        notices that a manifest should be added to the jar file
+      -->
+    <target name="-touch-manifest">
+      <!-- no attributes, main-class and class-path will be added later -->
+        <manifest file="manifest.mf" mode="replace"/>
+    </target>
+
+    <target name="-pre-init" depends="-touch-manifest, -exclude-client"/>
+
+    <!--
+        Initialize a property holding a list of jar files on which
+        opengrok.jar depends
+      -->
+    <target name="-post-init">
+        <pathconvert property="opengrok.lib.files" pathsep=" ">
+            <path>
+                <pathelement path="${javac.classpath}"/>
+            </path>
+            <flattenmapper/>
+            <map from="" to="lib/"/>
+        </pathconvert>
+    </target>
+
+    <!-- Update the manifest file with a classpath attribute -->
+    <target name="-update-manifest-classpath">
+        <manifest file="${manifest.file}" mode="update">
+            <attribute name="Class-Path"
+                   value="${opengrok.lib.files} lib/derbyclient.jar lib/derby.jar"/>
+        </manifest>
+    </target>
+
+    <target name="-pre-jar" depends="-update-manifest-classpath,-update-build-info"/>
+
+    <!--
+        Copy the jars from lib to dist/lib manually if we don't have
+        the copylibs task from NetBeans
+      -->
+    <target name="-copy-lib-without-netbeans"
+            unless="manifest.available+main.class+mkdist.available">
+        <copy todir="${dist.dir}/lib">
+            <fileset file="${file.reference.ant.jar}"/>
+        </copy>
+        <copy todir="${dist.dir}">
+            <fileset dir="." includes="${opengrok.lib.files}"/>
+        </copy>
+    </target>
+
+    <target name="-post-jar" depends="-copy-lib-without-netbeans">
+        <war destfile="${dist.war}" webxml="web/WEB-INF/web.xml">
+            <fileset dir="web" excludes="META-INF/context.xml"/>
+            <lib dir="${dist.dir}" includes="opengrok.jar"/>
+            <lib dir="${dist.dir}/lib" includes="*.jar" excludes="servlet-api.jar"/>
+        </war>
+        <echo message="Generating man page.."/>
+        <java classname="org.opensolaris.opengrok.index.CommandLineOptions" 
+              output="${dist.dir}/opengrok.1" failonerror="true" fork="true">
+            <classpath>
+                <pathelement location="dist/opengrok.jar"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="package" depends="jar">
+        <exec os="SunOS" executable="/usr/bin/pkgmk" failonerror="true">
+            <arg line="-o -d build -r . -v ${version} -f platform/solaris/pkgdef/prototype"/>
+        </exec>
+        <exec os="SunOS" executable="/usr/bin/pkgtrans" failonerror="true">
+            <arg line="-s build ../dist/OSOLopengrok-${version}.pkg OSOLopengrok"/>
+        </exec>
+    </target>
+
+    <target name="dist" depends="jar">
+        <tar destfile="${dist.dir}/${distname}-${version}.tar.gz"
+           compression="gzip">
+            <tarfileset dir="." prefix="${distname}-${version}/doc">
+                <include name="README.txt"/>
+                <include name="CHANGES.txt"/>
+                <include name="LICENSE.txt"/>
+                <include name="NOTICE.txt"/>
+                <include name="paths.tsv"/>
+                <include name="logging.properties"/>
+            </tarfileset>
+            <tarfileset dir="." prefix="${distname}-${version}/bin" mode="755">
+                <include name="OpenGrok"/>
+            </tarfileset>
+            <tarfileset dir="doc" prefix="${distname}-${version}/doc">
+                <include name="EXAMPLE.txt"/>
+            </tarfileset>
+            <tarfileset dir="${dist.dir}" prefix="${distname}-${version}/lib">
+                <include name="opengrok.jar"/>
+                <include name="source.war"/>
+                <include name="lib/*"/>
+                <exclude name="lib/servlet-api.jar"/>
+            </tarfileset>
+            <tarfileset dir="${dist.dir}" prefix="${distname}-${version}/man/man1">
+                <include name="opengrok.1"/>
+            </tarfileset>
+        </tar>
+    </target>
+
+    <target name="dist-src" depends="init">
+        <mkdir dir="${dist.dir}"/>
+        <exec executable="hg">
+            <arg value="archive"/>
+            <arg value="-t"/>
+            <arg value="tgz"/>
+<!--	<arg value="-p"/>
+	<arg value="${distname}-${version}-src"/> -->
+            <arg value="${dist.dir}/${distname}-${version}-src.tar.gz"/>
+        </exec>
+    </target>
+    
+    <target name="-check_findbugs" description="Check that findbugs jar files are present">
+        <available file="findbugs.jar" type="file" property="findbugs.jar.present">
+            <filepath refid="findbugs.lib.search.path"/>
+        </available>
+        <fail unless="findbugs.jar.present" message="Please install Findbugs findbugs.jar in ~/.ant/lib-directory (or in ant classpath) to run Findbugs, see README"/>
+
+        <available file="findbugs-ant.jar" type="file" property="findbugs-ant.jar.present">
+            <filepath refid="findbugs.lib.search.path"/>
+        </available>
+        <fail unless="findbugs-ant.jar.present" message="Please install Findbugs findbugs-ant.jar in ~/.ant/lib-directory (or in ant classpath) to run Findbugs, see README"/>
+    </target>
+    
+    <target name="findbugs" depends="jar, -check_findbugs" description="Runs Findbugs on the OpenGrok source code and generate HTML output">
+        <path id="findbugs.lib" >
+            <pathelement location="${findbugs.home}/lib/findbugs.jar"/>
+            <pathelement location="${findbugs.home}/lib/findbugs-ant.jar"/>
+        </path>
+        <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib"/>
+        <mkdir dir="findbugs"/>
+        <findbugs projectname="OpenGrok" home="${findbugs.home}" output="html" excludeFilter="tools/findbugs_filter.xml" outputFile="findbugs/findbugs.html" jvmargs="-Xmx512m">
+            <auxClasspath>
+                <fileset dir="${dist.dir}/lib/">
+                    <include name="*.jar"/>
+                </fileset>
+            </auxClasspath>
+            <sourcePath path="src" />
+            <class location="${dist.dir}/opengrok.jar" />
+        </findbugs>
+    </target>
+    
+    <target name="findbugs-xml" depends="jar, -check_findbugs" description="Runs Findbugs on the OpenGrok source code and generate XML output">
+        <path id="findbugs.lib" >
+            <pathelement location="${findbugs.home}/lib/findbugs.jar"/>
+            <pathelement location="${findbugs.home}/lib/findbugs-ant.jar"/>
+        </path>
+        <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib"/>
+        <mkdir dir="findbugs"/>
+        <findbugs projectname="OpenGrok" home="${findbugs.home}" output="xml" excludeFilter="tools/findbugs_filter.xml" outputFile="findbugs/findbugs.xml" jvmargs="-Xmx512m">
+            <auxClasspath>
+                <fileset dir="${dist.dir}/lib/">
+                    <include name="*.jar"/>
+                </fileset>
+            </auxClasspath>
+            <sourcePath path="src" />
+            <class location="${dist.dir}/opengrok.jar" />
+        </findbugs>
+    </target>
+    
+    <target name="-check_checkstyle" description="Check that checkstyle jar files are present">
+        <available file="checkstyle-all.jar" type="file" property="checkstyle.jar.present">
+            <filepath refid="checkstyle.lib.search.path"/>
+        </available>
+        <fail unless="checkstyle.jar.present" message="Please install checkstyle-all.jar in lib-directory  (or in ant classpath) to run Checkstyle, see README."/>
+    </target>
+    
+    <target name="checkstyle" depends="compile, -check_checkstyle" description="Run checkstyle on OpenGrok source code">
+        <taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-all.jar"/>
+        <checkstyle config="checkstyle/style.xml" failOnViolation="false">
+            <fileset dir="src" includes="**/*.java"/>
+            <fileset dir="test" includes="**/*.java"/>
+            <formatter type="plain"/>
+            <formatter type="plain"  toFile="checkstyle/checkstyle_errors.txt"/>
+            <formatter type="xml" toFile="checkstyle/checkstyle_errors.xml"/>
+        </checkstyle>
+    </target>
+
+    <target name="-check_pmd" description="Check that pmd jar files are present">
+        <available file="pmd.jar" type="file" property="pmd.jar.present">
+            <filepath refid="pmd.lib.search.path"/>
+        </available>
+        <fail unless="pmd.jar.present" message="Please install pmd.jar in lib-directory  (or in ant classpath) to run PMD, see README."/>
+    </target>
+    
+    <target name="pmd" depends="compile, -check_pmd" description="Run PMD on OpenGrok source code">
+        <path id="pmd.lib" >
+            <pathelement location="${pmd.home}/lib/pmd.jar"/>
+            <pathelement location="${pmd.home}/lib/jaxen.jar"/>
+        </path>
+        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.lib"/>
+        <mkdir dir="pmd"/>
+        <pmd targetjdk="1.6" failuresPropertyName="pmd.num.warnings" rulesetfiles="tools/pmd_ruleset.xml">
+            <formatter type="html" toFile="pmd/pmd_report.html"/>
+            <formatter type="xml" toFile="pmd/pmd_report.xml"/>
+            <fileset dir="src" includes="**/*.java"/>
+<!--            <fileset dir="test" includes="**/*.java"/> -->
+<!--            <fileset dir="web" includes="**/*.jsp"/>
+                <fileset dir="web" includes="**/*.jspf"/> -->
+        </pmd>
+        <echo message="PMD finished, found ${pmd.num.warnings} warnings, see pmd/pmd_report.html"/>
+    </target>
+
+    <target name="cpd-xml" depends="compile, -check_pmd" description="Run CPD on OpenGrok source code, print output in xml">
+        <path id="pmd.lib" >
+            <pathelement location="${pmd.home}/lib/pmd.jar"/>
+            <pathelement location="${pmd.home}/lib/jaxen.jar"/>
+        </path>
+        <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.lib"/>
+        <cpd minimumTokenCount="100" format="xml" outputFile="pmd/cpd_report.xml">
+            <fileset dir="src">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="test">
+                <include name="**/*.java"/>
+            </fileset>
+        </cpd>
+    </target>
+
+    <target name="cpd" depends="compile, -check_pmd" description="Run CPD on OpenGrok source code">
+        <path id="pmd.lib" >
+            <pathelement location="${pmd.home}/lib/pmd.jar"/>
+            <pathelement location="${pmd.home}/lib/jaxen.jar"/>
+        </path>
+        <taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.lib"/>
+        <cpd minimumTokenCount="100" outputFile="pmd/cpd_report.txt">
+            <fileset dir="src">
+                <include name="**/*.java"/>
+            </fileset>
+            <fileset dir="test">
+                <include name="**/*.java"/>
+            </fileset>
+        </cpd>
+    </target>
+
+    <target name="-check_emma" description="Check that emma jar files are present">
+        <available file="emma.jar" type="file" property="emma.jar.present">
+            <filepath refid="lib.search.path"/>
+        </available>
+        <fail unless="emma.jar.present" message="Please install emma.jar in lib-directory  (or in ant classpath) to run Emma, see README."/>
+
+        <available file="emma_ant.jar" type="file" property="emma_ant.jar.present">
+            <filepath refid="lib.search.path"/>
+        </available>
+        <fail unless="emma_ant.jar.present" message="Please install emma_ant.jar in lib-directory  (or in ant classpath) to run Emma, see README."/>
+    </target>
+    
+    <target name="emma-instrument" depends="compile, -check_emma" description="Instruments the source code for Emma code coverage analysis">
+        <path id="emma.lib" >
+            <pathelement location="lib/emma.jar"/>
+            <pathelement location="lib/emma_ant.jar"/>
+        </path>
+        <taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
+        <mkdir dir="${coverage.dir}" />
+        <emma enabled="true">
+            <instr instrpath="build/classes"
+                       metadatafile="${coverage.dir}/coverage.em"
+                       mode="overwrite"
+                       filter="+org.opensolaris.*,-org.opensolaris.opengrok.management.client.*"/>
+        </emma>
+    </target>
+    
+    <target name="-pre-compile-test">
+        <property name="test-sys-prop.emma.coverage.out.file" value="${coverage.dir}/coverage.ec"/>
+        <property name="test-sys-prop.emma.coverage.out.merge" value="true"/>
+    </target>
+
+    <target name="-post-compile-test">
+        <antcall target="-create-svn-repository"/>
+        <antcall target="-create-razor-repository"/>
+        <!-- Change root in CVS test repository -->
+        <!-- Strange indentation in line two levels below to get newline correctly -->
+        <concat destfile="${test.cvs.repo}/CVS/Root" append="no" force="yes" eol="unix">${basedir}/${test.cvs.root}/
+        </concat>
+        <!-- Generate ZIP files used for unit testing mercurial/.hg and mercurial/.hgignore are renamed -->
+        <copy todir="${test.hg}/.hg">
+            <fileset dir="${test.hg}/hg"/>
+        </copy>
+        <copy file="${test.hg}/hgignore" tofile="${test.hg}/.hgignore"/>
+        
+        <zip destfile="${build.test.classes.dir}/org/opensolaris/opengrok/index/source.zip"
+              basedir="${test.sources}"
+              update="false"
+              defaultexcludes="no"/>
+        <zip destfile="${build.test.classes.dir}/org/opensolaris/opengrok/history/repositories.zip" 
+                basedir="${test.repositories}"
+                excludes="mercurial/hg/**, mercurial/hgignore"
+                update="false"
+                defaultexcludes="no"/>
+
+        <antcall target="-delete-generated-repository-files"/>
+    </target>
+
+    <target name="-create-svn-repository">
+        <delete dir="${test.svn}"/>
+        <delete dir="${build.test.reposroots}/svn"/>
+        <mkdir dir="${build.test.reposroots}"/>
+        <exec executable="svnadmin" failifexecutionfails="true">
+            <arg value="create"/>
+            <arg value="${build.test.reposroots}/svn"/>
+        </exec>
+      
+      <!-- need absolute path for svn url -->
+        <pathconvert property="test.svn.url">
+            <map from="" to="file://"/>
+            <path location="${build.test.reposroots}/svn"/>
+        </pathconvert>
+
+        <exec executable="svn" failifexecutionfails="false">
+            <arg value="import"/>
+            <arg value="${test.sources}"/>
+            <arg value="${test.svn.url}"/>
+            <arg value="-m"/>
+            <arg value="Initial import"/>
+        </exec>
+        <exec executable="svn" failifexecutionfails="false">
+            <arg value="checkout"/>
+            <arg value="${test.svn.url}"/>
+            <arg value="${test.svn}"/>
+        </exec>
+    </target>
+    
+    <target name="-create-razor-repository">
+        <delete dir="${test.razor}"/>
+        <copy todir="${test.razor}/Razor-Simple">
+            <fileset dir="ext/SampleRazorRepository/UserSandbox"/>
+        </copy>
+        <copy todir="${test.razor}/Razor-Simple/SimpleCProgram/.razor">
+            <fileset dir="ext/SampleRazorRepository/Repository/OpenGrokSample/RAZOR_UNIVERSE/DOMAIN_01/Simple"/>
+        </copy>
+
+      <!--
+          The support for binaries in Razor repositories is not fully
+          functional, so the next copy target is commented out for now.
+        -->
+
+      <!--copy todir="${test.razor}/Razor-Simple/SimpleCProgram-BinaryRelease/.razor">
+        <fileset dir="ext/SampleRazorRepository/Repository/OpenGrokSample/RAZOR_UNIVERSE/DOMAIN_01/Simple"/>
+      </copy-->
+
+    </target>
+
+    <!-- clean up generated test repositories -->
+    <target name="-delete-generated-repository-files">
+        <delete dir="${test.hg}/.hg"/>
+        <delete file="${test.hg}/.hgignore"/>
+        <delete dir="${test.svn}"/>
+        <delete dir="${test.razor}"/>
+        <delete file="${test.cvs.repo}/CVS/Root"/>
+    </target>
+
+    <target name="emma-report" description="Analyze" depends="-check_emma">
+        <taskdef resource="emma_ant.properties" classpathref="emma.lib"/>
+        <emma enabled="true" >
+            <report sourcepath="${src.dir},${src.generatedsrc.dir}">
+                <!-- collect all EMMA data dumps (metadata and runtime): -->
+                <infileset dir="${coverage.dir}" includes="*.em, *.ec"/>
+                <txt outfile="${coverage.dir}/coverage.txt"/>
+                <xml outfile="${coverage.dir}/coverage.xml"/>
+                <html  outfile="${coverage.dir}/index.html"/>
+            </report>
+        </emma>
+    </target>
+    
+    <target name="code-coverage" depends="clean, emma-instrument, test, emma-report" description="Make test code coverage reports based on the OpenGrok unit tests"/>
+
+    <target name="jdepend" depends="compile" description="Run JDepend dependency checking">
+        <mkdir dir="jdepend"/>
+        <java classname="jdepend.xmlui.JDepend" failonerror="true" fork="true">
+            <arg value="-file"/>
+            <arg value="jdepend/report.xml"/>
+            <arg value="${build.classes.dir}"/>
+            <classpath>
+                <pathelement location="${user.home}/.ant/lib/jdepend/lib/jdepend.jar"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>            
+        </java>
+        <java classname="jdepend.textui.JDepend" failonerror="true" fork="true">
+            <arg value="-file"/>
+            <arg value="jdepend/report.txt"/>
+            <arg value="${build.classes.dir}"/>
+            <classpath>
+                <pathelement location="${user.home}/.ant/lib/jdepend/lib/jdepend.jar"/>
+                <pathelement path="${java.class.path}"/>
+            </classpath>            
+        </java>
+    </target>
+
+    <!-- Generate HTML test report -->
+    <target depends="init" name="test-report">
+        <junitreport todir="${build.test.results.dir}">
+            <fileset dir="${build.test.results.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report todir="${build.test.results.dir}"/>
+        </junitreport>
+    </target>
+
+    <!-- Build our patched JRCS library. -->
+    <target name="jrcs" depends="-pre-pre-compile">
+        <mkdir dir="${build.dir}/jrcs"/>
+        <javac srcdir="jrcs/src" destdir="${build.dir}/jrcs"
+             nowarn="on" source="1.4"/>
+        <jar destfile="${file.reference.jrcs.jar}">
+            <fileset dir="${build.dir}/jrcs" includes="**/*.class"/>
+        </jar>
+    </target>
+
+
+	<!-- compile jsp - just to test -->
+    <property name="debug" value="on" />
+    <property name="jsdebug" value="off" />
+    <property name="compress" value=".gz" />
+    <property name="debuglevel" value="source,lines,vars" />
+    <property name="optimize" value="on" />
+    <property name="deprecation" value="on" />
+    <property name="listfiles" value="true" />
+
+    <property name="codebase"   	value="org/opensolaris/opengrok"/>
+    <property name="codebase.dot"   value="org.opensolaris.opengrok"/>
+    <property name="web.src.dir" location="web" />
+	
+    <patternset id="libs">
+        <include name="*.jar" />
+    </patternset>
+    <path id="classpath.base">
+        <fileset dir="lib">
+            <patternset refid="libs" />
+        </fileset>
+    </path>
+    <property name="AS_HOME" value="glassfish"/>
+    <path id="classpath.j2ee">
+        <fileset dir="${AS_HOME}/modules">
+            <include name="javaee.jar" />
+			<!-- for the **/auth/* stuff, only -->
+            <include name="appserv-rt.jar" />
+            <include name="appserv-deployment-client.jar" />
+        </fileset>
+    </path>
+    <path id="classpath.jspc">
+        <fileset dir="${AS_HOME}/modules">
+            <include name="javax.servlet.jar"/>
+            <include name="javax.servlet.jsp.jar"/>
+            <include name="jsp-impl.jar"/>
+            <include name="el-impl.jar"/>
+            <include name="javax.servlet.jsp.jstl.jar"/>
+            <include name="jstl-impl.jar"/>
+            <include name="jsf-api.jar"/>
+            <include name="jsf-impl.jar"/>
+            <include name="tools.jar"/>
+        </fileset>
+    </path>
+
+    <path id="classpath.web">
+        <path refid="classpath.j2ee"/>
+        <path refid="classpath.base"/>
+    </path>
+
+    <path id="classpath.jsp">
+        <path refid="classpath.jspc"/>
+        <path refid="classpath.web"/>
+    </path>
+
+    <target name="-jsp.check" depends="init">
+        <mkdir dir="${build.dir}/src/jsp/${codebase}/jsp" />
+        <uptodate property="jsp.not.changed">
+            <srcfiles dir="${web.src.dir}" includes="**/*.jsp,**/*.jspf"/>
+            <mapper type="glob" from="*.jsp" 
+				to="${build.dir}/src/jsp/${codebase}/jsp/*_jsp.java"/>
+        </uptodate>
+    </target>
+	
+    <target name="-jsp.generate" depends="-jsp.check" unless="jsp.not.changed">
+        <taskdef name="jasper" classname="org.apache.jasper.JspC"
+			classpathref="classpath.jsp" />
+        <mkdir dir="${build.dir}/src/web"/>
+        <copy todir="${build.dir}/src/web">			
+            <fileset dir="${web.src.dir}">
+                <include name="**/*.jsp"/>
+                <include name="**/*.jspf"/>
+                <include name="**/index_body.html"/>
+            </fileset>
+        </copy>
+        <jasper validateXml="false" 
+			outputdir="${build.dir}/src/jsp" 
+			javaencoding="UTF-8"
+			uriroot="${build.dir}/src/web"
+			package="${codebase.dot}.jsp"
+			compilersourcevm="1.6"
+			compilertargetvm="1.6"
+			smapsuppressed="false"
+			webxmlfragment="${build.dir}/src/servlets_web.xml"
+			/>
+        <loadfile property="wdd" srcfile="${build.dir}/src/servlets_web.xml"/>
+        <copy file="${web.src.dir}/WEB-INF/web.xml" todir="${build.dir}"
+			overwrite="true">
+            <filterset>
+                <filter token="generated servlet mappings" 
+					value=" generated start -->${wdd}&lt;!-- generated end " />
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="compile.jsp" depends="compile,-jsp.generate"
+		description="--> compile java source code and jsp pages"
+	>
+        <javac srcdir="${build.dir}/src/jsp" destdir="${build.dir}/classes"
+			includes="**/*.java"
+			optimize="${optimize}" debug="${debug}" debuglevel="${debuglevel}"
+			deprecation="${deprecation}" classpathref="classpath.jsp"
+			encoding="UTF-8" listfiles="${listfiles}"
+			includeantruntime="false">
+            <compilerarg value="-Xlint:unchecked" compiler="javac1.6"/>
+        </javac>
+    </target>
+
+    <target name="all" depends="clean,jar,compile.jsp,test,javadoc,pmd,findbugs-xml,checkstyle" />
+</project>
