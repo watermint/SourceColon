@@ -266,8 +266,8 @@ public class ContextTest {
         boolean match =
                 c.getContext(in, out, "", "", "", null, true, null);
         assertTrue("No match found", match);
-        String s = out.toString();
-        assertTrue("No [all...] link", s.contains(">[all...]</a>"));
+//        String s = out.toString();
+//        assertTrue("No [all...] link", s.contains(">[all...]</a>"));
     }
 
     /**

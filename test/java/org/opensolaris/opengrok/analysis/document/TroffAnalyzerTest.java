@@ -59,7 +59,7 @@ public class TroffAnalyzerTest {
         analyzer = new TroffAnalyzer(factory);
         assertNotNull(analyzer);
         String file = System.getProperty("opengrok.test.troff.doc",
-            "testdata/sources/document/foobar.1");
+            "test/data/sources/document/foobar.1");
         File f = new File(file);
         if (!(f.canRead() && f.isFile())) {
             fail("troff testfile " + f + " not found");

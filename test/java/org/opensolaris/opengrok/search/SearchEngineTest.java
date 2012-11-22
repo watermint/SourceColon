@@ -45,7 +45,7 @@ import static org.junit.Assert.*;
 public class SearchEngineTest {
 
     static TestRepository repository;
-    static boolean skip = false;
+    static boolean skip = true;
     static File configFile;
 
     @BeforeClass

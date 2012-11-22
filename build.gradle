@@ -1,4 +1,4 @@
-defaultTasks 'cleanup', 'compile'
+defaultTasks 'cleanup', 'build'
 apply plugin: 'java'
 
 configurations {
@@ -47,8 +47,21 @@ task jflex(dependsOn: prepare) << {
     }
 }
 
+task testData(dependsOn: prepare) {
+    String source_zip_dir = 'build/classes/test/org/opensolaris/opengrok/index/'
+    new File(source_zip_dir).mkdirs()
+    ant.zip(destfile: source_zip_dir + 'source.zip') {
+        fileset(dir: project.ext.base + '/test/data/sources') {
+        }
+    }
+}
+
 compileJava {
     dependsOn jflex
+}
+
+test {
+    dependsOn testData
 }
 
 sourceSets {
@@ -63,6 +76,17 @@ sourceSets {
         java {
             srcDir project.base + '/test/java'
         }
+        resources {
+            srcDir project.ext.src
+            srcDir project.base + '/test/java'
+            srcDir project.base + '/test/data'
+        }
+    }
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'org.opensolaris.opengrok.index.Indexer')
     }
 }
 
