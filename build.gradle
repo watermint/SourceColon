@@ -1,3 +1,5 @@
+defaultTasks 'clean', 'compile'
+
 configurations {
     generatesrc
 }
@@ -12,13 +14,12 @@ dependencies {
 }
 
 ext {
-    base = '.'
-    src = base + '/src'
-    build = base + '/build'
-    dist = base + '/dist'
-    generatedsrc = build + '/generatedsrc'
-
-    workingdirs = [build, generatedsrc, dist]
+    base         = '.'
+    src          = new File(base, 'src')
+    build        = new File(base, 'build')
+    dist         = new File(base, '/dist')
+    generatedsrc = new File(build, '/generatedsrc')
+    workingdirs  = [build, generatedsrc, dist]
 }
 
 task clean << {
@@ -26,8 +27,8 @@ task clean << {
 }
 
 task prepare << {
-    project.ext.workingdirs.each { String d ->
-        new File(d).mkdirs()
+    project.ext.workingdirs.each { File d ->
+        d.mkdirs()
     }
 }
 
@@ -39,6 +40,6 @@ task generatesrc(dependsOn: prepare) << {
     }
 }
 
-task compile << {
+task compile(dependsOn: generatesrc) << {
 
 }
