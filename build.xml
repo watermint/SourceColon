@@ -99,21 +99,7 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
 
     <property name="test.repositories" value="testdata/repositories"/>
     <property name="test.sources" value="testdata/sources"/>
-    <property name="test.cvs" value="${test.repositories}/cvs"/>
-    <property name="test.cvs.repo" value="${test.cvs}/cvsrepo"/>
-    <property name="test.cvs.root" value="${test.cvs}/cvsroot"/>
-    <property name="test.hg" value="${test.repositories}/mercurial"/>
-    <property name="test.svn" value="${test.repositories}/svn"/>
-    <property name="test.razor" value="${test.repositories}/razor"/>
 
-    <available property="compileSystrayClient" classname="java.awt.TrayIcon"/>
-
-    <target name="-exclude-client" unless="compileSystrayClient">	    
-        <echo>JDK doesn't have java.awt.TrayIcon, excluding building of systray client ... </echo>
-        <property name="excludes" value="org/opensolaris/opengrok/management/client/**"/> 
-    </target>
-    
-                 
     <path id="lib.search.path">
         <pathelement path="${user.home}/.ant/lib"/>
         <pathelement path="${java.class.path}"/>
