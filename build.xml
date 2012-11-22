@@ -235,23 +235,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
             <lib dir="${dist.dir}" includes="opengrok.jar"/>
             <lib dir="${dist.dir}/lib" includes="*.jar" excludes="servlet-api.jar"/>
         </war>
-        <echo message="Generating man page.."/>
-        <java classname="org.opensolaris.opengrok.index.CommandLineOptions" 
-              output="${dist.dir}/opengrok.1" failonerror="true" fork="true">
-            <classpath>
-                <pathelement location="dist/opengrok.jar"/>
-                <pathelement path="${java.class.path}"/>
-            </classpath>
-        </java>
-    </target>
-
-    <target name="package" depends="jar">
-        <exec os="SunOS" executable="/usr/bin/pkgmk" failonerror="true">
-            <arg line="-o -d build -r . -v ${version} -f platform/solaris/pkgdef/prototype"/>
-        </exec>
-        <exec os="SunOS" executable="/usr/bin/pkgtrans" failonerror="true">
-            <arg line="-s build ../dist/OSOLopengrok-${version}.pkg OSOLopengrok"/>
-        </exec>
     </target>
 
     <target name="dist" depends="jar">
@@ -273,9 +256,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
                 <include name="lib/*"/>
                 <exclude name="lib/servlet-api.jar"/>
             </tarfileset>
-            <tarfileset dir="${dist.dir}" prefix="${distname}-${version}/man/man1">
-                <include name="opengrok.1"/>
-            </tarfileset>
         </tar>
     </target>
 
@@ -285,8 +265,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
             <arg value="archive"/>
             <arg value="-t"/>
             <arg value="tgz"/>
-<!--	<arg value="-p"/>
-	<arg value="${distname}-${version}-src"/> -->
             <arg value="${dist.dir}/${distname}-${version}-src.tar.gz"/>
         </exec>
     </target>

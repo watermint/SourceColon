@@ -158,47 +158,6 @@ public class CommandLineOptions {
 
         return wrt.toString();
     }
-
-    public String getManPage() throws IOException {
-        StringWriter wrt = new StringWriter();
-        PrintWriter out = new PrintWriter(wrt);
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                getClass().getResourceAsStream("opengrok.xml"), "US-ASCII"));
-
-        spool(reader, out, "___INSERT_DATE___");
-        out.print("<refmiscinfo class=\"date\">");
-        out.print(DateFormat.getDateInstance(DateFormat.MEDIUM).format(new Date()));
-        out.println("</refmiscinfo>");
-
-        spool(reader, out, "___INSERT_USAGE___");
-        for (Option o : options) {
-            out.println("<optional><option>");
-            out.print(o.option);
-            if (o.argument != null) {
-                out.print(" <replaceable>");
-                out.print(o.argument);
-                out.print("</replaceable>");
-            }
-            out.println("</option></optional>");
-        }
-
-        spool(reader, out, "___INSERT_OPTIONS___");
-        for (Option o : options) {
-            out.print("<varlistentry><term><option>");
-            out.print(o.option);
-            out.print("</option></term><listitem><para>");
-            out.print(o.description);
-            out.println("</para></listitem></varlistentry>");
-        }
-
-        spool(reader, out, "___END_OF_FILE___");
-        out.flush();
-        IOUtils.close(reader);
-
-        return wrt.toString();
-    }
-
     /**
      * Not intended for normal use, but for the JUnit test suite to validate
      * that all options contains a description :-)
@@ -208,19 +167,4 @@ public class CommandLineOptions {
     Iterator<Option> getOptionsIterator() {
         return options.iterator();
     }
-
-   /**
-    * Print out a manual page on standard out. Used for building manual page.
-    *
-    * @param argv argument vector. not used.
-    */
-   @SuppressWarnings("PMD.SystemPrintln")
-   public static void main(String[] argv) {
-       CommandLineOptions co = new CommandLineOptions();
-       try {
-           System.out.println(co.getManPage());
-       } catch (IOException exp) {
-           System.err.println(exp.getLocalizedMessage());
-       }
-   }
 }
