@@ -1,7 +1,5 @@
 .idea
+.gradle
 *.iml
 build
 dist
-generatedsrc
-lib/jrcs.jar
-manifest.mf

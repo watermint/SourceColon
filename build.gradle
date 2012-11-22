@@ -1,0 +1,44 @@
+configurations {
+    generatesrc
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    generatesrc 'de.jflex:maven-jflex-plugin:1.4.3'
+}
+
+ext {
+    base = '.'
+    src = base + '/src'
+    build = base + '/build'
+    dist = base + '/dist'
+    generatedsrc = build + '/generatedsrc'
+
+    workingdirs = [build, generatedsrc, dist]
+}
+
+task clean << {
+    delete project.ext.workingdirs
+}
+
+task prepare << {
+    project.ext.workingdirs.each { String d ->
+        new File(d).mkdirs()
+    }
+}
+
+task generatesrc(dependsOn: prepare) << {
+    ant.taskdef(name: 'jflex', classname: 'JFlex.anttask.JFlexTask', classpath: configurations.generatesrc.asPath)
+
+    fileTree(dir: project.ext.src).include('**/*.lex').each { File f ->
+        ant.jflex(destdir: project.ext.generatedsrc, file: f)
+    }
+}
+
+task compile << {
+
+}
