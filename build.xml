@@ -477,50 +477,7 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
 				to="${build.dir}/src/jsp/${codebase}/jsp/*_jsp.java"/>
         </uptodate>
     </target>
-	
-    <target name="-jsp.generate" depends="-jsp.check" unless="jsp.not.changed">
-        <taskdef name="jasper" classname="org.apache.jasper.JspC"
-			classpathref="classpath.jsp" />
-        <mkdir dir="${build.dir}/src/web"/>
-        <copy todir="${build.dir}/src/web">			
-            <fileset dir="${web.src.dir}">
-                <include name="**/*.jsp"/>
-                <include name="**/*.jspf"/>
-                <include name="**/index_body.html"/>
-            </fileset>
-        </copy>
-        <jasper validateXml="false" 
-			outputdir="${build.dir}/src/jsp" 
-			javaencoding="UTF-8"
-			uriroot="${build.dir}/src/web"
-			package="${codebase.dot}.jsp"
-			compilersourcevm="1.6"
-			compilertargetvm="1.6"
-			smapsuppressed="false"
-			webxmlfragment="${build.dir}/src/servlets_web.xml"
-			/>
-        <loadfile property="wdd" srcfile="${build.dir}/src/servlets_web.xml"/>
-        <copy file="${web.src.dir}/WEB-INF/web.xml" todir="${build.dir}"
-			overwrite="true">
-            <filterset>
-                <filter token="generated servlet mappings" 
-					value=" generated start -->${wdd}&lt;!-- generated end " />
-            </filterset>
-        </copy>
-    </target>
 
-    <target name="compile.jsp" depends="compile,-jsp.generate"
-		description="--> compile java source code and jsp pages"
-	>
-        <javac srcdir="${build.dir}/src/jsp" destdir="${build.dir}/classes"
-			includes="**/*.java"
-			optimize="${optimize}" debug="${debug}" debuglevel="${debuglevel}"
-			deprecation="${deprecation}" classpathref="classpath.jsp"
-			encoding="UTF-8" listfiles="${listfiles}"
-			includeantruntime="false">
-            <compilerarg value="-Xlint:unchecked" compiler="javac1.6"/>
-        </javac>
-    </target>
 
-    <target name="all" depends="clean,jar,compile.jsp,test,javadoc" />
+    <target name="all" depends="clean,jar,test,javadoc" />
 </project>
