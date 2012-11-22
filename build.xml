@@ -241,7 +241,6 @@ Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
                 <include name="README.txt"/>
                 <include name="LICENSE.txt"/>
                 <include name="NOTICE.txt"/>
-                <include name="paths.tsv"/>
                 <include name="logging.properties"/>
             </tarfileset>
             <tarfileset dir="." prefix="${distname}-${version}/bin" mode="755">

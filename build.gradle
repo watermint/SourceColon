@@ -1,5 +1,7 @@
 defaultTasks 'build'
+
 apply plugin: 'java'
+apply plugin: 'war'
 
 configurations {
     generatesrc
@@ -93,3 +95,6 @@ jar {
     }
 }
 
+war {
+    from project.base + '/war'
+}
