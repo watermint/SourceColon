@@ -39,18 +39,7 @@ import org.opensolaris.opengrok.OpenGrokLogger;
 public final class RepositoryFactory {
 
     private static Repository repositories[] = {
-        new MercurialRepository(),
-        new BazaarRepository(),
-        new GitRepository(),
-        new MonotoneRepository(),
-        new SubversionRepository(),
-        new SCCSRepository(),
-        new RazorRepository(),
-        new ClearCaseRepository(),
-        new PerforceRepository(),
-        new RCSRepository(),
-        new CVSRepository(),
-        new RepoRepository(),
+        new GitRepository()
     };
 
     private RepositoryFactory() {
