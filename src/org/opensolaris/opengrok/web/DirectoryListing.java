@@ -107,12 +107,12 @@ public class DirectoryListing {
             }
         }
 
-        out.write("<table id=\"dirlist\">\n");
-        out.write("<thead>\n<tr><th/><th>Name</th><th>Date</th><th>Size</th>");
+        out.write("<table class=\"table table-striped\">\n");
+        out.write("\n<tr class=\"info\"><td/><td><strong>Name</strong></td><td><strong>Date</strong></td><td><strong>Size</strong></td>");
         if (offset > 0) {
-            out.write("<th><tt>Description</tt></th>");
+            out.write("<td><strong>Description</strong></td>");
         }
-        out.write("</tr>\n</thead>\n<tbody>\n");
+        out.write("</tr>\n\n");
         IgnoredNames ignoredNames = RuntimeEnvironment.getInstance().getIgnoredNames();
 
         Format dateFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());

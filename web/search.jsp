@@ -74,43 +74,21 @@ include file="projects.jspf"
 include file="header.jspf"
 
 %>
-<div id="page">
-    <div id="whole_header">
-        <div id="header"><%@
-
-include file="pageheader.jspf"
-
-%>
-        </div>
-        <div id="Masthead"></div>
-        <div id="bar">
-            <ul>
-                <li><a href="<%= request.getContextPath()
-                    %>/"><span id="home"></span>Home</a></li>
-            </ul>
-            <%-- TODO: jel: IMHO it should be move to menu.jspf as combobox --%>
-            <div id="sortfield">
-                <label for="sortby">Sort by</label>
-                <ul id="sortby"><%
+<div class="container">
+        <div id="header"><%@ include file="pageheader.jspf" %></div>
+        <div id="menu"><%@ include file="menu.jspf" %></div>
+    <ul class="nav nav-tabs"><%
     StringBuilder url = createUrl(searchHelper, true).append("&amp;sort=");
     for (SortOrder o : SortOrder.values()) {
         if (searchHelper.order == o) {
-                    %><li><span class="active"><%= o.getDesc() %></span></li><%
+                    %><li class="active"><a href="#"><%= o.getDesc() %></a></li><%
         } else {
                     %><li><a href="<%= url %><%= o %>"><%= o.getDesc() %></a></li><%
         }
     }
-                %></ul>
-            </div>
-        </div>
-        <div id="menu"><%@
-
-include file="menu.jspf"
-
-%>
-        </div>
-    </div>
-    <div id="results"><%
+    %>
+    </ul>
+    <%
     // TODO spellchecking cycle below is not that great and we only create
     // suggest links for every token in query, not for a query as whole
     if (searchHelper.errorMsg != null) {
@@ -176,9 +154,9 @@ include file="menu.jspf"
             int labelEnd = label + 11;
             for (int i = sstart; i < totalHits && label <= labelEnd; i+= max) {
                 if (i <= start && start < i + max) {
-                    buf.append("<span class=\"sel\">").append(label).append("</span>");
+                    buf.append("<li class=\"active\"><a href=\"#\">").append(label).append("</a></li>");
                 } else {
-                    buf.append("<a class=\"more\" href=\"s?n=").append(max)
+                    buf.append("<li><a href=\"s?n=").append(max)
                         .append("&amp;start=").append(i).append(urlp).append("\">");
                     if (label == labelStart && label != 1) {
                         buf.append("&lt;&lt");
@@ -187,7 +165,7 @@ include file="menu.jspf"
                     } else {
                         buf.append(label);
                     }
-                    buf.append("</a>");
+                    buf.append("</a></li>");
                 }
                 label++;
             }
@@ -197,33 +175,23 @@ include file="menu.jspf"
             thispage = totalHits - start;
         }
         %>
+    <div class="container">
         <p class="pagetitle">Searched <b><%= searchHelper.query
             %></b> (Results <b> <%= start + 1 %> - <%= thispage + start
             %></b> of <b><%= totalHits %></b>) sorted by <%=
-            searchHelper.order.getDesc() %></p><%
-        if (slider.length() > 0) {
-        %>
-        <p class="slider"><%= slider %></p><%
-        }
-        %>
-        <table><%
+            searchHelper.order.getDesc() %></p>
+        <% if (slider.length() > 0) { %><div class="pagination"><ul><%= slider %></ul></div><% } %>
+        <table class="table table-striped"><%
         Results.prettyPrint(out, searchHelper, start, start + thispage);
         %>
         </table>
-        <p><b>Completed in <%= System.currentTimeMillis() - starttime
-            %> milliseconds</b></p><%
-        if (slider.length() > 0) {
-        %>
-        <p class="slider"><%= slider %></p><%
-        }
-        %>
+        <% if (slider.length() > 0) { %><div class="pagination"><ul><%= slider %></ul></div><% } %>
+    </div>
+    <div class="container">
+        Completed in <%= System.currentTimeMillis() - starttime %> milliseconds</b></p>
     </div><%
     }
     searchHelper.destroy();
 }
 /* ---------------------- search.jsp end --------------------- */
-%><%@
-
-include file="foot.jspf"
-
-%>
+%><%@ include file="foot.jspf" %>

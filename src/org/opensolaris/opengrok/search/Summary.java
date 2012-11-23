@@ -105,7 +105,7 @@ public class Summary {
          * Returns an HTML representation of this fragment.
          */
         public String toString() {
-            return "<b>" + super.toString() + "</b>";
+            return "<strong>" + super.toString() + "</strong>";
         }
     }
 
@@ -131,7 +131,7 @@ public class Summary {
          * Returns an HTML representation of this fragment.
          */
         public String toString() {
-            return "<b> ... </b>";
+            return "<strong> ... </strong>";
         }
     }
 

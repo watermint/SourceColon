@@ -161,7 +161,7 @@ public final class Results {
         for (Map.Entry<String, ArrayList<Document>> entry :
                 createMap(sh.searcher, sh.hits, start, end).entrySet()) {
             String parent = entry.getKey();
-            out.write("<tr class=\"dir\"><td colspan=\"3\"><a href=\"");
+            out.write("<tr class=\"success\"><td colspan=\"3\"><a href=\"");
             out.write(xrefPrefixE);
             out.write(Util.URIEncodePath(parent));
             out.write("/\">");
@@ -176,23 +176,23 @@ public final class Results {
             for (Document doc : entry.getValue()) {
                 String rpath = doc.get("path");
                 String rpathE = Util.URIEncodePath(rpath);
-                out.write("<tr><td class=\"q\"><a href=\"");
+                out.write("<tr><td><a href=\"");
                 out.write(histPrefixE);
                 out.write(rpathE);
-                out.write("\" title=\"History\">H</a> <a href=\"");
+                out.write("\" title=\"History\"><i class=\"icon-time\"></i></a> <a href=\"");
                 out.write(xrefPrefixE);
                 out.write(rpathE);
-                out.write("?a=true\" title=\"Annotate\">A</a> <a href=\"");
+                out.write("?a=true\" title=\"Annotate\"><i class=\"icon-pencil\"></i></a> <a href=\"");
                 out.write(rawPrefixE);
                 out.write(rpathE);
-                out.write("\" title=\"Download\">D</a>");
+                out.write("\" title=\"Download\"><i class=\"icon-download-alt\"></i></a>");
                 out.write("</td>");
-                out.write("<td class=\"f\"><a href=\"");
+                out.write("<td><a href=\"");
                 out.write(xrefPrefixE);
                 out.write(rpathE);
                 out.write("\">");
                 out.write(rpath.substring(rpath.lastIndexOf('/') + 1)); // htmlize ???
-                out.write("</a></td><td><tt class=\"con\">");
+                out.write("</a></td><td>");
                 if (sh.sourceContext != null) {
                     Genre genre = Genre.get(doc.get("t"));
                     Definitions tags = null;
@@ -221,7 +221,7 @@ public final class Results {
                     sh.historyContext.getContext(new File(sh.sourceRoot, rpath),
                             rpath, out, sh.contextPath);
                 }
-                out.write("</tt></td></tr>\n");
+                out.write("</td></tr>\n");
             }
         }
     }

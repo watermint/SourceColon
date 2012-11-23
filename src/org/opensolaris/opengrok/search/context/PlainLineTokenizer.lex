@@ -148,7 +148,7 @@ import org.opensolaris.opengrok.web.Util;
   private int printWithNum(int start, int end, int lineNo,
                            boolean bold) throws IOException {
         if (bold) {
-            out.write("<b>");
+            out.write("<strong>");
         }
 
         for(int i=start;i<end; i++) {
@@ -160,7 +160,7 @@ import org.opensolaris.opengrok.web.Util;
                         boolean hi = tags.containsKey(ln);
 
                         if (bold) {
-                            out.write("</b>");
+                            out.write("</strong>");
                         }
 
                         out.write("</a>");
@@ -174,16 +174,15 @@ import org.opensolaris.opengrok.web.Util;
 
                         prevHi = hi;
                         prevLn = ln;
-                        if (hi) out.write("<span class=\"h\">"); //TODO: closing tag - where?
-                        out.write("<a class=\"s\" href=\"");
+                        out.write("<a href=\"");
                         out.write(url);
                         String num = String.valueOf(lineNo);
                         out.write(num);
-                        out.write("\"><span class=\"l\">");
+                        out.write("\"><span class=\"badge\">");
                         out.write(num);
                         out.write("</span> ");
                         if (bold) {
-                            out.write("<b>");
+                            out.write("<strong>");
                         }
                         break;
                 case '<':
@@ -201,7 +200,7 @@ import org.opensolaris.opengrok.web.Util;
         }
 
         if (bold) {
-            out.write("</b>");
+            out.write("</strong>");
         }
 
         return lineNo;
@@ -267,7 +266,7 @@ import org.opensolaris.opengrok.web.Util;
                            out.write(url);
                            String num = String.valueOf(markedLine);
                            out.write(num);
-                           out.write("\"><span class=\"l\">");
+                           out.write("\"><span class=\"badge\">");
                            out.write(num);
                            out.write("</span> ");
                         }
@@ -283,10 +282,10 @@ import org.opensolaris.opengrok.web.Util;
         } else {
            markedLine = formatWithNum(markedPos, matchStart, markedLine);
            hit.setLineno(String.valueOf(markedLine));
-           sb.append("<b>");
+           sb.append("<strong>");
            markedLine = formatWithNum(
                     matchStart, markedContents.length(), markedLine);
-           sb.append("</b>");
+           sb.append("</strong>");
         }
 
         // Remove everything up to the start of the current line in the
@@ -345,21 +344,21 @@ import org.opensolaris.opengrok.web.Util;
         if (out != null) {
            for(Integer rem : tags.keySet()) {
                 String[] desc = tags.get(rem);
-                out.write("<a class=\"s\" href=\"");
+                out.write("<a href=\"");
                 out.write(url);
                 out.write(desc[1]);
-                out.write("\"><span class=\"l\">");
+                out.write("\"><span class=\"badge\">");
                 out.write(desc[1]);
-                out.write("</span> ");
-                out.write(Util.htmlize(desc[3]).replace(desc[0], "<b>" + desc[0] + "</b>"));
-                out.write("</a> <i> ");
+                out.write("</span> <code>");
+                out.write(Util.htmlize(desc[3]).replace(desc[0], "<strong>" + desc[0] + "</strong>"));
+                out.write("</code></a> <i> ");
                 out.write(desc[2]);
                 out.write(" </i><br/>");
            }
         } else {
            for(Integer rem : tags.keySet()) {
                 String[] desc = tags.get(rem);
-                hit = new Hit(url, "<html>" + Util.htmlize(desc[3]).replace(desc[0], "<b>" + desc[0] + "</b>"),
+                hit = new Hit(url, "<html>" + Util.htmlize(desc[3]).replace(desc[0], "<strong>" + desc[0] + "</strong>"),
                               desc[1], false, alt);
                 hit.setTag(desc[2]);
                 hits.add(hit);

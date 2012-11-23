@@ -171,7 +171,7 @@ public class Context {
                                     out.write(pathE);
                                     out.write("#");
                                     out.write(desc[1]);
-                                    out.write("\"><span class=\"l\">");
+                                    out.write("\"><span class=\"badge\">");
                                     out.write(desc[1]);
                                     out.write("</span> ");
                                     out.write(Util.htmlize(desc[3]).replace(
@@ -267,7 +267,7 @@ public class Context {
             anything = matchedLines > 0;
             tokens.dumpRest();
             if (lim && (truncated || matchedLines == 10) && out != null) {
-                out.write("<a href=\"" + Util.URIEncodePath(morePrefix) + pathE + "?" + queryAsURI + "\">[all...]</a>");
+                out.write("<a href=\"" + Util.URIEncodePath(morePrefix) + pathE + "?" + queryAsURI + "\"><i class=\"icon-hand-right\"></i> more...</a>");
             }
         } catch (IOException e) {
             OpenGrokLogger.getLogger().log(Level.WARNING, "Could not get context for " + path, e);
