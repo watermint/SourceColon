@@ -23,11 +23,12 @@ ext {
 }
 
 dependencies {
+    String luceneVersion = '3.0.3'
     List common = [
-            'org.apache.lucene:lucene-core:3.0.2',
-            'org.apache.lucene:lucene-spellchecker:3.0.2',
+            'org.apache.lucene:lucene-core:' + luceneVersion,
+            'org.apache.lucene:lucene-spellchecker:' + luceneVersion,
             'org.apache.bcel:bcel:5.2',
-            'org.apache.ant:ant:1.8.1'
+            'org.apache.ant:ant:1.8.4'
     ]
     jflex 'de.jflex:maven-jflex-plugin:1.4.3'
     compile common
