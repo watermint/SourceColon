@@ -4,6 +4,8 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'jetty'
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 configurations {
     jflex
 }
@@ -87,29 +89,11 @@ jar {
     from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
-task prepareWar(dependsOn: jar) << {
-    File destWar = new File(project.buildDir, 'war')
-    File baseWar = new File(project.projectDir, 'web')
-    copy {
-        from baseWar
-        into destWar
-    }
-    copy {
-        from jar.archivePath
-        into new File(destWar, 'WEB-INF/lib')
-    }
-}
-
-war {
-    destinationDir project.ext.dist
-    from new File(project.buildDir, 'war')
-}
-
 task runIndexer(dependsOn: jar) << {
-    File scRoot   = file(project.buildDir, 'sc')
-    File scData   = file(scRoot, 'data')
-    File scEtc    = file(scRoot, 'etc')
-    File scConfig = file(scEtc, 'configuration.xml')
+    File scRoot   = new File(project.buildDir, 'sc')
+    File scData   = new File(scRoot, 'data')
+    File scEtc    = new File(scRoot, 'etc')
+    File scConfig = new File(scEtc, 'config.xml')
 
     [scData, scEtc].each {
         it.mkdirs()
@@ -123,6 +107,26 @@ task runIndexer(dependsOn: jar) << {
         arg(value: '-W')
         arg(value: scConfig.absolutePath)
     }
+}
+
+task prepareWar(dependsOn: [jar, runIndexer]) << {
+    File destWar = new File(project.buildDir, 'war')
+    File baseWar = new File(project.projectDir, 'web')
+    copy {
+        from baseWar
+        into destWar
+        filter(ReplaceTokens, tokens: [CONFIG_PATH: new File(project.buildDir, 'sc/etc/config.xml').absolutePath])
+    }
+    copy {
+        from jar.archivePath
+        into new File(destWar, 'WEB-INF/lib')
+    }
+}
+
+war {
+    dependsOn prepareWar
+    destinationDir project.ext.dist
+    from new File(project.buildDir, 'war')
 }
 
 task all(dependsOn: [build, war, runIndexer]) {
