@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import java.util.logging.Logger;
+
 import org.opensolaris.opengrok.web.Util;
 
 /**
@@ -61,11 +62,11 @@ public class Annotation {
      *
      * @param line line number (counting from 1)
      * @return revision string, or an empty string if there is no information
-     * about the specified line
+     *         about the specified line
      */
     public String getRevision(int line) {
         try {
-            return lines.get(line-1).revision;
+            return lines.get(line - 1).revision;
         } catch (IndexOutOfBoundsException e) {
             return "";
         }
@@ -77,8 +78,8 @@ public class Annotation {
      * @return list of all revisions the file has
      */
     public Set<String> getRevisions() {
-        Set<String> ret=new HashSet<String>();
-        for (Iterator<Line> it = this.lines.iterator(); it.hasNext();) {
+        Set<String> ret = new HashSet<String>();
+        for (Iterator<Line> it = this.lines.iterator(); it.hasNext(); ) {
             Line ln = it.next();
             ret.add(ln.revision);
         }
@@ -90,11 +91,11 @@ public class Annotation {
      *
      * @param line line number (counting from 1)
      * @return author, or an empty string if there is no information about the
-     * specified line
+     *         specified line
      */
     public String getAuthor(int line) {
         try {
-            return lines.get(line-1).author;
+            return lines.get(line - 1).author;
         } catch (IndexOutOfBoundsException e) {
             return "";
         }
@@ -108,7 +109,7 @@ public class Annotation {
      */
     public boolean isEnabled(int line) {
         try {
-            return lines.get(line-1).enabled;
+            return lines.get(line - 1).enabled;
         } catch (IndexOutOfBoundsException e) {
             return false;
         }
@@ -146,7 +147,7 @@ public class Annotation {
      * Adds a line to the file.
      *
      * @param revision revision number
-     * @param author author name
+     * @param author   author name
      */
     void addLine(String revision, String author, boolean enabled) {
         final Line line = new Line(revision, author, enabled);
@@ -163,11 +164,14 @@ public class Annotation {
         return desc.get(revision);
     }
 
-    /** Class representing one line in the file. */
+    /**
+     * Class representing one line in the file.
+     */
     private static class Line {
         final String revision;
         final String author;
         final boolean enabled;
+
         Line(String rev, String aut, boolean ena) {
             revision = (rev == null) ? "" : rev;
             author = (aut == null) ? "" : aut;
@@ -202,7 +206,7 @@ public class Annotation {
             sw.append(line.author);
             sw.append(": \n");
         }
-        
+
         try {
             writeTooltipMap(sw);
         } catch (IOException e) {

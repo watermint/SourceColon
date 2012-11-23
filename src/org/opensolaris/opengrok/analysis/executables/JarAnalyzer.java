@@ -32,6 +32,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -66,7 +67,7 @@ public class JarAnalyzer extends FileAnalyzer {
             FileAnalyzerFactory fac = AnalyzerGuru.find(ename);
             if (fac instanceof JavaClassAnalyzerFactory) {
                 JavaClassAnalyzer jca =
-                    (JavaClassAnalyzer) fac.getAnalyzer();
+                        (JavaClassAnalyzer) fac.getAnalyzer();
                 jca.analyze(doc, new BufferedInputStream(zis));
                 xref = jca.getXref();
             }
@@ -83,6 +84,7 @@ public class JarAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {

@@ -55,7 +55,7 @@ public class TclAnalyzer extends PlainAnalyzer {
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if("refs".equals(fieldName)) {
+        if ("refs".equals(fieldName)) {
             cref.reInit(super.content, super.len);
             return cref;
         }
@@ -64,6 +64,7 @@ public class TclAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {
@@ -75,9 +76,10 @@ public class TclAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
-     * @param defs definitions for the file (could be null)
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {

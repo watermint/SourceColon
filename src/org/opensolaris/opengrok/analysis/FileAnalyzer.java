@@ -34,6 +34,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.logging.Level;
 import java.util.zip.GZIPOutputStream;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
@@ -44,16 +45,16 @@ import org.opensolaris.opengrok.util.IOUtils;
 
 /**
  * Base class for all different File Analyzers
- *
+ * <p/>
  * An Analyzer for a filetype provides
- *<ol>
+ * <ol>
  * <li>the file extentions and magic numbers it analyzes</li>
  * <li>a lucene document listing the fields it can support</li>
  * <li>TokenStreams for each of the field it said requires tokenizing in 2</li>
  * <li>cross reference in HTML format</li>
  * <li>The type of file data, plain text etc</li>
- *</ol>
- *
+ * </ol>
+ * <p/>
  * Created on September 21, 2005
  *
  * @author Chandan
@@ -67,24 +68,35 @@ public class FileAnalyzer extends Analyzer {
      * What kind of file is this?
      */
     public static enum Genre {
-        /** xrefed - line numbered context */
+        /**
+         * xrefed - line numbered context
+         */
         PLAIN("p"),
-        /** xrefed - summarizer context */
+        /**
+         * xrefed - summarizer context
+         */
         XREFABLE("x"),
-        /** not xrefed - no context - used by diff/list */
+        /**
+         * not xrefed - no context - used by diff/list
+         */
         IMAGE("i"),
-        /** not xrefed - no context */
+        /**
+         * not xrefed - no context
+         */
         DATA("d"),
-        /** not xrefed - summarizer context from original file */
-        HTML("h")
-        ;
+        /**
+         * not xrefed - summarizer context from original file
+         */
+        HTML("h");
         private String typeName;
+
         private Genre(String typename) {
             this.typeName = typename;
         }
 
         /**
          * Get the type name value used to tag lucence documents.
+         *
          * @return a none-null string.
          */
         public String typeName() {
@@ -93,6 +105,7 @@ public class FileAnalyzer extends Analyzer {
 
         /**
          * Get the Genre for the given type name.
+         *
          * @param typeName name to check
          * @return {@code null} if it doesn't match any genre, the genre otherwise.
          * @see #typeName()
@@ -109,6 +122,7 @@ public class FileAnalyzer extends Analyzer {
             return null;
         }
     }
+
     protected Ctags ctags;
 
     public void setCtags(Ctags ctags) {
@@ -121,6 +135,7 @@ public class FileAnalyzer extends Analyzer {
 
     /**
      * Get the factory which created this analyzer.
+     *
      * @return the {@code FileAnalyzerFactory} which created this analyzer
      */
     public final FileAnalyzerFactory getFactory() {
@@ -130,9 +145,12 @@ public class FileAnalyzer extends Analyzer {
     public Genre getGenre() {
         return factory.getGenre();
     }
+
     private final HistoryAnalyzer hista;
 
-    /** Creates a new instance of FileAnalyzer */
+    /**
+     * Creates a new instance of FileAnalyzer
+     */
     public FileAnalyzer(FileAnalyzerFactory factory) {
         this.factory = factory;
         hista = new HistoryAnalyzer();
@@ -155,6 +173,7 @@ public class FileAnalyzer extends Analyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out to writer HTML cross-reference
      * @throws java.io.IOException if an error occurs
      */

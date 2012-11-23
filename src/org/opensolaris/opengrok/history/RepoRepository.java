@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.opensolaris.opengrok.util.Executor;
 
 /**
@@ -38,10 +39,14 @@ public class RepoRepository extends Repository {
     // TODO: cache all of the GitRepositories within the class
 
     private static final long serialVersionUID = 1L;
-    /** The property name used to obtain the client command for this repository.*/
+    /**
+     * The property name used to obtain the client command for this repository.
+     */
     public static final String CMD_PROPERTY_KEY =
-        "org.opensolaris.opengrok.history.repo";
-    /** The command to use to access the repository if none was given explicitly */
+            "org.opensolaris.opengrok.history.repo";
+    /**
+     * The command to use to access the repository if none was given explicitly
+     */
     public static final String CMD_FALLBACK = "repo";
 
     public RepoRepository() {

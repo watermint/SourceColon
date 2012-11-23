@@ -31,7 +31,9 @@ import java.util.List;
  * Class representing the history of a file.
  */
 public class History {
-    /** Entries in the log. The first entry is the most recent one. */
+    /**
+     * Entries in the log. The first entry is the most recent one.
+     */
     private List<HistoryEntry> entries;
 
     public History() {
@@ -65,7 +67,7 @@ public class History {
      * Check if at least one history entry has a file list.
      *
      * @return {@code true} if at least one of the entries has a non-empty
-     * file list, {@code false} otherwise
+     *         file list, {@code false} otherwise
      */
     public boolean hasFileList() {
         for (HistoryEntry entry : entries) {

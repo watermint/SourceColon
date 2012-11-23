@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
@@ -107,6 +108,7 @@ public class IndexDatabase {
 
     /**
      * Create a new instance of an Index Database for a given project
+     *
      * @param project the project to create the database for
      * @throws java.io.IOException if an errror occurs while creating directories
      */
@@ -119,6 +121,7 @@ public class IndexDatabase {
     /**
      * Update the index database for all of the projects. Print progress to
      * standard out.
+     *
      * @param executor An executor to run the job
      * @throws IOException if an error occurs
      */
@@ -128,6 +131,7 @@ public class IndexDatabase {
 
     /**
      * Update the index database for all of the projects
+     *
      * @param executor An executor to run the job
      * @param listener where to signal the changes to the database
      * @throws IOException if an error occurs
@@ -157,7 +161,7 @@ public class IndexDatabase {
                     try {
                         db.update();
                     } catch (Throwable e) {
-                        log.log(Level.SEVERE,"Problem updating lucene index database: ",e);
+                        log.log(Level.SEVERE, "Problem updating lucene index database: ", e);
                     }
                 }
             });
@@ -166,6 +170,7 @@ public class IndexDatabase {
 
     /**
      * Update the index database for a number of sub-directories
+     *
      * @param executor An executor to run the job
      * @param listener where to signal the changes to the database
      * @param paths
@@ -249,10 +254,10 @@ public class IndexDatabase {
             }
 
             if (!env.isUsingLuceneLocking()) {
-                 lockfact = NoLockFactory.getNoLockFactory();
+                lockfact = NoLockFactory.getNoLockFactory();
             }
-            indexDirectory = FSDirectory.open(indexDir,lockfact);
-            spellDirectory = FSDirectory.open(spellDir,lockfact);
+            indexDirectory = FSDirectory.open(indexDir, lockfact);
+            spellDirectory = FSDirectory.open(spellDir, lockfact);
             ignoredNames = env.getIgnoredNames();
             includedNames = env.getIncludedNames();
             analyzerGuru = new AnalyzerGuru();
@@ -292,7 +297,8 @@ public class IndexDatabase {
 
     /**
      * Update the content of this index database
-     * @throws IOException if an error occurs
+     *
+     * @throws IOException      if an error occurs
      * @throws HistoryException if an error occurs when accessing the history
      */
     public void update() throws IOException, HistoryException {
@@ -315,7 +321,7 @@ public class IndexDatabase {
 
         try {
             //TODO we might need to add writer.commit after certain phases of index generation, right now it will only happen in the end
-            writer = new IndexWriter(indexDirectory, AnalyzerGuru.getAnalyzer(),IndexWriter.MaxFieldLength.UNLIMITED);
+            writer = new IndexWriter(indexDirectory, AnalyzerGuru.getAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
             writer.setMaxFieldLength(RuntimeEnvironment.getInstance().getIndexWordLimit());
 
             if (directories.isEmpty()) {
@@ -337,18 +343,18 @@ public class IndexDatabase {
                 HistoryGuru.getInstance().ensureHistoryCacheExists(sourceRoot);
 
                 String startuid = Util.path2uid(dir, "");
-                IndexReader reader = IndexReader.open(indexDirectory,false); // open existing index
+                IndexReader reader = IndexReader.open(indexDirectory, false); // open existing index
                 try {
                     uidIter = reader.terms(new Term("u", startuid)); // init uid iterator
 
                     //TODO below should be optional, since it traverses the tree once more to get total count! :(
                     int file_cnt = 0;
                     if (RuntimeEnvironment.getInstance().isPrintProgress()) {
-                     log.log(Level.INFO, "Counting files in {0} ...", dir);
-                     file_cnt = indexDown(sourceRoot, dir, true, 0, 0);
-                     if (log.isLoggable(Level.INFO)) {
-                      log.log(Level.INFO, "Need to process: {0} files for {1}", new Object[]{file_cnt,dir});
-                     }
+                        log.log(Level.INFO, "Counting files in {0} ...", dir);
+                        file_cnt = indexDown(sourceRoot, dir, true, 0, 0);
+                        if (log.isLoggable(Level.INFO)) {
+                            log.log(Level.INFO, "Need to process: {0} files for {1}", new Object[]{file_cnt, dir});
+                        }
                     }
 
                     indexDown(sourceRoot, dir, false, 0, file_cnt);
@@ -392,11 +398,11 @@ public class IndexDatabase {
             File timestamp = new File(env.getDataRootFile(), "timestamp");
             if (timestamp.exists()) {
                 if (!timestamp.setLastModified(System.currentTimeMillis())) {
-                   log.log(Level.WARNING, "Failed to set last modified time on ''{0}'', used for timestamping the index database.", timestamp.getAbsolutePath());
+                    log.log(Level.WARNING, "Failed to set last modified time on ''{0}'', used for timestamping the index database.", timestamp.getAbsolutePath());
                 }
             } else {
                 if (!timestamp.createNewFile()) {
-                   log.log(Level.WARNING, "Failed to create file ''{0}'', used for timestamping the index database.", timestamp.getAbsolutePath());
+                    log.log(Level.WARNING, "Failed to create file ''{0}'', used for timestamping the index database.", timestamp.getAbsolutePath());
                 }
             }
         }
@@ -404,6 +410,7 @@ public class IndexDatabase {
 
     /**
      * Optimize all index databases
+     *
      * @param executor An executor to run the job
      * @throws IOException if an error occurs
      */
@@ -428,7 +435,7 @@ public class IndexDatabase {
                         try {
                             db.update();
                         } catch (Throwable e) {
-                            log.log(Level.SEVERE,"Problem updating lucene index database: ",e);
+                            log.log(Level.SEVERE, "Problem updating lucene index database: ", e);
                         }
                     }
                 });
@@ -443,14 +450,14 @@ public class IndexDatabase {
         synchronized (lock) {
             if (running) {
                 log.warning("Optimize terminated... Someone else is updating / optimizing it!");
-                return ;
+                return;
             }
             running = true;
         }
         IndexWriter wrt = null;
         try {
             log.info("Optimizing the index ... ");
-            wrt = new IndexWriter(indexDirectory, null, false,IndexWriter.MaxFieldLength.UNLIMITED);
+            wrt = new IndexWriter(indexDirectory, null, false, IndexWriter.MaxFieldLength.UNLIMITED);
             wrt.optimize();
             log.info("done");
             synchronized (lock) {
@@ -484,7 +491,7 @@ public class IndexDatabase {
 
         try {
             log.info("Generating spelling suggestion index ... ");
-            indexReader = IndexReader.open(indexDirectory,false);
+            indexReader = IndexReader.open(indexDirectory, false);
             checker = new SpellChecker(spellDirectory);
             //TODO below seems only to index "defs" , possible bug ?
             checker.indexDictionary(new LuceneDictionary(indexReader, "defs"));
@@ -516,20 +523,22 @@ public class IndexDatabase {
             try {
                 if (!dirty && !dirtyFile.createNewFile()) {
                     if (!dirtyFile.exists()) {
-                       log.log(Level.FINE,
-                               "Failed to create \"dirty-file\": {0}",
-                               dirtyFile.getAbsolutePath());
+                        log.log(Level.FINE,
+                                "Failed to create \"dirty-file\": {0}",
+                                dirtyFile.getAbsolutePath());
                     }
                     dirty = true;
                 }
             } catch (IOException e) {
-                log.log(Level.FINE,"When creating dirty file: ",e);
+                log.log(Level.FINE, "When creating dirty file: ", e);
             }
         }
     }
+
     /**
      * Remove a stale file (uidIter.term().text()) from the index database
      * (and the xref file)
+     *
      * @throws java.io.IOException if an error occurs
      */
     private void removeFile() throws IOException {
@@ -564,6 +573,7 @@ public class IndexDatabase {
 
     /**
      * Add a file to the Lucene index (and generate a xref file)
+     *
      * @param file The file to add
      * @param path The path to the file (from source root)
      * @throws java.io.IOException if an error occurs
@@ -585,7 +595,7 @@ public class IndexDatabase {
             } catch (Exception e) {
                 log.log(Level.INFO,
                         "Skipped file ''{0}'' because the analyzer didn''t " +
-                        "understand it.",
+                                "understand it.",
                         path);
                 log.log(Level.FINE, "Exception from analyzer:", e);
                 return;
@@ -615,15 +625,16 @@ public class IndexDatabase {
 
     /**
      * Check if I should accept this file into the index database
+     *
      * @param file the file to check
      * @return true if the file should be included, false otherwise
      */
     private boolean accept(File file) {
 
         if (!includedNames.isEmpty() &&
-           // the filter should not affect directory names
-            (!(file.isDirectory() || includedNames.match(file))) ) {
-                return false;
+                // the filter should not affect directory names
+                (!(file.isDirectory() || includedNames.match(file)))) {
+            return false;
         }
         if (ignoredNames.ignore(file)) {
             return false;
@@ -645,11 +656,11 @@ public class IndexDatabase {
             //below will only let go files and directories, anything else is considered special and is not added
             if (!file.isFile() && !file.isDirectory()) {
                 log.log(Level.WARNING, "Warning: ignored special file {0}", absolutePath);
-                    return false;
+                return false;
             }
         } catch (IOException exp) {
             log.log(Level.WARNING, "Warning: Failed to resolve name: {0}", absolutePath);
-            log.log(Level.FINE,"Stack Trace: ",exp);
+            log.log(Level.FINE, "Stack Trace: ", exp);
         }
 
         if (file.isDirectory()) {
@@ -696,7 +707,8 @@ public class IndexDatabase {
 
     /**
      * Check if I should accept the path containing a symlink
-     * @param absolutePath the path with a symlink to check
+     *
+     * @param absolutePath  the path with a symlink to check
      * @param canonicalPath the canonical path to the file
      * @return true if the file should be accepted, false otherwise
      */
@@ -710,7 +722,7 @@ public class IndexDatabase {
             if (absolutePath.startsWith(allowedSymlink)) {
                 String allowedTarget = new File(allowedSymlink).getCanonicalPath();
                 if (canonicalPath.startsWith(allowedTarget) &&
-                    absolutePath.substring(allowedSymlink.length()).equals(canonicalPath.substring(allowedTarget.length()))) {
+                        absolutePath.substring(allowedSymlink.length()).equals(canonicalPath.substring(allowedTarget.length()))) {
                     return true;
                 }
             }
@@ -750,15 +762,15 @@ public class IndexDatabase {
 
     /**
      * Generate indexes recursively
-     * @param dir the root indexDirectory to generate indexes for
-     * @param path the path
-     * @param count_only if true will just traverse the source root and count files
-     * @param cur_count current count during the traversal of the tree
-     * @param est_total estimate total files to process
      *
+     * @param dir        the root indexDirectory to generate indexes for
+     * @param path       the path
+     * @param count_only if true will just traverse the source root and count files
+     * @param cur_count  current count during the traversal of the tree
+     * @param est_total  estimate total files to process
      */
     private int indexDown(File dir, String parent, boolean count_only, int cur_count, int est_total) throws IOException {
-        int lcur_count=cur_count;
+        int lcur_count = cur_count;
         if (isInterrupted()) {
             return lcur_count;
         }
@@ -774,10 +786,10 @@ public class IndexDatabase {
         }
         Arrays.sort(files, new Comparator<File>() {
             @Override
-                public int compare(File p1, File p2) {
-                    return p1.getName().compareTo(p2.getName());
-                }
-            });
+            public int compare(File p1, File p2) {
+                return p1.getName().compareTo(p2.getName());
+            }
+        });
 
         for (File file : files) {
             if (accept(dir, file)) {
@@ -791,9 +803,8 @@ public class IndexDatabase {
                         continue;
                     }
 
-                    if (RuntimeEnvironment.getInstance().isPrintProgress() && est_total > 0 && log.isLoggable(Level.INFO) )
-                    {
-                        log.log(Level.INFO, "Progress: {0} ({1}%)", new Object[]{lcur_count, (lcur_count * 100.0f / est_total) });
+                    if (RuntimeEnvironment.getInstance().isPrintProgress() && est_total > 0 && log.isLoggable(Level.INFO)) {
+                        log.log(Level.INFO, "Progress: {0} ({1}%)", new Object[]{lcur_count, (lcur_count * 100.0f / est_total)});
                     }
 
                     if (uidIter != null) {
@@ -862,6 +873,7 @@ public class IndexDatabase {
 
     /**
      * List all files in all of the index databases
+     *
      * @throws IOException if an error occurs
      */
     public static void listAllFiles() throws IOException {
@@ -870,6 +882,7 @@ public class IndexDatabase {
 
     /**
      * List all files in some of the index databases
+     *
      * @param subFiles Subdirectories for the various projects to list the files
      *                 for (or null or an empty list to dump all projects)
      * @throws IOException if an error occurs
@@ -909,7 +922,7 @@ public class IndexDatabase {
         TermEnum iter = null;
 
         try {
-            ireader = IndexReader.open(indexDirectory,false); // open existing index
+            ireader = IndexReader.open(indexDirectory, false); // open existing index
             iter = ireader.terms(new Term("u", "")); // init uid iterator
             while (iter.term() != null) {
                 log.fine(Util.uid2url(iter.term().text()));
@@ -970,7 +983,7 @@ public class IndexDatabase {
         TermEnum iter = null;
 
         try {
-            ireader = IndexReader.open(indexDirectory,false);
+            ireader = IndexReader.open(indexDirectory, false);
             iter = ireader.terms(new Term("defs", ""));
             while (iter.term() != null) {
                 if (iter.term().field().startsWith("f")) {
@@ -1003,6 +1016,7 @@ public class IndexDatabase {
 
     /**
      * Get an indexReader for the Index database where a given file
+     *
      * @param path the file to get the database for
      * @return The index database where the file should be located or null if
      *         it cannot be located.
@@ -1021,13 +1035,13 @@ public class IndexDatabase {
             indexDir = new File(indexDir, p.getPath());
         }
         try {
-            FSDirectory fdir=FSDirectory.open(indexDir,NoLockFactory.getNoLockFactory());
+            FSDirectory fdir = FSDirectory.open(indexDir, NoLockFactory.getNoLockFactory());
             if (indexDir.exists() && IndexReader.indexExists(fdir)) {
-                ret = IndexReader.open(fdir,false);
+                ret = IndexReader.open(fdir, false);
             }
         } catch (Exception ex) {
             log.log(Level.SEVERE, "Failed to open index: {0}", indexDir.getAbsolutePath());
-            log.log(Level.FINE,"Stack Trace: ",ex);
+            log.log(Level.FINE, "Stack Trace: ", ex);
         }
         return ret;
     }
@@ -1037,11 +1051,11 @@ public class IndexDatabase {
      *
      * @param file the file whose definitions to find
      * @return definitions for the file, or {@code null} if they could not
-     * be found
-     * @throws IOException if an error happens when accessing the index
-     * @throws ParseException if an error happens when building the Lucene query
+     *         be found
+     * @throws IOException            if an error happens when accessing the index
+     * @throws ParseException         if an error happens when building the Lucene query
      * @throws ClassNotFoundException if the class for the stored definitions
-     * instance cannot be found
+     *                                instance cannot be found
      */
     public static Definitions getDefinitions(File file)
             throws IOException, ParseException, ClassNotFoundException {

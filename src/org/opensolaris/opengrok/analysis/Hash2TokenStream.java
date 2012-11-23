@@ -24,17 +24,18 @@ package org.opensolaris.opengrok.analysis;
 
 import java.util.Iterator;
 import java.util.Set;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 
 public final class Hash2TokenStream extends TokenStream {
-    int i=0;
+    int i = 0;
     String term;
     String terms[];
     Iterator<String> keys;
     private final TermAttribute termAtt = addAttribute(TermAttribute.class);
 
-    public Hash2TokenStream(Set<String> symbols){
+    public Hash2TokenStream(Set<String> symbols) {
         keys = symbols.iterator();
     }
 

@@ -33,6 +33,7 @@ import java.util.Set;
 @SuppressWarnings("PMD.AvoidThrowingRawExceptionTypes")
 public final class Consts {
     private static final Set<String> reservedKeywords;
+
     static {
         HashSet<String> kwds = new HashSet<String>();
         try {
@@ -49,15 +50,14 @@ public final class Consts {
     }
 
     private static void populateKeywordSet(Set<String> set, String file)
-            throws IOException
-    {
-        String line,lline;
+            throws IOException {
+        String line, lline;
         BufferedReader reader =
                 new BufferedReader(new InputStreamReader(
-                    Consts.class.getResourceAsStream(file), "US-ASCII"));
+                        Consts.class.getResourceAsStream(file), "US-ASCII"));
         try {
             while ((line = reader.readLine()) != null) {
-                line=line.trim();
+                line = line.trim();
                 lline = line.toLowerCase(Locale.US);
                 if (line.charAt(0) != '#') {
                     set.add(line);

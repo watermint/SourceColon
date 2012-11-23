@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis.fortran;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -35,9 +36,9 @@ import org.opensolaris.opengrok.history.Annotation;
 public class FortranAnalyzerFactory extends FileAnalyzerFactory {
 
     private static final String[] SUFFIXES = {
-        "F",
-        "F90",
-        "INC",};
+            "F",
+            "F90",
+            "INC",};
 
     public FortranAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);

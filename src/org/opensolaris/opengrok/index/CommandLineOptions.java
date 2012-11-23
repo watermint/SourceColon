@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import org.opensolaris.opengrok.util.IOUtils;
 
 public class CommandLineOptions {
@@ -67,6 +68,7 @@ public class CommandLineOptions {
             return sb.toString();
         }
     }
+
     private final List<Option> options;
 
     public CommandLineOptions() {
@@ -157,6 +159,7 @@ public class CommandLineOptions {
 
         return wrt.toString();
     }
+
     /**
      * Not intended for normal use, but for the JUnit test suite to validate
      * that all options contains a description :-)

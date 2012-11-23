@@ -71,12 +71,11 @@ public final class OpenGrokLogger {
     }
 
     /**
-     *
      * @param level new level for console
      */
     public static void setOGConsoleLogLevel(Level level) {
         for (Enumeration<String> e = LogManager.getLogManager().getLoggerNames();
-                e.hasMoreElements();) {
+             e.hasMoreElements(); ) {
             String loggerName = e.nextElement();
             Logger l = Logger.getLogger(loggerName);
             Handler[] h = l.getHandlers();
@@ -154,7 +153,7 @@ public final class OpenGrokLogger {
             if (!jlp.canWrite() && !Level.OFF.equals(filelevel)) {
                 throw new IOException("logpath not writeable " + jlp.getAbsolutePath());
             }
-       }
+        }
 
         clearForeignHandlers();
         StringBuffer logfile;
@@ -192,7 +191,7 @@ public final class OpenGrokLogger {
 
     private static void clearForeignHandlers() {
         for (Enumeration<String> e = LogManager.getLogManager().getLoggerNames();
-                e.hasMoreElements();) {
+             e.hasMoreElements(); ) {
             String loggerName = e.nextElement();
             Logger l = Logger.getLogger(loggerName);
             Handler[] h = l.getHandlers();

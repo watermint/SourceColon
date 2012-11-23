@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.analysis.sql;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.plain.PlainAnalyzer;
@@ -34,7 +35,7 @@ import org.opensolaris.opengrok.history.Annotation;
 
 public class SQLAnalyzer extends PlainAnalyzer {
 
-    private final SQLXref xref = new SQLXref((Reader)null);
+    private final SQLXref xref = new SQLXref((Reader) null);
 
     public SQLAnalyzer(FileAnalyzerFactory factory) {
         super(factory);
@@ -42,6 +43,7 @@ public class SQLAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {
@@ -55,9 +57,9 @@ public class SQLAnalyzer extends PlainAnalyzer {
      * Write a cross referenced HTML file. Reads the source from
      * an input stream.
      *
-     * @param in input source
-     * @param out output xref writer
-     * @param defs definitions for the file (could be null)
+     * @param in         input source
+     * @param out        output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {

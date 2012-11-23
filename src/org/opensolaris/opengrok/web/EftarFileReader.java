@@ -30,6 +30,7 @@ import java.io.RandomAccessFile;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.opensolaris.opengrok.util.IOUtils;
 
 
@@ -137,6 +138,7 @@ public class EftarFileReader {
     public EftarFileReader(String file) throws FileNotFoundException {
         this(new File(file));
     }
+
     public EftarFileReader(File file) throws FileNotFoundException {
         f = new RandomAccessFile(file, "r");
         isOpen = true;
@@ -209,6 +211,7 @@ public class EftarFileReader {
 
     /**
      * Check, whether this instance has been already closed.
+     *
      * @return {@code true} if closed.
      */
     public boolean isClosed() {

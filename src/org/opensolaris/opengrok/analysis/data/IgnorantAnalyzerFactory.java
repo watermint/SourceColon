@@ -33,13 +33,13 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
  */
 public class IgnorantAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "BDF", "XPM", "PS", "AFM", "PDF"
+            "BDF", "XPM", "PS", "AFM", "PDF"
     };
 
     private static final String[] MAGICS = {
-        "%!PS-",                // post script files
-        "# PaCkAg",
-        "%PDF",
+            "%!PS-",                // post script files
+            "# PaCkAg",
+            "%PDF",
     };
 
     public IgnorantAnalyzerFactory() {

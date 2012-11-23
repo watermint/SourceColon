@@ -29,6 +29,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -46,6 +47,7 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
  */
 public class GZIPAnalyzer extends FileAnalyzer {
     private Genre g;
+
     @Override
     public Genre getGenre() {
         if (g != null) {
@@ -83,7 +85,7 @@ public class GZIPAnalyzer extends FileAnalyzer {
                     doc.removeField("t");
                     if (g == Genre.XREFABLE) {
                         doc.add(new Field("t", g.typeName(), Field.Store.YES,
-                            Field.Index.NOT_ANALYZED));
+                                Field.Index.NOT_ANALYZED));
                     }
                 }
                 return;
@@ -101,6 +103,7 @@ public class GZIPAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to store HTML cross-reference
      */
     @Override

@@ -27,10 +27,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
-  * Holds static hash set containing Lisp keywords
-  */
+ * Holds static hash set containing Lisp keywords
+ */
 public class Consts {
     public static final Set<String> kwd = new HashSet<String>();
+
     static {
         kwd.add("and");
         kwd.add("assert");

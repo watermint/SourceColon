@@ -29,11 +29,11 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class GZIPAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "GZ"
+            "GZ"
     };
 
     private static final String[] MAGICS = {
-        "\037\213"
+            "\037\213"
     };
 
     public GZIPAnalyzerFactory() {

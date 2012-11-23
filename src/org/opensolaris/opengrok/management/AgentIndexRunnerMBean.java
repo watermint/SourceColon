@@ -35,30 +35,35 @@ public interface AgentIndexRunnerMBean {
     /**
      * Last index time in System.currentmillis
      * of successful index update
+     *
      * @return long when last time the indexing finished
      */
     long lastIndexTimeFinished();
 
     /**
      * Last index time in System.currentmillis
+     *
      * @return long when last time indexing started
      */
     long lastIndexTimeStarted();
 
     /**
      * Last index time usage for successful indexing (no exceptions)
+     *
      * @return long how long the last index lasted
      */
     long lastIndexTimeUsed();
 
     /**
      * Start indexing outside the timer
+     *
      * @param waitForFinished wait for it to finish or just return when started
      */
     void index(boolean waitForFinished);
 
     /**
      * Get Exception from last run
+     *
      * @return Exception if any or null if no Exceptions.
      */
     Exception getExceptions();

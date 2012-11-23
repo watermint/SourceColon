@@ -39,6 +39,7 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 import javax.management.ObjectName;
+
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.index.IndexChangedListener;
@@ -46,6 +47,7 @@ import org.opensolaris.opengrok.index.Indexer;
 
 /**
  * AgentIndexRunner.
+ *
  * @author Jan S Berg
  */
 public final class AgentIndexRunner implements AgentIndexRunnerMBean, NotificationListener,
@@ -80,6 +82,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
 
     /**
      * Static factory method to get an instance of AgentIndexRunner.
+     *
      * @param enabledParam if true, the initial instance should be running or not
      */
     @SuppressWarnings("PMD.AvoidSynchronizedAtMethodLevel")
@@ -199,8 +202,9 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
     /**
      * The index method starts a thread that will
      * start indexing part of the opengrok agent.
+     *
      * @param waitForFinished if false the command returns immediately, if true
-     * it will return when the indexing is done.
+     *                        it will return when the indexing is done.
      */
     @Override
     public void index(boolean waitForFinished) {
@@ -338,10 +342,10 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
             while (it.hasNext()) {
                 NotificationHolder mnf = it.next();
                 if (mnf.getNL().equals(notiflistener)
-                       && ((mnf.getFilter() == null) || mnf.getFilter().equals(filt))
-                       && ((mnf.getFilter() == null) || mnf.getObj().equals(obj))) {
-                            it.remove();
-                            removed = true;
+                        && ((mnf.getFilter() == null) || mnf.getFilter().equals(filt))
+                        && ((mnf.getFilter() == null) || mnf.getObj().equals(obj))) {
+                    it.remove();
+                    removed = true;
                 }
             }
         }
@@ -352,6 +356,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
 
     /**
      * Method that the subclass can override, but doesn't have to
+     *
      * @return MBeanNotificationInfo array of notification (and types) this class can emitt.
      */
     @Override

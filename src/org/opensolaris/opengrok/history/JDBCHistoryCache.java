@@ -44,6 +44,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.jdbc.ConnectionManager;
@@ -54,13 +55,17 @@ import org.opensolaris.opengrok.util.IOUtils;
 
 class JDBCHistoryCache implements HistoryCache {
 
-    /** The schema in which the tables live. */
+    /**
+     * The schema in which the tables live.
+     */
     private static final String SCHEMA = "OPENGROK";
 
-    /** The names of all the tables created by this class. */
+    /**
+     * The names of all the tables created by this class.
+     */
     private static final String[] TABLES = {
-        "REPOSITORIES", "FILES", "AUTHORS", "CHANGESETS", "FILECHANGES",
-        "DIRECTORIES", "DIRCHANGES"
+            "REPOSITORIES", "FILES", "AUTHORS", "CHANGESETS", "FILECHANGES",
+            "DIRECTORIES", "DIRCHANGES"
     };
 
     /**
@@ -80,30 +85,44 @@ class JDBCHistoryCache implements HistoryCache {
     private final String jdbcDriverClass;
     private final String jdbcConnectionURL;
 
-    /** The id to be used for the next row inserted into FILES. */
+    /**
+     * The id to be used for the next row inserted into FILES.
+     */
     private final AtomicInteger nextFileId = new AtomicInteger();
 
-    /** The id to be used for the next row inserted into DIRECTORIES. */
+    /**
+     * The id to be used for the next row inserted into DIRECTORIES.
+     */
     private final AtomicInteger nextDirId = new AtomicInteger();
 
-    /** The id to be used for the next row inserted into CHANGESETS. */
+    /**
+     * The id to be used for the next row inserted into CHANGESETS.
+     */
     private final AtomicInteger nextChangesetId = new AtomicInteger();
 
-    /** The id to be used for the next row inserted into AUTHORS. */
+    /**
+     * The id to be used for the next row inserted into AUTHORS.
+     */
     private final AtomicInteger nextAuthorId = new AtomicInteger();
 
-    /** Info string to return from {@link #getInfo()}. */
+    /**
+     * Info string to return from {@link #getInfo()}.
+     */
     private String info;
 
-    /** SQL queries used by this class. */
+    /**
+     * SQL queries used by this class.
+     */
     private static final Properties QUERIES = new Properties();
+
     static {
         Class<?> klazz = JDBCHistoryCache.class;
         InputStream in = null;
         try {
             in = klazz.getResourceAsStream(klazz.getSimpleName() + "_queries.properties");
-            if ( in != null ) {
-            QUERIES.load(in); }
+            if (in != null) {
+                QUERIES.load(in);
+            }
         } catch (IOException ioe) {
             throw new ExceptionInInitializerError(ioe);
         } finally { //NOPMD
@@ -116,14 +135,14 @@ class JDBCHistoryCache implements HistoryCache {
      */
     JDBCHistoryCache() {
         this(RuntimeEnvironment.getInstance().getDatabaseDriver(),
-             RuntimeEnvironment.getInstance().getDatabaseUrl());
+                RuntimeEnvironment.getInstance().getDatabaseUrl());
     }
 
     /**
      * Create a new cache instance with the specified JDBC driver and URL.
      *
      * @param jdbcDriverClass JDBC driver class to access the database backend
-     * @param url the JDBC url to the database
+     * @param url             the JDBC url to the database
      */
     JDBCHistoryCache(String jdbcDriverClass, String url) {
         this.jdbcDriverClass = jdbcDriverClass;
@@ -146,7 +165,7 @@ class JDBCHistoryCache implements HistoryCache {
      * exceeded the limit defined by {@link #MAX_RETRIES}, ignore it and let
      * the caller retry the operation. Otherwise, re-throw the exception.
      *
-     * @param sqle the exception to handle
+     * @param sqle      the exception to handle
      * @param attemptNo the attempt number, first attempt is 0
      * @throws SQLException if the operation shouldn't be retried
      */
@@ -176,6 +195,7 @@ class JDBCHistoryCache implements HistoryCache {
 
     /**
      * Get the SQL text for a name query.
+     *
      * @param key name of the query
      * @return SQL text for the query
      */
@@ -250,7 +270,7 @@ class JDBCHistoryCache implements HistoryCache {
             DatabaseMetaData dmd, String schema, String table)
             throws SQLException {
         ResultSet rs = dmd.getTables(
-                null, schema, table, new String[] {"TABLE"});
+                null, schema, table, new String[]{"TABLE"});
         try {
             return rs.next();
         } finally {
@@ -265,8 +285,8 @@ class JDBCHistoryCache implements HistoryCache {
      * the {@code AtomicInteger} will be left at its current value (presumably
      * 0).
      *
-     * @param s a statement object on which the max query is executed
-     * @param stmtKey name of the query to execute in order to get max id
+     * @param s         a statement object on which the max query is executed
+     * @param stmtKey   name of the query to execute in order to get max id
      * @param generator the {@code AtomicInteger} object to initialize
      */
     private static void initIdGenerator(
@@ -290,7 +310,7 @@ class JDBCHistoryCache implements HistoryCache {
         try {
             connectionManager =
                     new ConnectionManager(jdbcDriverClass, jdbcConnectionURL);
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 final ConnectionResource conn =
                         connectionManager.getConnectionResource();
                 try {
@@ -325,7 +345,7 @@ class JDBCHistoryCache implements HistoryCache {
             throws HistoryException {
         assert file.isDirectory();
         try {
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 final ConnectionResource conn =
                         connectionManager.getConnectionResource();
                 try {
@@ -369,7 +389,8 @@ class JDBCHistoryCache implements HistoryCache {
 
     /**
      * Get the path of a file relative to the repository root.
-     * @param file the file to get the path for
+     *
+     * @param file       the file to get the path for
      * @param repository the repository
      * @return relative path for {@code file} with unix file separators
      */
@@ -382,6 +403,7 @@ class JDBCHistoryCache implements HistoryCache {
 
     /**
      * Get the path of a file relative to the source root.
+     *
      * @param file the file to get the path for
      * @return relative path for {@code file} with unix file separators
      */
@@ -394,8 +416,9 @@ class JDBCHistoryCache implements HistoryCache {
 
     /**
      * Get the path of a file relative to the specified root directory.
+     *
      * @param filePath the canonical path of the file to get the relative
-     * path for
+     *                 path for
      * @param rootPath the canonical path of the root directory
      * @return relative path with unix file separators
      */
@@ -446,7 +469,7 @@ class JDBCHistoryCache implements HistoryCache {
      * be used).
      *
      * @param pathElts the elements of the path
-     * @param num the number of elements to use when reconstructing the path
+     * @param num      the number of elements to use when reconstructing the path
      * @return a path name
      */
     private static String unsplitPath(String[] pathElts, int num) {
@@ -460,11 +483,11 @@ class JDBCHistoryCache implements HistoryCache {
     /**
      * Truncate a string to the given length.
      *
-     * @param str the string to truncate
+     * @param str    the string to truncate
      * @param length the length of the string after truncation
      * @return the truncated string
      * @throws IllegalArgumentException if the string is not longer than the
-     * specified length
+     *                                  specified length
      */
     private static String truncate(String str, int length) {
         if (str.length() < length) {
@@ -472,8 +495,8 @@ class JDBCHistoryCache implements HistoryCache {
         }
         String suffix = " (...)";
         return length < suffix.length() ?
-            str.substring(0, length) :
-            (str.substring(0, length - suffix.length()) + suffix);
+                str.substring(0, length) :
+                (str.substring(0, length - suffix.length()) + suffix);
     }
 
     /**
@@ -493,7 +516,9 @@ class JDBCHistoryCache implements HistoryCache {
     private static final PreparedQuery GET_DIR_HISTORY =
             new PreparedQuery(getQuery("getDirHistory"));
 
-    /** Statement that retrieves all the files touched by a given changeset. */
+    /**
+     * Statement that retrieves all the files touched by a given changeset.
+     */
     private static final PreparedQuery GET_CS_FILES =
             new PreparedQuery(getQuery("getFilesInChangeset"));
 
@@ -501,7 +526,7 @@ class JDBCHistoryCache implements HistoryCache {
     public History get(File file, Repository repository, boolean withFiles)
             throws HistoryException {
         try {
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 try {
                     return getHistory(file, repository, withFiles);
                 } catch (SQLException sqle) {
@@ -550,7 +575,7 @@ class JDBCHistoryCache implements HistoryCache {
                     Timestamp time = rs.getTimestamp(3);
                     String message = rs.getString(4);
                     HistoryEntry entry = new HistoryEntry(
-                                revision, time, author, message, true);
+                            revision, time, author, message, true);
                     entries.add(entry);
 
                     // Fill the list of files touched by the changeset, if
@@ -614,7 +639,7 @@ class JDBCHistoryCache implements HistoryCache {
             new PreparedQuery(getQuery("addFilechange"));
 
     private void storeHistory(ConnectionResource conn, History history,
-            Repository repository) throws SQLException {
+                              Repository repository) throws SQLException {
 
         Integer reposId = null;
         Map<String, Integer> authors = null;
@@ -624,7 +649,7 @@ class JDBCHistoryCache implements HistoryCache {
         PreparedStatement addDirchange = null;
         PreparedStatement addFilechange = null;
 
-        for (int i = 0;; i++) {
+        for (int i = 0; ; i++) {
             try {
                 if (reposId == null) {
                     reposId = getRepositoryId(conn, repository);
@@ -676,11 +701,11 @@ class JDBCHistoryCache implements HistoryCache {
         // we walk the list backwards.
         List<HistoryEntry> entries = history.getHistoryEntries();
         for (ListIterator<HistoryEntry> it =
-                entries.listIterator(entries.size());
-                it.hasPrevious();) {
+                     entries.listIterator(entries.size());
+             it.hasPrevious(); ) {
             HistoryEntry entry = it.previous();
             retry:
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 try {
                     addChangeset.setString(2, entry.getRevision());
                     addChangeset.setInt(3, authors.get(entry.getAuthor()));
@@ -764,7 +789,7 @@ class JDBCHistoryCache implements HistoryCache {
      * some queries. This method should be called if the size of the tables
      * has changed significantly.
      * </p>
-     *
+     * <p/>
      * <p>
      * This is a workaround for the problems described in
      * <a href="https://issues.apache.org/jira/browse/DERBY-269">DERBY-269</a> and
@@ -772,12 +797,12 @@ class JDBCHistoryCache implements HistoryCache {
      * When automatic update of index cardinality statistics has been
      * implemented in Derby, the workaround may be removed.
      * </p>
-     *
+     * <p/>
      * <p>
      * Without this workaround, poor performance has been observed in
      * {@code get()} due to bad choices made by the optimizer.
      * </p>
-     *
+     * <p/>
      * <p>
      * Note that this method uses a system procedure introduced in Derby 10.5.
      * If this procedure does not exist, this method is a no-op.
@@ -794,7 +819,7 @@ class JDBCHistoryCache implements HistoryCache {
                 for (String table : TABLES) {
                     ps.setString(2, table);
                     retry:
-                    for (int i = 0;; i++) {
+                    for (int i = 0; ; i++) {
                         try {
                             ps.execute();
                             // Successfully executed statement. Break out of
@@ -834,9 +859,9 @@ class JDBCHistoryCache implements HistoryCache {
     /**
      * Check if a stored database procedure exists.
      *
-     * @param dmd the meta-data object used for checking
+     * @param dmd    the meta-data object used for checking
      * @param schema the procedure's schema
-     * @param proc the name of the procedure
+     * @param proc   the name of the procedure
      * @return {@code true} if the procedure exists, {@code false} otherwise
      * @throws SQLException if an error happens when reading the meta-data
      */
@@ -856,7 +881,7 @@ class JDBCHistoryCache implements HistoryCache {
      * Get the id of a repository in the database. If the repository is not
      * stored in the database, add it and return its id.
      *
-     * @param conn the connection to the database
+     * @param conn       the connection to the database
      * @param repository the repository whose id to get
      * @return the id of the repository
      */
@@ -892,7 +917,7 @@ class JDBCHistoryCache implements HistoryCache {
      * Get a map from author names to their ids in the database. The authors
      * that are not in the database are added to it.
      *
-     * @param conn the connection to the database
+     * @param conn    the connection to the database
      * @param history the history to get the author names from
      * @param reposId the id of the repository
      * @return a map from author names to author ids
@@ -946,10 +971,10 @@ class JDBCHistoryCache implements HistoryCache {
      * identifiers in the database. The directories and files that are not
      * already in the database, are added to it.
      *
-     * @param conn the connection to the database
+     * @param conn    the connection to the database
      * @param history the history to get the file and directory names from
      * @param reposId the id of the repository
-     * @param dirMap a map which will be filled with directory names and ids
+     * @param dirMap  a map which will be filled with directory names and ids
      * @param fileMap a map which will be filled with file names and ids
      */
     private void getFilesAndDirectories(
@@ -1000,10 +1025,10 @@ class JDBCHistoryCache implements HistoryCache {
      * Populate a map with all path/id combinations found in the FILES or
      * DIRECTORIES tables associated with a specified repository id.
      *
-     * @param ps the statement used to get path names and ids from the correct
-     * table. It should take one parameter: the repository id.
+     * @param ps      the statement used to get path names and ids from the correct
+     *                table. It should take one parameter: the repository id.
      * @param reposId the id of the repository to scan
-     * @param map the map into which to insert the path/id combinations
+     * @param map     the map into which to insert the path/id combinations
      */
     private void populateFileOrDirMap(
             PreparedStatement ps, int reposId, Map<String, Integer> map)
@@ -1024,14 +1049,14 @@ class JDBCHistoryCache implements HistoryCache {
      * they haven't already been added, and also put their paths and ids into
      * a map.
      *
-     * @param ps statement that inserts a directory into the DIRECTORY table.
-     * Takes three parameters: (1) the id of the repository, (2) the path of
-     * the directory, and (3) the id to use for the directory.
-     * @param reposId id of the repository to which the file belongs
+     * @param ps       statement that inserts a directory into the DIRECTORY table.
+     *                 Takes three parameters: (1) the id of the repository, (2) the path of
+     *                 the directory, and (3) the id to use for the directory.
+     * @param reposId  id of the repository to which the file belongs
      * @param fullPath the file whose parents to add
-     * @param map a map from directory path to id for the directories already
-     * in the database. When a new directory is added, it's also added to this
-     * map.
+     * @param map      a map from directory path to id for the directories already
+     *                 in the database. When a new directory is added, it's also added to this
+     *                 map.
      * @return the id of the first parent of {@code fullPath}
      */
     private int addAllDirs(
@@ -1064,9 +1089,10 @@ class JDBCHistoryCache implements HistoryCache {
      * Return the integer key generated by the previous execution of a
      * statement. The key should be a single INTEGER, and the statement
      * should insert exactly one row, so there should be only one key.
+     *
      * @param stmt a statement that has just inserted a row
      * @return the integer key for the newly inserted row, or {@code null}
-     * if there is no key
+     *         if there is no key
      */
     private Integer getGeneratedIntKey(Statement stmt) throws SQLException {
         ResultSet keys = stmt.getGeneratedKeys();
@@ -1084,7 +1110,7 @@ class JDBCHistoryCache implements HistoryCache {
     public String getLatestCachedRevision(Repository repository)
             throws HistoryException {
         try {
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 try {
                     return getLatestRevisionForRepository(repository);
                 } catch (SQLException sqle) {
@@ -1120,7 +1146,7 @@ class JDBCHistoryCache implements HistoryCache {
     @Override
     public void clear(Repository repository) throws HistoryException {
         try {
-            for (int i = 0;; i++) {
+            for (int i = 0; ; i++) {
                 try {
                     clearHistoryForRepository(repository);
                     return;

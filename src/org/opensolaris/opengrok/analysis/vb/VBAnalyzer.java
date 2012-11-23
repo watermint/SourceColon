@@ -37,7 +37,6 @@ import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
 
 /**
- *
  * @author Felix Annan
  */
 public class VBAnalyzer extends PlainAnalyzer {
@@ -46,7 +45,9 @@ public class VBAnalyzer extends PlainAnalyzer {
     private final VBXref xref;
     private final Reader dummy = new StringReader("");
 
-    /** Creates a new instance of VBAnalyzer */
+    /**
+     * Creates a new instance of VBAnalyzer
+     */
     protected VBAnalyzer(FileAnalyzerFactory factory) {
         super(factory);
         cref = new VBSymbolTokenizer(dummy);
@@ -70,6 +71,7 @@ public class VBAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     @Override
@@ -82,9 +84,10 @@ public class VBAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
-     * @param defs definitions for the file (could be null)
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {

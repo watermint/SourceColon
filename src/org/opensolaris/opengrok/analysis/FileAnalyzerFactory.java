@@ -29,6 +29,7 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
@@ -39,23 +40,37 @@ import org.opensolaris.opengrok.history.Annotation;
  */
 public class FileAnalyzerFactory {
 
-    /** Cached analyzer object for the current thread (analyzer objects can be
-     * expensive to allocate). */
+    /**
+     * Cached analyzer object for the current thread (analyzer objects can be
+     * expensive to allocate).
+     */
     private final ThreadLocal<FileAnalyzer> cachedAnalyzer;
-    /** List of file names on which this kind of analyzer should be used. */
+    /**
+     * List of file names on which this kind of analyzer should be used.
+     */
     private final List<String> names;
-    /** List of file extensions on which this kind of analyzer should be
-     * used. */
+    /**
+     * List of file extensions on which this kind of analyzer should be
+     * used.
+     */
     private final List<String> suffixes;
-    /** List of magic strings used to recognize files on which this kind of
-     * analyzer should be used. */
+    /**
+     * List of magic strings used to recognize files on which this kind of
+     * analyzer should be used.
+     */
     private final List<String> magics;
-    /** List of matchers which delegate files to different types of
-     * analyzers. */
+    /**
+     * List of matchers which delegate files to different types of
+     * analyzers.
+     */
     private final List<Matcher> matchers;
-    /** The content type for the files recognized by this kind of analyzer. */
+    /**
+     * The content type for the files recognized by this kind of analyzer.
+     */
     private final String contentType;
-    /** The genre for files recognized by this kind of analyzer. */
+    /**
+     * The genre for files recognized by this kind of analyzer.
+     */
     private final Genre genre;
 
     /**
@@ -69,13 +84,13 @@ public class FileAnalyzerFactory {
      * Construct an instance of {@code FileAnalyzerFactory}. This constructor
      * should be used by subclasses to override default values.
      *
-     * @param names list of file names to recognize (possibly {@code null})
-     * @param suffixes list of suffixes to recognize (possibly {@code null})
-     * @param magics list of magic strings to recognize (possibly {@code null})
-     * @param matcher a matcher for this analyzer (possibly {@code null})
+     * @param names       list of file names to recognize (possibly {@code null})
+     * @param suffixes    list of suffixes to recognize (possibly {@code null})
+     * @param magics      list of magic strings to recognize (possibly {@code null})
+     * @param matcher     a matcher for this analyzer (possibly {@code null})
      * @param contentType content type for this analyzer (possibly {@code null})
-     * @param genre the genre for this analyzer (if {@code null}, {@code
-     * Genre.DATA} is used)
+     * @param genre       the genre for this analyzer (if {@code null}, {@code
+     *                    Genre.DATA} is used)
      */
     protected FileAnalyzerFactory(
             String[] names, String[] suffixes, String[] magics,
@@ -119,6 +134,7 @@ public class FileAnalyzerFactory {
 
     /**
      * Get the list of file extensions recognized by this analyzer.
+     *
      * @return list of suffixes
      */
     final List<String> getSuffixes() {
@@ -129,7 +145,7 @@ public class FileAnalyzerFactory {
      * Get the list of magic strings recognized by this analyzer. If a file
      * starts with one of these strings, an analyzer created by this factory
      * should be used to analyze it.
-     *
+     * <p/>
      * <p><b>Note:</b> Currently this assumes that the file is encoded with
      * ISO-8859-1.
      *
@@ -151,6 +167,7 @@ public class FileAnalyzerFactory {
 
     /**
      * Get the content type (MIME type) for analyzers returned by this factory.
+     *
      * @return content type (could be {@code null} if it is unknown)
      */
     final String getContentType() {
@@ -159,6 +176,7 @@ public class FileAnalyzerFactory {
 
     /**
      * The genre this analyzer factory belongs to.
+     *
      * @return a genre
      */
     public final Genre getGenre() {
@@ -185,6 +203,7 @@ public class FileAnalyzerFactory {
 
     /**
      * Create a new analyzer.
+     *
      * @return an analyzer
      */
     protected FileAnalyzer newAnalyzer() {
@@ -202,9 +221,9 @@ public class FileAnalyzerFactory {
          * stream before returning.
          *
          * @param contents the first few bytes of a file
-         * @param in the input stream from which the full file can be read
+         * @param in       the input stream from which the full file can be read
          * @return an analyzer factory if the contents match, or {@code null}
-         * if they don't match any factory known by this matcher
+         *         if they don't match any factory known by this matcher
          */
         FileAnalyzerFactory isMagic(byte[] contents, InputStream in)
                 throws IOException;
@@ -212,11 +231,12 @@ public class FileAnalyzerFactory {
 
     /**
      * Write a cross referenced HTML file. Reads the source from {@code in}.
-     * @param in input source
-     * @param out output xref writer
-     * @param defs definitions for the file (could be {@code null})
+     *
+     * @param in         input source
+     * @param out        output xref writer
+     * @param defs       definitions for the file (could be {@code null})
      * @param annotation annotation for the file (could be {@code null})
-     * @param project project the file belongs to (could be {@code null})
+     * @param project    project the file belongs to (could be {@code null})
      * @throws java.io.IOException if an error occurs
      */
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)

@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.Getopt;
 
@@ -46,8 +47,8 @@ final class Search {
 
     private SearchEngine engine;
     final List<Hit> results = new ArrayList<Hit>();
-    int totalResults =0;
-    int nhits=0;
+    int totalResults = 0;
+    int nhits = 0;
 
     @SuppressWarnings({"PMD.SwitchStmtsShouldHaveDefault"})
     protected boolean parseCmdLine(String[] argv) {
@@ -122,36 +123,37 @@ final class Search {
             System.err.println("Your search \"" + engine.getQuery() + "\" did not match any files.");
         } else {
             String root = RuntimeEnvironment.getInstance().getSourceRootPath();
-            System.out.println("Printing results 1 - " + nhits +" of " + totalResults + " total matching documents collected.");
+            System.out.println("Printing results 1 - " + nhits + " of " + totalResults + " total matching documents collected.");
             for (Hit hit : results) {
                 File file = new File(root, hit.getPath());
-                System.out.println(file.getAbsolutePath() + ":"+hit.getLineno()+" [" + hit.getLine() + "]");
+                System.out.println(file.getAbsolutePath() + ":" + hit.getLineno() + " [" + hit.getLine() + "]");
             }
 
-            if (nhits<totalResults) {
-                System.out.println("Printed results 1 - " + nhits +" of " + totalResults + " total matching documents collected.");
+            if (nhits < totalResults) {
+                System.out.println("Printed results 1 - " + nhits + " of " + totalResults + " total matching documents collected.");
                 System.out.println("Collect the rest (y/n) ?");
-                BufferedReader in=null;
+                BufferedReader in = null;
                 try {
                     in = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
                     String line = in.readLine();
                     if (null == line || line.length() == 0 || line.charAt(0) == 'n') {
-                       return;
+                        return;
                     }
                 } catch (Exception ex) {
                     System.err.println(ex.getMessage());
                 }
-              engine.results(nhits, totalResults, results);
-              for (Hit hit : results) {
-                File file = new File(root, hit.getPath());
-                System.out.println(file.getAbsolutePath() + ":"+hit.getLineno()+" [" + hit.getLine() + "]");
-              }
+                engine.results(nhits, totalResults, results);
+                for (Hit hit : results) {
+                    File file = new File(root, hit.getPath());
+                    System.out.println(file.getAbsolutePath() + ":" + hit.getLineno() + " [" + hit.getLine() + "]");
+                }
             }
         }
     }
 
     /**
      * usage Search index "query" prunepath
+     *
      * @param argv command line arguments
      */
     public static void main(String[] argv) {

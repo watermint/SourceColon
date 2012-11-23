@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis.sh;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -34,31 +35,31 @@ import org.opensolaris.opengrok.history.Annotation;
 
 public class ShAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] NAMES = {
-        "MAKEFILE", "GNUMAKEFILE"
+            "MAKEFILE", "GNUMAKEFILE"
     };
 
     private static final String[] SUFFIXES = {
-        "SH",
-        "KSH",
-        "KSHLIB",   // RFE #17849
-        "CSH",
-        "BASH",
-        "RUBY",
-        "RB",
-        "P5",
-        "AWK",
-        "GMK",
-        "CONF",
-        "COM",
-        "SPEC",
-        "FLG",
-        "XCL",                  // message
+            "SH",
+            "KSH",
+            "KSHLIB",   // RFE #17849
+            "CSH",
+            "BASH",
+            "RUBY",
+            "RB",
+            "P5",
+            "AWK",
+            "GMK",
+            "CONF",
+            "COM",
+            "SPEC",
+            "FLG",
+            "XCL",                  // message
     };
 
     private static final String[] MAGICS = {
-        "#!",
-        "##",
-        "#\n#",
+            "#!",
+            "##",
+            "#\n#",
     };
 
     public ShAnalyzerFactory() {
@@ -72,7 +73,7 @@ public class ShAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException {
+            throws IOException {
         ShAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

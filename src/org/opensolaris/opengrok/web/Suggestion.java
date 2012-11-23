@@ -24,22 +24,32 @@ package org.opensolaris.opengrok.web;
 
 /**
  * A simple container for search suggestions.
- * @author  Jens Elkner
+ *
+ * @author Jens Elkner
  * @version $Revision$
  */
 public class Suggestion {
 
-    /** index name */
+    /**
+     * index name
+     */
     public String name;
-    /** freetext search suggestions */
+    /**
+     * freetext search suggestions
+     */
     public String[] freetext;
-    /** references search suggestions */
+    /**
+     * references search suggestions
+     */
     public String[] refs;
-    /** definitions search suggestions */
+    /**
+     * definitions search suggestions
+     */
     public String[] defs;
 
     /**
      * Create a new suggestion.
+     *
      * @param name index name.
      */
     public Suggestion(String name) {

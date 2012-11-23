@@ -41,12 +41,12 @@ public abstract class TextAnalyzer extends FileAnalyzer {
         int br = in.read(head, 0, 3);
 
         if (br >= 2 &&
-                (head[0] == (byte)0xFE && head[1] == (byte)0xFF) ||
-                (head[0] == (byte)0xFF && head[1] == (byte)0xFE)) {
+                (head[0] == (byte) 0xFE && head[1] == (byte) 0xFF) ||
+                (head[0] == (byte) 0xFF && head[1] == (byte) 0xFE)) {
             charset = "UTF-16";
             in.reset();
-        } else if (br >= 3 && head[0] == (byte)0xEF && head[1] == (byte)0xBB &&
-                head[2] == (byte)0xBF) {
+        } else if (br >= 3 && head[0] == (byte) 0xEF && head[1] == (byte) 0xBB &&
+                head[2] == (byte) 0xBF) {
             // InputStreamReader does not properly discard BOM on UTF8 streams,
             // so don't reset the stream.
             charset = "UTF-8";

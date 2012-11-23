@@ -48,12 +48,17 @@ public class Definitions implements Serializable {
             this.sym_tags = new HashMap<String, Set<Tag>>();
         }
     }
+
     // line -> tag_map
     private final Map<Integer, LineTagMap> line_maps;
 
-    /** Map from symbol to the line numbers on which the symbol is defined. */
+    /**
+     * Map from symbol to the line numbers on which the symbol is defined.
+     */
     private final Map<String, Set<Integer>> symbols;
-    /** List of all the tags. */
+    /**
+     * List of all the tags.
+     */
     private final List<Tag> tags;
 
     public Definitions() {
@@ -64,6 +69,7 @@ public class Definitions implements Serializable {
 
     /**
      * Get all symbols used in definitions.
+     *
      * @return a set containing all the symbols
      */
     public Set<String> getSymbols() {
@@ -72,6 +78,7 @@ public class Definitions implements Serializable {
 
     /**
      * Check if there is a tag for a symbol.
+     *
      * @param symbol the symbol to check
      * @return {@code true} iff there is a tag for {@code symbol}
      */
@@ -81,9 +88,10 @@ public class Definitions implements Serializable {
 
     /**
      * Check whether the specified symbol is defined on the given line.
-     * @param symbol the symbol to look for
+     *
+     * @param symbol     the symbol to look for
      * @param lineNumber the line to check
-     * @param strs type of definition(to be passed back to caller)
+     * @param strs       type of definition(to be passed back to caller)
      * @return {@code true} iff {@code symbol} is defined on the specified line
      */
     public boolean hasDefinitionAt(String symbol, int lineNumber, String[] strs) {
@@ -112,6 +120,7 @@ public class Definitions implements Serializable {
     /**
      * Return the number of occurrences of definitions with the specified
      * symbol.
+     *
      * @param symbol the symbol to count the occurrences of
      * @return the number of times the specified symbol is defined
      */
@@ -122,6 +131,7 @@ public class Definitions implements Serializable {
 
     /**
      * Return the number of distinct symbols.
+     *
      * @return number of distinct symbols
      */
     public int numberOfSymbols() {
@@ -130,6 +140,7 @@ public class Definitions implements Serializable {
 
     /**
      * Get a list of all tags.
+     *
      * @return all tags
      */
     public List<Tag> getTags() {
@@ -142,13 +153,21 @@ public class Definitions implements Serializable {
     public static class Tag implements Serializable {
         private static final long serialVersionUID = 1217869075425651464L;
 
-        /** Line number of the tag. */
+        /**
+         * Line number of the tag.
+         */
         public final int line;
-        /** The symbol used in the definition. */
+        /**
+         * The symbol used in the definition.
+         */
         public final String symbol;
-        /** The type of the tag. */
+        /**
+         * The type of the tag.
+         */
         public final String type;
-        /** The full line on which the definition occurs. */
+        /**
+         * The full line on which the definition occurs.
+         */
         public final String text;
 
         protected Tag(int line, String symbol, String type, String text) {
@@ -195,6 +214,7 @@ public class Definitions implements Serializable {
 
     /**
      * Create a binary representation of this object.
+     *
      * @return a byte array representing this object
      * @throws IOException if an error happens when writing to the array
      */
@@ -206,13 +226,14 @@ public class Definitions implements Serializable {
 
     /**
      * Deserialize a binary representation of a {@code Definitions} object.
+     *
      * @param bytes a byte array containing the {@code Definitions} object
      * @return a {@code Definitions} object
-     * @throws IOException if an I/O error happens when reading the array
+     * @throws IOException            if an I/O error happens when reading the array
      * @throws ClassNotFoundException if the class definition for an object
-     * stored in the byte array cannot be found
-     * @throws ClassCastException if the array contains an object of another
-     * type than {@code Definitions}
+     *                                stored in the byte array cannot be found
+     * @throws ClassCastException     if the array contains an object of another
+     *                                type than {@code Definitions}
      */
     public static Definitions deserialize(byte[] bytes)
             throws IOException, ClassNotFoundException {

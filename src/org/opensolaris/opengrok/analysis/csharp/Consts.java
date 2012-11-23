@@ -23,11 +23,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
-  *  C# keywords
+ * C# keywords
+ *
  * @author Christoph Hofmann
-  */
-public class Consts{
-    public static final Set<String> kwd = new HashSet<String>() ;
+ */
+public class Consts {
+    public static final Set<String> kwd = new HashSet<String>();
+
     static {
         // C# Keywords
         kwd.add("abstract");

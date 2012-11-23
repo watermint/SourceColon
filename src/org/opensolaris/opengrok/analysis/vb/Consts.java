@@ -55,7 +55,7 @@ public final class Consts {
         String line, lline;
         BufferedReader reader =
                 new BufferedReader(new InputStreamReader(
-                Consts.class.getResourceAsStream(file), "US-ASCII"));
+                        Consts.class.getResourceAsStream(file), "US-ASCII"));
         try {
             while ((line = reader.readLine()) != null) {
                 line = line.trim();

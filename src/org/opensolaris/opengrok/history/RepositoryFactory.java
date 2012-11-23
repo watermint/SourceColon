@@ -39,7 +39,7 @@ import org.opensolaris.opengrok.OpenGrokLogger;
 public final class RepositoryFactory {
 
     private static Repository repositories[] = {
-        new GitRepository()
+            new GitRepository()
     };
 
     private RepositoryFactory() {
@@ -48,12 +48,13 @@ public final class RepositoryFactory {
 
     /**
      * Get a list of all available repository handlers.
+     *
      * @return a list which contains none-{@code null} values, only.
      */
     public static List<Class<? extends Repository>> getRepositoryClasses() {
         ArrayList<Class<? extends Repository>> list =
-            new ArrayList<Class<? extends Repository>>(repositories.length);
-        for (int i=repositories.length-1; i >= 0; i--) {
+                new ArrayList<Class<? extends Repository>>(repositories.length);
+        for (int i = repositories.length - 1; i >= 0; i--) {
             list.add(repositories[i].getClass());
         }
         return list;
@@ -80,9 +81,9 @@ public final class RepositoryFactory {
                     OpenGrokLogger.getLogger().log(
                             Level.WARNING,
                             "{0} not working (missing binaries?): {1}",
-                            new Object[] {
-                                res.getClass().getSimpleName(),
-                                file.getPath()
+                            new Object[]{
+                                    res.getClass().getSimpleName(),
+                                    file.getPath()
                             });
                 }
 

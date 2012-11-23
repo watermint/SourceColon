@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
+
 import org.apache.lucene.search.Query;
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.history.History;
@@ -60,30 +61,29 @@ public class HistoryContext {
     public HistoryContext(Query query) {
         QueryMatchers qm = new QueryMatchers();
         m = qm.getMatchers(query, tokenFields);
-        if(m != null) {
-            tokens = new HistoryLineTokenizer((Reader)null);
+        if (m != null) {
+            tokens = new HistoryLineTokenizer((Reader) null);
         }
     }
+
     public boolean isEmpty() {
         return m == null;
     }
 
     public boolean getContext(String filename, String path, List<Hit> hits)
-            throws HistoryException
-    {
+            throws HistoryException {
         if (m == null) {
             return false;
         }
         File f = new File(filename);
         return getHistoryContext(HistoryGuru.getInstance().getHistory(f),
-                                 path, null, hits,null);
+                path, null, hits, null);
 
     }
 
     public boolean getContext(
             String parent, String basename, String path, Writer out, String context)
-            throws HistoryException
-    {
+            throws HistoryException {
         return getContext(new File(parent, basename), path, out, context);
     }
 
@@ -91,31 +91,31 @@ public class HistoryContext {
      * Obtain the history for the source file <var>src</var> and write out
      * matching History log entries.
      *
-     * @param src       the source file represented by <var>path</var>
-     *                  (SOURCE_ROOT + path)
-     * @param path      the path of the file (rooted at SOURCE_ROOT)
-     * @param out       write destination
-     * @param context   the servlet context path of the application (the path
-     *  prefix for URLs)
+     * @param src     the source file represented by <var>path</var>
+     *                (SOURCE_ROOT + path)
+     * @param path    the path of the file (rooted at SOURCE_ROOT)
+     * @param out     write destination
+     * @param context the servlet context path of the application (the path
+     *                prefix for URLs)
      * @return {@code true} if at least one line has been written out.
      * @throws HistoryException
      */
     public boolean getContext(File src, String path, Writer out, String context)
-        throws HistoryException
-    {
+            throws HistoryException {
         if (m == null) {
             return false;
         }
         History hist = HistoryGuru.getInstance().getHistory(src);
-        return getHistoryContext(hist, path, out, null,context);
+        return getHistoryContext(hist, path, out, null, context);
     }
 
     /**
      * Writes matching History log entries from 'in' to 'out' or to 'hits'
-     * @param in the history to fetch entries from
-     * @param out to write matched context
-     * @param path path to the file
-     * @param hits list of hits
+     *
+     * @param in       the history to fetch entries from
+     * @param out      to write matched context
+     * @param path     path to the file
+     * @param hits     list of hits
      * @param wcontext web context - beginning of url
      */
     private boolean getHistoryContext(
@@ -134,25 +134,35 @@ public class HistoryContext {
         int matchedLines = 0;
         Iterator<HistoryEntry> it = in.getHistoryEntries().iterator();
         try {
-            HistoryEntry he=null;
-            HistoryEntry nhe=null;
-            String nrev=null;
-            while(( it.hasNext()||(nhe!=null) ) && matchedLines < 10) {
-                if (nhe==null) { he=it.next(); }
-                else { he=nhe; } //nhe is the lookahead revision
+            HistoryEntry he = null;
+            HistoryEntry nhe = null;
+            String nrev = null;
+            while ((it.hasNext() || (nhe != null)) && matchedLines < 10) {
+                if (nhe == null) {
+                    he = it.next();
+                } else {
+                    he = nhe;
+                } //nhe is the lookahead revision
                 String line = he.getLine();
                 String rev = he.getRevision();
-                if (it.hasNext()) { nhe=it.next();  } //this prefetch mechanism is here because of the diff link generation
-                                    // we currently generate the diff to previous revision
-                else {nhe=null;}
-                if (nhe==null) { nrev=null; }
-                else { nrev=nhe.getRevision(); }
+                if (it.hasNext()) {
+                    nhe = it.next();
+                } //this prefetch mechanism is here because of the diff link generation
+                // we currently generate the diff to previous revision
+                else {
+                    nhe = null;
+                }
+                if (nhe == null) {
+                    nrev = null;
+                } else {
+                    nrev = nhe.getRevision();
+                }
                 tokens.reInit(line);
                 String token;
                 int matchState;
                 int start = -1;
                 while ((token = tokens.next()) != null) {
-                    for (int i = 0; i< m.length; i++) {
+                    for (int i = 0; i < m.length; i++) {
                         matchState = m[i].match(token);
                         if (matchState == LineMatcher.MATCHED) {
                             if (start < 0) {
@@ -161,10 +171,10 @@ public class HistoryContext {
                             int end = tokens.getMatchEnd();
                             if (out == null) {
                                 StringBuilder sb = new StringBuilder();
-                                writeMatch(sb, line, start, end, true,path,wcontext,nrev,rev);
+                                writeMatch(sb, line, start, end, true, path, wcontext, nrev, rev);
                                 hits.add(new Hit(path, sb.toString(), "", false, false));
                             } else {
-                                writeMatch(out, line, start, end, false,path,wcontext,nrev,rev);
+                                writeMatch(out, line, start, end, false, path, wcontext, nrev, rev);
                             }
                             matchedLines++;
                             break;
@@ -187,16 +197,16 @@ public class HistoryContext {
     /**
      * Write a match to a stream.
      *
-     * @param out the receiving stream
-     * @param line the matching line
-     * @param start start position of the match
-     * @param end position of the first char after the match
-     * @param flatten should multi-line log entries be flattened to a single
-     * @param path path to the file
+     * @param out      the receiving stream
+     * @param line     the matching line
+     * @param start    start position of the match
+     * @param end      position of the first char after the match
+     * @param flatten  should multi-line log entries be flattened to a single
+     * @param path     path to the file
      * @param wcontext web context (begin of url)
-     * @param nrev old revision
-     * @param rev current revision
-     * line? If {@code true}, replace newline with space.
+     * @param nrev     old revision
+     * @param rev      current revision
+     *                 line? If {@code true}, replace newline with space.
      */
     private void writeMatch(Appendable out, String line,
                             int start, int end, boolean flatten, String path, String wcontext, String nrev, String rev)
@@ -205,9 +215,9 @@ public class HistoryContext {
         String match = line.substring(start, end);
         String suffix = line.substring(end);
 
-        if (wcontext!=null && nrev!=null && !wcontext.isEmpty() ) {
+        if (wcontext != null && nrev != null && !wcontext.isEmpty()) {
             //does below need to be encoded? see bug 16985
-            out.append("<a href="+wcontext+Constants.diffP+path+"?r2="+path+"@"+rev+"&r1="+path+"@"+nrev+" title=\"diff to previous version\">diff</a> ");
+            out.append("<a href=" + wcontext + Constants.diffP + path + "?r2=" + path + "@" + rev + "&r1=" + path + "@" + nrev + " title=\"diff to previous version\">diff</a> ");
         }
 
         printHTML(out, prefix, flatten);
@@ -220,10 +230,10 @@ public class HistoryContext {
     /**
      * Output a string as HTML.
      *
-     * @param out where to write the HTML
-     * @param str the string to print
+     * @param out     where to write the HTML
+     * @param str     the string to print
      * @param flatten should multi-line strings be flattened to a single
-     * line? If {@code true}, replace newline with space.
+     *                line? If {@code true}, replace newline with space.
      */
     private void printHTML(Appendable out, String str, boolean flatten)
             throws IOException {

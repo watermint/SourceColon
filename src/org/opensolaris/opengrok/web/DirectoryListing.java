@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.index.IgnoredNames;
 
@@ -57,10 +58,9 @@ public class DirectoryListing {
      * Write part of HTML code which contains file/directory last
      * modification time and size.
      *
-     * @param out write destination
-     * @param child the file or directory to use for writing the data
+     * @param out           write destination
+     * @param child         the file or directory to use for writing the data
      * @param dateFormatter the formatter to use for pretty printing dates
-     *
      * @throws NullPointerException if a parameter is {@code null}
      */
     private void PrintDateSize(Writer out, File child, Format dateFormatter)
@@ -75,7 +75,7 @@ public class DirectoryListing {
         }
         out.write("</td><td>");
         // if (isDir) {
-            out.write(Util.readableSize(child.length()));
+        out.write(Util.readableSize(child.length()));
         // }
         out.write("</td>");
     }
@@ -83,18 +83,17 @@ public class DirectoryListing {
     /**
      * Write a htmlized listing of the given directory to the given destination.
      *
-     * @param dir the directory to list
-     * @param out write destination
-     * @param path virtual path of the directory (usually the path name of
-     *  <var>dir</var> with the opengrok source directory stripped off).
+     * @param dir   the directory to list
+     * @param out   write destination
+     * @param path  virtual path of the directory (usually the path name of
+     *              <var>dir</var> with the opengrok source directory stripped off).
      * @param files basenames of potential children of the directory to list.
-     *  Gets filtered by {@link IgnoredNames}.
+     *              Gets filtered by {@link IgnoredNames}.
      * @return a possible empty list of README files included in the written
-     *  listing.
-     *
+     *         listing.
      * @throws java.io.IOException
      * @throws NullPointerException if a parameter except <var>files</var>
-     *  is {@code null}
+     *                              is {@code null}
      */
     public List<String> listTo(File dir, Writer out, String path, List<String> files) throws IOException {
         // TODO this belongs to a jsp, not here
@@ -133,8 +132,7 @@ public class DirectoryListing {
                 }
                 File child = new File(dir, file);
                 if (file.startsWith("README") || file.endsWith("README")
-                    || file.startsWith("readme"))
-                {
+                        || file.startsWith("readme")) {
                     readMes.add(file);
                 }
                 boolean isDir = child.isDirectory();

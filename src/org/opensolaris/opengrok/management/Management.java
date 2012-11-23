@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 import javax.management.MBeanRegistration;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+
 import org.opensolaris.opengrok.Info;
 import org.opensolaris.opengrok.OpenGrokLogger;
 
@@ -53,7 +54,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
     private Management(Properties ogaProperties) {
         startTime = System.currentTimeMillis();
         this.ogaProperties = ogaProperties;
-            updateProperties();
+        updateProperties();
     }
 
     private void updateProperties() {
@@ -70,6 +71,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
 
     /**
      * Static factory method to get an instance of Management.
+     *
      * @param ogaProperties The properties to use
      * @return A management instance to use
      */
@@ -91,6 +93,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
 
     /**
      * Get a selected property from  configuration.
+     *
      * @return String with property value
      */
     public String getProperty(String key) {
@@ -99,8 +102,9 @@ public final class Management implements ManagementMBean, MBeanRegistration {
 
     /**
      * Set a selected property in the  configuration.
+     *
      * @param key the String key for the property to be set.
-     * $param value the String value for the property to be set.
+     *            $param value the String value for the property to be set.
      */
     public void setProperty(String key, String value) {
         if (key == null) {
@@ -136,7 +140,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
      */
     public void stop() {
         log.warning("STOPPING AGENT!");
-    //WrapperManager.stop(0);
+        //WrapperManager.stop(0);
     }
 
     public String getSystemProperty(String key) {
@@ -165,6 +169,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
 
     /**
      * Get the time (in milliseconds since 1970) when the agent was started
+     *
      * @return long time when the agent was started, in milliseconds.
      */
     public long getStartTime() {
@@ -173,6 +178,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
 
     /**
      * Get a Date object with the time the agent was started.
+     *
      * @return Date with the starting date
      */
     public Date getStartDate() {
@@ -181,6 +187,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
 
     /**
      * Get the version tag for the agent
+     *
      * @return String the version tag for this agent
      */
     public String getVersion() {
@@ -249,6 +256,6 @@ public final class Management implements ManagementMBean, MBeanRegistration {
     }
 
     public void setConfigurationFile(String filename) {
-       configurationFile = filename;
+        configurationFile = filename;
     }
 }

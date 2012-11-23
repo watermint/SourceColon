@@ -25,7 +25,6 @@ package org.opensolaris.opengrok.search.context;
 
 /**
  * Matches a term against a set of tokens
- *
  */
 class PhraseMatcher extends LineMatcher {
     private final String[] phraseTerms;
@@ -33,15 +32,15 @@ class PhraseMatcher extends LineMatcher {
 
     PhraseMatcher(String[] phraseTerms, boolean caseInsensitive) {
         super(caseInsensitive);
-        this.phraseTerms  = phraseTerms.clone();
+        this.phraseTerms = phraseTerms.clone();
         cur = 0;
     }
 
     public int match(String token) {
         if (equal(token, phraseTerms[cur])) {
             //System.out.println(" PhraseMatcher matched " + token);
-            if ( cur < phraseTerms.length-1) {
-                cur ++;
+            if (cur < phraseTerms.length - 1) {
+                cur++;
                 return WAIT; //matching.
             }
             //System.out.println(" PhraseMatcher match complete with " + token);
@@ -50,7 +49,7 @@ class PhraseMatcher extends LineMatcher {
         } else if (cur > 0) {
             cur = 0;
             if (equal(token, phraseTerms[cur])) {
-                cur ++;
+                cur++;
                 return WAIT; //matching.
             }
         }

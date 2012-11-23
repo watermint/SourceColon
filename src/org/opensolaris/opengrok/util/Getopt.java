@@ -31,7 +31,6 @@ import java.util.List;
  * need ;-) Please note that I dislike the way GNU getopt allows mixing of
  * options and arguments, so this version will stop processing options as soon
  * as it encounters an argument.
- *
  */
 public class Getopt {
     private static class Option {
@@ -47,6 +46,7 @@ public class Getopt {
 
     /**
      * Creates a new instance of Getopt
+     *
      * @param argv argument vector
      * @param opts the list of allowed options
      */
@@ -60,6 +60,7 @@ public class Getopt {
 
     /**
      * Parse the command line options
+     *
      * @throws ParseException if an illegal argument is passed
      */
     public void parse() throws ParseException {
@@ -84,7 +85,7 @@ public class Getopt {
                     option.option = chars[jj];
                     options.add(option);
                     // does this option take an argument?
-                    if ((idx + 1) < opts.length() && (opts.charAt(idx + 1) ==':')) {
+                    if ((idx + 1) < opts.length() && (opts.charAt(idx + 1) == ':')) {
                         // next should be an argument
                         if ((jj + 1) < chars.length) {
                             // Rest of this is the argument
@@ -111,6 +112,7 @@ public class Getopt {
 
     /**
      * Get the next option in the options string.
+     *
      * @return the next valid option, or -1 if all options are processed
      */
     public int getOpt() {
@@ -133,6 +135,7 @@ public class Getopt {
 
     /**
      * Get the argument to the current option
+     *
      * @return the argument or null if none present (or allowed)
      */
     public String getOptarg() {
@@ -146,6 +149,7 @@ public class Getopt {
 
     /**
      * Get the index of the first argument
+     *
      * @return the index of the first argument in the original array
      */
     public int getOptind() {

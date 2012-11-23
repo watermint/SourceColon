@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
+
 import org.apache.lucene.search.Query;
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.analysis.Definitions;
@@ -60,6 +61,7 @@ public class Context {
      */
     private static final Map<String, Boolean> tokenFields =
             new HashMap<String, Boolean>();
+
     static {
         tokenFields.put("full", Boolean.TRUE);
         tokenFields.put("refs", Boolean.FALSE);
@@ -68,7 +70,8 @@ public class Context {
 
     /**
      * Constructs a context generator
-     * @param query the query to generate the result for
+     *
+     * @param query        the query to generate the result for
      * @param queryStrings map from field names to queries against the fields
      */
     public Context(Query query, Map<String, String> queryStrings) {
@@ -105,9 +108,9 @@ public class Context {
                 field = "q"; // bah - search query params should be consistent!
             }
             sb.append(field).append("=").append(Util.URIEncode(queryText))
-                .append('&');
+                    .append('&');
         }
-        sb.setLength(sb.length()-1);
+        sb.setLength(sb.length() - 1);
         queryAsURI = sb.toString();
     }
 
@@ -117,17 +120,17 @@ public class Context {
      * ???.
      * Closes the given <var>in</var> reader on return.
      *
-     * @param in File to be matched
-     * @param out to write the context
+     * @param in         File to be matched
+     * @param out        to write the context
      * @param morePrefix to link to more... page
-     * @param path path of the file
-     * @param tags format to highlight defs.
-     * @param limit should the number of matching lines be limited?
+     * @param path       path of the file
+     * @param tags       format to highlight defs.
+     * @param limit      should the number of matching lines be limited?
      * @return Did it get any matching context?
      */
     public boolean getContext(Reader in, Writer out, String urlPrefix,
-            String morePrefix, String path, Definitions tags,
-            boolean limit, List<Hit> hits) {
+                              String morePrefix, String path, Definitions tags,
+                              boolean limit, List<Hit> hits) {
         alt = !alt;
         if (m == null) {
             IOUtils.close(in);
@@ -150,15 +153,15 @@ public class Context {
                              * desc[3] is matching line;
                              */
                             String[] desc = {
-                                tag.symbol,
-                                Integer.toString(tag.line),
-                                tag.type,
-                                tag.text,};
+                                    tag.symbol,
+                                    Integer.toString(tag.line),
+                                    tag.type,
+                                    tag.text,};
                             if (in == null) {
                                 if (out == null) {
                                     Hit hit = new Hit(path,
                                             Util.htmlize(desc[3]).replace(
-                                            desc[0], "<b>" + desc[0] + "</b>"),
+                                                    desc[0], "<b>" + desc[0] + "</b>"),
                                             desc[1], false, alt);
                                     hits.add(hit);
                                     anything = true;
@@ -270,7 +273,7 @@ public class Context {
             OpenGrokLogger.getLogger().log(Level.WARNING, "Could not get context for " + path, e);
         } finally {
             IOUtils.close(in);
-            
+
             if (out != null) {
                 try {
                     out.flush();

@@ -34,10 +34,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class ConnectionManager {
 
-    /** The JDBC URL to use when creating new connections. */
+    /**
+     * The JDBC URL to use when creating new connections.
+     */
     private final String url;
 
-    /** A list of connections not currently in use. */
+    /**
+     * A list of connections not currently in use.
+     */
     private final ConcurrentLinkedQueue<ConnectionResource> connections =
             new ConcurrentLinkedQueue<ConnectionResource>();
 
@@ -45,7 +49,7 @@ public class ConnectionManager {
      * Create a new {@code ConnectionManager} instance.
      *
      * @param driverClass the name of the JDBC driver class
-     * @param url the JDBC connection URL to the database
+     * @param url         the JDBC connection URL to the database
      * @throws ClassNotFoundException if the JDBC driver class cannot be found
      */
     public ConnectionManager(String driverClass, String url)

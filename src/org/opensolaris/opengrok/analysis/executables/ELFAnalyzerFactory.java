@@ -30,7 +30,7 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class ELFAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] MAGICS = {
-        "\177ELF"
+            "\177ELF"
     };
 
     public ELFAnalyzerFactory() {

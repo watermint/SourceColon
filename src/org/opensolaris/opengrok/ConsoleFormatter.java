@@ -32,34 +32,35 @@ import java.util.logging.LogRecord;
  * Opengrok console formatter
  * Creates a logentry on the console using the following format
  * [#|HH:MM:ss.SSS | <logmessage> |#]
+ *
  * @author Jan S Berg
  */
 final public class ConsoleFormatter extends Formatter {
 
-   private final java.text.SimpleDateFormat formatter =
-      new java.text.SimpleDateFormat("HH:mm:ss.SSS");
-   private static final String lineSeparator = System.
-      getProperty("line.separator");
+    private final java.text.SimpleDateFormat formatter =
+            new java.text.SimpleDateFormat("HH:mm:ss.SSS");
+    private static final String lineSeparator = System.
+            getProperty("line.separator");
 
-   private String ts(Date date) {
-      return formatter.format(date);
-   }
+    private String ts(Date date) {
+        return formatter.format(date);
+    }
 
-   public String format(LogRecord record) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("[#|");
-      sb.append(ts(new Date(record.getMillis())));
-      sb.append(" | ");
-      sb.append(formatMessage(record));
-      Throwable thrown = record.getThrown();
-      if (null != thrown && record.getLevel().intValue() < Level.CONFIG.intValue()) {
-         sb.append(lineSeparator);
-         java.io.ByteArrayOutputStream ba=new java.io.ByteArrayOutputStream();
-         thrown.printStackTrace(new java.io.PrintStream(ba, true));
-         sb.append(ba.toString());
-      }
-      sb.append(" |#]");
-      sb.append(lineSeparator);
-      return sb.toString();
-   }
+    public String format(LogRecord record) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[#|");
+        sb.append(ts(new Date(record.getMillis())));
+        sb.append(" | ");
+        sb.append(formatMessage(record));
+        Throwable thrown = record.getThrown();
+        if (null != thrown && record.getLevel().intValue() < Level.CONFIG.intValue()) {
+            sb.append(lineSeparator);
+            java.io.ByteArrayOutputStream ba = new java.io.ByteArrayOutputStream();
+            thrown.printStackTrace(new java.io.PrintStream(ba, true));
+            sb.append(ba.toString());
+        }
+        sb.append(" |#]");
+        sb.append(lineSeparator);
+        return sb.toString();
+    }
 }

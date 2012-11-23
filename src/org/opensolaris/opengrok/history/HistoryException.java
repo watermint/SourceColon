@@ -53,7 +53,7 @@ public class HistoryException extends Exception {
      * Construct a {@code HistoryException} with the specified message
      * and cause.
      *
-     * @param msg the message string
+     * @param msg   the message string
      * @param cause the cause of the exception
      */
     public HistoryException(String msg, Throwable cause) {

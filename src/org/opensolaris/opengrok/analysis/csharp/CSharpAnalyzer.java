@@ -34,10 +34,9 @@ import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
 
 /**
- *
  * @author Christoph Hofmann
  */
-public class CSharpAnalyzer extends PlainAnalyzer  {
+public class CSharpAnalyzer extends PlainAnalyzer {
 
     CSharpSymbolTokenizer cref;
     CSharpXref xref;
@@ -56,7 +55,7 @@ public class CSharpAnalyzer extends PlainAnalyzer  {
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if("refs".equals(fieldName)) {
+        if ("refs".equals(fieldName)) {
             cref.reInit(super.content, super.len);
             return cref;
         }
@@ -65,6 +64,7 @@ public class CSharpAnalyzer extends PlainAnalyzer  {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {
@@ -76,8 +76,9 @@ public class CSharpAnalyzer extends PlainAnalyzer  {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {

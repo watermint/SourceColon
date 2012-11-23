@@ -31,6 +31,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.opensolaris.opengrok.OpenGrokLogger;
 
 /**
@@ -50,7 +51,9 @@ public class HistoryEntry {
     private SortedSet<String> files;
     private List<String> changeRequests;
 
-    /** Creates a new instance of HistoryEntry */
+    /**
+     * Creates a new instance of HistoryEntry
+     */
     public HistoryEntry() {
         message = new StringBuffer();
         files = new TreeSet<String>();
@@ -58,7 +61,7 @@ public class HistoryEntry {
     }
 
     public HistoryEntry(String revision, Date date, String author,
-            String message, boolean active) {
+                        String message, boolean active) {
         this.revision = revision;
         setDate(date);
         this.author = author;
@@ -95,7 +98,7 @@ public class HistoryEntry {
             log.log(Level.FINE, "HistoryEntry : files          {0} {1}", new Object[]{separator, file});
             separator = ">";
         }
-   }
+    }
 
     public String getAuthor() {
         return author;

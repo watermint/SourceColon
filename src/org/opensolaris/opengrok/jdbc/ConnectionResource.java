@@ -37,15 +37,20 @@ import java.util.Map;
  * This includes a cache of {@code PreparedStatement}s.
  */
 public class ConnectionResource {
-    /** The connection to the database. */
+    /**
+     * The connection to the database.
+     */
     private final Connection conn;
 
-    /** Statement cache. */
+    /**
+     * Statement cache.
+     */
     private final Map<StatementCreator, PreparedStatement> statements =
             new HashMap<StatementCreator, PreparedStatement>();
 
     /**
      * Create a new {@code ConnectionResource} instance.
+     *
      * @param manager the {@code ConnectionManager} that created this object
      * @throws SQLException if an error occurs when connecting to the database
      */
@@ -56,6 +61,7 @@ public class ConnectionResource {
 
     /**
      * Check if the connection is still valid.
+     *
      * @return {@code true} if the connection is valid, {@code false} if not
      * @throws SQLException if a database error occurs
      */
@@ -69,6 +75,7 @@ public class ConnectionResource {
 
     /**
      * Commit the transaction.
+     *
      * @throws SQLException if a database error occurs
      */
     public void commit() throws SQLException {
@@ -77,6 +84,7 @@ public class ConnectionResource {
 
     /**
      * Abort the transaction.
+     *
      * @throws SQLException if a database error occurs
      */
     public void rollback() throws SQLException {
@@ -93,7 +101,7 @@ public class ConnectionResource {
      * {@code PreparedStatement} will be returned.
      *
      * @param creator object that specifies how to create the statement if
-     * necessary
+     *                necessary
      * @return a {@code PreparedStatement} object
      * @throws SQLException if a database error occurs
      */
@@ -112,6 +120,7 @@ public class ConnectionResource {
 
     /**
      * Create a new {@code Statement} object.
+     *
      * @return a {@code Statement} object
      * @throws java.sql.SQLException
      */

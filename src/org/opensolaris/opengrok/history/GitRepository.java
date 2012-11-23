@@ -41,18 +41,23 @@ import org.opensolaris.opengrok.util.Executor;
 
 /**
  * Access to a Git repository.
- *
  */
 public class GitRepository extends Repository {
 
     private static final long serialVersionUID = 1L;
-    /** The property name used to obtain the client command for this repository. */
+    /**
+     * The property name used to obtain the client command for this repository.
+     */
     public static final String CMD_PROPERTY_KEY =
-        "org.opensolaris.opengrok.history.git";
-    /** The command to use to access the repository if none was given explicitly */
+            "org.opensolaris.opengrok.history.git";
+    /**
+     * The command to use to access the repository if none was given explicitly
+     */
     public static final String CMD_FALLBACK = "git";
 
-    /** git blame command */
+    /**
+     * git blame command
+     */
     private static final String BLAME = "blame";
 
     public GitRepository() {
@@ -100,7 +105,7 @@ public class GitRepository extends Repository {
         }
 
         return path;
-    }    
+    }
 
     /**
      * Get an executor to be used for retrieving the history log for the
@@ -110,8 +115,7 @@ public class GitRepository extends Repository {
      * @return An Executor ready to be started
      */
     Executor getHistoryLogExecutor(final File file, String sinceRevision)
-        throws IOException
-    {
+            throws IOException {
         String abs = file.getCanonicalPath();
         String filename = "";
         if (abs.length() > directoryName.length()) {
@@ -152,8 +156,7 @@ public class GitRepository extends Repository {
     }
 
     @Override
-    public InputStream getHistoryGet(String parent, String basename, String rev)
-    {
+    public InputStream getHistoryGet(String parent, String basename, String rev) {
         InputStream ret = null;
 
         File directory = new File(directoryName);
@@ -164,7 +167,7 @@ public class GitRepository extends Repository {
         Process process = null;
         try {
             String filename = (new File(parent, basename)).getCanonicalPath()
-                .substring(directoryName.length() + 1);
+                    .substring(directoryName.length() + 1);
             ensureCommand(CMD_PROPERTY_KEY, CMD_FALLBACK);
             String argv[] = {cmd, "show", rev + ":" + filename};
             process = Runtime.getRuntime().exec(argv, null, directory);
@@ -195,7 +198,7 @@ public class GitRepository extends Repository {
             ret = new ByteArrayInputStream(output.toByteArray());
         } catch (Exception exp) {
             OpenGrokLogger.getLogger().log(Level.SEVERE,
-                "Failed to get history: " + exp.getClass().toString(), exp);
+                    "Failed to get history: " + exp.getClass().toString(), exp);
         } finally {
             // Clean up zombie-processes...
             if (process != null) {
@@ -210,14 +213,17 @@ public class GitRepository extends Repository {
 
         return ret;
     }
-    /** Pattern used to extract author/revision from git blame. */
+
+    /**
+     * Pattern used to extract author/revision from git blame.
+     */
     private static final Pattern BLAME_PATTERN =
             Pattern.compile("^\\W*(\\w+).+?\\((\\D+).*$");
 
     /**
      * Annotate the specified file/revision.
      *
-     * @param file file to annotate
+     * @param file     file to annotate
      * @param revision revision to annotate
      * @return file annotation
      */
@@ -282,8 +288,8 @@ public class GitRepository extends Repository {
 
         if (status != 0) {
             OpenGrokLogger.getLogger().log(Level.WARNING,
-                "Failed to get annotations for: \"{0}\" Exit code: {1}",
-                new Object[]{file.getAbsolutePath(), String.valueOf(status)});
+                    "Failed to get annotations for: \"{0}\" Exit code: {1}",
+                    new Object[]{file.getAbsolutePath(), String.valueOf(status)});
         }
 
         return parseAnnotation(
@@ -291,8 +297,7 @@ public class GitRepository extends Repository {
     }
 
     protected Annotation parseAnnotation(Reader input, String fileName)
-        throws IOException
-    {
+            throws IOException {
         BufferedReader in = new BufferedReader(input);
         Annotation ret = new Annotation(fileName);
         String line = "";
@@ -307,8 +312,8 @@ public class GitRepository extends Repository {
                 ret.addLine(rev, author, true);
             } else {
                 OpenGrokLogger.getLogger().log(Level.SEVERE,
-                    "Error: did not find annotation in line {0}: [{1}] of {2}",
-                    new Object[]{String.valueOf(lineno), line, fileName});
+                        "Error: did not find annotation in line {0}: [{1}] of {2}",
+                        new Object[]{String.valueOf(lineno), line, fileName});
             }
         }
         return ret;

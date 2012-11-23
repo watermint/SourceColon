@@ -24,6 +24,7 @@
 package org.opensolaris.opengrok.analysis;
 
 import java.io.Reader;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.opensolaris.opengrok.analysis.plain.PlainFullTokenizer;
@@ -35,7 +36,7 @@ public class CompatibleAnalyser extends Analyzer {
 
     public CompatibleAnalyser() {
         historer = new HistoryAnalyzer();
-        pather  = new PathAnalyzer();
+        pather = new PathAnalyzer();
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {

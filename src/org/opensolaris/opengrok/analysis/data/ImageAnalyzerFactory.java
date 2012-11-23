@@ -33,7 +33,7 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
  */
 public class ImageAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "PNG", "GIF", "JPEG", "JPG", "TIFF", "BMP"
+            "PNG", "GIF", "JPEG", "JPG", "TIFF", "BMP"
     };
 
     public ImageAnalyzerFactory() {

@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.analysis;
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.Reader;
+
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
@@ -34,11 +35,12 @@ import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 /**
  * this class was created because of lucene 2.4.1 update which introduced char[] in Tokens instead of String
  * lucene 3.0.0 uses AttributeSource instead of Tokens to make things even easier :-D
- *
+ * <p/>
  * Generally this is a "template" for all new Tokenizers, so be carefull when changing it,
  * it will impact almost ALL symbol tokenizers in OpenGrok ...
- *
+ * <p/>
  * Created on August 24, 2009
+ *
  * @author Lubos Kosco
  */
 
@@ -46,14 +48,16 @@ public abstract class JFlexTokenizer extends Tokenizer {
 
     // default jflex scanner methods and variables
     abstract public boolean yylex() throws IOException;
+
     abstract public void yyreset(Reader reader);
+
     abstract public void yyclose() throws IOException;
 
     /**
      * Reinitialize the tokenizer with new contents.
      *
      * @param contents a char buffer with text to tokenize
-     * @param length the number of characters to use from the char buffer
+     * @param length   the number of characters to use from the char buffer
      */
     public final void reInit(char[] contents, int length) {
         yyreset(new CharArrayReader(contents, 0, length));
@@ -64,12 +68,13 @@ public abstract class JFlexTokenizer extends Tokenizer {
         yyclose();
     }
 
-    protected TermAttribute termAtt= addAttribute(TermAttribute.class);
-    protected OffsetAttribute offsetAtt= addAttribute(OffsetAttribute.class);
-    protected PositionIncrementAttribute posIncrAtt= addAttribute(PositionIncrementAttribute.class);
+    protected TermAttribute termAtt = addAttribute(TermAttribute.class);
+    protected OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
+    protected PositionIncrementAttribute posIncrAtt = addAttribute(PositionIncrementAttribute.class);
 
     /**
      * This will reinitalize internal AttributeImpls, or it returns false if end of input Reader ...
+     *
      * @return false if no more tokens, otherwise true
      * @throws java.io.IOException
      */

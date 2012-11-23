@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.Executor;
@@ -62,6 +63,7 @@ public abstract class Repository extends RepositoryInfo {
 
     /**
      * Get the history log for the specified file or directory.
+     *
      * @param file the file to get the history for
      * @return history log for file
      * @throws HistoryException on error accessing the history
@@ -72,7 +74,7 @@ public abstract class Repository extends RepositoryInfo {
      * <p>
      * Get the history after a specified revision.
      * </p>
-     *
+     * <p/>
      * <p>
      * The default implementation first fetches the full history and then
      * throws away the oldest revisions. This is not efficient, so subclasses
@@ -81,9 +83,9 @@ public abstract class Repository extends RepositoryInfo {
      * should be removed and made abstract.
      * </p>
      *
-     * @param file the file to get the history for
+     * @param file          the file to get the history for
      * @param sinceRevision the revision right before the first one to return,
-     * or {@code null} to return the full history
+     *                      or {@code null} to return the full history
      * @return partial history for file
      * @throws HistoryException on error accessing the history
      */
@@ -126,7 +128,7 @@ public abstract class Repository extends RepositoryInfo {
      * recent changeset first) and verify that it is the changeset we expected
      * to find there.
      *
-     * @param entries a list of {@code HistoryEntry} objects
+     * @param entries  a list of {@code HistoryEntry} objects
      * @param revision the revision we expect the oldest entry to have
      * @throws HistoryException if the oldest entry was not the one we expected
      */
@@ -143,16 +145,17 @@ public abstract class Repository extends RepositoryInfo {
         // and compare more fields, like author and date.
         if (entry == null || !revision.equals(entry.getRevision())) {
             throw new HistoryException("Cached revision '" + revision +
-                                       "' not found in the repository");
+                    "' not found in the repository");
         }
     }
 
     /**
      * Get an input stream that I may use to read a speciffic version of a
      * named file.
-     * @param parent the name of the directory containing the file
+     *
+     * @param parent   the name of the directory containing the file
      * @param basename the name of the file to get
-     * @param rev the revision to get
+     * @param rev      the revision to get
      * @return An input stream containing the correct revision.
      */
     abstract InputStream getHistoryGet(
@@ -168,9 +171,9 @@ public abstract class Repository extends RepositoryInfo {
     /**
      * Annotate the specified revision of a file.
      *
-     * @param file the file to annotate
+     * @param file     the file to annotate
      * @param revision revision of the file. Either {@code null} or a none-empty
-     *  string.
+     *                 string.
      * @return an <code>Annotation</code> object
      * @throws java.io.IOException if an error occurs
      */
@@ -182,11 +185,10 @@ public abstract class Repository extends RepositoryInfo {
      * repository. If {@code hasHistoryForDirectories()} returns {@code false},
      * this method is a no-op.
      *
-     * @param cache the cache instance in which to store the history log
+     * @param cache         the cache instance in which to store the history log
      * @param sinceRevision if non-null, incrementally update the cache with
-     * all revisions after the specified revision; otherwise, create the full
-     * history starting with the initial revision
-     *
+     *                      all revisions after the specified revision; otherwise, create the full
+     *                      history starting with the initial revision
      * @throws HistoryException on error
      */
     final void createCache(HistoryCache cache, String sinceRevision)
@@ -217,7 +219,7 @@ public abstract class Repository extends RepositoryInfo {
             // scratch instead.
             OpenGrokLogger.getLogger().log(Level.INFO,
                     "Failed to get partial history. Attempting to " +
-                    "recreate the history cache from scratch.", he);
+                            "recreate the history cache from scratch.", he);
             history = null;
         }
 
@@ -237,6 +239,7 @@ public abstract class Repository extends RepositoryInfo {
     /**
      * Update the content in this repository by pulling the changes from the
      * upstream repository..
+     *
      * @throws Exception if an error occurs.
      */
     abstract void update() throws IOException;
@@ -274,7 +277,7 @@ public abstract class Repository extends RepositoryInfo {
      * repository's <var>cmd</var> has already been set (i.e. has a
      * non-{@code null} value).
      *
-     * @param propertyKey property key to lookup the corresponding system property.
+     * @param propertyKey     property key to lookup the corresponding system property.
      * @param fallbackCommand the command to use, if lookup fails.
      * @return the command to use.
      * @see #cmd
@@ -284,11 +287,11 @@ public abstract class Repository extends RepositoryInfo {
             return cmd;
         }
         cmd = RuntimeEnvironment.getInstance()
-            .getRepoCmd(this.getClass().getCanonicalName());
+                .getRepoCmd(this.getClass().getCanonicalName());
         if (cmd == null) {
             cmd = System.getProperty(propertyKey, fallbackCommand);
             RuntimeEnvironment.getInstance()
-                .setRepoCmd(this.getClass().getCanonicalName(), cmd);
+                    .setRepoCmd(this.getClass().getCanonicalName(), cmd);
         }
         return cmd;
     }

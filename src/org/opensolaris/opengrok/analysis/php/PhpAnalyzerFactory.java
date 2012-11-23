@@ -22,6 +22,7 @@ package org.opensolaris.opengrok.analysis.php;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -32,16 +33,18 @@ import org.opensolaris.opengrok.history.Annotation;
 public class PhpAnalyzerFactory extends FileAnalyzerFactory {
 
     private static final String[] SUFFIXES = {
-        "PHP",
-        "PHP3",
-        "PHP4",
-        "PHPS",
-        "PHTML"
+            "PHP",
+            "PHP3",
+            "PHP4",
+            "PHP5",
+            "PHPS",
+            "PHTML"
     };
     private static final String[] MAGICS = {
-        "#!/usr/bin/env php",
-        "#!/usr/bin/php",
-        "#!/bin/php"
+            "#!/usr/bin/env php",
+            "#!/usr/bin/php",
+            "#!/bin/php",
+            "<?php"
     };
 
     public PhpAnalyzerFactory() {
@@ -55,7 +58,7 @@ public class PhpAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException {
+            throws IOException {
         PhpAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

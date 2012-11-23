@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 /**
  * A small utility class to provide common functionality related to
  * IO so that we don't need to duplicate the logic all over the place.
- * 
+ *
  * @author Trond Norbye <trond.norbye@gmail.com>
  */
 public final class IOUtils {

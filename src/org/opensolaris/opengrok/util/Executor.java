@@ -53,6 +53,7 @@ public class Executor {
 
     /**
      * Create a new instance of the Executor.
+     *
      * @param cmd An array containing the command to execute
      */
     public Executor(String[] cmd) {
@@ -61,6 +62,7 @@ public class Executor {
 
     /**
      * Create a new instance of the Executor.
+     *
      * @param cmdList A list containing the command to execute
      */
     public Executor(List<String> cmdList) {
@@ -69,7 +71,8 @@ public class Executor {
 
     /**
      * Create a new instance of the Executor
-     * @param cmdList A list containing the command to execute
+     *
+     * @param cmdList          A list containing the command to execute
      * @param workingDirectory The directory the process should have as the
      *                         working directory
      */
@@ -105,7 +108,7 @@ public class Executor {
      * Execute the command and collect the output
      *
      * @param reportExceptions Should exceptions be added to the log or not
-     * @param handler The handler to handle data from standard output
+     * @param handler          The handler to handle data from standard output
      * @return The exit code of the process
      */
     public int exec(final boolean reportExceptions, StreamHandler handler) {
@@ -121,9 +124,9 @@ public class Executor {
 
         OpenGrokLogger.getLogger().log(Level.FINE,
                 "Executing command {0} in directory {1}",
-                new Object[] {
-                    processBuilder.command(),
-                    processBuilder.directory(),
+                new Object[]{
+                        processBuilder.command(),
+                        processBuilder.directory(),
                 });
 
         Process process = null;
@@ -187,12 +190,12 @@ public class Executor {
                 msg.append(cwd.toString());
             }
             if (stderr != null && stderr.length > 0) {
-                    msg.append(": ");
-                    if (stderr.length > MAX_MSG_SZ) {
-                            msg.append(new String(stderr, 0, MAX_MSG_SZ)).append("...");
-                    } else {
-                            msg.append(new String(stderr));
-                    }
+                msg.append(": ");
+                if (stderr.length > MAX_MSG_SZ) {
+                    msg.append(new String(stderr, 0, MAX_MSG_SZ)).append("...");
+                } else {
+                    msg.append(new String(stderr));
+                }
             }
             OpenGrokLogger.getLogger().log(Level.WARNING, msg.toString());
         }
@@ -301,18 +304,18 @@ public class Executor {
             }
         }
     }
-    
+
     public static void registerErrorHandler() {
         UncaughtExceptionHandler dueh =
-            Thread.currentThread().getDefaultUncaughtExceptionHandler();
+                Thread.currentThread().getDefaultUncaughtExceptionHandler();
         if (dueh == null) {
             log.fine("Installing default uncaught exception handler");
             Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
-                    log.log(Level.SEVERE, "Uncaught exception in thread " 
-                        + t.getName() + " with ID " + t.getId() + ": "
-                        + e.getMessage(), e);
+                    log.log(Level.SEVERE, "Uncaught exception in thread "
+                            + t.getName() + " with ID " + t.getId() + ": "
+                            + e.getMessage(), e);
                 }
             });
         }

@@ -33,6 +33,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
+
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
@@ -60,7 +61,7 @@ import org.opensolaris.opengrok.search.SearchEngine;
 public class DirectoryHistoryReader {
 
     private final Map<Date, Map<String, Map<String, SortedSet<String>>>> hash =
-        new LinkedHashMap<Date, Map<String, Map<String, SortedSet<String>>>>();
+            new LinkedHashMap<Date, Map<String, Map<String, SortedSet<String>>>>();
     Iterator<Date> diter;
     Date idate;
     Iterator<String> aiter;
@@ -72,8 +73,8 @@ public class DirectoryHistoryReader {
 
     public DirectoryHistoryReader(String path) throws IOException {
         //TODO can we introduce paging here ???  this class is used just for rss.jsp !
-        int hitsPerPage=RuntimeEnvironment.getInstance().getHitsPerPage();
-        int cachePages=RuntimeEnvironment.getInstance().getCachePages();
+        int hitsPerPage = RuntimeEnvironment.getInstance().getHitsPerPage();
+        int cachePages = RuntimeEnvironment.getInstance().getCachePages();
         IndexReader ireader = null;
         IndexSearcher searcher = null;
         try {
@@ -83,15 +84,15 @@ public class DirectoryHistoryReader {
                 throw new IOException("Could not locate index database");
             }
             searcher = new IndexSearcher(ireader);
-            SortField sfield=new SortField("date",SortField.STRING, true);
+            SortField sfield = new SortField("date", SortField.STRING, true);
             Sort sort = new Sort(sfield);
-            QueryParser qparser = new QueryParser(SearchEngine.LUCENE_VERSION,"path", new CompatibleAnalyser());
+            QueryParser qparser = new QueryParser(SearchEngine.LUCENE_VERSION, "path", new CompatibleAnalyser());
             Query query = null;
             ScoreDoc[] hits = null;
             try {
                 query = qparser.parse(path);
-                TopFieldDocs fdocs=searcher.search(query, null,hitsPerPage*cachePages, sort);
-                fdocs=searcher.search(query, null,fdocs.totalHits, sort);
+                TopFieldDocs fdocs = searcher.search(query, null, hitsPerPage * cachePages, sort);
+                fdocs = searcher.search(query, null, fdocs.totalHits, sort);
                 hits = fdocs.scoreDocs;
             } catch (org.apache.lucene.queryParser.ParseException e) {
                 OpenGrokLogger.getLogger().log(Level.WARNING, "An error occured while parsing search query", e);

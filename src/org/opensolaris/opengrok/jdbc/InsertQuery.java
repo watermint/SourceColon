@@ -35,11 +35,14 @@ import java.sql.Statement;
  */
 public final class InsertQuery extends StatementCreator {
 
-    /** The SQL text for the query. */
+    /**
+     * The SQL text for the query.
+     */
     private final String sql;
 
     /**
      * Create an {@code InsertQuery} instance.
+     *
      * @param sql the SQL text
      */
     public InsertQuery(String sql) {

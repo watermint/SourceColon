@@ -37,7 +37,6 @@ import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
 
 /**
- *
  * @author martin
  */
 public class JavaAnalyzer extends PlainAnalyzer {
@@ -46,7 +45,9 @@ public class JavaAnalyzer extends PlainAnalyzer {
     JavaXref xref;
     Reader dummy = new StringReader("");
 
-    /** Creates a new instance of JavaAnalyzer */
+    /**
+     * Creates a new instance of JavaAnalyzer
+     */
     protected JavaAnalyzer(FileAnalyzerFactory factory) {
         super(factory);
         cref = new JavaSymbolTokenizer(dummy);
@@ -60,7 +61,7 @@ public class JavaAnalyzer extends PlainAnalyzer {
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if("refs".equals(fieldName)) {
+        if ("refs".equals(fieldName)) {
             cref.reInit(super.content, super.len);
             return cref;
         }
@@ -69,6 +70,7 @@ public class JavaAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {
@@ -80,9 +82,10 @@ public class JavaAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
-     * @param defs definitions for the file (could be null)
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {

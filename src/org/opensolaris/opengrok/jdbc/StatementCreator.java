@@ -31,11 +31,13 @@ import java.sql.SQLException;
 /**
  * Class used to specify how to create a {@code PreparedStatement} to be
  * returned from a {@code ConnectionResource}'s statement cache.
+ *
  * @see ConnectionResource#getStatement(StatementCreator)
  */
 public abstract class StatementCreator {
     /**
      * Method that creates the statement represented by this statement creator.
+     *
      * @param conn the connection on which the statement is prepared
      * @return a {@code PreparedStatement} object
      * @throws SQLException if a database error occurs

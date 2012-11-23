@@ -30,6 +30,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.bcel.classfile.Attribute;
 import org.apache.bcel.classfile.ClassFormatException;
 import org.apache.bcel.classfile.ClassParser;
@@ -71,12 +72,15 @@ public class JavaClassAnalyzer extends FileAnalyzer {
 
     private final String urlPrefix = RuntimeEnvironment.getInstance().getUrlPrefix();
 
-    /** Creates a new instance of JavaClassAnalyzer
+    /**
+     * Creates a new instance of JavaClassAnalyzer
+     *
      * @param factory The factory that creates JavaClassAnalyzers
      */
     protected JavaClassAnalyzer(FileAnalyzerFactory factory) {
         super(factory);
     }
+
     private List<String> defs;
     private List<String> refs;
     private List<String> full;
@@ -136,7 +140,7 @@ public class JavaClassAnalyzer extends FileAnalyzer {
         return "<a class=\"d\" name=\"" + def + "\" href=\"" + urlPrefix + "defs=" + def + "\">" + def + "</a>";
     }
 
-//TODO this class needs to be thread safe to avoid bug 13364, which was fixed by just updating bcel to 5.2
+    //TODO this class needs to be thread safe to avoid bug 13364, which was fixed by just updating bcel to 5.2
     private void getContent(Writer out) throws IOException {
         String t;
         cp = c.getConstantPool();
@@ -209,7 +213,7 @@ public class JavaClassAnalyzer extends FileAnalyzer {
             defs.add(t);
             refs.add(t);
             out.write('\n');
-        // @TODO show Attributes
+            // @TODO show Attributes
         }
 
         for (org.apache.bcel.classfile.Method m : c.getMethods()) {
@@ -284,6 +288,7 @@ public class JavaClassAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     @Override

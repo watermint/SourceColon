@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.analysis.plain;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -35,13 +36,13 @@ import org.opensolaris.opengrok.history.Annotation;
 
 public class XMLAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "HTML", "HTM", "XML", "ASPX", "ASCX", "ASAX", "MASTER", "XAML"
+            "HTML", "HTM", "XML", "ASPX", "ASCX", "ASAX", "MASTER", "XAML"
     };
 
     private static final String[] MAGICS = {
-        "<htm", "<HTM", "<?xm", "<?Xm", "<?XM",
-        "<!--", "<!EN", "<!DO", "<tit",
-        "<TIT", "<XML", "<xml", "<HEA", "<hea"
+            "<htm", "<HTM", "<?xm", "<?Xm", "<?XM",
+            "<!--", "<!EN", "<!DO", "<tit",
+            "<TIT", "<XML", "<xml", "<HEA", "<hea"
     };
 
     public XMLAnalyzerFactory() {
@@ -55,8 +56,7 @@ public class XMLAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException
-    {
+            throws IOException {
         XMLAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

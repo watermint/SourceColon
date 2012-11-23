@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.analysis.tcl;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -35,14 +36,14 @@ import org.opensolaris.opengrok.history.Annotation;
 
 public class TclAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "TCL",
-        "TM",
-        "TK",
-        "WISH",
-        "EXP",
-        "TCLX",
-        "ITCL",
-        "ITK",
+            "TCL",
+            "TM",
+            "TK",
+            "WISH",
+            "EXP",
+            "TCLX",
+            "ITCL",
+            "ITK",
     };
 
     public TclAnalyzerFactory() {
@@ -56,7 +57,7 @@ public class TclAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException {
+            throws IOException {
         TclAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

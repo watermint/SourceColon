@@ -35,11 +35,17 @@ import java.util.regex.Pattern;
 public class Filter implements Serializable {
     private static final long serialVersionUID = 3L;
 
-    /** The list of exact filenames */
+    /**
+     * The list of exact filenames
+     */
     private final Set<String> filename;
-    /** The list of filenames with wildcards */
+    /**
+     * The list of filenames with wildcards
+     */
     private final List<Pattern> patterns;
-    /** The list of paths */
+    /**
+     * The list of paths
+     */
     private final List<String> path;
     /**
      * The full list of all patterns. This list will be saved in the
@@ -61,6 +67,7 @@ public class Filter implements Serializable {
 
     /**
      * Get the complete list of items that would be matched by this matcher
+     *
      * @return a list of all wildcards, exact lists and paths that this filter
      *         contains
      */
@@ -70,6 +77,7 @@ public class Filter implements Serializable {
 
     /**
      * Specify a new filter to use
+     *
      * @param item the new filter
      */
     public void setItems(List<String> item) {
@@ -81,6 +89,7 @@ public class Filter implements Serializable {
 
     /**
      * Add a pattern to the list of patterns
+     *
      * @param pattern the pattern to filename
      */
     public void add(String pattern) {
@@ -101,6 +110,7 @@ public class Filter implements Serializable {
 
     /**
      * Should the file be ignored or not?
+     *
      * @param file the file to check
      * @return true if this file should be ignored, false otherwise
      */
@@ -132,21 +142,22 @@ public class Filter implements Serializable {
         }
 
         //Check File extension
-        if (!ret) {      
-            int start = fileName.indexOf(".");          
-            if(start != -1){
-                String fileExtension = fileName.substring(start,fileName.length());
-                 if (filename.contains(fileExtension)) {
-                     ret = true;
+        if (!ret) {
+            int start = fileName.indexOf(".");
+            if (start != -1) {
+                String fileExtension = fileName.substring(start, fileName.length());
+                if (filename.contains(fileExtension)) {
+                    ret = true;
                 }
             }
         }
-        
+
         return ret;
     }
 
     /**
      * Should the file be ignored or not?
+     *
      * @param name the name of the file to check
      * @return true if this pathname should be ignored, false otherwise
      */

@@ -32,50 +32,51 @@ import java.util.logging.LogRecord;
  * Opengrok logfile formatter
  * Creates a logentry in the logfile on the following format
  * YYYY-MM-DD HH:MM:ss.SSSZ <loglevel> t<threadnumber> <Class.method>: <logmessage>
+ *
  * @author Lubos Kosco
  */
 final public class SimpleFileLogFormatter extends Formatter {
 
-   private final java.text.SimpleDateFormat formatter =
-      new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSZ");
-   private static final String lineSeparator = System.
-      getProperty("line.separator");
-   Date dat = new Date();
+    private final java.text.SimpleDateFormat formatter =
+            new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSZ");
+    private static final String lineSeparator = System.
+            getProperty("line.separator");
+    Date dat = new Date();
 
-   private String ts(Date date) {
-      return formatter.format(date);
-   }
+    private String ts(Date date) {
+        return formatter.format(date);
+    }
 
-   private String classNameOnly(String name) {
-      int index = name.lastIndexOf('.') + 1;
-      return name.substring(index);
-   }
+    private String classNameOnly(String name) {
+        int index = name.lastIndexOf('.') + 1;
+        return name.substring(index);
+    }
 
     @Override
-   public String format(LogRecord record) {
-      StringBuilder sb = new StringBuilder();
-      dat.setTime(record.getMillis());
-      sb.append(ts(dat));
-      sb.append(" ");
-      String loglevel = record.getLevel().getName();
-      sb.append(loglevel);
-      sb.append(" ");
-      sb.append("t");
-      sb.append(record.getThreadID());
-      sb.append(" ");
-      sb.append(classNameOnly(record.getSourceClassName()));
-      sb.append('.');
-      sb.append(record.getSourceMethodName());
-      sb.append(": ");
-      sb.append(formatMessage(record));
-      Throwable thrown = record.getThrown();
-      if (null != thrown && record.getLevel().intValue() > Level.CONFIG.intValue()) {
-         sb.append(lineSeparator);
-         java.io.ByteArrayOutputStream ba=new java.io.ByteArrayOutputStream();
-         thrown.printStackTrace(new java.io.PrintStream(ba, true));
-         sb.append(ba.toString());
-      }
-      sb.append(lineSeparator);
-      return sb.toString();
-   }
+    public String format(LogRecord record) {
+        StringBuilder sb = new StringBuilder();
+        dat.setTime(record.getMillis());
+        sb.append(ts(dat));
+        sb.append(" ");
+        String loglevel = record.getLevel().getName();
+        sb.append(loglevel);
+        sb.append(" ");
+        sb.append("t");
+        sb.append(record.getThreadID());
+        sb.append(" ");
+        sb.append(classNameOnly(record.getSourceClassName()));
+        sb.append('.');
+        sb.append(record.getSourceMethodName());
+        sb.append(": ");
+        sb.append(formatMessage(record));
+        Throwable thrown = record.getThrown();
+        if (null != thrown && record.getLevel().intValue() > Level.CONFIG.intValue()) {
+            sb.append(lineSeparator);
+            java.io.ByteArrayOutputStream ba = new java.io.ByteArrayOutputStream();
+            thrown.printStackTrace(new java.io.PrintStream(ba, true));
+            sb.append(ba.toString());
+        }
+        sb.append(lineSeparator);
+        return sb.toString();
+    }
 }

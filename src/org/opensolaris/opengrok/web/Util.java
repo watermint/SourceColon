@@ -65,8 +65,7 @@ public final class Util {
     /**
      * Return a string which represents a <code>CharSequence</code> in HTML.
      *
-     * @param q
-     *            a character sequence
+     * @param q a character sequence
      * @return a string representing the character sequence in HTML
      */
     public static String htmlize(CharSequence q) {
@@ -79,11 +78,11 @@ public final class Util {
      * Append a character sequence to the given destination whereby
      * special characters for HTML are escaped accordingly.
      *
-     * @param q     a character sequence to esacpe
-     * @param dest  where to append the character sequence to
+     * @param q    a character sequence to esacpe
+     * @param dest where to append the character sequence to
      */
     public static void htmlize(CharSequence q, StringBuilder dest) {
-        for (int i = 0; i < q.length(); i++ ) {
+        for (int i = 0; i < q.length(); i++) {
             htmlize(q.charAt(i), dest);
         }
     }
@@ -92,16 +91,16 @@ public final class Util {
      * Append a character array to the given destination whereby
      * special characters for HTML are escaped accordingly.
      *
-     * @param cs    characters to esacpe
+     * @param cs     characters to esacpe
      * @param length max. number of characters to append, starting from index 0.
-     * @param dest  where to append the character sequence to
+     * @param dest   where to append the character sequence to
      */
     public static void htmlize(char[] cs, int length, StringBuilder dest) {
         int len = length;
         if (cs.length < length) {
             len = cs.length;
         }
-        for (int i = 0; i < len; i++ ) {
+        for (int i = 0; i < len; i++) {
             htmlize(cs[i], dest);
         }
     }
@@ -110,7 +109,7 @@ public final class Util {
      * Append a character to the given destination whereby special characters
      * special for HTML are escaped accordingly.
      *
-     * @param c the character to append
+     * @param c    the character to append
      * @param dest where to append the character to
      */
     private static void htmlize(char c, StringBuilder dest) {
@@ -147,10 +146,10 @@ public final class Util {
 
     /**
      * Convinience method for {@code breadcrumbPath(urlPrefix, path, '/')}.
-     * @param urlPrefix prefix to add to each url
-     * @param path path to crack
-     * @return HTML markup fro the breadcrumb or the path itself.
      *
+     * @param urlPrefix prefix to add to each url
+     * @param path      path to crack
+     * @return HTML markup fro the breadcrumb or the path itself.
      * @see #breadcrumbPath(String, String, char)
      */
     public static String breadcrumbPath(String urlPrefix, String path) {
@@ -167,14 +166,12 @@ public final class Util {
      * {@code breadcrumbPath(urlPrefix, path, sep, "", false)}.
      *
      * @param urlPrefix prefix to add to each url
-     * @param path path to crack
-     * @param sep separator to use to crack the given path
-     *
+     * @param path      path to crack
+     * @param sep       separator to use to crack the given path
      * @return HTML markup fro the breadcrumb or the path itself.
      * @see #breadcrumbPath(String, String, char, String, boolean, boolean)
      */
-    public static String breadcrumbPath(String urlPrefix, String path, char sep)
-    {
+    public static String breadcrumbPath(String urlPrefix, String path, char sep) {
         return breadcrumbPath(urlPrefix, path, sep, "", false);
     }
 
@@ -182,26 +179,25 @@ public final class Util {
      * Convenience method for
      * {@code breadcrumbPath(urlPrefix, path, sep, "", false, path.endsWith(sep)}.
      *
-     * @param urlPrefix prefix to add to each url
-     * @param path path to crack
-     * @param sep separator to use to crack the given path
+     * @param urlPrefix  prefix to add to each url
+     * @param path       path to crack
+     * @param sep        separator to use to crack the given path
      * @param urlPostfix suffix to add to each url
-     * @param compact if {@code true} the given path gets transformed into
-     *  its canonical form (.i.e. all '.' and '..' and double separators
-     *  removed, but not always resolves to an absolute path) before processing
-     *  starts.
+     * @param compact    if {@code true} the given path gets transformed into
+     *                   its canonical form (.i.e. all '.' and '..' and double separators
+     *                   removed, but not always resolves to an absolute path) before processing
+     *                   starts.
      * @return HTML markup fro the breadcrumb or the path itself.
      * @see #breadcrumbPath(String, String, char, String, boolean, boolean)
      * @see #getCanonicalPath(String, char)
      */
     public static String breadcrumbPath(String urlPrefix, String path,
-        char sep, String urlPostfix, boolean compact)
-    {
+                                        char sep, String urlPostfix, boolean compact) {
         if (path == null || path.length() == 0) {
             return path;
         }
         return breadcrumbPath(urlPrefix, path, sep, urlPostfix, compact,
-            path.charAt(path.length() - 1) == sep);
+                path.charAt(path.length() - 1) == sep);
     }
 
     /**
@@ -213,27 +209,20 @@ public final class Util {
      * working directory is assumed to be "/" and no checks are done (e.g.
      * neither whether the path [component] exists nor which type it is).
      *
-     * @param urlPrefix
-     *            what should be prepend to the constructed URL
-     * @param path
-     *            the full path from which the breadcrumb path is built.
-     * @param sep
-     *            the character that separates the path components in
-     *            <var>path</var>
-     * @param urlPostfix
-     *            what should be append to the constructed URL
-     * @param compact
-     *            if {@code true}, a canonical path gets constructed before
-     *            processing.
-     * @param isDir
-     *            if {@code true} a "/" gets append to the last path component's
-     *            link and <var>sep</var> to its name
+     * @param urlPrefix  what should be prepend to the constructed URL
+     * @param path       the full path from which the breadcrumb path is built.
+     * @param sep        the character that separates the path components in
+     *                   <var>path</var>
+     * @param urlPostfix what should be append to the constructed URL
+     * @param compact    if {@code true}, a canonical path gets constructed before
+     *                   processing.
+     * @param isDir      if {@code true} a "/" gets append to the last path component's
+     *                   link and <var>sep</var> to its name
      * @return <var>path</var> if it resolves to an empty or "/" or
-     *      {@code null} path, the HTML markup for the breadcrumb path otherwise.
+     *         {@code null} path, the HTML markup for the breadcrumb path otherwise.
      */
     public static String breadcrumbPath(String urlPrefix, String path,
-        char sep, String urlPostfix, boolean compact, boolean isDir)
-    {
+                                        char sep, String urlPostfix, boolean compact, boolean isDir) {
         if (path == null || path.length() == 0) {
             return path;
         }
@@ -245,22 +234,22 @@ public final class Util {
         String postfix = urlPostfix == null ? "" : urlPostfix;
         StringBuilder pwd = new StringBuilder(path.length() + pnames.length);
         StringBuilder markup =
-            new StringBuilder( (pnames.length + 3 >> 1) * path.length()
-                + pnames.length
-                * (17 + prefix.length() + postfix.length()));
+                new StringBuilder((pnames.length + 3 >> 1) * path.length()
+                        + pnames.length
+                        * (17 + prefix.length() + postfix.length()));
         int k = path.indexOf(pnames[0]);
         if (path.lastIndexOf(sep, k) != -1) {
             pwd.append('/');
             markup.append(sep);
         }
-        for (int i = 0; i < pnames.length; i++ ) {
+        for (int i = 0; i < pnames.length; i++) {
             pwd.append(URIEncodePath(pnames[i]));
             if (isDir || i < pnames.length - 1) {
                 pwd.append('/');
             }
             markup.append(anchorLinkStart).append(prefix).append(pwd)
-                .append(postfix).append(closeQuotedTag).append(pnames[i])
-                .append(anchorEnd);
+                    .append(postfix).append(closeQuotedTag).append(pnames[i])
+                    .append(anchorEnd);
             if (isDir || i < pnames.length - 1) {
                 markup.append(sep);
             }
@@ -275,17 +264,17 @@ public final class Util {
      * components (".") of the formed path are removed and all double dot path
      * components (".." ) of the formed path are replaced with its parent or
      * '/' if there is no parent.
-     * <p>
+     * <p/>
      * So the difference to {@link File#getCanonicalPath()} is, that this method
      * does not hit the disk (just string manipulation), resolves <var>path</var>
      * always against '/' and thus always returns an absolute path, which may
      * actually not exist, and which has a single trailing '/' if the given
      * <var>path</var> ends with the given <var>sep</var>.
      *
-     * @param path  path to mangle. If not absolute or {@code null}, the
-     *      current working directory is assumed to be '/'.
-     * @param sep   file separator to use to crack <var>path</var> into path
-     *      components
+     * @param path path to mangle. If not absolute or {@code null}, the
+     *             current working directory is assumed to be '/'.
+     * @param sep  file separator to use to crack <var>path</var> into path
+     *             components
      * @return always a canonical path which starts with a '/'.
      */
     public static String getCanonicalPath(String path, char sep) {
@@ -298,29 +287,28 @@ public final class Util {
         }
         StringBuilder buf = new StringBuilder(path.length());
         buf.append('/');
-        for (int i=0; i < pnames.length; i++) {
+        for (int i = 0; i < pnames.length; i++) {
             buf.append(pnames[i]).append('/');
         }
-        if (path.charAt(path.length()-1) != sep) {
+        if (path.charAt(path.length() - 1) != sep) {
             // since is not a general purpose method. So we waive to handle
             // cases like:
             // || path.endsWith("/..") || path.endsWith("/.")
-            buf.setLength(buf.length()-1);
+            buf.setLength(buf.length() - 1);
         }
         return buf.toString();
     }
 
     private final static Pattern EMAIL_PATTERN =
-        Pattern.compile("([^<\\s]+@[^>\\s]+)");
+            Pattern.compile("([^<\\s]+@[^>\\s]+)");
 
     /**
      * Get email address of the author.
      *
-     * @param author
-     *            string containing author and possibly email address.
+     * @param author string containing author and possibly email address.
      * @return email address of the author or
-     *      full author string if the author string does not contain an email
-     *      address.
+     *         full author string if the author string does not contain an email
+     *         address.
      */
     public static String getEmail(String author) {
         Matcher email_matcher = EMAIL_PATTERN.matcher(author);
@@ -337,10 +325,8 @@ public final class Util {
      * <var>names</var> and optionally all redundant information like "." and
      * "..".
      *
-     * @param names
-     *            names to check
-     * @param canonical
-     *            if {@code true}, remove redundant elements as well.
+     * @param names     names to check
+     * @param canonical if {@code true}, remove redundant elements as well.
      * @return a possible empty array of names all with a length &gt; 0.
      */
     private static String[] normalize(String[] names, boolean canonical) {
@@ -348,7 +334,7 @@ public final class Util {
         if (names == null || names.length == 0) {
             return new String[0];
         }
-        for (int i = 0; i < names.length; i++ ) {
+        for (int i = 0; i < names.length; i++) {
             if (names[i] == null || names[i].length() == 0) {
                 continue;
             }
@@ -367,22 +353,21 @@ public final class Util {
             }
         }
         return res.size() == names.length ? names : res.toArray(new String[res
-            .size()]);
+                .size()]);
     }
 
     /**
      * Generate a regex that matches the specified character. Escape it in case
      * it is a character that has a special meaning in a regex.
      *
-     * @param c
-     *            the character that the regex should match
+     * @param c the character that the regex should match
      * @return a six-character string on the form <tt>&#92;u</tt><i>hhhh</i>
      */
     private static String escapeForRegex(char c) {
         StringBuilder sb = new StringBuilder(6);
         sb.append("\\u");
         String hex = Integer.toHexString(c);
-        for (int i = 0; i < 4 - hex.length(); i++ ) {
+        for (int i = 0; i < 4 - hex.length(); i++) {
             sb.append('0');
         }
         sb.append(hex);
@@ -393,7 +378,8 @@ public final class Util {
 
     /**
      * Convert the given size into a human readable string.
-     * @param num   size to convert.
+     *
+     * @param num size to convert.
      * @return a readable string
      */
     public static String readableSize(long num) {
@@ -412,13 +398,12 @@ public final class Util {
      * Converts different html special characters into their encodings used in
      * html. Currently used only for tooltips of annotation revision number view
      *
-     * @param s
-     *            input text
+     * @param s input text
      * @return encoded text for use in <a title=""> tag
      */
     public static String encode(String s) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length(); i++ ) {
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             switch (c) {
                 case '"':
@@ -456,25 +441,24 @@ public final class Util {
      * Write out line information wrt. to the given annotation in the format:
      * {@code Linenumber Blame Author} incl. appropriate links.
      *
-     * @param num   linenumber to print
-     * @param out   print destination
-     * @param annotation    annotation to use. If {@code null} only the
-     *  linenumber gets printed.
-     * @param userPageLink see {@link RuntimeEnvironment#getUserPage()}
+     * @param num            linenumber to print
+     * @param out            print destination
+     * @param annotation     annotation to use. If {@code null} only the
+     *                       linenumber gets printed.
+     * @param userPageLink   see {@link RuntimeEnvironment#getUserPage()}
      * @param userPageSuffix see {@link RuntimeEnvironment#getUserPageSuffix()}
      * @throws IOException depends on the destination (<var>out</var>).
      */
     public static void readableLine(int num, Writer out, Annotation annotation,
-        String userPageLink, String userPageSuffix)
-    throws IOException
-    {
+                                    String userPageLink, String userPageSuffix)
+            throws IOException {
         // this method should go to JFlexXref
         String snum = String.valueOf(num);
         if (num > 1) {
             out.write("\n");
         }
         out.write(anchorClassStart);
-        out.write( (num % 10 == 0 ? "hl" : "l"));
+        out.write((num % 10 == 0 ? "hl" : "l"));
         out.write("\" name=\"");
         out.write(snum);
         out.write("\" href=\"#");
@@ -488,7 +472,7 @@ public final class Util {
             out.write("<span class=\"blame\">");
             if (enabled) {
                 out.write(anchorClassStart);
-                out.write("r\" href=\"" );
+                out.write("r\" href=\"");
                 out.write(URIEncode(annotation.getFilename()));
                 out.write("?a=true&amp;r=");
                 out.write(URIEncode(r));
@@ -536,6 +520,7 @@ public final class Util {
      * stable lexicographic sorting (i.e. gives always the same results) as a
      * walk of the file hierarchy. Thus null character (\u0000) is used both
      * to separate directory components and to separate the path from the date.
+     *
      * @param path path to mangle.
      * @param date date string to use.
      * @return the mangled path.
@@ -547,7 +532,8 @@ public final class Util {
     /**
      * The reverse operation for {@link #path2uid(String, String)} - re-creates
      * the unmangled path from the given uid.
-     * @param uid   uid to unmangle.
+     *
+     * @param uid uid to unmangle.
      * @return the original path.
      */
     public static String uid2url(String uid) {
@@ -558,8 +544,8 @@ public final class Util {
     /**
      * wrapper arround UTF-8 URL encoding of a string
      *
-     * @param q     query to be encoded. If {@code null}, an empty string will
-     *  be used instead.
+     * @param q query to be encoded. If {@code null}, an empty string will
+     *          be used instead.
      * @return null if fail, otherwise the encoded string
      * @see URLEncoder#encode(String, String)
      */
@@ -568,7 +554,7 @@ public final class Util {
             return q == null ? "" : URLEncoder.encode(q, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // Should not happen. UTF-8 must be supported by JVMs.
-            Logger.getLogger(EftarFileReader.class.getName()).log(Level.WARNING, "Failed to URL-encode UTF-8: ", e);            
+            Logger.getLogger(EftarFileReader.class.getName()).log(Level.WARNING, "Failed to URL-encode UTF-8: ", e);
         }
         return null;
     }
@@ -580,13 +566,12 @@ public final class Util {
      * @param buf   where to append the query string
      * @param key   the name of the parameter to add. Append as is!
      * @param value the value for the given parameter. Gets automatically UTF-8
-     *  URL encoded.
+     *              URL encoded.
      * @throws NullPointerException if the given buffer is {@code null}.
      * @see #URIEncode(String)
      */
     public static void appendQuery(StringBuilder buf, String key,
-        String value)
-    {
+                                   String value) {
         if (value != null) {
             buf.append("&amp;").append(key).append('=').append(URIEncode(value));
         }
@@ -594,7 +579,8 @@ public final class Util {
 
     /**
      * URI encode the given path.
-     * @param path  path to encode.
+     *
+     * @param path path to encode.
      * @return the encoded path.
      * @throws NullPointerException if a parameter is {@code null}
      */
@@ -630,7 +616,7 @@ public final class Util {
                     sb.append('0');
                 }
                 sb.append(
-                    Integer.toHexString(u).toUpperCase(Locale.ENGLISH));
+                        Integer.toHexString(u).toUpperCase(Locale.ENGLISH));
             }
         }
         return sb.toString();
@@ -639,9 +625,10 @@ public final class Util {
     /**
      * Replace all quote characters (ASCI 0x22) with the corresponding html
      * entity (&amp;quot;).
+     *
      * @param q string to escape.
      * @return an empty string if a parameter is {@code null}, the mangled
-     *  string otherwise.
+     *         string otherwise.
      */
     public static String formQuoteEscape(String q) {
         if (q == null || q.isEmpty()) {
@@ -649,7 +636,7 @@ public final class Util {
         }
         StringBuilder sb = new StringBuilder();
         char c;
-        for (int i = 0; i < q.length(); i++ ) {
+        for (int i = 0; i < q.length(); i++) {
             c = q.charAt(i);
             if (c == '"') {
                 sb.append("&quot;");
@@ -680,7 +667,7 @@ public final class Util {
         int m = line1.length();
         int n = line2.length();
         if (n == 0 || m == 0) {
-            return new String[] {line1.toString(), line2.toString()};
+            return new String[]{line1.toString(), line2.toString()};
         }
 
         int s = 0;
@@ -689,11 +676,11 @@ public final class Util {
         char[] csl2 = new char[n + SPAN_LEN];
         line2.getChars(0, n--, csl2, 0);
         while (s <= m && s <= n && csl1[s] == csl2[s]) {
-            s++ ;
+            s++;
         }
         while (s <= m && s <= n && csl1[m] == csl2[n]) {
-            m-- ;
-            n-- ;
+            m--;
+            n--;
         }
 
         String[] ret = new String[2];
@@ -725,17 +712,13 @@ public final class Util {
     /**
      * Dump the configuration as an HTML table.
      *
-     * @param out
-     *            destination for the HTML output
-     * @throws IOException
-     *             if an error happens while writing to {@code out}
-     * @throws HistoryException
-     *             if the history guru cannot be accesses
+     * @param out destination for the HTML output
+     * @throws IOException      if an error happens while writing to {@code out}
+     * @throws HistoryException if the history guru cannot be accesses
      */
     @SuppressWarnings("boxing")
     public static void dumpConfiguration(Appendable out) throws IOException,
-        HistoryException
-    {
+            HistoryException {
         out.append("<table border=\"1\" width=\"100%\">");
         out.append("<tr><th>Variable</th><th>Value</th></tr>");
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
@@ -754,18 +737,19 @@ public final class Util {
         out.append("</td></tr>");
         printTableRow(out, "Index word limit", env.getIndexWordLimit());
         printTableRow(out, "Allow leading wildcard in search",
-            env.isAllowLeadingWildcard());
+                env.isAllowLeadingWildcard());
         printTableRow(out, "History cache", HistoryGuru.getInstance()
-            .getCacheInfo());
+                .getCacheInfo());
         out.append("</table>");
     }
 
     /**
      * Just read the given source and dump as is to the given destionation.
      * Does nothing, if one or more of the parameters is {@code null}.
-     * @param out   write destination
-     * @param in    source to read
-     * @throws IOException as defined by the given reader/writer
+     *
+     * @param out write destination
+     * @param in  source to read
+     * @throws IOException          as defined by the given reader/writer
      * @throws NullPointerException if a parameter is {@code null}.
      */
     public static void dump(Writer out, Reader in) throws IOException {
@@ -783,17 +767,16 @@ public final class Util {
      * Silently dump a file to the given destionation. All {@link IOException}s
      * gets caught and logged, but not re-thrown.
      *
-     * @param out   dump destination
-     * @param dir   directory, which should contains the file.
-     * @param filename  the basename of the file to dump.
+     * @param out        dump destination
+     * @param dir        directory, which should contains the file.
+     * @param filename   the basename of the file to dump.
      * @param compressed if {@code true} the denoted file is assumed to be
-     *  gzipped.
+     *                   gzipped.
      * @return {@code true} on success (everything read and written).
      * @throws NullPointerException if a parameter is {@code null}.
      */
     public static boolean dump(Writer out, File dir, String filename,
-        boolean compressed)
-    {
+                               boolean compressed) {
         return dump(out, new File(dir, filename), compressed);
     }
 
@@ -801,10 +784,10 @@ public final class Util {
      * Silently dump a file to the given destionation. All {@link IOException}s
      * gets caught and logged, but not re-thrown.
      *
-     * @param out   dump destination
-     * @param file  file to dump.
+     * @param out        dump destination
+     * @param file       file to dump.
      * @param compressed if {@code true} the denoted file is assumed to be
-     *  gzipped.
+     *                   gzipped.
      * @return {@code true} on success (everything read and written).
      * @throws NullPointerException if a parameter is {@code null}.
      */
@@ -825,9 +808,9 @@ public final class Util {
             }
             dump(out, in);
             return true;
-        } catch(IOException e) {
+        } catch (IOException e) {
             OpenGrokLogger.getLogger().log(Level.WARNING,
-                "An error occured while piping file " + file + ": ", e);
+                    "An error occured while piping file " + file + ": ", e);
         } finally {
             IOUtils.close(in);
             IOUtils.close(gis);
@@ -839,16 +822,12 @@ public final class Util {
     /**
      * Print a row in an HTML table.
      *
-     * @param out
-     *            destination for the HTML output
-     * @param cells
-     *            the values to print in the cells of the row
-     * @throws IOException
-     *             if an error happens while writing to {@code out}
+     * @param out   destination for the HTML output
+     * @param cells the values to print in the cells of the row
+     * @throws IOException if an error happens while writing to {@code out}
      */
     private static void printTableRow(Appendable out, Object... cells)
-        throws IOException
-    {
+            throws IOException {
         out.append("<tr>");
         StringBuilder buf = new StringBuilder(256);
         for (Object cell : cells) {
@@ -865,16 +844,12 @@ public final class Util {
     /**
      * Print an unordered list (HTML).
      *
-     * @param out
-     *            destination for the HTML output
-     * @param items
-     *            the list items
-     * @throws IOException
-     *             if an error happens while writing to {@code out}
+     * @param out   destination for the HTML output
+     * @param items the list items
+     * @throws IOException if an error happens while writing to {@code out}
      */
     private static void printUnorderedList(Appendable out,
-        Collection<String> items) throws IOException
-    {
+                                           Collection<String> items) throws IOException {
         out.append("<ul>");
         StringBuilder buf = new StringBuilder(256);
         for (String item : items) {
@@ -890,14 +865,13 @@ public final class Util {
     /**
      * Create a string literal for use in JavaScript functions.
      *
-     * @param str
-     *            the string to be represented by the literal
+     * @param str the string to be represented by the literal
      * @return a JavaScript string literal
      */
     public static String jsStringLiteral(String str) {
         StringBuilder sb = new StringBuilder();
         sb.append('"');
-        for (int i = 0; i < str.length(); i++ ) {
+        for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
             switch (c) {
                 case '"':

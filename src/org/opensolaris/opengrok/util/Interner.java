@@ -34,11 +34,11 @@ import java.util.Map;
  * {@link java.lang.String#intern}, but it stores the canonical objects on
  * the heap instead of in the permgen space to address bug #15956.
  * </p>
- *
+ * <p/>
  * <p>
  * Instances of this class are not thread safe.
  * </p>
- *
+ * <p/>
  * <p>
  * In contrast to {@link java.lang.String#intern}, this class does not attempt
  * to make objects that are not referenced anymore eligible for garbage
@@ -50,7 +50,9 @@ import java.util.Map;
  */
 public class Interner<T> {
 
-    /** Map of interned objects. Key and value contain the same object. */
+    /**
+     * Map of interned objects. Key and value contain the same object.
+     */
     private final Map<T, T> map = new HashMap<T, T>();
 
     /**
@@ -59,7 +61,7 @@ public class Interner<T> {
      * {@code o1} and {@code o2}, the following always evaluates to
      * {@code true}:
      * </p>
-     *
+     * <p/>
      * <pre>
      *     ( o1 == null ) ?
      *         ( intern(o1) == null ) :

@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.analysis.sql;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -35,7 +36,7 @@ import org.opensolaris.opengrok.history.Annotation;
 
 public class SQLAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "SQL"
+            "SQL"
     };
 
     public SQLAnalyzerFactory() {
@@ -49,7 +50,7 @@ public class SQLAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException {
+            throws IOException {
         SQLAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

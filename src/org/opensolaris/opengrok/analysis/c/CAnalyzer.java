@@ -38,12 +38,15 @@ import org.opensolaris.opengrok.history.Annotation;
 
 /**
  * An Analyzer for C/C++/Java type of files
- *
+ * <p/>
  * Created on September 21, 2005
+ *
  * @author Chandan
  */
 public class CAnalyzer extends PlainAnalyzer {
-    /** Creates a new instance of CAnalyzer */
+    /**
+     * Creates a new instance of CAnalyzer
+     */
     CSymbolTokenizer cref;
     CXref xref;
     Reader dummy = new StringReader("");
@@ -61,7 +64,7 @@ public class CAnalyzer extends PlainAnalyzer {
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if("refs".equals(fieldName)) {
+        if ("refs".equals(fieldName)) {
             cref.reInit(super.content, super.len);
             return cref;
         }
@@ -70,6 +73,7 @@ public class CAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {
@@ -81,13 +85,14 @@ public class CAnalyzer extends PlainAnalyzer {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
-     * @param defs definitions for the file (could be null)
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs,
-            Annotation annotation, Project project) throws IOException {
+                          Annotation annotation, Project project) throws IOException {
         CXref xref = new CXref(in);
         xref.annotation = annotation;
         xref.project = project;

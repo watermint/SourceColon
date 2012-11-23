@@ -29,6 +29,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
 import java.util.Arrays;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -51,6 +52,7 @@ public class TroffAnalyzer extends FileAnalyzer {
     private final TroffFullTokenizer troffull;
     private final TroffXref xref;
     Reader dummy = new StringReader("");
+
     /**
      * Creates a new instance of TroffAnalyzer
      */
@@ -67,7 +69,7 @@ public class TroffAnalyzer extends FileAnalyzer {
         do {
             InputStreamReader inReader = new InputStreamReader(in);
             int rbytes = inReader.read(content, len, content.length - len);
-            if (rbytes > 0 ) {
+            if (rbytes > 0) {
                 if (rbytes == (content.length - len)) {
                     content = Arrays.copyOf(content, content.length * 2);
                 }
@@ -75,7 +77,7 @@ public class TroffAnalyzer extends FileAnalyzer {
             } else {
                 break;
             }
-        } while(true);
+        } while (true);
 
         doc.add(new Field("full", new StringReader("")));
     }
@@ -91,6 +93,7 @@ public class TroffAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     @Override
@@ -104,9 +107,10 @@ public class TroffAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
-     * @param defs definitions for the file (could be null)
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {

@@ -53,12 +53,12 @@ public final class PreparedQuery extends StatementCreator {
      * Creator for a statement which returns non-holdable result sets with
      * the specified type and concurrency.
      *
-     * @param sql the SQL text for the statement
-     * @param resultSetType the type of the result set
+     * @param sql                  the SQL text for the statement
+     * @param resultSetType        the type of the result set
      * @param resultSetConcurrency the concurrency of the result set
      */
     public PreparedQuery(String sql, int resultSetType,
-            int resultSetConcurrency) {
+                         int resultSetConcurrency) {
         this(sql, resultSetType, resultSetConcurrency,
                 ResultSet.CLOSE_CURSORS_AT_COMMIT);
     }
@@ -67,13 +67,13 @@ public final class PreparedQuery extends StatementCreator {
      * Creator for a statement which returns result sets with the specified
      * type, concurrency and holdability.
      *
-     * @param sql the SQL text for the statement
-     * @param resultSetType the type of the result set
+     * @param sql                  the SQL text for the statement
+     * @param resultSetType        the type of the result set
      * @param resultSetConcurrency the concurrency of the result set
      * @param resultSetHoldability the holdability of the result set
      */
     public PreparedQuery(String sql, int resultSetType,
-            int resultSetConcurrency, int resultSetHoldability) {
+                         int resultSetConcurrency, int resultSetHoldability) {
         this.sql = sql;
         this.resultSetType = resultSetType;
         this.resultSetConcurrency = resultSetConcurrency;

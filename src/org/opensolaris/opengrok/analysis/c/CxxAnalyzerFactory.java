@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis.c;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -34,14 +35,14 @@ import org.opensolaris.opengrok.history.Annotation;
 
 public class CxxAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "CPP",
-        "HPP",
-        "CC",
-        "C++",
-        "HH",
-        "CXX",
-        "HXX",
-        "TXX"
+            "CPP",
+            "HPP",
+            "CC",
+            "C++",
+            "HH",
+            "CXX",
+            "HXX",
+            "TXX"
     };
 
     public CxxAnalyzerFactory() {
@@ -55,7 +56,7 @@ public class CxxAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException {
+            throws IOException {
         CxxAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

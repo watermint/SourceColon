@@ -28,14 +28,15 @@ import javax.management.NotificationFilter;
 import javax.management.timer.TimerNotification;
 
 /**
- *
- * @author  Jan S Berg
+ * @author Jan S Berg
  */
 public class TimerFilter implements NotificationFilter {
 
     private final Integer id;
 
-    /** Creates a new instance of TimerFilter */
+    /**
+     * Creates a new instance of TimerFilter
+     */
     public TimerFilter(Integer id) {
         this.id = id;
     }

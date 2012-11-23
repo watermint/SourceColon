@@ -27,13 +27,16 @@ package org.opensolaris.opengrok.analysis;
 import java.io.FilterReader;
 import java.io.IOException;
 import java.io.Reader;
+
 import org.opensolaris.opengrok.configuration.Project;
 
 /**
  * Wrapper around Reader to expand tabs to spaces in the input.
  */
 public class ExpandTabsReader extends FilterReader {
-    /** The size of tabs. */
+    /**
+     * The size of tabs.
+     */
     private final int tabSize;
 
     /**
@@ -51,7 +54,7 @@ public class ExpandTabsReader extends FilterReader {
     /**
      * Create a new ExpandTabsReader to expand tabs to spaces.
      *
-     * @param in the original input source
+     * @param in      the original input source
      * @param tabSize the size of tabs
      */
     ExpandTabsReader(Reader in, int tabSize) {
@@ -64,10 +67,10 @@ public class ExpandTabsReader extends FilterReader {
      * size settings.
      *
      * @param in the reader to wrap
-     * @param p the project
+     * @param p  the project
      * @return {@code in} if the project doesn't have custom tab settings;
-     * otherwise, an {@code ExpandTabsReader} that wraps {@code in} and expands
-     * tabs as defined by the project's settings
+     *         otherwise, an {@code ExpandTabsReader} that wraps {@code in} and expands
+     *         tabs as defined by the project's settings
      */
     public static Reader wrap(Reader in, Project p) {
         if (p != null && p.hasTabSizeSetting()) {

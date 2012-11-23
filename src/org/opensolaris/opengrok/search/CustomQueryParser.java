@@ -67,7 +67,7 @@ class CustomQueryParser extends QueryParser {
      * to lower case if the field is case insensitive.
      *
      * @param field the field to search on
-     * @param term the term to search for
+     * @param term  the term to search for
      * @return the canonical form of the search term, which matches how it
      *         is stored in the index
      */

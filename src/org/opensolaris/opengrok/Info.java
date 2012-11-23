@@ -25,6 +25,7 @@ package org.opensolaris.opengrok;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
 import org.opensolaris.opengrok.util.IOUtils;
 
 /**
@@ -57,6 +58,7 @@ public final class Info {
 
     /**
      * get major version
+     *
      * @return major version
      */
     public static String getVersion() {
@@ -65,6 +67,7 @@ public final class Info {
 
     /**
      * get full version (product vMajor revMinor)
+     *
      * @return full version
      */
     public static String getFullVersion() {
@@ -73,6 +76,7 @@ public final class Info {
 
     /**
      * get minor version
+     *
      * @return minor version
      */
     public static String getRevision() {

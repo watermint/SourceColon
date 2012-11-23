@@ -35,6 +35,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import org.opensolaris.opengrok.analysis.Definitions.Tag;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
@@ -52,27 +53,39 @@ public abstract class JFlexXref {
     public Annotation annotation;
     public Project project;
     protected Definitions defs;
-    /** EOF value returned by yylex(). */
+    /**
+     * EOF value returned by yylex().
+     */
     private final int yyeof;
-    /** See {@link RuntimeEnvironment#getUserPage()}. Per default initialized
+    /**
+     * See {@link RuntimeEnvironment#getUserPage()}. Per default initialized
      * in the constructor and here to be consistent and avoid lot of
      * unnecessary lookups.
-     * @see #startNewLine() */
+     *
+     * @see #startNewLine()
+     */
     protected String userPageLink;
-    /** See {@link RuntimeEnvironment#getUserPageSuffix()}. Per default
+    /**
+     * See {@link RuntimeEnvironment#getUserPageSuffix()}. Per default
      * initialized in the constructor and here to be consistent and avoid lot of
      * unnecessary lookups.
-     * @see #startNewLine() */
+     *
+     * @see #startNewLine()
+     */
     protected String userPageSuffix;
 
     /**
      * Description of the style to use for a type of definitions.
      */
     private static class Style {
-        /** Name of the style definition as given by CTags. */
+        /**
+         * Name of the style definition as given by CTags.
+         */
         final String name;
 
-        /** Class name used by the style sheets when rendering the xref. */
+        /**
+         * Class name used by the style sheets when rendering the xref.
+         */
         final String ssClass;
 
         /**
@@ -81,7 +94,9 @@ public abstract class JFlexXref {
          */
         final String title;
 
-        /** Construct a style description. */
+        /**
+         * Construct a style description.
+         */
         Style(String name, String ssClass, String title) {
             this.name = name;
             this.ssClass = ssClass;
@@ -93,25 +108,25 @@ public abstract class JFlexXref {
      * Description of styles to use for different types of definitions.
      */
     private static final Style[] DEFINITION_STYLES = {
-        new Style("macro",      "xm",   "Macro"),
-        new Style("argument",   "xa",   null),
-        new Style("local",      "xl",   null),
-        new Style("variable",   "xv",   "Variable"),
-        new Style("class",      "xc",   "Class"),
-        new Style("package",    "xp",   "Package"),
-        new Style("interface",  "xi",   "Interface"),
-        new Style("namespace",  "xn",   "Namespace"),
-        new Style("enumerator", "xer",  null),
-        new Style("enum",       "xe",   "Enum"),
-        new Style("struct",     "xs",   "Struct"),
-        new Style("typedefs",   "xts",  null),
-        new Style("typedef",    "xt",   "Typedef"),
-        new Style("union",      "xu",   null),
-        new Style("field",      "xfld", null),
-        new Style("member",     "xmb",  null),
-        new Style("function",   "xf",   "Function"),
-        new Style("method",     "xmt",  "Method"),
-        new Style("subroutine", "xsr",  "Subroutine"),
+            new Style("macro", "xm", "Macro"),
+            new Style("argument", "xa", null),
+            new Style("local", "xl", null),
+            new Style("variable", "xv", "Variable"),
+            new Style("class", "xc", "Class"),
+            new Style("package", "xp", "Package"),
+            new Style("interface", "xi", "Interface"),
+            new Style("namespace", "xn", "Namespace"),
+            new Style("enumerator", "xer", null),
+            new Style("enum", "xe", "Enum"),
+            new Style("struct", "xs", "Struct"),
+            new Style("typedefs", "xts", null),
+            new Style("typedef", "xt", "Typedef"),
+            new Style("union", "xu", null),
+            new Style("field", "xfld", null),
+            new Style("member", "xmb", null),
+            new Style("function", "xf", "Function"),
+            new Style("method", "xmt", "Method"),
+            new Style("subroutine", "xsr", "Subroutine"),
     };
 
     protected JFlexXref() {
@@ -137,7 +152,7 @@ public abstract class JFlexXref {
             AssertionError ae = new AssertionError("Couldn't initialize yyeof");
             ae.initCause(e);
             throw ae; // NOPMD (stack trace is preserved by initCause(), but
-                      // PMD thinks it's lost)
+            // PMD thinks it's lost)
         }
     }
 
@@ -145,7 +160,7 @@ public abstract class JFlexXref {
      * Reinitialize the xref with new contents.
      *
      * @param contents a char buffer with text to analyze
-     * @param length the number of characters to use from the char buffer
+     * @param length   the number of characters to use from the char buffer
      */
     public void reInit(char[] contents, int length) {
         yyreset(new CharArrayReader(contents, 0, length));
@@ -167,16 +182,24 @@ public abstract class JFlexXref {
         return project == null ? "" : ("&amp;project=" + project.getDescription());
     }
 
-    /** Get the next token from the scanner. */
+    /**
+     * Get the next token from the scanner.
+     */
     public abstract int yylex() throws IOException;
 
-    /** Reset the scanner. */
+    /**
+     * Reset the scanner.
+     */
     public abstract void yyreset(Reader reader);
 
-    /** Get the value of {@code yyline}. */
+    /**
+     * Get the value of {@code yyline}.
+     */
     protected abstract int getLineNumber();
 
-    /** Set the value of {@code yyline}. */
+    /**
+     * Set the value of {@code yyline}.
+     */
     protected abstract void setLineNumber(int x);
 
     /**
@@ -278,7 +301,7 @@ public abstract class JFlexXref {
      *
      * @param type the definition type
      * @return the style of a definition type, or {@code null} if no style is
-     * defined for the type
+     *         defined for the type
      * @see #DEFINITION_STYLES
      */
     private Style getStyle(String type) {
@@ -305,10 +328,10 @@ public abstract class JFlexXref {
     /**
      * Write a symbol and generate links as appropriate.
      *
-     * @param symbol the symbol to write
+     * @param symbol   the symbol to write
      * @param keywords a set of keywords recognized by this analyzer (no links
-     * will be generated if the symbol is a keyword)
-     * @param line the line number on which the symbol appears
+     *                 will be generated if the symbol is a keyword)
+     * @param line     the line number on which the symbol appears
      * @throws IOException if an error occurs while writing to the stream
      */
     protected void writeSymbol(String symbol, Set<String> keywords, int line)

@@ -28,6 +28,7 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.Writer;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -54,7 +55,7 @@ public class TarAnalyzer extends FileAnalyzer {
 
     protected TarAnalyzer(FileAnalyzerFactory factory) {
         super(factory);
-        content = new StringBuilder(64*1024);
+        content = new StringBuilder(64 * 1024);
         plainfull = new PlainFullTokenizer(dummy);
     }
 
@@ -68,12 +69,12 @@ public class TarAnalyzer extends FileAnalyzer {
             content.append(entry.getName()).append('\n');
         }
         content.trimToSize();
-        doc.add(new Field("full",dummy));
+        doc.add(new Field("full", dummy));
     }
 
     @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if("full".equals(fieldName)) {
+        if ("full".equals(fieldName)) {
             char[] cs = new char[content.length()];
             content.getChars(0, cs.length, cs, 0);
             plainfull.reInit(cs, cs.length);
@@ -84,6 +85,7 @@ public class TarAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to store HTML cross-reference
      */
     @Override

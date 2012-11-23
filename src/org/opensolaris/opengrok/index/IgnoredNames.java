@@ -33,46 +33,46 @@ import java.io.File;
  */
 public final class IgnoredNames extends Filter {
     private static final String[] defaultPatterns = {
-        "SCCS",
-        "CVS",
-        "RCS",
-        "cscope.in.out",
-        "cscope.out.po",
-        "cscope.out.in",
-        "cscope.po.out",
-        "cscope.po.in",
-        "cscope.files",
-        "cscope.out",
-        "Codemgr_wsdata",
-        ".cvsignore",
-        "CVSROOT",
-        // tags are leftover from the time when ctags did not run daemonized
-        // "TAGS",
-        // "tags",
-        ".svn",
-        ".git",
-        ".repo",
-        ".hg",
-        ".hgtags",
-        ".bzr",
-        ".p4config",
-        ".razor",
-        "*~",
-        "deleted_files",
-        ".make.*",
-        ".del-*",
-        "_MTN",
-        // File Extensions for Visual Studio and Mono Projects
-        ".vspscc",
-        ".suo",
-        ".vssscc",
-        ".user",
-        ".ncb",
-        ".gpState",
-        ".snc",
-        ".sln",
-        ".vsmdi",
-        ".dll",
+            "SCCS",
+            "CVS",
+            "RCS",
+            "cscope.in.out",
+            "cscope.out.po",
+            "cscope.out.in",
+            "cscope.po.out",
+            "cscope.po.in",
+            "cscope.files",
+            "cscope.out",
+            "Codemgr_wsdata",
+            ".cvsignore",
+            "CVSROOT",
+            // tags are leftover from the time when ctags did not run daemonized
+            // "TAGS",
+            // "tags",
+            ".svn",
+            ".git",
+            ".repo",
+            ".hg",
+            ".hgtags",
+            ".bzr",
+            ".p4config",
+            ".razor",
+            "*~",
+            "deleted_files",
+            ".make.*",
+            ".del-*",
+            "_MTN",
+            // File Extensions for Visual Studio and Mono Projects
+            ".vspscc",
+            ".suo",
+            ".vssscc",
+            ".user",
+            ".ncb",
+            ".gpState",
+            ".snc",
+            ".sln",
+            ".vsmdi",
+            ".dll",
     };
 
     public IgnoredNames() {
@@ -82,6 +82,7 @@ public final class IgnoredNames extends Filter {
 
     /**
      * Should the file be ignored or not?
+     *
      * @param file the file to check
      * @return true if this file should be ignored, false otherwise
      */
@@ -91,6 +92,7 @@ public final class IgnoredNames extends Filter {
 
     /**
      * Should the file be ignored or not?
+     *
      * @param name the name of the file to check
      * @return true if this pathname should be ignored, false otherwise
      */

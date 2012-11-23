@@ -57,6 +57,7 @@ public class RepositoryInfo implements Serializable {
 
     /**
      * Get the name of the root directory for this repository.
+     *
      * @return the name of the root directory
      */
     public String getDirectoryName() {
@@ -65,6 +66,7 @@ public class RepositoryInfo implements Serializable {
 
     /**
      * Specify the name of the root directory for this repository.
+     *
      * @param directoryName the new name of the root directory
      */
     public void setDirectoryName(String directoryName) {
@@ -102,6 +104,7 @@ public class RepositoryInfo implements Serializable {
 
     /**
      * Set the property remote
+     *
      * @param remote
      */
     public void setRemote(boolean remote) {
@@ -110,6 +113,7 @@ public class RepositoryInfo implements Serializable {
 
     /**
      * get property type
+     *
      * @return type
      */
     public String getType() {
@@ -118,6 +122,7 @@ public class RepositoryInfo implements Serializable {
 
     /**
      * Set property type
+     *
      * @param type
      */
     public void setType(String type) {

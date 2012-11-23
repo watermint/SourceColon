@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.opensolaris.opengrok.util.IOUtils;
 
 /**
@@ -100,12 +101,12 @@ public class Ctags {
                         sb.append('\n');
                     }
                 } catch (IOException exp) {
-                     log.log(Level.WARNING, "Got an exception reading ctags error stream: ", exp);
+                    log.log(Level.WARNING, "Got an exception reading ctags error stream: ", exp);
                 } finally {
                     IOUtils.close(error);
                 }
                 if (sb.length() > 0) {
-                     log.warning("Error from ctags: " + sb.toString());
+                    log.warning("Error from ctags: " + sb.toString());
                 }
             }
         });
@@ -219,21 +220,21 @@ public class Ctags {
                         //log.fine("Param = "+ arg);
                         int space = arg.lastIndexOf(' ');//TODO this is not the best way, but works to find the last string(name) in the argument, hence skipping type
                         if (space > 0 && space < arg.length()) {
-                            String afters=arg.substring(space+1);
+                            String afters = arg.substring(space + 1);
                             //FIXME this will not work for typeless languages such as python or assignments inside signature ... but since ctags doesn't provide signatures for python yet and assigning stuff in signature is not the case for c or java, we don't care ...
-                            String[] names=afters.split("[\\W]"); //this should just parse out variables, we assume first non empty text is the argument name
+                            String[] names = afters.split("[\\W]"); //this should just parse out variables, we assume first non empty text is the argument name
                             for (String name : names) {
-                             if (name.length()>0) {
-                              //log.fine("Param Def = "+ string);
-                              defs.addTag(Integer.parseInt(lnum), name.trim(),
-                                    "argument", def.trim() + signature.trim());
-                              break;
-                             }
+                                if (name.length() > 0) {
+                                    //log.fine("Param Def = "+ string);
+                                    defs.addTag(Integer.parseInt(lnum), name.trim(),
+                                            "argument", def.trim() + signature.trim());
+                                    break;
+                                }
                             }
                         }
                     }
                 }
-            //log.fine("Read = " + def + " : " + lnum + " = " + kind + " IS " + inher + " M " + match);
+                //log.fine("Read = " + def + " : " + lnum + " = " + kind + " IS " + inher + " M " + match);
             } while (true);
         } catch (Exception e) {
             log.log(Level.WARNING, "CTags parsing problem: ", e);

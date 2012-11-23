@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.IOUtils;
@@ -52,8 +53,8 @@ class FileHistoryCache implements HistoryCache {
     static class FilePersistenceDelegate extends PersistenceDelegate {
         @Override
         protected Expression instantiate(Object oldInstance, Encoder out) {
-            File f = (File)oldInstance;
-            return new Expression(oldInstance, f.getClass(), "new", new Object[] {f.toString()});
+            File f = (File) oldInstance;
+            return new Expression(oldInstance, f.getClass(), "new", new Object[]{f.toString()});
         }
     }
 
@@ -238,8 +239,8 @@ class FileHistoryCache implements HistoryCache {
             // invalidates the cache entry.
             RuntimeEnvironment env = RuntimeEnvironment.getInstance();
             if ((cache != null) &&
-                        (cache.exists() ||
-                             (time > env.getHistoryReaderTimeLimit()))) {
+                    (cache.exists() ||
+                            (time > env.getHistoryReaderTimeLimit()))) {
                 // retrieving the history takes too long, cache it!
                 storeFile(history, file);
             }
@@ -249,9 +250,10 @@ class FileHistoryCache implements HistoryCache {
 
     /**
      * Check if the cache is up to date for the specified file.
-     * @param file the file to check
+     *
+     * @param file       the file to check
      * @param cachedFile the file which contains the cached history for
-     * the file
+     *                   the file
      * @return {@code true} if the cache is up to date, {@code false} otherwise
      */
     private boolean isUpToDate(File file, File cachedFile) {
@@ -261,6 +263,7 @@ class FileHistoryCache implements HistoryCache {
 
     /**
      * Check if the directory is in the cache.
+     *
      * @param directory the directory to check
      * @return {@code true} if the directory is in the cache
      */
@@ -278,7 +281,7 @@ class FileHistoryCache implements HistoryCache {
         try {
             dir = new File(dir, env.getPathRelativeToSourceRoot(new File(repos.getDirectoryName()), 0));
         } catch (IOException e) {
-            throw new HistoryException("Could not resolve "+repos.getDirectoryName()+" relative to source root", e);
+            throw new HistoryException("Could not resolve " + repos.getDirectoryName() + " relative to source root", e);
         }
         return dir.exists();
     }

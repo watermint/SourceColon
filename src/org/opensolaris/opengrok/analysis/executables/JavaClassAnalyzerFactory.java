@@ -31,11 +31,11 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 public class JavaClassAnalyzerFactory extends FileAnalyzerFactory {
 
     private static final String[] SUFFIXES = {
-        "CLASS"
+            "CLASS"
     };
 
     private static final String[] MAGICS = {
-        "\312\376\272\276"      // cafebabe
+            "\312\376\272\276"      // cafebabe
     };
 
     public JavaClassAnalyzerFactory() {

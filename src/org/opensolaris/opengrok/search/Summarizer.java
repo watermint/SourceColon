@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
@@ -44,16 +45,24 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
 
 
-/** Implements hit summarization. */
+/**
+ * Implements hit summarization.
+ */
 public class Summarizer {
 
-    /** The number of context terms to display preceding and following matches.*/
+    /**
+     * The number of context terms to display preceding and following matches.
+     */
     private static final int SUM_CONTEXT = 10;
 
-    /** The total number of terms to display in a summary.*/
+    /**
+     * The total number of terms to display in a summary.
+     */
     private static final int SUM_LENGTH = 20;
 
-    /** Converts text to tokens. */
+    /**
+     * Converts text to tokens.
+     */
     private final Analyzer analyzer;
 
     private final Set<String> highlight = new HashSet<String>();            // put query terms in table
@@ -115,7 +124,9 @@ public class Summarizer {
         }
     }
 
-    /** Returns a summary for the given pre-tokenized text. */
+    /**
+     * Returns a summary for the given pre-tokenized text.
+     */
     public Summary getSummary(String text) throws IOException {
         if (text == null) {
             return null;
@@ -172,8 +183,8 @@ public class Summarizer {
                 // Start searching at a point SUM_CONTEXT terms back,
                 // and move SUM_CONTEXT terms into the future.
                 //
-                int startToken = (i > SUM_CONTEXT) ? i-SUM_CONTEXT : 0;
-                int endToken = Math.min(i+SUM_CONTEXT, tokens.length);
+                int startToken = (i > SUM_CONTEXT) ? i - SUM_CONTEXT : 0;
+                int endToken = Math.min(i + SUM_CONTEXT, tokens.length);
                 int offset = tokens[startToken].startOffset();
                 int j = startToken;
 
@@ -200,9 +211,9 @@ public class Summarizer {
                     if (highlight.contains(t.term())) {
                         excerpt.addToken(t.term());
                         excerpt.add(new Summary.Fragment(text.substring(offset, t.startOffset())));
-                        excerpt.add(new Summary.Highlight(text.substring(t.startOffset(),t.endOffset())));
+                        excerpt.add(new Summary.Highlight(text.substring(t.startOffset(), t.endOffset())));
                         offset = t.endOffset();
-                        endToken = Math.min(j+SUM_CONTEXT, tokens.length);
+                        endToken = Math.min(j + SUM_CONTEXT, tokens.length);
                     }
 
                     j++;
@@ -220,7 +231,7 @@ public class Summarizer {
                 // Add the words since the last hit-term insert.
                 //
                 if (j < tokens.length) {
-                    excerpt.add(new Summary.Fragment(text.substring(offset,tokens[j].endOffset())));
+                    excerpt.add(new Summary.Fragment(text.substring(offset, tokens[j].endOffset())));
                 }
 
                 //
@@ -237,7 +248,7 @@ public class Summarizer {
                 // Start SUM_CONTEXT places away.  The next
                 // search for relevant excerpts begins at i-SUM_CONTEXT
                 //
-                i = j+SUM_CONTEXT;
+                i = j + SUM_CONTEXT;
             }
         }
 
@@ -250,7 +261,7 @@ public class Summarizer {
             int excerptLen = Math.min(SUM_LENGTH, tokens.length);
             lastExcerptPos = excerptLen;
 
-            excerpt.add(new Summary.Fragment(text.substring(tokens[0].startOffset(), tokens[excerptLen-1].startOffset())));
+            excerpt.add(new Summary.Fragment(text.substring(tokens[0].startOffset(), tokens[excerptLen - 1].startOffset())));
             excerpt.setNumTerms(excerptLen);
             excerptSet.add(excerpt);
         }
@@ -266,7 +277,7 @@ public class Summarizer {
             excerptSet.remove(excerpt);
 
             double tokenFraction = (1.0 * excerpt.getNumTerms()) / excerpt.numFragments();
-            for (Summary.Fragment f: excerpt.elements()) {
+            for (Summary.Fragment f : excerpt.elements()) {
                 // Don't add fragments if it takes us over the max-limit
                 if (tokenCount + tokenFraction <= SUM_LENGTH) {
                     s.add(f);
@@ -288,8 +299,8 @@ public class Summarizer {
         TokenStream ts = analyzer.tokenStream("full", new StringReader(text));
         TermAttribute term = ts.addAttribute(TermAttribute.class);
         OffsetAttribute offset = ts.addAttribute(OffsetAttribute.class);
-        while(ts.incrementToken()) {
-            Token t=new Token(term.termBuffer(),0,term.termLength(),offset.startOffset(),offset.endOffset());
+        while (ts.incrementToken()) {
+            Token t = new Token(term.termBuffer(), 0, term.termLength(), offset.startOffset(), offset.endOffset());
             result.add(t);
         }
         return result.toArray(new Token[result.size()]);
@@ -340,6 +351,7 @@ public class Summarizer {
     private void getWildTerm(WildcardQuery query) {
         highlight.add(query.getTerm().text());
     }
+
     private void getPrefix(PrefixQuery query) {
         highlight.add(query.getPrefix().text());
     }

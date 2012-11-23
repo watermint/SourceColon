@@ -45,6 +45,7 @@ public class Project {
 
     /**
      * Get a textual description of this project
+     *
      * @return a textual description of the project
      */
     public String getDescription() {
@@ -53,6 +54,7 @@ public class Project {
 
     /**
      * Get the path (relative from source root) where this project is located
+     *
      * @return the relative path
      */
     public String getPath() {
@@ -61,6 +63,7 @@ public class Project {
 
     /**
      * Get the project id
+     *
      * @return the id of the project
      */
     public String getId() {
@@ -79,6 +82,7 @@ public class Project {
 
     /**
      * Set a textual description of this project, prefferably don't use " , " in the name, since it's used as delimiter for more projects
+     *
      * @param description a textual description of the project
      */
     public void setDescription(String description) {
@@ -88,6 +92,7 @@ public class Project {
     /**
      * Set the path (relative from source root) this project is located
      * It seems that you should ALWAYS prefix the path with current file.separator , current environment should always have it set up
+     *
      * @param path the relative path from source sroot where this project is
      *             located.
      */
@@ -109,7 +114,7 @@ public class Project {
      * Has this project an explicit tab size setting?
      *
      * @return {@code true} if the tab size has been set for this project, or
-     * {@code false} if it hasn't and the default should be used
+     *         {@code false} if it hasn't and the default should be used
      */
     public boolean hasTabSizeSetting() {
         return tabSize > 0;
@@ -117,13 +122,14 @@ public class Project {
 
     /**
      * Get the project for a specific file
+     *
      * @param path the file to lookup (relative from source root)
      * @return the project that this file belongs to (or null if the file
      *         doesn't belong to a project)
      */
     public static Project getProject(String path) {
         Project ret = null;
-        String lpath=path;
+        String lpath = path;
         if (File.separatorChar != '/') {
             lpath = path.replace(File.separatorChar, '/');
         }
@@ -140,6 +146,7 @@ public class Project {
 
     /**
      * Get the project for a specific file
+     *
      * @param file the file to lookup
      * @return the project that this file belongs to (or null if the file
      *         doesn't belong to a project)
@@ -158,6 +165,7 @@ public class Project {
 
     /**
      * Returns project object by its description, used in webapp to figure out which project is to be searched
+     *
      * @param desc description of the project
      * @return project that fits the description
      */

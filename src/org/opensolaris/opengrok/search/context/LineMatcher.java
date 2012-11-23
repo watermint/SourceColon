@@ -27,7 +27,6 @@ import java.util.Locale;
 
 /**
  * Base class for matching a line against terms
- *
  */
 public abstract class LineMatcher {
     public static String tagBegin, tagEnd;
@@ -44,7 +43,7 @@ public abstract class LineMatcher {
      * Create a {@code LineMatcher} instance.
      *
      * @param caseInsensitive if {@code true}, matching should not consider
-     * case differences significant
+     *                        case differences significant
      */
     LineMatcher(boolean caseInsensitive) {
         this.caseInsensitive = caseInsensitive;

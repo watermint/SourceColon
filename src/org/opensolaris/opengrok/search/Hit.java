@@ -77,10 +77,10 @@ public class Hit implements Comparable<Hit> {
      * Creates a new instance of Hit
      *
      * @param filename The name of the file this hit represents
-     * @param line The line containing the match
-     * @param lineno The line number in the file the match was found
-     * @param binary If this is a binary file or not
-     * @param alt Is this the "alternate" file
+     * @param line     The line containing the match
+     * @param lineno   The line number in the file the match was found
+     * @param binary   If this is a binary file or not
+     * @param alt      Is this the "alternate" file
      */
     public Hit(String filename, String line, String lineno, boolean binary, boolean alt) {
         if (filename != null) {
@@ -175,7 +175,6 @@ public class Hit implements Comparable<Hit> {
      * interface)
      *
      * @param o The object to compare this object with
-     *
      * @return the result of a toString().compareTo() of the filename
      */
     @Override
@@ -208,6 +207,7 @@ public class Hit implements Comparable<Hit> {
 
     /**
      * Getter for property tag.
+     *
      * @return Value of property tag.
      */
     public String getTag() {
@@ -217,6 +217,7 @@ public class Hit implements Comparable<Hit> {
 
     /**
      * Setter for property tag.
+     *
      * @param tag New value of property tag.
      */
     public void setTag(String tag) {
@@ -226,6 +227,7 @@ public class Hit implements Comparable<Hit> {
 
     /**
      * Should this be alternate file?
+     *
      * @return true if this is the "alternate" file
      */
     public boolean getAlt() {
@@ -235,6 +237,7 @@ public class Hit implements Comparable<Hit> {
     /**
      * Check if two objects are equal. Only consider the {@code filename} field
      * to match the return value of the {@link #compareTo(Hit)} method.
+     *
      * @param o the object to compare with
      * @return true if the filenames are equal
      */

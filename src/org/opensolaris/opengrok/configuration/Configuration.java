@@ -60,7 +60,9 @@ import org.opensolaris.opengrok.util.IOUtils;
 public final class Configuration {
     private String ctags;
 
-    /** Should the history log be cached? */
+    /**
+     * Should the history log be cached?
+     */
     private boolean historyCache;
     /**
      * The maximum time in milliseconds {@code HistoryCache.get()} can take
@@ -68,7 +70,9 @@ public final class Configuration {
      */
     private int historyCacheTime;
 
-    /** Should the history cache be stored in a database? */
+    /**
+     * Should the history cache be stored in a database?
+     */
     private boolean historyCacheInDB;
 
     private List<Project> projects;
@@ -77,7 +81,9 @@ public final class Configuration {
     private List<RepositoryInfo> repositories;
     private String urlPrefix;
     private boolean generateHtml;
-    /** Default project will be used, when no project is selected and no project is in cookie, so basically only the first time you open the first page, or when you clear your web cookies */
+    /**
+     * Default project will be used, when no project is selected and no project is in cookie, so basically only the first time you open the first page, or when you clear your web cookies
+     */
     private Project defaultProject;
     private int indexWordLimit;
     private boolean verbose;
@@ -106,13 +112,14 @@ public final class Configuration {
     private Set<String> allowedSymlinks;
     private boolean obfuscatingEMailAddresses;
     private boolean chattyStatusPage;
-    private final Map<String,String> cmds;
+    private final Map<String, String> cmds;
     private int tabSize;
     private static final Logger logger = Logger.getLogger(Configuration.class.getName());
 
     /**
      * Get the default tab size (number of space characters per tab character)
      * to use for each project. If {@code <= 0} tabs are read/write as is.
+     *
      * @return current tab size set.
      * @see Project#getTabSize()
      * @see org.opensolaris.opengrok.analysis.ExpandTabsReader
@@ -124,6 +131,7 @@ public final class Configuration {
     /**
      * Set the default tab size (number of space characters per tab character)
      * to use for each project. If {@code <= 0} tabs are read/write as is.
+     *
      * @param tabSize tabsize to set.
      * @see Project#setTabSize(int)
      * @see org.opensolaris.opengrok.analysis.ExpandTabsReader
@@ -140,7 +148,9 @@ public final class Configuration {
         this.scanningDepth = scanningDepth;
     }
 
-    /** Creates a new instance of Configuration */
+    /**
+     * Creates a new instance of Configuration
+     */
     public Configuration() {
         //defaults for an opengrok instance configuration
         setHistoryCache(true);
@@ -227,8 +237,9 @@ public final class Configuration {
 
     /**
      * Should the history log be cached?
+     *
      * @return {@code true} if a {@code HistoryCache} implementation should
-     * be used, {@code false} otherwise
+     *         be used, {@code false} otherwise
      */
     public boolean isHistoryCache() {
         return historyCache;
@@ -236,6 +247,7 @@ public final class Configuration {
 
     /**
      * Set whether history should be cached.
+     *
      * @param historyCache if {@code true} enable history cache
      */
     public void setHistoryCache(boolean historyCache) {
@@ -248,7 +260,7 @@ public final class Configuration {
      * {@code FileHistoryCache}.
      *
      * @return the maximum time in milliseconds a history request can take
-     * before it's cached
+     *         before it's cached
      */
     public int getHistoryCacheTime() {
         return historyCacheTime;
@@ -281,7 +293,7 @@ public final class Configuration {
      * FileHistoryCache}.
      *
      * @param historyCacheInDB whether the history cached should be stored in
-     * a database
+     *                         a database
      */
     public void setHistoryCacheInDB(boolean historyCacheInDB) {
         this.historyCacheInDB = historyCacheInDB;
@@ -328,6 +340,7 @@ public final class Configuration {
      * org.opensolaris.opengrok.analysis.executables.JavaClassAnalyzer} as well
      * as lexers (see {@link org.opensolaris.opengrok.analysis.JFlexXref})
      * when they create output with html links.
+     *
      * @param urlPrefix prefix to use.
      */
     public void setUrlPrefix(String urlPrefix) {
@@ -505,34 +518,36 @@ public final class Configuration {
     }
 
     private transient Date lastModified;
+
     /**
      * Get the date of the last index update.
+     *
      * @return the time of the last index update.
      */
     public Date getDateForLastIndexRun() {
-    	if (lastModified == null) {
-    		File timestamp = new File(getDataRoot(), "timestamp");
-        	lastModified = new Date(timestamp.lastModified());
-    	}
-    	return lastModified;
+        if (lastModified == null) {
+            File timestamp = new File(getDataRoot(), "timestamp");
+            lastModified = new Date(timestamp.lastModified());
+        }
+        return lastModified;
     }
 
     /**
      * Get the contents of a file or empty string if the file cannot be read.
      */
     private static String getFileContent(File file) {
-        if (file == null || ! file.canRead()) {
-        	return "";
+        if (file == null || !file.canRead()) {
+            return "";
         }
         FileReader fin = null;
         BufferedReader input = null;
         try {
-        	fin = new FileReader(file);
+            fin = new FileReader(file);
             input = new BufferedReader(fin);
             String line = null;
             StringBuilder contents = new StringBuilder();
             String EOL = System.getProperty("line.separator");
-            while (( line = input.readLine()) != null) {
+            while ((line = input.readLine()) != null) {
                 contents.append(line).append(EOL);
             }
             return contents.toString();
@@ -541,64 +556,72 @@ public final class Configuration {
         } catch (java.io.IOException e) {
             logger.warning("failed to read header include file: " + e.getMessage());
         } finally {
-        	if (input != null) {
-	            try { input.close(); } 
-	            catch (Exception e) { /* nothing we can do about it */ }
-        	} else if (fin != null) {
-	            try { fin.close(); } 
-	            catch (Exception e) { /* nothing we can do about it */ }
-        	}
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (Exception e) { /* nothing we can do about it */ }
+            } else if (fin != null) {
+                try {
+                    fin.close();
+                } catch (Exception e) { /* nothing we can do about it */ }
+            }
         }
         return "";
     }
 
     /**
-     * The name of the file relative to the <var>DATA_ROOT</var>, which should 
+     * The name of the file relative to the <var>DATA_ROOT</var>, which should
      * be included into the footer of generated web pages.
      */
     public static final String FOOTER_INCLUDE_FILE = "footer_include";
-    
+
     private transient String footer = null;
+
     /**
      * Get the contents of the footer include file.
-     * @return an empty string if it could not be read successfully, the 
-     * 	contents of the file otherwise.
+     *
+     * @return an empty string if it could not be read successfully, the
+     *         contents of the file otherwise.
      */
     public String getFooterIncludeFileContent() {
-    	if (footer == null) {
-    		footer = getFileContent(new File(getDataRoot(), FOOTER_INCLUDE_FILE));
-    	}
-    	return footer;
+        if (footer == null) {
+            footer = getFileContent(new File(getDataRoot(), FOOTER_INCLUDE_FILE));
+        }
+        return footer;
     }
 
     /**
-     * The name of the file relative to the <var>DATA_ROOT</var>, which should 
+     * The name of the file relative to the <var>DATA_ROOT</var>, which should
      * be included into the footer of generated web pages.
      */
     public static final String HEADER_INCLUDE_FILE = "header_include";
-    
+
     private transient String header = null;
+
     /**
      * Get the contents of the footer include file.
-     * @return an empty string if it could not be read successfully, the 
-     * 	contents of the file otherwise.
+     *
+     * @return an empty string if it could not be read successfully, the
+     *         contents of the file otherwise.
      */
     public String getHeaderIncludeFileContent() {
-    	if (header == null) {
-    		header = getFileContent(new File(getDataRoot(), HEADER_INCLUDE_FILE));
-    	}
-    	return header;
+        if (header == null) {
+            header = getFileContent(new File(getDataRoot(), HEADER_INCLUDE_FILE));
+        }
+        return header;
     }
 
     /**
-     * The name of the eftar file relative to the <var>DATA_ROOT</var>, which 
+     * The name of the eftar file relative to the <var>DATA_ROOT</var>, which
      * contains definition tags.
      */
     public static final String EFTAR_DTAGS_FILE = "index/dtags.eftar";
 
-    private transient String dtagsEftar = null; 
+    private transient String dtagsEftar = null;
+
     /**
      * Get the eftar file, which contains definition tags.
+     *
      * @return {@code null} if there is no such file, the file otherwise.
      */
     public File getDtagsEftar() {
@@ -612,7 +635,7 @@ public final class Configuration {
         }
         return dtagsEftar.isEmpty() ? null : new File(dtagsEftar);
     }
-    
+
     public String getDatabaseDriver() {
         return databaseDriver;
     }
@@ -655,6 +678,7 @@ public final class Configuration {
 
     /**
      * Write the current configuration to a file
+     *
      * @param file the file to write the configuration into
      * @throws IOException if an error occurs
      */
@@ -689,7 +713,6 @@ public final class Configuration {
     }
 
 
-
     public static Configuration makeXMLStringAsConfiguration(String xmlconfig) throws IOException {
         final Configuration ret;
         final ByteArrayInputStream in = new ByteArrayInputStream(xmlconfig.getBytes());
@@ -705,7 +728,7 @@ public final class Configuration {
         if (!(ret instanceof Configuration)) {
             throw new IOException("Not a valid config file");
         }
-        return (Configuration)ret;
+        return (Configuration) ret;
     }
 
 }

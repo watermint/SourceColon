@@ -24,6 +24,7 @@ package org.opensolaris.opengrok.analysis;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 

@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis;
 
 import java.io.Reader;
 import java.util.Set;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
@@ -33,31 +34,39 @@ import org.opensolaris.opengrok.analysis.plain.PlainFullTokenizer;
 public final class HistoryAnalyzer extends Analyzer {
     private final Set<Object> stopWords;
 
-    /** An array containing some common English words that are not usually useful
-    for searching. */
+    /**
+     * An array containing some common English words that are not usually useful
+     * for searching.
+     */
     private static final String[] ENGLISH_STOP_WORDS = {
-        "a", "an", "and", "are", "as", "at", "be", "but", "by",
-        "for", "if", "in", "into", "is", "it",
-        "no", "not", "of", "on", "or", "s", "such",
-        "t", "that", "the", "their", "then", "there", "these",
-        "they", "this", "to", "was", "will", "with",
-        "/", "\\", ":",".","0.0", "1.0"
+            "a", "an", "and", "are", "as", "at", "be", "but", "by",
+            "for", "if", "in", "into", "is", "it",
+            "no", "not", "of", "on", "or", "s", "such",
+            "t", "that", "the", "their", "then", "there", "these",
+            "they", "this", "to", "was", "will", "with",
+            "/", "\\", ":", ".", "0.0", "1.0"
     };
 
-    /** Builds an analyzer which removes words in ENGLISH_STOP_WORDS. */
+    /**
+     * Builds an analyzer which removes words in ENGLISH_STOP_WORDS.
+     */
     public HistoryAnalyzer() {
         stopWords = StopFilter.makeStopSet(ENGLISH_STOP_WORDS);
     }
 
-    /** Builds an analyzer which removes words in the provided array. */
+    /**
+     * Builds an analyzer which removes words in the provided array.
+     */
     public HistoryAnalyzer(String[] stopWords) {
         this.stopWords = StopFilter.makeStopSet(stopWords);
     }
 
-    /** Filters LowerCaseTokenizer with StopFilter. */
+    /**
+     * Filters LowerCaseTokenizer with StopFilter.
+     */
     @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
         //we are counting position increments, this might affect the queries later and need to be in sync, especially for highlighting of results
-        return new StopFilter(true,new PlainFullTokenizer(reader), stopWords);
+        return new StopFilter(true, new PlainFullTokenizer(reader), stopWords);
     }
 }

@@ -27,7 +27,9 @@ package org.opensolaris.opengrok.management;
  * Constants used by the JMX agent and the client.
  */
 public final class Constants {
-    /** Private constructor to prevent instantiation. */
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private Constants() {
         // do nothing
     }
@@ -38,7 +40,9 @@ public final class Constants {
      */
     public static final String RMI_PROTOCOL = "rmi";
 
-    /** Property specifying path where log files should be written. */
+    /**
+     * Property specifying path where log files should be written.
+     */
     public static final String LOG_PATH =
             "org.opensolaris.opengrok.management.logging.path";
 
@@ -57,11 +61,15 @@ public final class Constants {
     public static final String JMX_URL =
             "org.opensolaris.opengrok.management.url";
 
-    /** Property specifying JMX server host. We use localhost by default. */
+    /**
+     * Property specifying JMX server host. We use localhost by default.
+     */
     public static final String JMX_HOST =
             "org.opensolaris.opengrok.management.host";
 
-    /** Property specifying JMX server port. We use 9292 by default. */
+    /**
+     * Property specifying JMX server port. We use 9292 by default.
+     */
     public static final String JMX_PORT =
             "org.opensolaris.opengrok.management.port";
 

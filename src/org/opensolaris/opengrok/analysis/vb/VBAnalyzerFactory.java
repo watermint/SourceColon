@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis.vb;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -35,12 +36,12 @@ import org.opensolaris.opengrok.history.Annotation;
 public class VBAnalyzerFactory extends FileAnalyzerFactory {
 
     private static final String[] SUFFIXES = {
-        "VB",
-        "CLS",
-        "CTL",
-        "BAS",
-        "FRM",
-        "VBS"
+            "VB",
+            "CLS",
+            "CTL",
+            "BAS",
+            "FRM",
+            "VBS"
     };
 
     public VBAnalyzerFactory() {

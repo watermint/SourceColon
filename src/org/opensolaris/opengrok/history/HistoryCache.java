@@ -41,7 +41,7 @@ interface HistoryCache {
      *
      * @param repository the repository to check
      * @return {@code true} if this cache implementation can store history
-     * for the repository, or {@code false} otherwise
+     *         for the repository, or {@code false} otherwise
      */
     boolean supportsRepository(Repository repository);
 
@@ -49,14 +49,14 @@ interface HistoryCache {
      * Retrieve the history for the given file, either from the cache or by
      * parsing the history information in the repository.
      *
-     * @param file The file to retrieve history for
+     * @param file        The file to retrieve history for
      * @param parserClass The class that implements the parser to use
-     * @param repository The external repository to read the history from (can
-     * be <code>null</code>)
-     * @param withFiles A flag saying whether or not the returned history
-     * should include a list of files touched by each changeset. If false,
-     * the implementation is allowed to skip the file list, but it doesn't
-     * have to.
+     * @param repository  The external repository to read the history from (can
+     *                    be <code>null</code>)
+     * @param withFiles   A flag saying whether or not the returned history
+     *                    should include a list of files touched by each changeset. If false,
+     *                    the implementation is allowed to skip the file list, but it doesn't
+     *                    have to.
      * @throws HistoryException if the history cannot be fetched
      */
     History get(File file, Repository repository, boolean withFiles)
@@ -65,7 +65,7 @@ interface HistoryCache {
     /**
      * Store the history for a repository.
      *
-     * @param history The history to store
+     * @param history    The history to store
      * @param repository The repository whose history to store
      * @throws HistoryException if the history cannot be stored
      */
@@ -86,10 +86,11 @@ interface HistoryCache {
 
     /**
      * Check if the specified directory is present in the cache.
-     * @param directory the directory to check
+     *
+     * @param directory  the directory to check
      * @param repository the repository in which the directory is stored
      * @return {@code true} if the directory is in the cache, {@code false}
-     * otherwise
+     *         otherwise
      */
     boolean hasCacheForDirectory(File directory, Repository repository)
             throws HistoryException;
@@ -100,7 +101,7 @@ interface HistoryCache {
      *
      * @param repository the repository whose latest revision to return
      * @return a string representing the latest revision in the cache, or
-     * {@code null} if it is unknown
+     *         {@code null} if it is unknown
      */
     String getLatestCachedRevision(Repository repository)
             throws HistoryException;

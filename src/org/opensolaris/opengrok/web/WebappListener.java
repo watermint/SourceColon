@@ -32,11 +32,13 @@ import java.util.logging.Level;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 
 /**
  * Populate the Mercurial Repositories
+ *
  * @author Trond Norbye
  */
 public final class WebappListener implements ServletContextListener {

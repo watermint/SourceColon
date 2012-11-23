@@ -25,20 +25,30 @@ package org.opensolaris.opengrok.web;
 /**
  * Known diff display types.
  *
- * @author  Jens Elkner
+ * @author Jens Elkner
  * @version $Revision$
  */
 public enum DiffType {
 
-    /** side-by-side diff */
+    /**
+     * side-by-side diff
+     */
     SIDEBYSIDE('s', "sdiff"),
-    /** unified diff (i.e. with context lines) */
+    /**
+     * unified diff (i.e. with context lines)
+     */
     UNIFIED('u', "udiff"),
-    /** traditional ed diff (no context lines) */
+    /**
+     * traditional ed diff (no context lines)
+     */
     TEXT('t', "text"),
-    /** the old version of the file (before changes applied) */
+    /**
+     * the old version of the file (before changes applied)
+     */
     OLD('o', "old"),
-    /** the new version of the file (after changes applied) */
+    /**
+     * the new version of the file (after changes applied)
+     */
     NEW('n', "new");
     private char abbrev;
     private String name;
@@ -50,6 +60,7 @@ public enum DiffType {
 
     /**
      * Get the diff type for the given abbreviation.
+     *
      * @param c abbreviation to check.
      * @return {@code null} if not found, the diff type otherwise.
      */
@@ -64,6 +75,7 @@ public enum DiffType {
 
     /**
      * Get the diff type for the given abbreviation or name.
+     *
      * @param c abbreviation or name to check.
      * @return {@code null} if not found, the diff type otherwise.
      */
@@ -85,6 +97,7 @@ public enum DiffType {
 
     /**
      * Get the abbreviation to be used for this diff type.
+     *
      * @return wrt. to all known diff types a unique character.
      */
     public char getAbbrev() {
@@ -93,6 +106,7 @@ public enum DiffType {
 
     /**
      * {@inheritDoc}
+     *
      * @return the common name of the diff type.
      */
     @Override

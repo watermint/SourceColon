@@ -30,7 +30,7 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public final class JarAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "JAR", "WAR", "EAR"
+            "JAR", "WAR", "EAR"
     };
 
     public static final JarAnalyzerFactory DEFAULT_INSTANCE =

@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.analysis.python;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -34,7 +35,6 @@ import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
 
 /**
- *
  * @author Lubos Kosco
  */
 
@@ -42,13 +42,13 @@ public class PythonAnalyzerFactory extends FileAnalyzerFactory {
     //TODO note that .PM below is kind of wrong, since perl already has this and is registered before python analyzer
     // unfortunately we miss code that would be able to share extensions between analyzers
     private static final String[] SUFFIXES = {
-        "PY"
+            "PY"
     };
-        //"PM"
+    //"PM"
     private static final String[] MAGICS = {
-        "#!/usr/bin/env python",
-        "#!/usr/bin/python",
-        "#!/bin/python"
+            "#!/usr/bin/env python",
+            "#!/usr/bin/python",
+            "#!/bin/python"
     };
 
     public PythonAnalyzerFactory() {
@@ -62,7 +62,7 @@ public class PythonAnalyzerFactory extends FileAnalyzerFactory {
 
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
-        throws IOException {
+            throws IOException {
         PythonAnalyzer.writeXref(in, out, defs, annotation, project);
     }
 }

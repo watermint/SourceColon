@@ -30,7 +30,7 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class TarAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {
-        "TAR"
+            "TAR"
     };
 
     public TarAnalyzerFactory() {

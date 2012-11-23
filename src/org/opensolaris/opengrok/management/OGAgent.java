@@ -46,17 +46,20 @@ import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
 import javax.management.timer.Timer;
+
 import org.opensolaris.opengrok.Info;
 import org.opensolaris.opengrok.OpenGrokLogger;
 
 // PMD thinks this import is unused (confused because it's static?)
 import org.opensolaris.opengrok.util.IOUtils;
+
 import static org.opensolaris.opengrok.management.Constants.*; // NOPMD
 
 /**
  * OG Agent main class.
  * Class for starting the basic components:
  * Monitor and JMX and HTTP Connectors.
+ *
  * @author Jan S Berg
  */
 final public class OGAgent {
@@ -141,9 +144,9 @@ final public class OGAgent {
 
             setIfNotSet(props, JMX_URL,
                     "service:jmx:rmi://" + props.getProperty(JMX_HOST) + ":" +
-                    props.getProperty(JMX_PORT) + "/jndi/rmi://" +
-                    props.getProperty(JMX_HOST) + ":" +
-                    props.getProperty(RMI_PORT) + "/opengrok");
+                            props.getProperty(JMX_PORT) + "/jndi/rmi://" +
+                            props.getProperty(JMX_HOST) + ":" +
+                            props.getProperty(RMI_PORT) + "/opengrok");
 
             success = createLogger(props);
         }
@@ -253,16 +256,16 @@ final public class OGAgent {
         Long longPeriod = Long.valueOf(period * Timer.ONE_SECOND);
         Integer id = (Integer) server.invoke(timer, "addNotification",
                 new Object[]{"timer.notification", // Type
-                    "Time to index again", // Message
-                    null, // user data
-                    date, // Start time
-                    longPeriod, // Period
+                        "Time to index again", // Message
+                        null, // user data
+                        date, // Start time
+                        longPeriod, // Period
                 },
                 new String[]{String.class.getName(),
-                    String.class.getName(),
-                    Object.class.getName(),
-                    Date.class.getName(),
-                    "long",});
+                        String.class.getName(),
+                        Object.class.getName(),
+                        Date.class.getName(),
+                        "long",});
 
         // Add indexer as listener to index notifications
         NotificationFilter filter = new TimerFilter(id);

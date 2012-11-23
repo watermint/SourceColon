@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -58,6 +59,7 @@ public class ELFAnalyzer extends FileAnalyzer {
     private PlainFullTokenizer plainfull;
 
     private static final List<String> READABLE_SECTIONS;
+
     static {
         READABLE_SECTIONS = new ArrayList<String>();
         READABLE_SECTIONS.add(".debug_str");
@@ -70,6 +72,7 @@ public class ELFAnalyzer extends FileAnalyzer {
 
     /**
      * Creates a new instance of ELFAnalyzer
+     *
      * @param factory The factory that creates ELFAnalyzers
      */
     protected ELFAnalyzer(FileAnalyzerFactory factory) {
@@ -114,7 +117,7 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         if (stringSection.sh_size == 0) {
             OpenGrokLogger.getLogger().log(Level.FINE, "Skipping file, no section name string table");
-            return ;
+            return;
         }
 
         HashMap<String, Integer> sectionMap = new HashMap<String, Integer>();
@@ -193,6 +196,7 @@ public class ELFAnalyzer extends FileAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write
      */
     @Override
@@ -231,9 +235,9 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         public ELFHeader(MappedByteBuffer fmap) throws IllegalArgumentException {
             if (fmap.get(ELFIdentification.EI_MAG0.value()) != 0x7f ||
-                fmap.get(ELFIdentification.EI_MAG1.value()) != 'E' ||
-                fmap.get(ELFIdentification.EI_MAG2.value()) != 'L' ||
-                fmap.get(ELFIdentification.EI_MAG3.value()) != 'F') {
+                    fmap.get(ELFIdentification.EI_MAG1.value()) != 'E' ||
+                    fmap.get(ELFIdentification.EI_MAG2.value()) != 'L' ||
+                    fmap.get(ELFIdentification.EI_MAG3.value()) != 'F') {
                 throw new IllegalArgumentException("Not an ELF file");
             }
 
@@ -270,35 +274,35 @@ public class ELFAnalyzer extends FileAnalyzer {
     }
 
     private static class ELFSection {
-        public static final int SHT_NULL =      0;      /* Section header table entry unused */
-        public static final int SHT_PROGBITS =  1;      /* Program data */
-        public static final int SHT_SYMTAB =    2;      /* Symbol table */
-        public static final int SHT_STRTAB =    3;      /* String table */
-        public static final int SHT_RELA =      4;      /* Relocation entries with addends */
-        public static final int SHT_HASH =      5;      /* Symbol hash table */
-        public static final int SHT_DYNAMIC =   6;      /* Dynamic linking information */
-        public static final int SHT_NOTE =      7;      /* Notes */
-        public static final int SHT_NOBITS =    8;      /* Program space with no data (bss) */
-        public static final int SHT_REL =       9;      /* Relocation entries, no addends */
-        public static final int SHT_SHLIB =     10;     /* Reserved */
-        public static final int SHT_DYNSYM =    11;     /* Dynamic linker symbol table */
-        public static final int SHT_INIT_ARRAY =        14;     /* Array of constructors */
-        public static final int SHT_FINI_ARRAY =        15;     /* Array of destructors */
-        public static final int SHT_PREINIT_ARRAY =     16;     /* Array of pre-constructors */
-        public static final int SHT_GROUP =     17;     /* Section group */
-        public static final int SHT_SYMTAB_SHNDX =      18;     /* Extended section indeces */
-        public static final int SHT_NUM =       19;     /* Number of defined types.  */
-        public static final int SHT_LOOS =      0x60000000;     /* Start OS-specific */
-        public static final int SHT_GNU_LIBLIST =       0x6ffffff7;     /* Prelink library list */
-        public static final int SHT_CHECKSUM =  0x6ffffff8;     /* Checksum for DSO content.  */
-        public static final int SHT_LOSUNW =    0x6ffffffa;     /* Sun-specific low bound.  */
-        public static final int SHT_SUNW_COMDAT =       0x6ffffffb;
-        public static final int SHT_HISUNW =    0x6fffffff;     /* Sun-specific high bound.  */
-        public static final int SHT_HIOS =      0x6fffffff;     /* End OS-specific type */
-        public static final int SHT_LOPROC =    0x70000000;     /* Start of processor-specific */
-        public static final int SHT_HIPROC =    0x7fffffff;     /* End of processor-specific */
-        public static final int SHT_LOUSER =    0x80000000;     /* Start of application-specific */
-        public static final int SHT_HIUSER =    0x8fffffff;     /* End of application-specific */
+        public static final int SHT_NULL = 0;      /* Section header table entry unused */
+        public static final int SHT_PROGBITS = 1;      /* Program data */
+        public static final int SHT_SYMTAB = 2;      /* Symbol table */
+        public static final int SHT_STRTAB = 3;      /* String table */
+        public static final int SHT_RELA = 4;      /* Relocation entries with addends */
+        public static final int SHT_HASH = 5;      /* Symbol hash table */
+        public static final int SHT_DYNAMIC = 6;      /* Dynamic linking information */
+        public static final int SHT_NOTE = 7;      /* Notes */
+        public static final int SHT_NOBITS = 8;      /* Program space with no data (bss) */
+        public static final int SHT_REL = 9;      /* Relocation entries, no addends */
+        public static final int SHT_SHLIB = 10;     /* Reserved */
+        public static final int SHT_DYNSYM = 11;     /* Dynamic linker symbol table */
+        public static final int SHT_INIT_ARRAY = 14;     /* Array of constructors */
+        public static final int SHT_FINI_ARRAY = 15;     /* Array of destructors */
+        public static final int SHT_PREINIT_ARRAY = 16;     /* Array of pre-constructors */
+        public static final int SHT_GROUP = 17;     /* Section group */
+        public static final int SHT_SYMTAB_SHNDX = 18;     /* Extended section indeces */
+        public static final int SHT_NUM = 19;     /* Number of defined types.  */
+        public static final int SHT_LOOS = 0x60000000;     /* Start OS-specific */
+        public static final int SHT_GNU_LIBLIST = 0x6ffffff7;     /* Prelink library list */
+        public static final int SHT_CHECKSUM = 0x6ffffff8;     /* Checksum for DSO content.  */
+        public static final int SHT_LOSUNW = 0x6ffffffa;     /* Sun-specific low bound.  */
+        public static final int SHT_SUNW_COMDAT = 0x6ffffffb;
+        public static final int SHT_HISUNW = 0x6fffffff;     /* Sun-specific high bound.  */
+        public static final int SHT_HIOS = 0x6fffffff;     /* End OS-specific type */
+        public static final int SHT_LOPROC = 0x70000000;     /* Start of processor-specific */
+        public static final int SHT_HIPROC = 0x7fffffff;     /* End of processor-specific */
+        public static final int SHT_LOUSER = 0x80000000;     /* Start of application-specific */
+        public static final int SHT_HIUSER = 0x8fffffff;     /* End of application-specific */
 
         public int sh_name;
         public int sh_type;
@@ -358,7 +362,7 @@ public class ELFAnalyzer extends FileAnalyzer {
         ELFCLASS64(2);
 
         final String[] textual = {
-            "None", "32", "64"
+                "None", "32", "64"
         };
 
         private final int value;
@@ -369,9 +373,12 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         static EI_Class valueOf(byte value) throws IllegalArgumentException {
             switch (value) {
-                case 0: return ELFCLASSNONE;
-                case 1: return ELFCLASS32;
-                case 2: return ELFCLASS64;
+                case 0:
+                    return ELFCLASSNONE;
+                case 1:
+                    return ELFCLASS32;
+                case 2:
+                    return ELFCLASS64;
                 default:
                     throw new IllegalArgumentException("Invalid EI_CLASS value:" + value);
             }
@@ -400,9 +407,12 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         static EI_Data valueOf(byte value) throws IllegalArgumentException {
             switch (value) {
-                case 0: return ELFDATANONE;
-                case 1: return ELFDATA2LSB;
-                case 2: return ELFDATA2MSB;
+                case 0:
+                    return ELFDATANONE;
+                case 1:
+                    return ELFDATA2LSB;
+                case 2:
+                    return ELFDATA2MSB;
                 default:
                     throw new IllegalArgumentException("Invalid EI_DATA value:" + value);
             }
@@ -422,7 +432,7 @@ public class ELFAnalyzer extends FileAnalyzer {
         ET_UNKNOWN(0xFFFF);
 
         final String[] textual = {
-            "None", "Relocable", "Executable", "Shared object", "Core"
+                "None", "Relocable", "Executable", "Shared object", "Core"
         };
 
         private final int value;
@@ -433,11 +443,16 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         static E_Type valueOf(short value) {
             switch (value) {
-                case 0: return ET_NONE;
-                case 1: return ET_REL;
-                case 2: return ET_EXEC;
-                case 3: return ET_DYN;
-                case 4: return ET_CORE;
+                case 0:
+                    return ET_NONE;
+                case 1:
+                    return ET_REL;
+                case 2:
+                    return ET_EXEC;
+                case 3:
+                    return ET_DYN;
+                case 4:
+                    return ET_CORE;
                 default:
                     return ET_UNKNOWN;
             }
@@ -468,9 +483,9 @@ public class ELFAnalyzer extends FileAnalyzer {
         EM_UNKNOWN(0xFFFF);
 
         final String[] textual = {
-            "No machine", "AT&T WE 32100", "SPARC", "Intel 80386",
-            "Motorola 68000", "Motorola 88000", null,
-            "Intel 80860", "MIPS RS3000"
+                "No machine", "AT&T WE 32100", "SPARC", "Intel 80386",
+                "Motorola 68000", "Motorola 88000", null,
+                "Intel 80860", "MIPS RS3000"
         };
 
         private final int value;
@@ -481,14 +496,22 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         static E_Machine valueOf(short value) {
             switch (value) {
-                case 0: return EM_NONE;
-                case 1: return EM_M32;
-                case 2: return EM_SPARC;
-                case 3: return EM_386;
-                case 4: return EM_68K;
-                case 5: return EM_88K;
-                case 7: return EM_860;
-                case 8: return EM_MIPS;
+                case 0:
+                    return EM_NONE;
+                case 1:
+                    return EM_M32;
+                case 2:
+                    return EM_SPARC;
+                case 3:
+                    return EM_386;
+                case 4:
+                    return EM_68K;
+                case 5:
+                    return EM_88K;
+                case 7:
+                    return EM_860;
+                case 8:
+                    return EM_MIPS;
                 default:
                     return EM_UNKNOWN;
             }
@@ -512,7 +535,7 @@ public class ELFAnalyzer extends FileAnalyzer {
         EV_CURRENT(1);
 
         final String[] textual = {
-            "Invalid", "Current"
+                "Invalid", "Current"
         };
 
         private final int value;
@@ -523,8 +546,10 @@ public class ELFAnalyzer extends FileAnalyzer {
 
         static E_Version valueOf(int value) throws IllegalArgumentException {
             switch (value) {
-                case 0: return EV_NONE;
-                case 1: return EV_CURRENT;
+                case 0:
+                    return EV_NONE;
+                case 1:
+                    return EV_CURRENT;
                 default:
                     throw new IllegalArgumentException("Illegal (or unknown) version number: " + value);
             }

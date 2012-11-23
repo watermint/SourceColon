@@ -25,16 +25,22 @@ package org.opensolaris.opengrok.web;
 /**
  * Sort orders recognized in the web UI.
  *
- * @author  Jens Elkner
+ * @author Jens Elkner
  * @version $Revision$
  */
 public enum SortOrder {
 
-    /** sort by last modification time */
+    /**
+     * sort by last modification time
+     */
     LASTMODIFIED("lastmodtime", "last modified time"),
-    /** sort by relevancy */
+    /**
+     * sort by relevancy
+     */
     RELEVANCY("relevancy", "relevance"),
-    /** sort by path */
+    /**
+     * sort by path
+     */
     BY_PATH("fullpath", "path");
     private String name;
     private String desc;
@@ -46,9 +52,10 @@ public enum SortOrder {
 
     /**
      * Get the Sort order wrt. the given name.
+     *
      * @param name the query parameter name of the order to find.
      * @return {@code null} if there is no SortOrder with the given name,
-     *  the corresponding SortOrder otherwise.
+     *         the corresponding SortOrder otherwise.
      * @see #toString()
      */
     public static SortOrder get(String name) {
@@ -73,6 +80,7 @@ public enum SortOrder {
 
     /**
      * A more user friendly description (UI name) of the sort order.
+     *
      * @return a very short description.
      */
     public String getDesc() {

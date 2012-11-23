@@ -32,6 +32,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.logging.Level;
+
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.Executor;
@@ -47,6 +48,7 @@ class GitHistoryParser implements Executor.StreamHandler {
 
         HEADER, MESSAGE, FILES
     }
+
     private String myDir;
     private History history;
     private GitRepository repository = new GitRepository();
@@ -68,7 +70,7 @@ class GitHistoryParser implements Executor.StreamHandler {
             IOUtils.close(in);
         }
     }
-    
+
     private void process(BufferedReader in) throws IOException {
         DateFormat df = repository.getDateFormat();
         ArrayList<HistoryEntry> entries = new ArrayList<HistoryEntry>();
@@ -146,7 +148,7 @@ class GitHistoryParser implements Executor.StreamHandler {
     /**
      * Parse the history for the specified file.
      *
-     * @param file the file to parse history for
+     * @param file  the file to parse history for
      * @param repos Pointer to the SubversionReporitory
      * @return object representing the file's history
      */

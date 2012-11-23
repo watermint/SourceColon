@@ -36,12 +36,14 @@ public interface JMXConfigurationMBean {
 
     /**
      * Get the current OpenGrok configuration object
+     *
      * @return String XML representation of the opengrok configuration
      */
     public String getConfiguration();
 
     /**
      * Deploy a new configuration for OpenGrok
+     *
      * @param config String the configuration object in xml to set
      */
     public void setConfiguration(String config) throws IOException;

@@ -65,17 +65,17 @@ public class XMLAnalyzer extends TextAnalyzer {
     @Override
     public void analyze(Document doc, Reader in) throws IOException {
         len = 0;
-        do{
+        do {
             int rbytes = in.read(content, len, content.length - len);
-            if(rbytes > 0 ) {
-                if(rbytes == (content.length - len)) {
+            if (rbytes > 0) {
+                if (rbytes == (content.length - len)) {
                     content = Arrays.copyOf(content, content.length * 2);
                 }
                 len += rbytes;
             } else {
                 break;
             }
-        } while(true);
+        } while (true);
 
         doc.add(new Field("full", dummy));
     }
@@ -90,6 +90,7 @@ public class XMLAnalyzer extends TextAnalyzer {
 
     /**
      * Write a cross referenced HTML file.
+     *
      * @param out Writer to write HTML cross-reference
      */
     public void writeXref(Writer out) throws IOException {
@@ -100,9 +101,10 @@ public class XMLAnalyzer extends TextAnalyzer {
 
     /**
      * Write a cross referenced HTML file reads the source from in
-     * @param in Input source
-     * @param out Output xref writer
-     * @param defs definitions for the file (could be null)
+     *
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      * @param annotation annotation for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {
