@@ -5,10 +5,7 @@ apply plugin: 'war'
 apply plugin: 'jetty'
 
 configurations {
-    generatesrc
-    runtime {
-        extendsFrom compile
-    }
+    jflex
 }
 
 repositories {
@@ -17,21 +14,23 @@ repositories {
 }
 
 ext {
-    base         = '.'
-    src          = new File(base, 'src')
-    workspace    = new File(base, 'build')
-    dist         = new File(base, 'dist')
-    generatedsrc = new File(workspace, '/generatedsrc')
-    workingdirs  = [workspace, generatedsrc, dist]
+    src          = new File(project.projectDir, 'src')
+    dist         = new File(project.projectDir, 'dist')
+    generatedsrc = new File(project.buildDir, '/generatedsrc')
+    workingdirs  = [project.buildDir, generatedsrc, dist]
 }
 
 dependencies {
-    generatesrc 'de.jflex:maven-jflex-plugin:1.4.3'
-    compile 'org.apache.lucene:lucene-core:3.0.2'
-    compile 'org.apache.lucene:lucene-spellchecker:3.0.2'
-    compile 'org.apache.bcel:bcel:5.2'
-    compile 'org.apache.ant:ant:1.8.1'
+    List common = [
+            'org.apache.lucene:lucene-core:3.0.2',
+            'org.apache.lucene:lucene-spellchecker:3.0.2',
+            'org.apache.bcel:bcel:5.2',
+            'org.apache.ant:ant:1.8.1'
+    ]
+    jflex 'de.jflex:maven-jflex-plugin:1.4.3'
+    compile common
     compile 'javax.servlet:servlet-api:2.5'
+    runtime common
     testCompile 'junit:junit:4.8.2'
 }
 
@@ -46,7 +45,7 @@ task prepare << {
 }
 
 task jflex(dependsOn: prepare) << {
-    ant.taskdef(name: 'jflex', classname: 'JFlex.anttask.JFlexTask', classpath: configurations.generatesrc.asPath)
+    ant.taskdef(name: 'jflex', classname: 'JFlex.anttask.JFlexTask', classpath: configurations.jflex.asPath)
 
     fileTree(dir: project.ext.src).include('**/*.lex').each {
         ant.jflex(destdir: project.ext.generatedsrc, file: it)
@@ -70,12 +69,12 @@ sourceSets {
     }
     test {
         java {
-            srcDir project.base + '/test/java'
+            srcDir new File(project.projectDir, '/test/java')
         }
         resources {
             srcDir project.ext.src
-            srcDir project.base + '/test/java'
-            srcDir project.base + '/test/data'
+            srcDir new File(project.projectDir, '/test/java')
+            srcDir new File(project.projectDir, '/test/data')
         }
     }
 }
@@ -88,21 +87,35 @@ jar {
     from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
+task prepareWar(dependsOn: jar) << {
+    File destWar = new File(project.buildDir, 'war')
+    File baseWar = new File(project.projectDir, 'web')
+    copy {
+        from baseWar
+        into destWar
+    }
+    copy {
+        from jar.archivePath
+        into new File(destWar, 'WEB-INF/lib')
+    }
+}
+
 war {
-    from project.base + '/war'
+    destinationDir project.ext.dist
+    from new File(project.buildDir, 'war')
 }
 
 task runIndexer(dependsOn: jar) << {
-    File scRoot   = new File(project.ext.workspace, 'sc')
-    File scData   = new File(scRoot, 'data')
-    File scEtc    = new File(scRoot, 'etc')
-    File scConfig = new File(scEtc, 'configuration.xml')
+    File scRoot   = file(project.buildDir, 'sc')
+    File scData   = file(scRoot, 'data')
+    File scEtc    = file(scRoot, 'etc')
+    File scConfig = file(scEtc, 'configuration.xml')
 
     [scData, scEtc].each {
         it.mkdirs()
     }
 
-    ant.java(jar: project.ext.dist.absolutePath + '/SourceColon.jar', fork: true) {
+    ant.java(jar: jar.archivePath, fork: true) {
         arg(value: '-s')
         arg(value: project.ext.src.absolutePath)
         arg(value: '-d')
