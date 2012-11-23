@@ -71,92 +71,120 @@ org.opensolaris.opengrok.web.Util"%><%
     String rev = cfg.getRequestedRevision();
 %><%@
 
-include file="httpheader.jspf"
+include file="header.jspf"
 
-%><body>
-<script type="text/javascript">/* <![CDATA[ */
-    document.hash = '<%= cfg.getDocumentHash()
-    %>';document.rev = '<%= rev
-    %>';document.link = '<%= context + Prefix.XREF_P + uriEncodedPath
-    %>';document.annotate = <%= cfg.annotate() %>;
+%>
+<script type="text/javascript">
+    document.hash = '<%= cfg.getDocumentHash() %>';
+    document.rev  = '<%= rev %>';
+    document.link = '<%= context + Prefix.XREF_P + uriEncodedPath %>';
+    document.annotate = <%= cfg.annotate() %>;
     document.domReady.push(function() {domReadyMast();});
     document.pageReady.push(function() { pageReadyMast();});
-/* ]]> */</script>
-<div id="page">
+</script>
+
+<div class="container">
     <div id="whole_header">
         <form action="<%= context + Prefix.SEARCH_P %>">
-<div id="header"><%@
-
-include file="pageheader.jspf"
-
-%>
-    <div id="pagetitle"><span id="filename"
-                    >Cross Reference: <%= cfg.getCrossFilename() %></span><%
-    String dtag = cfg.getDefineTagsIndex();
-    if (dtag.length() > 0) {
-                    %><br/><%= dtag %><%
-    }
-    %></div>
-</div>
-<div id="Masthead">
-    <tt><a href="<%= context + Prefix.XREF_P %>/">xref</a>: <%= Util
-        .breadcrumbPath(context + Prefix.XREF_P, path,'/',"",true,cfg.isDir())
-    %></tt>
-</div>
-<div id="bar">
-    <ul>
-        <li><a href="<%= context %>/"><span id="home"></span>Home</a></li><%
-    if (!cfg.hasHistory()) {
-        %><li><span id="history"></span><span class="c">History</span></li><%
-    } else {
-        %><li><a href="<%= context + Prefix.HIST_L + uriEncodedPath
-            %>"><span id="history"></span>History</a></li><%
-    }
-    if (!cfg.hasAnnotations() /* || cfg.getPrefix() == Prefix.HIST_S */ ) {
-        %><li><span class="c"><span class="annotate"></span>Annotate</span></li><%
-    } else if (cfg.annotate()) {
-        %><li><span id="toggle-annotate-by-javascript" style="display: none"><a
-            href="#" onclick="javascript:toggle_annotations(); return false;"
-            title="Show or hide line annotation(commit revisions,authors)."
-            ><span class="annotate"></span>Annotate</a></span><span
-            id="toggle-annotate"><a href="<%=
-                context + Prefix.XREF_P + uriEncodedPath
-                + (rev.length() == 0 ? "" : "?") + rev
-            %>"><span class="annotate"></span>Annotate</a></span></li><%
-    } else {
-        %><li><a href="#" onclick="javascript:get_annotations(); return false;"
-            ><span class="annotate"></span>Annotate</a></li><%
-    }
-    if (!cfg.isDir()) {
-        if (cfg.getPrefix() == Prefix.XREF_P) {
-        %><li><a href="#" onclick="javascript:lntoggle();return false;"
-            title="<%= "Show or hide line numbers (might be slower if "
-                + "file has more than 10 000 lines)."
-            %>"><span id="line"></span>Line#</a></li><li><a
-            href="#" onclick="javascript:lsttoggle();return false;"
-            title="Show or hide symbol list."><%--
-            --%><span id="defbox"></span>Navigate</a></li><%
-        }
-        %><li><a href="<%= context + Prefix.RAW_P + uriEncodedPath
-            + (rev.length() == 0 ? "" : "?") + rev
-            %>"><span id="download"></span>Download</a></li><%
-    }
-        %><li><input type="text" id="search" name="q" class="q" />
-            <input type="submit" value="Search" class="submit" /></li><%
-    Project proj = cfg.getProject();
-    String[] vals = cfg.getSearchOnlyIn();
-        %><li><input type="checkbox" name="path" value="<%= vals[0]
-            %>" <%= vals[2] %>/> only in <b><%= vals[1] %></b></li>
-        <%-- TODO: for directories a better way is probably to use
-            './' or "this directory" instead of the full path
-            again - full path is already shown above the navbar ... --%>
-    </ul><%
-    if (proj != null) {
-    %>
-    <input type="hidden" name="project" value="<%=proj.getDescription()%>" /><%
-    }
-%>
-</div>
+        	<div id="header"><%@ include file="pageheader.jspf" %>
+	        	<div id="pagetitle"><span id="filename">Cross Reference: <%= cfg.getCrossFilename() %></span>
+	        	<%
+	        		String dtag = cfg.getDefineTagsIndex();
+	        		if (dtag.length() > 0) {
+	            %><br/><%= dtag %>
+	            <%
+	            	}
+	            %>
+	            </div>
+            </div>
+            <div id="Masthead">
+	            <tt>
+	            	<a href="<%= context + Prefix.XREF_P %>/">xref</a>: 
+	            	<%= Util.breadcrumbPath(context + Prefix.XREF_P, path,'/',"",true,cfg.isDir()) %>
+	            </tt>
+	        </div>
+	        <div id="bar">
+		    	<ul>
+			    	<li><a href="<%= context %>/"><span id="home"></span>Home</a></li>
+			    	<%
+				    	if (!cfg.hasHistory()) {
+					%>
+					<li><span id="history"></span><span class="c">History</span></li>
+					<%
+						} else {
+					%>
+					<li><a href="<%= context + Prefix.HIST_L + uriEncodedPath %>"><span id="history"></span>History</a></li>
+					<%
+						}
+						if (!cfg.hasAnnotations() /* || cfg.getPrefix() == Prefix.HIST_S */ ) {
+					%>
+					<li><span class="c"><span class="annotate"></span>Annotate</span></li>
+					<%
+						} else if (cfg.annotate()) {
+					%>
+					<li>
+						<span id="toggle-annotate-by-javascript" style="display: none">
+							<a href="#"
+								onclick="javascript:toggle_annotations(); return false;" 
+								title="Show or hide line annotation(commit revisions,authors).">
+								<span class="annotate"></span>Annotate
+							</a>
+						</span>
+						<span id="toggle-annotate">
+							<a href="<%= context + Prefix.XREF_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">
+								<span class="annotate"></span>Annotate
+							</a>
+						</span>
+					</li>
+					<%
+						} else {
+					%>
+					<li>
+						<a href="#" onclick="javascript:get_annotations(); return false;">
+							<span class="annotate"></span>Annotate
+						</a>
+					</li>
+					<%
+						}
+						if (!cfg.isDir()) {
+							if (cfg.getPrefix() == Prefix.XREF_P) {
+					%>
+					<li>
+						<a href="#"
+							onclick="javascript:lntoggle();return false;"
+							title="<%= "Show or hide line numbers (might be slower if file has more than 10 000 lines)." %>">
+							<span id="line"></span>Line#
+						</a>
+					</li>
+					<li>
+						<a href="#"
+							onclick="javascript:lsttoggle();return false;"
+							title="Show or hide symbol list.">
+							<span id="defbox"></span>Navigate
+						</a>
+					</li>
+					<%
+						}
+					%>
+					<li>
+						<a href="<%= context + Prefix.RAW_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">
+							<span id="download"></span>Download
+						</a>
+					</li>
+					<%
+						}
+					%>
+					<li>
+						<input type="text" id="search" name="q" class="q" />
+						<input type="submit" value="Search" class="submit" />
+					</li>
+					<%
+						Project proj = cfg.getProject();
+						String[] vals = cfg.getSearchOnlyIn();
+					%>
+				</ul>
+				<input type="hidden" name="path" value="<%= vals[0] %>" />
+			</div>
         </form>
     </div>
 <div id="content">

@@ -72,109 +72,42 @@ org.opensolaris.opengrok.web.Util"
 </script><%
     }
 %>
-<form action="search" id="sbox">
+    <form action="<%= request.getContextPath() %>/search" class="form-horizontal">
+    <div class="control-group">
+    <label class="control-label" for="s1">Full&nbsp;Search</label>
+    <div class="controls">
+    <input class="search-query" name="q" id="s1" placeholder="Full Search" value="<%=
+                Util.formQuoteEscape(queryParams.getFreetext()) %>"/>
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="s2">Definition</label>
+    <div class="controls">
+    <input class="search-query" name="defs" id="s2" placeholder="Definition" value="<%=
+            Util.formQuoteEscape(queryParams.getDefs()) %>"/>
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="s3">Symbol</label>
+    <div class="controls">
+    <input class="search-query" name="refs" id="s3" placeholder="Symbol" value="<%=
+            Util.formQuoteEscape(queryParams.getRefs()) %>"/>
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="s4">File&nbsp;Path</label></td>
+    <div class="controls">
+    <input class="search-query" name="path" id="s4" placeholder="File path" value="<%=
+            Util.formQuoteEscape(queryParams.getPath()) %>"/>
+    </div>
+    </div>
 
-<div id="qtbl">
-<table>
-    <tr>
-        <td><label for="s1">Full&nbsp;Search</label></td>
-        <td><input tabindex="1" class="q" name="q" id="q" value="<%=
-                Util.formQuoteEscape(queryParams.getFreetext()) %>"/></td>
-    </tr>
-    <tr>
-        <td><label for="s2">Definition</label></td>
-        <td><input class="q" tabindex="2" name="defs" id="defs" value="<%=
-            Util.formQuoteEscape(queryParams.getDefs()) %>"/></td>
-    </tr>
-    <tr>
-        <td><label for="s3">Symbol</label></td>
-        <td><input class="q" tabindex="3" name="refs" id="refs" value="<%=
-            Util.formQuoteEscape(queryParams.getRefs()) %>"/></td>
-    </tr>
-    <tr>
-        <td><label for="s4">File&nbsp;Path</label></td>
-        <td><input class="q" tabindex="4" name="path" id="path" value="<%=
-            Util.formQuoteEscape(queryParams.getPath()) %>"/></td>
-    </tr>
-    <tr>
-        <td><label for="s5">History</label></td>
-        <td><input class="q" tabindex="5" name="hist" id="hist" value="<%=
-            Util.formQuoteEscape(queryParams.getHist()) %>"/></td>
-    </tr>
-<%-- TODO  Bug 11749
-<%
-    if (projects.size() != 0) {
-        String imgDir = cfg.getCssDir() + "/img/";
-    %>
-    <tr>
-        <td>Project(s)</td>
-        <td>
-            <table class="combo_table" id="combotable">
-                <tbody>
-                    <tr>
-                        <td class="combo_td1"><div class="combo_div4"
-                            style="background: transparent url(<%=
-                                imgDir %>transparent_pixel.gif)
-                                repeat scroll 0% 0%;"><input
-                                class="combo_input1 combo_input" id="project"
-                                name="project" size="25"
-                                value="<%= cfg.getRequestedProjectsAsString()
-                                %>"/></div>
-                        </td>
-                        <td valign="top" align="left" class="combo_td2"
-                            id="combotable_button"><a
-                            onclick='javascript: $("#project").click();
-                            $("#project").click();'/><img style="display: none;"
-                            alt="" src="<%= imgDir %>button2.png"/>
-                        </td>
-                    </tr>
-                </tbody>
-            </table></td>
-    </tr><%
-    }
-%>
---%>
-</table>
-</div><%
+    <div class="form-actions">
+    <input class="btn btn-primary" type="submit" value="Search"/>
+    </div>
 
-    if (projects.size() != 0) {
-%>
-<div id="ptbl">
-    <p><label for="project">In Project(s)</label> <button tabindex="6" type="button"
-        onclick="javascript: selectAllProjects(); return false;"
-        >select all</button>&nbsp;<button tabindex="7" type="button"
-        onclick="javascript: invertAllProjects(); return false;"
-        >invert selection</button> </p>
-    <select tabindex="8" ondblclick="javascript: goFirstProject();"
-        onkeyup="javascript: checkEnter(event);" class="q" id="project"
-        name="project" multiple="multiple" size="<%=
-        Math.min(6, projects.size()) %>"><%
-        SortedSet<String> pRequested = cfg.getRequestedProjects();
-        for (Entry<String,String> e : pMap.entrySet()) {
-            // TODO below "selected" has no effect if one refreshes the page
-            // with F5 also below ondblclick doesn't work in IE ...
-            // ondblclick="javascript:goFirstProject();"
-        %>
-        <option value="<%= e.getValue() %>"<%
-            if (pRequested.contains(e.getKey())) {
-            %> selected="selected"<%
-            }
-            %>><%= e.getValue() %></option><%
-        }
-        %>
-    </select>
-</div><%
-    }
-    %>
-
-<p><input
-    tabindex="9" class="submit" type="submit" value="Search"/> <input
-    tabindex="10" class="submit" onclick="javascript: clearSearchFrom();" type="button"
-    value=" Clear "/> <button class="help"
-    tabindex="11" onclick="window.open('help.jsp')">Help</button>
-</p>
-</form>
-<%
+    </form>
+        <%
 }
 /* ---------------------- menu.jspf end --------------------- */
 %>

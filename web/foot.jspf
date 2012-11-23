@@ -41,16 +41,12 @@ org.opensolaris.opengrok.web.Prefix"
     <div id="footer">
 <p><a href="http://www.opensolaris.org/os/project/opengrok/"
  title="Served by OpenGrok"><span id="fti"></span></a></p>
-<p>Indexes created <%= cfg.getEnv().getDateForLastIndexRun() %></p>
-    <%= cfg.getEnv().getConfiguration().getFooterIncludeFileContent() %>
-    <%
-    if (needAddDiv.contains(cfg.getPrefix())) {
-        %></div><% // #content
-    }
-    // #footer, #page:
-    %>
+
+    <div class="container">
+    Indexes created <%= cfg.getEnv().getDateForLastIndexRun() %>.
+    Served by <a href="https://github.com/watermint/SourceColon">Source:</a> based on
+    <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>.
     </div>
-</div>
 </body>
 </html>
 <%

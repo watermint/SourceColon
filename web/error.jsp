@@ -41,10 +41,10 @@ org.opensolaris.opengrok.web.Util"
     }
 %><%@
 
-include file="httpheader.jspf"
+include file="header.jspf"
 
 %>
-<body>
+
 <div id="page">
     <div id="whole_header">
        <div id="header">

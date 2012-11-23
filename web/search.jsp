@@ -71,9 +71,9 @@ include file="projects.jspf"
     response.addCookie(new Cookie("OpenGrokSorting", searchHelper.order.toString()));
 %><%@
 
-include file="httpheader.jspf"
+include file="header.jspf"
 
-%><body>
+%>
 <div id="page">
     <div id="whole_header">
         <div id="header"><%@
