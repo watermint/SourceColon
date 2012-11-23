@@ -232,15 +232,17 @@ public final class Util {
         }
         String prefix = urlPrefix == null ? "" : urlPrefix;
         String postfix = urlPostfix == null ? "" : urlPostfix;
-        StringBuilder pwd = new StringBuilder(path.length() + pnames.length);
-        StringBuilder markup =
-                new StringBuilder((pnames.length + 3 >> 1) * path.length()
-                        + pnames.length
-                        * (17 + prefix.length() + postfix.length()));
+        String divider = " <span class=\"divider\">" + sep + "</span> ";
+        StringBuilder pwd = new StringBuilder();//new StringBuilder(path.length() + pnames.length);
+        StringBuilder markup = new StringBuilder();
+//                new StringBuilder((pnames.length + 3 >> 1) * path.length()
+//                        + pnames.length
+//                        * (17 + prefix.length() + postfix.length()));
+        markup.append("<li>");
         int k = path.indexOf(pnames[0]);
         if (path.lastIndexOf(sep, k) != -1) {
             pwd.append('/');
-            markup.append(sep);
+            markup.append(divider);
         }
         for (int i = 0; i < pnames.length; i++) {
             pwd.append(URIEncodePath(pnames[i]));
@@ -251,9 +253,10 @@ public final class Util {
                     .append(postfix).append(closeQuotedTag).append(pnames[i])
                     .append(anchorEnd);
             if (isDir || i < pnames.length - 1) {
-                markup.append(sep);
+                markup.append(divider);
             }
         }
+        markup.append("</li>");
         return markup.toString();
     }
 
