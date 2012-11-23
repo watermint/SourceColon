@@ -40,20 +40,17 @@ task cleanup << {
 }
 
 task prepare << {
-    project.ext.workingdirs.each { File d ->
-        d.mkdirs()
+    project.ext.workingdirs.each {
+        it.mkdirs()
     }
 }
 
 task jflex(dependsOn: prepare) << {
     ant.taskdef(name: 'jflex', classname: 'JFlex.anttask.JFlexTask', classpath: configurations.generatesrc.asPath)
 
-    fileTree(dir: project.ext.src).include('**/*.lex').each { File f ->
-        ant.jflex(destdir: project.ext.generatedsrc, file: f)
+    fileTree(dir: project.ext.src).include('**/*.lex').each {
+        ant.jflex(destdir: project.ext.generatedsrc, file: it)
     }
-}
-
-task all(dependsOn: [build, war, runIndexer]) {
 }
 
 compileJava {
@@ -96,9 +93,10 @@ war {
 }
 
 task runIndexer(dependsOn: jar) << {
-    File scRoot = new File(project.ext.workspace, 'sc')
-    File scData = new File(scRoot, 'data')
-    File scEtc  = new File(scRoot, 'etc')
+    File scRoot   = new File(project.ext.workspace, 'sc')
+    File scData   = new File(scRoot, 'data')
+    File scEtc    = new File(scRoot, 'etc')
+    File scConfig = new File(scEtc, 'configuration.xml')
 
     [scData, scEtc].each {
         it.mkdirs()
@@ -110,6 +108,9 @@ task runIndexer(dependsOn: jar) << {
         arg(value: '-d')
         arg(value: scData.absolutePath)
         arg(value: '-W')
-        arg(value: scEtc.absolutePath + '/configuration.xml')
+        arg(value: scConfig.absolutePath)
     }
+}
+
+task all(dependsOn: [build, war, runIndexer]) {
 }
