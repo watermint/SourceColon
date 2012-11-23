@@ -107,22 +107,22 @@ public class DirectoryListing {
             }
         }
 
-        out.write("<table class=\"table table-striped\">\n");
-        out.write("\n<tr class=\"info\"><td/><td><strong>Name</strong></td><td><strong>Date</strong></td><td><strong>Size</strong></td>");
+        out.write("<table class=\"table table-striped\">");
+        out.write("<tr class=\"info\"><td/><td><strong>Name</strong></td><td><strong>Date</strong></td><td><strong>Size</strong></td>");
         if (offset > 0) {
             out.write("<td><strong>Description</strong></td>");
         }
-        out.write("</tr>\n\n");
+        out.write("</tr>");
         IgnoredNames ignoredNames = RuntimeEnvironment.getInstance().getIgnoredNames();
 
         Format dateFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
 
         // print the '..' entry even for empty directories
         if (path.length() != 0) {
-            out.write("<tr><td><p class=\"'r'\"/></td><td>");
-            out.write("<b><a href=\"..\">..</a></b></td>");
+            out.write("<tr><td></td><td>");
+            out.write("<strong><a href=\"..\">..</a></strong></td>");
             PrintDateSize(out, dir.getParentFile(), dateFormatter);
-            out.write("</tr>\n");
+            out.write("</tr>");
         }
 
         if (files != null) {
@@ -136,14 +136,13 @@ public class DirectoryListing {
                     readMes.add(file);
                 }
                 boolean isDir = child.isDirectory();
-                out.write("<tr><td><p class=\"");
-                out.write(isDir ? 'r' : 'p');
-                out.write("\"/></td><td><a href=\"");
+                out.write("<tr><td>");
+                out.write("</td><td><a href=\"");
                 out.write(Util.URIEncodePath(file));
                 if (isDir) {
-                    out.write("/\"><b>");
+                    out.write("/\"><strong>");
                     out.write(file);
-                    out.write("</b></a>/");
+                    out.write("</strong></a>/");
                 } else {
                     out.write("\">");
                     out.write(file);
@@ -161,10 +160,10 @@ public class DirectoryListing {
                         out.write("</td>");
                     }
                 }
-                out.write("</tr>\n");
+                out.write("</tr>");
             }
         }
-        out.write("</tbody>\n</table>");
+        out.write("</table>");
         return readMes;
     }
 }

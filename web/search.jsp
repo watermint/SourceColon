@@ -109,7 +109,7 @@ include file="header.jspf"
     } else if (searchHelper.hits.length == 0) {
         List<Suggestion> hints = searchHelper.getSuggestions();
         for (Suggestion hint : hints) {
-        %><p><font color="#cc0000">Did you mean (for <%= hint.name %>)</font>:<%
+        %><p><span class="text-error">Did you mean (for <%= hint.name %>)</span>:<%
             for (String word : hint.freetext) {
             %> <a href=search?q=<%= word %>><%= word %></a> &nbsp;  <%
             }
@@ -178,8 +178,8 @@ include file="header.jspf"
     <div class="container">
         <p class="pagetitle">Searched <b><%= searchHelper.query
             %></b> (Results <b> <%= start + 1 %> - <%= thispage + start
-            %></b> of <b><%= totalHits %></b>) sorted by <%=
-            searchHelper.order.getDesc() %></p>
+            %></b> of <b><%= totalHits %></b>) sorted by <span class="label label-info"><%=
+            searchHelper.order.getDesc() %></span></p>
         <% if (slider.length() > 0) { %><div class="pagination"><ul><%= slider %></ul></div><% } %>
         <table class="table table-striped"><%
         Results.prettyPrint(out, searchHelper, start, start + thispage);
@@ -188,7 +188,9 @@ include file="header.jspf"
         <% if (slider.length() > 0) { %><div class="pagination"><ul><%= slider %></ul></div><% } %>
     </div>
     <div class="container">
-        Completed in <%= System.currentTimeMillis() - starttime %> milliseconds</b></p>
+        <p class="muted">
+        Completed in <span class="label label-info"><%= System.currentTimeMillis() - starttime %></span> milliseconds
+        </p>
     </div><%
     }
     searchHelper.destroy();

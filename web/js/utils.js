@@ -259,41 +259,8 @@ function lsttoggle() {
  * Toggle the display of line numbers.
  */
 function lntoggle() {
-    $("a").each(
-        function() {
-            if (this.className == 'l' || this.className == 'hl') {
-                this.className = this.className + '-hide';
-                this.setAttribute("tmp", this.innerHTML);
-                this.innerHTML = '';
-            } else if (this.className == 'l-hide'
-                    || this.className == 'hl-hide')
-            {
-                this.innerHTML = this.getAttribute("tmp");
-                this.className = this.className.substr(0, this.className
-                        .indexOf('-'));
-            }
-        });
+    $("a.line-number").toggle();
 }
-
-/* ------ Highlighting ------ */
-/**
- * An expensive Highlighter:
- * Note: It will replace link's href contents as well, be careful.
- */
-/* Not used.
-function HighlightKeywordsFullText(keywords) {
-    var el = $("body");
-    $(keywords).each(
-        function() {
-            var pattern = new RegExp("("+this+")", ["gi"]);
-            var rs = "<span style='background-color:#FFFF00;font-weight:bold;'"
-                + ">$1</span>";
-            el.html(el.html().replace(pattern, rs));
-        }
-    );
-    // HighlightKeywordsFullText(["nfstcpsock"]);
-}
-*/
 
 /**
  *  Highlight keywords by changeing the style of matching tags.

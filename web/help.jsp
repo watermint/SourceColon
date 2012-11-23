@@ -33,7 +33,7 @@ org.opensolaris.opengrok.web.PageConfig"
 include file="header.jspf"
 
 %>
-    <div id="page">
+    <div class="container">
         <div id="whole_header">
             <div id="header"><%@
 

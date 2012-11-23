@@ -169,7 +169,7 @@ public final class Util {
      * @param path      path to crack
      * @param sep       separator to use to crack the given path
      * @return HTML markup fro the breadcrumb or the path itself.
-     * @see #breadcrumbPath(String, String, char, String, boolean, boolean)
+     * @see #breadcrumbPath(String, String, char, String, boolean, boolean, boolean)
      */
     public static String breadcrumbPath(String urlPrefix, String path, char sep) {
         return breadcrumbPath(urlPrefix, path, sep, "", false);
@@ -188,7 +188,7 @@ public final class Util {
      *                   removed, but not always resolves to an absolute path) before processing
      *                   starts.
      * @return HTML markup fro the breadcrumb or the path itself.
-     * @see #breadcrumbPath(String, String, char, String, boolean, boolean)
+     * @see #breadcrumbPath(String, String, char, String, boolean, boolean, boolean)
      * @see #getCanonicalPath(String, char)
      */
     public static String breadcrumbPath(String urlPrefix, String path,
@@ -197,7 +197,7 @@ public final class Util {
             return path;
         }
         return breadcrumbPath(urlPrefix, path, sep, urlPostfix, compact,
-                path.charAt(path.length() - 1) == sep);
+                path.charAt(path.length() - 1) == sep, false);
     }
 
     /**
@@ -218,11 +218,12 @@ public final class Util {
      *                   processing.
      * @param isDir      if {@code true} a "/" gets append to the last path component's
      *                   link and <var>sep</var> to its name
+     * @param asList     export as list
      * @return <var>path</var> if it resolves to an empty or "/" or
      *         {@code null} path, the HTML markup for the breadcrumb path otherwise.
      */
     public static String breadcrumbPath(String urlPrefix, String path,
-                                        char sep, String urlPostfix, boolean compact, boolean isDir) {
+                                        char sep, String urlPostfix, boolean compact, boolean isDir, boolean asList) {
         if (path == null || path.length() == 0) {
             return path;
         }
@@ -232,13 +233,12 @@ public final class Util {
         }
         String prefix = urlPrefix == null ? "" : urlPrefix;
         String postfix = urlPostfix == null ? "" : urlPostfix;
-        String divider = " <span class=\"divider\">" + sep + "</span> ";
+        String divider = asList ? " <span class=\"divider\">" + sep + "</span> " : "" + sep;
         StringBuilder pwd = new StringBuilder();//new StringBuilder(path.length() + pnames.length);
         StringBuilder markup = new StringBuilder();
-//                new StringBuilder((pnames.length + 3 >> 1) * path.length()
-//                        + pnames.length
-//                        * (17 + prefix.length() + postfix.length()));
-        markup.append("<li>");
+        if (asList) {
+            markup.append("<li>");
+        }
         int k = path.indexOf(pnames[0]);
         if (path.lastIndexOf(sep, k) != -1) {
             pwd.append('/');
@@ -256,7 +256,9 @@ public final class Util {
                 markup.append(divider);
             }
         }
-        markup.append("</li>");
+        if (asList) {
+            markup.append("</li>");
+        }
         return markup.toString();
     }
 
@@ -461,13 +463,15 @@ public final class Util {
             out.write("\n");
         }
         out.write(anchorClassStart);
-        out.write((num % 10 == 0 ? "hl" : "l"));
-        out.write("\" name=\"");
-        out.write(snum);
+        out.write("line-number");
         out.write("\" href=\"#");
         out.write(snum);
-        out.write(closeQuotedTag);
+        out.write("\" name=\"");
         out.write(snum);
+        out.write(closeQuotedTag);
+        out.write("<span class=\"badge\">");
+        out.write(snum);
+        out.write("</span> ");
         out.write(anchorEnd);
         if (annotation != null) {
             String r = annotation.getRevision(num);

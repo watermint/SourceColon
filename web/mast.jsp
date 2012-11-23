@@ -130,7 +130,7 @@ include file="header.jspf"
 <div class="container">
   <ul class="breadcrumb">
    <a href="<%= context + Prefix.XREF_P %>/">xref</a>: 
-   <%= Util.breadcrumbPath(context + Prefix.XREF_P, path,'/',"",true,cfg.isDir()) %>
+   <%= Util.breadcrumbPath(context + Prefix.XREF_P, path,'/',"",true,cfg.isDir(), true) %>
  </ul>
 </div>
 <div class="container">

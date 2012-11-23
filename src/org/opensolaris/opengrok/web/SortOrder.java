@@ -33,15 +33,15 @@ public enum SortOrder {
     /**
      * sort by last modification time
      */
-    LASTMODIFIED("lastmodtime", "last modified time"),
+    LASTMODIFIED("lastmodtime", "Last Modified Time"),
     /**
      * sort by relevancy
      */
-    RELEVANCY("relevancy", "relevance"),
+    RELEVANCY("relevancy", "Relevance"),
     /**
      * sort by path
      */
-    BY_PATH("fullpath", "path");
+    BY_PATH("fullpath", "Path");
     private String name;
     private String desc;
 
