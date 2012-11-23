@@ -460,7 +460,7 @@ a.xsr	{ /* subroutine */		color: #00f; font-weight: bold; }
 	width: 208px;
 	height: 45px;
 	vertical-align: middle;
-	background-image: url(./img/combined.png);
+	background-image: url(../img/combined.png);
 	background-repeat: no-repeat;
 	background-position: -171px 0;
 }
@@ -469,7 +469,7 @@ a.xsr	{ /* subroutine */		color: #00f; font-weight: bold; }
 	width: 80px;
 	height: 15px;
 	vertical-align: middle;
-	background-image: url(./img/combined.png);
+	background-image: url(../img/combined.png);
 	background-repeat: no-repeat;
 	background-position: -459px 0;
 }

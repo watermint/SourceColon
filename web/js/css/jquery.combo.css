@@ -1,5 +1,5 @@
 .combo_td1 {
-  background: url('./img/bg.png') no-repeat;
+  background: url('../../img/bg.png') no-repeat;
   width: 158px;
 }
 
@@ -34,18 +34,18 @@
 }
 
 .combo_td2 a {
-  background: url('./img/button1.png');
+  background: url('../../img/button1.png');
   display: block;
   height: 25px; 
   width: 22px;
 }
 
 .combo_td2 a:hover {
-  background: url('./img/button2.png');
+  background: url('../../img/button2.png');
 }
 
 .combo_input1 {    
-    background: transparent url(./img/transparent_pixel.gif) repeat scroll 0% 0%;
+    background: transparent url(../img/transparent_pixel.gif) repeat scroll 0% 0%;
 /*    color: gray; */
     -moz-background-clip: border;
     -moz-background-origin: padding;
@@ -56,7 +56,7 @@
   padding: 0;
   margin: 0;
   padding-left: 4px; 
-  background: url('./img/transparent_pixel.gif');
+  background: url('../../img/transparent_pixel.gif');
 }
 
 .combo_div4 {  
