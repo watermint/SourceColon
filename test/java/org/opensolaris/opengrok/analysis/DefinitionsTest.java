@@ -25,15 +25,16 @@
 package org.opensolaris.opengrok.analysis;
 
 import java.util.Set;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author austvik
  */
 public class DefinitionsTest {
@@ -89,8 +90,8 @@ public class DefinitionsTest {
     @Test
     public void hasDefinitionAt() {
         Definitions instance = new Definitions();
-        String[] type= new String[1];
-        type[0]="";
+        String[] type = new String[1];
+        type[0] = "";
         instance.addTag(1, "found", "", "");
         assertEquals(instance.hasDefinitionAt("found", 0, type), false);
         assertEquals(instance.hasDefinitionAt("found", 1, type), true);

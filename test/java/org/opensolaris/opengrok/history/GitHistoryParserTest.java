@@ -29,10 +29,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opensolaris.opengrok.util.TestRepository;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author austvik
  */
 public class GitHistoryParserTest {
@@ -75,7 +75,7 @@ public class GitHistoryParserTest {
 
     /**
      * Parse something that could come out from the Memcached repository
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Test
@@ -89,39 +89,39 @@ public class GitHistoryParserTest {
         String date2 = "Wed Mar 22 15:23:15 2006 +0000";
         String output =
                 "commit " + commitId1 + "\n" +
-                "Author:     " + author1 + "\n" +
-                "AuthorDate: " + date1 + "\n" +
-                "Commit:     " + author1 + "\n" +
-                "CommitDate: " + date1 + "\n" +
-                "\n" +
-                "    patch from somebody <user.name@example.com>:\n" +
-                "    \n" +
-                "    commit message.\n" +
-                "    \n" +
-                "    \n" +
-                "    git-svn-id: http://host.example.com/svn/product/trunk/server@324-fdws-2342-fsdaf-gds-234\n" +
-                "\n" +
-                "commit " + commitId2 + "\n" +
-                "Author:     " + author2 + "\n" +
-                "AuthorDate: " + date2 + "\n" +
-                "Commit:     " + author2 + "\n" +
-                "CommitDate: " + date2 + "\n" +
-                "\n" +
-                "     r123@branch:  username | some date\n" +
-                "     some comment\n" +
-                "    \n" +
-                "    \n" +
-                "    git-svn-id: http://host.example.com/svn/product/trunk/server@324-fdws-2342-fsdaf-gds-234\n" +
-                "\n" +
-                "commit " + commitId3 + "\n" +
-                "Author:     " + author1 + "\n" +
-                "AuthorDate: " + date1 + "\n" +
-                "Commit:     " + author2 + "\n" +
-                "CommitDate: " + date2 + "\n" +
-                "\n" +
-                "    some comment\n" +
-                "    \n" +
-                "    git-svn-id: http://host.example.com/svn/product/trunk/server@324-fdws-2342-fsdaf-gds-234\n";
+                        "Author:     " + author1 + "\n" +
+                        "AuthorDate: " + date1 + "\n" +
+                        "Commit:     " + author1 + "\n" +
+                        "CommitDate: " + date1 + "\n" +
+                        "\n" +
+                        "    patch from somebody <user.name@example.com>:\n" +
+                        "    \n" +
+                        "    commit message.\n" +
+                        "    \n" +
+                        "    \n" +
+                        "    git-svn-id: http://host.example.com/svn/product/trunk/server@324-fdws-2342-fsdaf-gds-234\n" +
+                        "\n" +
+                        "commit " + commitId2 + "\n" +
+                        "Author:     " + author2 + "\n" +
+                        "AuthorDate: " + date2 + "\n" +
+                        "Commit:     " + author2 + "\n" +
+                        "CommitDate: " + date2 + "\n" +
+                        "\n" +
+                        "     r123@branch:  username | some date\n" +
+                        "     some comment\n" +
+                        "    \n" +
+                        "    \n" +
+                        "    git-svn-id: http://host.example.com/svn/product/trunk/server@324-fdws-2342-fsdaf-gds-234\n" +
+                        "\n" +
+                        "commit " + commitId3 + "\n" +
+                        "Author:     " + author1 + "\n" +
+                        "AuthorDate: " + date1 + "\n" +
+                        "Commit:     " + author2 + "\n" +
+                        "CommitDate: " + date2 + "\n" +
+                        "\n" +
+                        "    some comment\n" +
+                        "    \n" +
+                        "    git-svn-id: http://host.example.com/svn/product/trunk/server@324-fdws-2342-fsdaf-gds-234\n";
 
         History result = instance.parse(output);
         assertNotNull(result);
@@ -142,7 +142,7 @@ public class GitHistoryParserTest {
 
     /**
      * Parse something that could come out from the git repository
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Test
@@ -207,7 +207,7 @@ public class GitHistoryParserTest {
 
     /**
      * Parse something that could come out from the linux kernel repository
-     * 
+     *
      * @throws java.lang.Exception
      */
     @Test

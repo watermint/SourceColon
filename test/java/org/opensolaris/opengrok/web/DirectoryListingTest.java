@@ -30,6 +30,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,6 +41,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import static org.junit.Assert.*;
 
 /**
@@ -74,7 +76,7 @@ public class DirectoryListingTest {
             }
 
             assertTrue("Failed to set modification time",
-                       file.setLastModified(val));
+                    file.setLastModified(val));
 
             if (size > 0) {
                 FileOutputStream out = new FileOutputStream(file);
@@ -83,6 +85,7 @@ public class DirectoryListingTest {
                 out.close();
             }
         }
+
         String name;
         long lastModified;
         int size;
@@ -162,10 +165,11 @@ public class DirectoryListingTest {
 
     /**
      * Get the LastModified date from the &lt;td&gt;date&lt;/td&gt;
-     * @todo fix the item
+     *
      * @param item the node representing &lt;td&gt
      * @return last modified date of the file
      * @throws java.lang.Exception if an error occurs
+     * @todo fix the item
      */
     private long getLastModified(Node item) throws Exception {
         Node val = item.getFirstChild();
@@ -174,12 +178,13 @@ public class DirectoryListingTest {
 
         String value = val.getNodeValue();
         return value.equalsIgnoreCase("Today")
-            ? Long.MAX_VALUE
-            : dateFormatter.parse(value).getTime();
+                ? Long.MAX_VALUE
+                : dateFormatter.parse(value).getTime();
     }
 
     /**
      * Get the size from the: &lt;td&gt;&lt;tt&gt;size&lt;/tt&gt;&lt;/td&gt;
+     *
      * @param item the node representing &lt;td&gt;
      * @return The size
      * @throws java.lang.Exception if an error occurs
@@ -193,6 +198,7 @@ public class DirectoryListingTest {
 
     /**
      * Validate this file-entry in the table
+     *
      * @param element The &lt;tr&gt; element
      * @throws java.lang.Exception
      */
@@ -223,8 +229,9 @@ public class DirectoryListingTest {
 
     /**
      * Test directory listing
+     *
      * @throws java.lang.Exception if an error occurs while generating the
-     *         list.
+     *                             list.
      */
     @Test
     public void directoryListing() throws Exception {
@@ -233,7 +240,7 @@ public class DirectoryListingTest {
 
         DirectoryListing instance = new DirectoryListing();
         instance.listTo(directory, out, directory.getPath(),
-                        Arrays.asList(directory.list()));
+                Arrays.asList(directory.list()));
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         assertNotNull("DocumentBuilderFactory is null", factory);

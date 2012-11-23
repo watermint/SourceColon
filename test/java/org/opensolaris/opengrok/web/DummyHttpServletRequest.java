@@ -44,7 +44,7 @@ import javax.servlet.http.HttpSession;
  * {@code HttpServletRequest} can create sub-classes that implement those
  * methods needed by the test case.
  * </p>
- *
+ * <p/>
  * <p>
  * Some methods that would have similar implementations in all sub-classes,
  * like set/get pairs, could be implemented here. Methods that would require
@@ -176,7 +176,8 @@ class DummyHttpServletRequest implements HttpServletRequest {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override @Deprecated
+    @Override
+    @Deprecated
     public boolean isRequestedSessionIdFromUrl() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -301,7 +302,8 @@ class DummyHttpServletRequest implements HttpServletRequest {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Override @Deprecated
+    @Override
+    @Deprecated
     public String getRealPath(String string) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

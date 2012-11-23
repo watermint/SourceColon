@@ -26,11 +26,12 @@ package org.opensolaris.opengrok.index;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Trond Norbye
  */
 public class IgnoredNamesTest {
@@ -47,12 +48,12 @@ public class IgnoredNamesTest {
         }
 
         /* Make sure common paths are not ignored by default. */
-	assertFalse(instance.ignore("usr/src/foo/bin"));
-	assertFalse(instance.ignore("usr/src/foo/bin/bar.ksh"));
-	assertFalse(instance.ignore("usr/src/bar/obj"));
-	assertFalse(instance.ignore("usr/src/bar/obj/foo.ksh"));
-	assertFalse(instance.ignore("usr/src/foo/bar/usr.lib/main.c"));
-	assertFalse(instance.ignore("usr/src/foo/bar/usr.lib"));
+        assertFalse(instance.ignore("usr/src/foo/bin"));
+        assertFalse(instance.ignore("usr/src/foo/bin/bar.ksh"));
+        assertFalse(instance.ignore("usr/src/bar/obj"));
+        assertFalse(instance.ignore("usr/src/bar/obj/foo.ksh"));
+        assertFalse(instance.ignore("usr/src/foo/bar/usr.lib/main.c"));
+        assertFalse(instance.ignore("usr/src/foo/bar/usr.lib"));
 
         /* cumulative test */
         names = new ArrayList<String>();

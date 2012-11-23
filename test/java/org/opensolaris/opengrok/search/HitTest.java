@@ -24,6 +24,7 @@
 package org.opensolaris.opengrok.search;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -110,7 +111,7 @@ public class HitTest {
         o1.setFilename("bar");
         assertFalse(o2.equals(o1));
         assertFalse(o1.equals(o2));
-        assertFalse(o1.equals(new Object()));        
+        assertFalse(o1.equals(new Object()));
     }
 
     @Test

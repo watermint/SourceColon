@@ -23,6 +23,7 @@
 package org.opensolaris.opengrok.web;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,9 +62,9 @@ public class PageConfigTest {
         // Expect directories without trailing slash to get a trailing slash
         // appended.
         assertCanProcess("/source/xref/mercurial/",
-                         "/source", "/xref", "/mercurial");
+                "/source", "/xref", "/mercurial");
         assertCanProcess("/source/history/mercurial/",
-                         "/source", "/history", "/mercurial");
+                "/source", "/history", "/mercurial");
 
         // Expect no redirection (that is, empty string is returned) if the
         // directories already have a trailing slash.
@@ -82,8 +83,8 @@ public class PageConfigTest {
      * specified path.
      *
      * @param expected the expected return value
-     * @param context the context path
-     * @param servlet the servlet path
+     * @param context  the context path
+     * @param servlet  the servlet path
      * @param pathInfo the path info
      */
     private void assertCanProcess(
@@ -98,22 +99,23 @@ public class PageConfigTest {
      *
      * @param contextPath the context path
      * @param servletPath the path of the servlet
-     * @param pathInfo the path info
+     * @param pathInfo    the path info
      * @return a servlet request for the specified path
      */
     private static HttpServletRequest createRequest(
             final String contextPath, final String servletPath,
-            final String pathInfo)
-    {
+            final String pathInfo) {
         return new DummyHttpServletRequest() {
             @Override
             public String getContextPath() {
                 return contextPath;
             }
+
             @Override
             public String getServletPath() {
                 return servletPath;
             }
+
             @Override
             public String getPathInfo() {
                 return pathInfo;

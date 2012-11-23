@@ -131,3 +131,6 @@ war {
 
 task all(dependsOn: [build, war, runIndexer]) {
 }
+
+task run(dependsOn: jettyRunWar) {    
+}

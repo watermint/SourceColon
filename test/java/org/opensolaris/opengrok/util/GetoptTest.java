@@ -24,11 +24,13 @@
 package org.opensolaris.opengrok.util;
 
 import java.text.ParseException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -57,7 +59,7 @@ public class GetoptTest {
 
     @Test
     public void testParseNormal() throws Exception {
-        String[] argv = new String[]{"-a", "foo", "-bc", "--", "-f" };
+        String[] argv = new String[]{"-a", "foo", "-bc", "--", "-f"};
         Getopt instance = new Getopt(argv, "a:bcr:f");
 
         instance.parse();
@@ -76,7 +78,7 @@ public class GetoptTest {
 
     @Test
     public void reset() throws ParseException {
-        String[] argv = new String[]{"-a", "foo", "-bc", "argument1" };
+        String[] argv = new String[]{"-a", "foo", "-bc", "argument1"};
         Getopt instance = new Getopt(argv, "a:bc");
 
         instance.parse();
@@ -120,7 +122,7 @@ public class GetoptTest {
                 throw exp;
             }
         }
-        
+
         instance = new Getopt(argv, "b");
         try {
             instance.parse();

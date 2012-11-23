@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis;
 
 import java.io.Reader;
 import java.io.StringReader;
+
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 import org.junit.Test;
@@ -39,6 +40,7 @@ import org.opensolaris.opengrok.analysis.plain.PlainFullTokenizer;
 import org.opensolaris.opengrok.analysis.plain.PlainSymbolTokenizer;
 import org.opensolaris.opengrok.analysis.sh.ShSymbolTokenizer;
 import org.opensolaris.opengrok.analysis.tcl.TclSymbolTokenizer;
+
 import static org.junit.Assert.*;
 
 /**
@@ -68,7 +70,7 @@ public class JFlexTokenizerTest {
         // create a text fragment that it understands
         testOffsetAttribute(FortranSymbolTokenizer.class,
                 "1 token1 = token2 + token3",
-                new String[] {"token1", "token2", "token3"});
+                new String[]{"token1", "token2", "token3"});
     }
 
     /**

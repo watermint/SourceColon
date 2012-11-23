@@ -30,6 +30,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,11 +38,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opensolaris.opengrok.analysis.plain.PlainXref;
 import org.opensolaris.opengrok.history.RepositoryInfo;
+
 import static org.junit.Assert.*;
 
 /**
  * Test the RuntimeEnvironment class
- * 
+ *
  * @author Trond Norbye
  */
 public class RuntimeEnvironmentTest {
@@ -138,7 +140,7 @@ public class RuntimeEnvironmentTest {
             public void run() {
                 Configuration c = new Configuration();
                 RuntimeEnvironment.getInstance().setConfiguration(c);
-                
+
             }
         });
         t.start();
@@ -344,8 +346,8 @@ public class RuntimeEnvironmentTest {
         assertNotNull(o);
         m = m.replace('a', 'm');
         try {
-             o = Configuration.makeXMLStringAsConfiguration(m);
-             fail("makeXmlStringsAsConfiguration should throw exception");
+            o = Configuration.makeXMLStringAsConfiguration(m);
+            fail("makeXmlStringsAsConfiguration should throw exception");
         } catch (Throwable t) {
         }
     }
@@ -363,7 +365,7 @@ public class RuntimeEnvironmentTest {
         assertTrue(f.isAbsolute());
         assertTrue(file.delete());
     }
-    
+
     @Test
     public void testBug3154() throws IOException {
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
@@ -402,11 +404,11 @@ public class RuntimeEnvironmentTest {
         xref.write(out);
 
         String expectedAddress = expected ?
-            address.replace("@", " (at) ") : address;
+                address.replace("@", " (at) ") : address;
 
         String expectedOutput =
                 "<a class=\"l\" name=\"1\" href=\"#1\">1</a>"
-                + expectedAddress;
+                        + expectedAddress;
 
         assertEquals(expectedOutput, out.toString());
     }

@@ -28,11 +28,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Properties;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.util.FileUtilities;
+
 import static org.junit.Assert.*;
 
 public class OGAgentTest {
@@ -86,7 +88,7 @@ public class OGAgentTest {
         createLogDir();
         String logDirName = logDir.getAbsolutePath();
         System.setProperty("org.opensolaris.opengrok.management.logging.path",
-                           logDirName);
+                logDirName);
 
         // Disable console logging for FINE messages
         System.setProperty(

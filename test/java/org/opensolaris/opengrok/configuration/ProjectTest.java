@@ -30,8 +30,10 @@ import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.LinkedList;
+
 import junit.framework.AssertionFailedError;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class ProjectTest {

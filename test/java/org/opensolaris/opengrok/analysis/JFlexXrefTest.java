@@ -30,6 +30,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -63,7 +64,7 @@ public class JFlexXrefTest {
      * returned by an xref.
      */
     private static final String FIRST_LINE_PREAMBLE =
-                "<a class=\"l\" name=\"1\" href=\"#1\">1</a>";
+            "<a class=\"l\" name=\"1\" href=\"#1\">1</a>";
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -90,14 +91,14 @@ public class JFlexXrefTest {
     public void testBug15890LineCount() throws Exception {
         String fileContents =
                 "line 1\n" +
-                "line 2\n" +
-                "line 3\n" +
-                "line 4 with \u000B char\n" +
-                "line 5 with \u000C char\n" +
-                "line 6 with \u0085 char\n" +
-                "line 7 with \u2028 char\n" +
-                "line 8 with \u2029 char\n" +
-                "line 9\n";
+                        "line 2\n" +
+                        "line 3\n" +
+                        "line 4 with \u000B char\n" +
+                        "line 5 with \u000C char\n" +
+                        "line 6 with \u0085 char\n" +
+                        "line 7 with \u2028 char\n" +
+                        "line 8 with \u2029 char\n" +
+                        "line 9\n";
 
         bug15890LineCount(new CXref(new StringReader(fileContents)));
         bug15890LineCount(new CxxXref(new StringReader(fileContents)));
@@ -141,7 +142,7 @@ public class JFlexXrefTest {
      * Helper method for {@link #testBug15890Anchor()}.
      *
      * @param klass the Xref sub-class to test
-     * @param path path to input file with a definition
+     * @param path  path to input file with a definition
      */
     private void bug15890Anchor(Class<? extends JFlexXref> klass, String path)
             throws Exception {
@@ -190,12 +191,12 @@ public class JFlexXrefTest {
      * line with the specified xref class. Fails if the output is not as
      * expected.
      *
-     * @param xrefClass xref class to test
-     * @param inputLine the source code line to parse
+     * @param xrefClass      xref class to test
+     * @param inputLine      the source code line to parse
      * @param expectedOutput the expected output from the xreffer
      */
     private void assertXrefLine(Class<? extends JFlexXref> xrefClass,
-            String inputLine, String expectedOutput) throws Exception {
+                                String inputLine, String expectedOutput) throws Exception {
         JFlexXref xref = xrefClass.getConstructor(Reader.class).newInstance(
                 new StringReader(inputLine));
 
@@ -219,7 +220,7 @@ public class JFlexXrefTest {
         xref.write(out);
         assertEquals(
                 FIRST_LINE_PREAMBLE +
-                    "<b>echo</b> <span class=\"s\">\"xyz</span>",
+                        "<b>echo</b> <span class=\"s\">\"xyz</span>",
                 out.toString());
 
         // Reuse the xref and verify that the broken syntax in the previous
@@ -230,7 +231,7 @@ public class JFlexXrefTest {
         xref.write(out);
         assertEquals(
                 FIRST_LINE_PREAMBLE +
-                    "<b>echo</b> <span class=\"s\">\"hello\"</span>",
+                        "<b>echo</b> <span class=\"s\">\"hello\"</span>",
                 out.toString());
     }
 
@@ -239,19 +240,19 @@ public class JFlexXrefTest {
      * Test the handling of #include in C and C++. In particular, these issues
      * are tested:
      * </p>
-     *
+     * <p/>
      * <ul>
-     *
+     * <p/>
      * <li>
      * Verify that we use breadcrumb path for both #include &lt;x/y.h&gt; and
      * #include "x/y.h" in C and C++ (bug #17817)
      * </li>
-     *
+     * <p/>
      * <li>
      * Verify that the link generated for #include &lt;vector&gt; performs a
      * path search (bug #17816)
      * </li>
-     *
+     * <p/>
      * </ul>
      */
     @Test
@@ -262,11 +263,11 @@ public class JFlexXrefTest {
 
     private void testCXrefInclude(Class<? extends JFlexXref> klass) throws Exception {
         String[][] testData = {
-            {"#include <abc.h>", "#<b>include</b> &lt;<a href=\"/source/s?path=abc.h\">abc.h</a>&gt;"},
-            {"#include <abc/def.h>", "#<b>include</b> &lt;<a href=\"/source/s?path=abc/\">abc</a>/<a href=\"/source/s?path=abc/def.h\">def.h</a>&gt;"},
-            {"#include \"abc.h\"", "#<b>include</b> <span class=\"s\">\"<a href=\"/source/s?path=abc.h\">abc.h</a>\"</span>"},
-            {"#include \"abc/def.h\"", "#<b>include</b> <span class=\"s\">\"<a href=\"/source/s?path=abc/\">abc</a>/<a href=\"/source/s?path=abc/def.h\">def.h</a>\"</span>"},
-            {"#include <vector>", "#<b>include</b> &lt;<a href=\"/source/s?path=vector\">vector</a>&gt;"},
+                {"#include <abc.h>", "#<b>include</b> &lt;<a href=\"/source/s?path=abc.h\">abc.h</a>&gt;"},
+                {"#include <abc/def.h>", "#<b>include</b> &lt;<a href=\"/source/s?path=abc/\">abc</a>/<a href=\"/source/s?path=abc/def.h\">def.h</a>&gt;"},
+                {"#include \"abc.h\"", "#<b>include</b> <span class=\"s\">\"<a href=\"/source/s?path=abc.h\">abc.h</a>\"</span>"},
+                {"#include \"abc/def.h\"", "#<b>include</b> <span class=\"s\">\"<a href=\"/source/s?path=abc/\">abc</a>/<a href=\"/source/s?path=abc/def.h\">def.h</a>\"</span>"},
+                {"#include <vector>", "#<b>include</b> &lt;<a href=\"/source/s?path=vector\">vector</a>&gt;"},
         };
 
         for (String[] s : testData) {
@@ -285,9 +286,9 @@ public class JFlexXrefTest {
     public void testShXrefHeredoc() throws IOException {
         StringReader in = new StringReader(
                 "cat<<EOF\n" +
-                "This shouldn't cause any problem.\n" +
-                "EOF\n" +
-                "var='some string'\n");
+                        "This shouldn't cause any problem.\n" +
+                        "EOF\n" +
+                        "var='some string'\n");
 
         ShXref xref = new ShXref(in);
         StringWriter out = new StringWriter();
@@ -300,7 +301,7 @@ public class JFlexXrefTest {
 
         // The string literal on line 4 should be recognized as one.
         assertTrue(
-            result[3].endsWith("=<span class=\"s\">'some string'</span>"));
+                result[3].endsWith("=<span class=\"s\">'some string'</span>"));
     }
 
     /**

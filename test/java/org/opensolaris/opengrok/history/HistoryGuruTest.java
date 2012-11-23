@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,10 +38,12 @@ import org.junit.Test;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.FileUtilities;
 import org.opensolaris.opengrok.util.TestRepository;
+
 import static org.junit.Assert.*;
 
 /**
  * Test the functionality provided by the HistoryGuru (with friends)
+ *
  * @author Trond Norbye
  */
 public class HistoryGuruTest {

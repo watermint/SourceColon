@@ -26,9 +26,11 @@ import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import java.util.Locale;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -54,11 +56,11 @@ public class UtilTest {
     @Test
     public void htmlize() {
         String[][] input_output = {
-            {"This is a test", "This is a test" },
-            {"Newline\nshould become <br/>",
-                      "Newline<br/>should become &lt;br/&gt;" },
-            {"Open & Grok", "Open &amp; Grok" },
-            {"&amp;&lt;&gt;", "&amp;amp;&amp;lt;&amp;gt;" },
+                {"This is a test", "This is a test"},
+                {"Newline\nshould become <br/>",
+                        "Newline<br/>should become &lt;br/&gt;"},
+                {"Open & Grok", "Open &amp; Grok"},
+                {"&amp;&lt;&gt;", "&amp;amp;&amp;lt;&amp;gt;"},
         };
         for (String[] in_out : input_output) {
             // 1 arg
@@ -76,8 +78,8 @@ public class UtilTest {
 
         assertEquals("", Util.breadcrumbPath("/root/", ""));
 
-        assertEquals("<a href=\"/root/x\">x</a>", 
-            Util.breadcrumbPath("/root/", "x"));
+        assertEquals("<a href=\"/root/x\">x</a>",
+                Util.breadcrumbPath("/root/", "x"));
         assertEquals("<a href=\"/root/xx\">xx</a>",
                 Util.breadcrumbPath("/root/", "xx"));
 
@@ -119,7 +121,7 @@ public class UtilTest {
         assertEquals("<b>1.4 MiB</b>", Util.readableSize(1474560));
         assertEquals("<b>3,584.4 MiB</b>", Util.readableSize(3758489600L));
         assertEquals("<b>8,796,093,022,208 MiB</b>",
-                     Util.readableSize(Long.MAX_VALUE));
+                Util.readableSize(Long.MAX_VALUE));
     }
 
     @Test
@@ -128,18 +130,18 @@ public class UtilTest {
         // hmmm - where do meaningful test start?
         Util.readableLine(42, out, null, null, null);
         assertEquals("\n<a class=\"l\" name=\"42\" href=\"#42\">42</a>",
-                     out.toString());
+                out.toString());
 
         out.getBuffer().setLength(0); // clear buffer
         Util.readableLine(110, out, null, null, null);
         assertEquals("\n<a class=\"hl\" name=\"110\" href=\"#110\">110</a>",
-                     out.toString());
+                out.toString());
     }
 
     @Test
     public void path2uid() {
         assertEquals("\u0000etc\u0000passwd\u0000date",
-                     Util.path2uid("/etc/passwd", "date"));
+                Util.path2uid("/etc/passwd", "date"));
     }
 
     @Test
@@ -166,11 +168,11 @@ public class UtilTest {
         assertEquals("a%2Bb", Util.URIEncodePath("a+b"));
         assertEquals("a%20b", Util.URIEncodePath("a b"));
         assertEquals("/a//x/yz/%23%23/%20/%20%3F",
-                     Util.URIEncodePath("/a//x/yz/##/ / ?"));
+                Util.URIEncodePath("/a//x/yz/##/ / ?"));
         assertEquals("foo%3A%3Abar%3A%3Atest.js",
-                     Util.URIEncodePath("foo::bar::test.js"));
+                Util.URIEncodePath("foo::bar::test.js"));
         assertEquals("bl%C3%A5b%C3%A6rsyltet%C3%B8y",
-                     Util.URIEncodePath("bl\u00E5b\u00E6rsyltet\u00F8y"));
+                Util.URIEncodePath("bl\u00E5b\u00E6rsyltet\u00F8y"));
     }
 
     @Test
@@ -183,44 +185,44 @@ public class UtilTest {
     @Test
     public void diffline() {
         String[][] tests = {
-            {
-                "\"(ses_id, mer_id, pass_id, \" + refCol +\" , mer_ref, amnt, "
-                + "cur, ps_id, ret_url, d_req_time, d_req_mil, h_resp_time, "
-                + "h_resp_mil) \"",
-                "\"(ses_id, mer_id, pass_id, \" + refCol +\" , mer_ref, amnt, "
-                + "cur, ps_id, ret_url, exp_url, d_req_time, d_req_mil, "
-                + "h_resp_time, h_resp_mil) \"",
+                {
+                        "\"(ses_id, mer_id, pass_id, \" + refCol +\" , mer_ref, amnt, "
+                                + "cur, ps_id, ret_url, d_req_time, d_req_mil, h_resp_time, "
+                                + "h_resp_mil) \"",
+                        "\"(ses_id, mer_id, pass_id, \" + refCol +\" , mer_ref, amnt, "
+                                + "cur, ps_id, ret_url, exp_url, d_req_time, d_req_mil, "
+                                + "h_resp_time, h_resp_mil) \"",
 
-                "\"(ses_id, mer_id, pass_id, \" + refCol +\" , mer_ref, amnt, "
-                + "cur, ps_id, ret_url, <span class=\"a\">exp_url, "
-                + "</span>d_req_time, d_req_mil, h_resp_time, h_resp_mil) \""
-            },
-            {   
-                "\"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\", values);",
-                "\"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\", values);",
-                
-                "\"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?<span "
-                + "class=\"a\">, ?</span>)\", values);"
-            },
-            {
-                "char    *config_list = NULL;",
-                "char    **config_list = NULL;",
-                
-                "char    *<span class=\"a\">*</span>config_list = NULL;"
-            },
-            {
-                "* An error occured or there is non-numeric stuff at the end",
-                "* An error occurred or there is non-numeric stuff at the end",
-                
-                "* An error occur<span class=\"a\">r</span>ed or there is "
-                + "non-numeric stuff at the end"
-            }
+                        "\"(ses_id, mer_id, pass_id, \" + refCol +\" , mer_ref, amnt, "
+                                + "cur, ps_id, ret_url, <span class=\"a\">exp_url, "
+                                + "</span>d_req_time, d_req_mil, h_resp_time, h_resp_mil) \""
+                },
+                {
+                        "\"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\", values);",
+                        "\"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)\", values);",
+
+                        "\"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?<span "
+                                + "class=\"a\">, ?</span>)\", values);"
+                },
+                {
+                        "char    *config_list = NULL;",
+                        "char    **config_list = NULL;",
+
+                        "char    *<span class=\"a\">*</span>config_list = NULL;"
+                },
+                {
+                        "* An error occured or there is non-numeric stuff at the end",
+                        "* An error occurred or there is non-numeric stuff at the end",
+
+                        "* An error occur<span class=\"a\">r</span>ed or there is "
+                                + "non-numeric stuff at the end"
+                }
         };
-        for (int i=0; i < tests.length; i++) {
-            String[] strings=Util.diffline(new StringBuilder(tests[i][0]),
-                new StringBuilder(tests[i][1]));
-            assertEquals(""+ i + "," + 0, strings[0], tests[i][0]);
-            assertEquals(""+ i + "," + 1, strings[1], tests[i][2]);
+        for (int i = 0; i < tests.length; i++) {
+            String[] strings = Util.diffline(new StringBuilder(tests[i][0]),
+                    new StringBuilder(tests[i][1]));
+            assertEquals("" + i + "," + 0, strings[0], tests[i][0]);
+            assertEquals("" + i + "," + 1, strings[1], tests[i][2]);
         }
     }
 
@@ -242,7 +244,7 @@ public class UtilTest {
     @Test
     public void jsStringLiteral() {
         assertEquals("\"abc\\n\\r\\\"\\\\\"",
-                     Util.jsStringLiteral("abc\n\r\"\\"));
+                Util.jsStringLiteral("abc\n\r\"\\"));
     }
 }
 

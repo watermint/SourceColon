@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.After;
 import org.junit.Before;
@@ -41,6 +42,7 @@ import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.search.Hit;
 import org.opensolaris.opengrok.search.QueryBuilder;
 import org.w3c.dom.Document;
+
 import static org.junit.Assert.*;
 
 public class ContextTest {
@@ -117,9 +119,9 @@ public class ContextTest {
     /**
      * Helper method for testing various paths through the getContext() method.
      *
-     * @param limit true if limited, quick context scan should be used
+     * @param limit   true if limited, quick context scan should be used
      * @param hitList true if output should be written to a list instead of
-     * a writer
+     *                a writer
      */
     private void testGetContext(boolean limit, boolean hitList)
             throws ParseException {
@@ -140,9 +142,9 @@ public class ContextTest {
         }
 
         String expectedOutput = hitList ?
-            "abc <b>def</b> ghi" :
-            "<a class=\"s\" href=\"#1\"><span class=\"l\">1</span> " +
-                     "abc <b>def</b> ghi</a><br/>";
+                "abc <b>def</b> ghi" :
+                "<a class=\"s\" href=\"#1\"><span class=\"l\">1</span> " +
+                        "abc <b>def</b> ghi</a><br/>";
 
         String actualOutput = hitList ? hits.get(0).getLine() : out.toString();
 
@@ -164,9 +166,9 @@ public class ContextTest {
         }
 
         expectedOutput = hitList ?
-            "abc <b>def</b> ghi" :
-            "<a class=\"s\" href=\"#1\"><span class=\"l\">1</span> " +
-                     "abc <b>def</b> ghi</a> <i> type</i> <br/>";
+                "abc <b>def</b> ghi" :
+                "<a class=\"s\" href=\"#1\"><span class=\"l\">1</span> " +
+                        "abc <b>def</b> ghi</a> <i> type</i> <br/>";
         actualOutput = hitList ? hits.get(0).getLine() : out.toString();
         assertEquals(expectedOutput, actualOutput);
 
@@ -184,9 +186,9 @@ public class ContextTest {
         }
 
         expectedOutput = hitList ?
-            "text" :
-            "<a class=\"s\" href=\"#1\"><span class=\"l\">1</span> " +
-                     "text</a> <i>type</i><br/>";
+                "text" :
+                "<a class=\"s\" href=\"#1\"><span class=\"l\">1</span> " +
+                        "text</a> <i>type</i><br/>";
         actualOutput = hitList ? hits.get(0).getLine() : out.toString();
         assertEquals(expectedOutput, actualOutput);
 
@@ -229,8 +231,8 @@ public class ContextTest {
         Arrays.fill(chars, 'a');
         char[] substring = " this is a test ".toCharArray();
         System.arraycopy(substring, 0,
-                         chars, Context.MAXFILEREAD - substring.length,
-                         substring.length);
+                chars, Context.MAXFILEREAD - substring.length,
+                substring.length);
         Reader in = new CharArrayReader(chars);
         QueryBuilder qb = new QueryBuilder().setFreetext("test");
         Context c = new Context(qb.build(), qb.getQueries());
@@ -240,7 +242,7 @@ public class ContextTest {
         assertTrue("No match found", match);
         String s = out.toString();
         assertTrue("Match not written to Writer",
-                   s.contains(" this is a <b>test</b>"));
+                s.contains(" this is a <b>test</b>"));
         assertTrue("No match on line #1", s.contains("href=\"#1\""));
     }
 
@@ -356,8 +358,8 @@ public class ContextTest {
         Context c = new Context(qb.build(), qb.getQueries());
         assertTrue(c.getContext(in, out, "", "", "", null, false, null));
         assertEquals("<a class=\"s\" href=\"#0\"><span class=\"l\">0</span> " +
-                        "<b>Mixed</b> case: abc AbC dEf</a><br/>",
-                     out.toString());
+                "<b>Mixed</b> case: abc AbC dEf</a><br/>",
+                out.toString());
     }
 
     /**
@@ -367,15 +369,15 @@ public class ContextTest {
     public void bug17582() throws Exception {
         // Freetext search should match regardless of case
         bug17582(new QueryBuilder().setFreetext("Bug17582"),
-                new int[] {2, 3}, new String[] {"type1", "type2"});
+                new int[]{2, 3}, new String[]{"type1", "type2"});
 
         // Defs search should only match if case matches
         bug17582(new QueryBuilder().setDefs("Bug17582"),
-                new int[] {3}, new String[] {"type2"});
+                new int[]{3}, new String[]{"type2"});
 
         // Refs search should only match if case matches
         bug17582(new QueryBuilder().setRefs("Bug17582"),
-                new int[] {3}, new String[] {"type2"});
+                new int[]{3}, new String[]{"type2"});
 
         // Path search shouldn't match anything in source
         bug17582(new QueryBuilder().setPath("Bug17582"),
@@ -384,20 +386,20 @@ public class ContextTest {
         // Refs should only match if case matches, but freetext will match
         // regardless of case
         bug17582(new QueryBuilder().setRefs("Bug17582").setFreetext("Bug17582"),
-                new int[] {2, 3}, new String[] {"type1", "type2"});
+                new int[]{2, 3}, new String[]{"type1", "type2"});
 
         // Refs should only match if case matches, hist shouldn't match
         // anything in source
         bug17582(new QueryBuilder().setRefs("Bug17582").setHist("bug17582"),
-                new int[] {3}, new String[] {"type2"});
+                new int[]{3}, new String[]{"type2"});
     }
 
     /**
      * Helper method which does the work for {@link #bug17582()}.
      *
      * @param builder builder for the query we want to test
-     * @param lines the expected line numbers in the hit list
-     * @param tags the expected tags in the hit list
+     * @param lines   the expected line numbers in the hit list
+     * @param tags    the expected tags in the hit list
      */
     private void bug17582(QueryBuilder builder, int[] lines, String[] tags)
             throws Exception {

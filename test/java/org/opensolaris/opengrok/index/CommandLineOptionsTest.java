@@ -25,11 +25,13 @@ package org.opensolaris.opengrok.index;
 
 import java.io.IOException;
 import java.util.Iterator;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -84,7 +86,7 @@ public class CommandLineOptionsTest {
 
         assertNotNull(instance.getUsage());
     }
-    
+
     @Test
     public void bug3042() {
         CommandLineOptions instance = new CommandLineOptions();
@@ -93,13 +95,13 @@ public class CommandLineOptionsTest {
         assertTrue(idx != -1);
         assertEquals("-?\n\tHelp", instance.getCommandUsage('?'));
     }
-    
+
     @Test
     public void rfe3041() {
         CommandLineOptions instance = new CommandLineOptions();
         String cmdString = instance.getCommandString();
         int idx = cmdString.indexOf("V");
         assertTrue(idx != -1);
-        assertEquals("-V\n\tPrint version and quit", instance.getCommandUsage('V'));        
+        assertEquals("-V\n\tPrint version and quit", instance.getCommandUsage('V'));
     }
 }

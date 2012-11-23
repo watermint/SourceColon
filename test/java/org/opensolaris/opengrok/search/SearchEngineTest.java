@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.search;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -35,6 +36,7 @@ import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.index.Indexer;
 import org.opensolaris.opengrok.util.TestRepository;
+
 import static org.junit.Assert.*;
 
 /**
@@ -163,7 +165,7 @@ public class SearchEngineTest {
         List<Hit> hits = new ArrayList<Hit>();
         SearchEngine instance = new SearchEngine();
         instance.setHistory("\"Add lint make target and fix lint warnings\"");
-        int noHits =  instance.search();
+        int noHits = instance.search();
         if (noHits > 0) {
             instance.results(0, noHits, hits);
             assertEquals(noHits, hits.size());
@@ -194,7 +196,7 @@ public class SearchEngineTest {
         for (Hit hit : hits) {
             assertEquals("main.c", hit.getFilename());
             if (hit.getLine().indexOf("arguments") == -1) {
-               fail("got an incorrect match: " + hit.getLine());
+                fail("got an incorrect match: " + hit.getLine());
             }
         }
         assertEquals(8, noHits);
@@ -208,7 +210,7 @@ public class SearchEngineTest {
         for (Hit hit : hits) {
             assertEquals("main.c", hit.getFilename());
             if (hit.getLine().indexOf("main") == -1) {
-               fail("got an incorrect match: " + hit.getLine());
+                fail("got an incorrect match: " + hit.getLine());
             }
         }
         assertEquals(8, noHits);
@@ -219,7 +221,7 @@ public class SearchEngineTest {
         instance.setFile("Main.java OR main.c");
         instance.search();
         assertEquals("+defs:Mai* +(path:\"main . java\" path:\"main . c\")",
-                     instance.getQuery());
+                instance.getQuery());
         assertEquals(2, instance.search());
         instance.setDefinition("MaI*"); // should not match Main
         instance.search();

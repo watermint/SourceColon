@@ -32,6 +32,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
 import org.junit.Test;
 import org.opensolaris.opengrok.analysis.archive.ZipAnalyzer;
 import org.opensolaris.opengrok.analysis.c.CxxAnalyzerFactory;
@@ -40,6 +41,7 @@ import org.opensolaris.opengrok.analysis.plain.PlainAnalyzer;
 import org.opensolaris.opengrok.analysis.plain.XMLAnalyzer;
 import org.opensolaris.opengrok.analysis.sh.ShAnalyzer;
 import org.opensolaris.opengrok.analysis.sh.ShAnalyzerFactory;
+
 import static org.junit.Assert.*;
 
 /**
@@ -62,9 +64,9 @@ public class AnalyzerGuruTest {
     @Test
     public void testUTF8ByteOrderMark() throws Exception {
         byte[] xml = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF, // UTF-8 BOM
-                       '<', '?', 'x', 'm', 'l', ' ',
-                       'v', 'e', 'r', 's', 'i', 'o', 'n', '=',
-                       '"', '1', '.', '0', '"', '?', '>'};
+                '<', '?', 'x', 'm', 'l', ' ',
+                'v', 'e', 'r', 's', 'i', 'o', 'n', '=',
+                '"', '1', '.', '0', '"', '?', '>'};
         ByteArrayInputStream in = new ByteArrayInputStream(xml);
         FileAnalyzer fa = AnalyzerGuru.getAnalyzer(in, "/dummy/file");
         assertSame(XMLAnalyzer.class, fa.getClass());
@@ -73,9 +75,9 @@ public class AnalyzerGuruTest {
     @Test
     public void testUTF8ByteOrderMarkPlainFile() throws Exception {
         byte[] bytes = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF, // UTF-8 BOM
-                       'h', 'e', 'l', 'l', 'o', ' ',
-                       'w', 'o', 'r', 'l', 'd'};
-        
+                'h', 'e', 'l', 'l', 'o', ' ',
+                'w', 'o', 'r', 'l', 'd'};
+
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         FileAnalyzer fa = AnalyzerGuru.getAnalyzer(in, "/dummy/file");
         assertSame(PlainAnalyzer.class, fa.getClass());
@@ -87,14 +89,14 @@ public class AnalyzerGuruTest {
         assertNull(AnalyzerGuru.find("file.unlikely_extension"));
 
         FileAnalyzerFactory
-            faf = AnalyzerGuru.findFactory(ShAnalyzerFactory.class.getName());
+                faf = AnalyzerGuru.findFactory(ShAnalyzerFactory.class.getName());
         // should be the same factory as the built-in analyzer for sh scripts
         assertSame(AnalyzerGuru.find("myscript.sh"), faf);
 
         // add an analyzer for the extension and see that it is picked up
         AnalyzerGuru.addExtension("UNLIKELY_EXTENSION", faf);
         assertSame(ShAnalyzerFactory.class,
-                   AnalyzerGuru.find("file.unlikely_extension").getClass());
+                AnalyzerGuru.find("file.unlikely_extension").getClass());
 
         // remove the mapping and verify that it is gone
         AnalyzerGuru.addExtension("UNLIKELY_EXTENSION", null);
@@ -130,7 +132,7 @@ public class AnalyzerGuruTest {
         ByteArrayInputStream in = new ByteArrayInputStream(
                 "This is a plain text file.".getBytes("US-ASCII"));
         assertSame(PlainAnalyzer.class,
-                   AnalyzerGuru.getAnalyzer(in, "dummy").getClass());
+                AnalyzerGuru.getAnalyzer(in, "dummy").getClass());
     }
 
     @Test

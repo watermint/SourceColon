@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -118,11 +120,11 @@ public class InternerTest {
     @Test
     public void testInvariant() {
         Object[] s1 = {
-            null, new String("1"), new String("2"), new String("3")
+                null, new String("1"), new String("2"), new String("3")
         };
 
         Object[] s2 = {
-            null, new String("1"), new String("2"), new String("3")
+                null, new String("1"), new String("2"), new String("3")
         };
 
         assertEquals(s1.length, s2.length);
@@ -135,8 +137,8 @@ public class InternerTest {
 
             // The javadoc for Interner.intern() mentions this invariant:
             assertTrue((o1 == null) ?
-                (interner.intern(o1) == null) :
-                o1.equals(o2) == (interner.intern(o1) == interner.intern(o2)));
+                    (interner.intern(o1) == null) :
+                    o1.equals(o2) == (interner.intern(o1) == interner.intern(o2)));
         }
     }
 

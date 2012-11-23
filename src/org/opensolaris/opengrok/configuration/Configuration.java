@@ -158,7 +158,7 @@ public final class Configuration {
         setHistoryCacheInDB(false);
         setProjects(new ArrayList<Project>());
         setRepositories(new ArrayList<RepositoryInfo>());
-        setUrlPrefix("/source/s?");
+        setUrlPrefix("/SourceColon/s?");
         //setUrlPrefix("../s?"); // TODO generate relative search paths, get rid of -w <webapp> option to indexer !
         setCtags(System.getProperty("org.opensolaris.opengrok.analysis.Ctags", "ctags"));
         //below can cause an outofmemory error, since it is defaulting to NO LIMIT

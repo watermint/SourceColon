@@ -26,6 +26,7 @@ package org.opensolaris.opengrok.search.context;
 import java.io.File;
 import java.io.StringWriter;
 import java.util.ArrayList;
+
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -37,6 +38,7 @@ import org.junit.Test;
 import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.search.Hit;
 import org.opensolaris.opengrok.util.TestRepository;
+
 import static org.junit.Assert.*;
 
 /**

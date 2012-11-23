@@ -27,6 +27,7 @@ package org.opensolaris.opengrok.search;
 import org.apache.lucene.search.Query;
 import org.junit.Test;
 import org.opensolaris.opengrok.analysis.CompatibleAnalyser;
+
 import static org.junit.Assert.*;
 
 /**

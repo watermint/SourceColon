@@ -25,11 +25,13 @@ package org.opensolaris.opengrok.analysis;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -66,7 +68,7 @@ public class List2TokenStreamTest {
         List<String> empty = Collections.emptyList();
         List2TokenStream instance = new List2TokenStream(empty);
         assertNotNull(instance);
-        assertFalse(instance.incrementToken());        
+        assertFalse(instance.incrementToken());
         instance.close();
     }
 

@@ -37,17 +37,18 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.opensolaris.opengrok.web.Util;
+
 import static org.junit.Assert.*;
 
 /**
- * @author  Jens Elkner
+ * @author Jens Elkner
  * @version $Revision$
  */
 public class TroffAnalyzerTest {
     private static TroffAnalyzerFactory factory;
     private static TroffAnalyzer analyzer;
     private static String content;
-    
+
     /**
      * Test method for {@link org.opensolaris.opengrok.analysis.document
      * .TroffAnalyzer#TroffAnalyzer(org.opensolaris.opengrok.analysis.FileAnalyzerFactory)}.
@@ -59,12 +60,12 @@ public class TroffAnalyzerTest {
         analyzer = new TroffAnalyzer(factory);
         assertNotNull(analyzer);
         String file = System.getProperty("opengrok.test.troff.doc",
-            "test/data/sources/document/foobar.1");
+                "test/data/sources/document/foobar.1");
         File f = new File(file);
         if (!(f.canRead() && f.isFile())) {
             fail("troff testfile " + f + " not found");
         }
-        CharArrayWriter w = new CharArrayWriter((int)f.length());
+        CharArrayWriter w = new CharArrayWriter((int) f.length());
         Util.dump(w, f, false);
         content = w.toString();
     }
@@ -92,9 +93,10 @@ public class TroffAnalyzerTest {
 
     /**
      * Test method for {@link org.opensolaris.opengrok.analysis.document
-     *  .TroffAnalyzer#analyze(org.apache.lucene.document.Document, 
-     *      java.io.InputStream)}.
-     * @throws IOException 
+     * .TroffAnalyzer#analyze(org.apache.lucene.document.Document,
+     * java.io.InputStream)}.
+     *
+     * @throws IOException
      */
     @Test
     public void testAnalyze() throws IOException {
@@ -105,7 +107,8 @@ public class TroffAnalyzerTest {
     /**
      * Test method for {@link org.opensolaris.opengrok.analysis.document
      * .TroffAnalyzer#writeXref(java.io.Writer)}.
-     * @throws IOException 
+     *
+     * @throws IOException
      */
     @Test
     public void testWriteXrefWriter() throws IOException {
@@ -125,10 +128,10 @@ public class TroffAnalyzerTest {
 
     /**
      * Test method for {@link org.opensolaris.opengrok.analysis.document
-     * .TroffAnalyzer#writeXref(java.io.Reader, java.io.Writer, 
-     *      org.opensolaris.opengrok.analysis.Definitions, 
-     *      org.opensolaris.opengrok.history.Annotation, 
-     *      org.opensolaris.opengrok.configuration.Project)}.
+     * .TroffAnalyzer#writeXref(java.io.Reader, java.io.Writer,
+     * org.opensolaris.opengrok.analysis.Definitions,
+     * org.opensolaris.opengrok.history.Annotation,
+     * org.opensolaris.opengrok.configuration.Project)}.
      */
     @Ignore
     public void xtestWriteXrefReaderWriterDefinitionsAnnotationProject() {

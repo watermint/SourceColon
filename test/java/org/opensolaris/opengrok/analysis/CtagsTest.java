@@ -25,6 +25,7 @@ package org.opensolaris.opengrok.analysis;
 
 import java.io.File;
 import java.io.IOException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,13 +33,13 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.TestRepository;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Lubos Kosco
  */
-public class CtagsTest {    
+public class CtagsTest {
     private static Ctags ctags;
     private static TestRepository repository;
 
@@ -57,22 +58,23 @@ public class CtagsTest {
     }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {        
+    public static void tearDownClass() throws Exception {
         ctags.close();
         ctags = null;
         repository.destroy();
     }
 
     @Before
-    public void setUp() throws IOException {        
+    public void setUp() throws IOException {
     }
 
     @After
-    public void tearDown() {        
+    public void tearDown() {
     }
 
     /**
      * Helper method that gets the definitions for a file in the repository.
+     *
      * @param file file name relative to source root
      * @return the definitions found in the file
      */
@@ -87,8 +89,8 @@ public class CtagsTest {
      */
     @Test
     public void testDoCtags() throws Exception {
-     Definitions result = getDefs("bug16070/arguments.c");
-     assertEquals(13, result.numberOfSymbols());     
+        Definitions result = getDefs("bug16070/arguments.c");
+        assertEquals(13, result.numberOfSymbols());
     }
 
     /**

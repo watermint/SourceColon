@@ -27,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.PrintStream;
 import java.util.ArrayList;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -36,6 +37,7 @@ import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.index.Indexer;
 import org.opensolaris.opengrok.index.IndexerTest;
 import org.opensolaris.opengrok.util.TestRepository;
+
 import static org.junit.Assert.*;
 
 /**
@@ -118,13 +120,13 @@ public class SearchTest {
         assertFalse(instance.parseCmdLine(new String[]{"-R", "nonexisting-config-file"}));
 
         assertTrue(instance.parseCmdLine(new String[]{
-                    "-f", "foo",
-                    "-r", "foo",
-                    "-d", "foo",
-                    "-d", "foo",
-                    "-h", "foo",
-                    "-p", "foo", "-R", configFile.getAbsolutePath()
-                }));
+                "-f", "foo",
+                "-r", "foo",
+                "-d", "foo",
+                "-d", "foo",
+                "-h", "foo",
+                "-p", "foo", "-R", configFile.getAbsolutePath()
+        }));
     }
 
     /**
@@ -143,7 +145,7 @@ public class SearchTest {
 
         assertTrue(instance.parseCmdLine(new String[]{"-p", "main~"}));
         assertTrue(instance.search());
-        assertEquals("Search for main~ in testdata sources",8, instance.results.size());
+        assertEquals("Search for main~ in testdata sources", 8, instance.results.size());
 
         assertTrue(instance.parseCmdLine(new String[]{"-p", "\"main troff\"~5"}));
         assertTrue(instance.search());
@@ -151,7 +153,7 @@ public class SearchTest {
 
         assertTrue(instance.parseCmdLine(new String[]{"-p", "Main OR main"}));
         assertTrue(instance.search());
-        assertEquals("Search for Main OR main in testdata sources",8, instance.results.size());
+        assertEquals("Search for Main OR main in testdata sources", 8, instance.results.size());
 
         assertTrue(instance.parseCmdLine(new String[]{"-p", "\"main file\""}));
         assertTrue(instance.search());
@@ -159,7 +161,7 @@ public class SearchTest {
 
         assertTrue(instance.parseCmdLine(new String[]{"-p", "+main -file"}));
         assertTrue(instance.search());
-        assertEquals("search for main but not file",8, instance.results.size());
+        assertEquals("search for main but not file", 8, instance.results.size());
 
         assertTrue(instance.parseCmdLine(new String[]{"-p", "main AND (file OR field)"}));
         assertTrue(instance.search());

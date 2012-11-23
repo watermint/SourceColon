@@ -27,7 +27,9 @@ package org.opensolaris.opengrok.analysis.plain;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class XMLAnalyzerTest {
@@ -35,10 +37,10 @@ public class XMLAnalyzerTest {
     public void bug2225() throws IOException {
         String xmlText =
                 "<?xml version=\"1.0\" encoding=\"US-ASCII\"?>\n" +
-                "<foo>\n" +
-                "  <bar name=\"com.foo.bar.MyClass\"/>\n" +
-                "  <bar name=\"README.txt\"/>\n" +
-                "</foo>";
+                        "<foo>\n" +
+                        "  <bar name=\"com.foo.bar.MyClass\"/>\n" +
+                        "  <bar name=\"README.txt\"/>\n" +
+                        "</foo>";
         StringReader sr = new StringReader(xmlText);
         StringWriter sw = new StringWriter();
         XMLAnalyzer.writeXref(sr, sw, null, null, null);

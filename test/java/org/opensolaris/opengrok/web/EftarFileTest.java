@@ -34,6 +34,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
@@ -65,7 +66,10 @@ public class EftarFileTest {
             }
             out.flush();
         } finally {
-            try { out.close(); } catch (Exception e) { }
+            try {
+                out.close();
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -90,6 +94,7 @@ public class EftarFileTest {
 
     /**
      * Test creation of an EftarFile
+     *
      * @throws java.lang.Exception if an error occurs while creating the
      *                             eftar file
      */
@@ -105,6 +110,7 @@ public class EftarFileTest {
 
     /**
      * Test usage of an EftarFile
+     *
      * @throws java.lang.Exception if an error occurs while accessing the
      *                             eftar file
      */

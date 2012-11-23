@@ -28,15 +28,16 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.TreeSet;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 /**
- *
  * @author austvik
  */
 public class HistoryEntryTest {
@@ -46,7 +47,7 @@ public class HistoryEntryTest {
     private String historyRevision = "1.0";
     private String historyAuthor = "test author";
     private String historyMessage = "history entry message";
-    
+
     public HistoryEntryTest() {
     }
 
@@ -204,11 +205,11 @@ public class HistoryEntryTest {
         String fileName = "test.file";
         HistoryEntry instance = new HistoryEntry();
         assertFalse(
-            new History(Collections.singletonList(instance)).hasFileList());
+                new History(Collections.singletonList(instance)).hasFileList());
         instance.addFile(fileName);
         assertTrue(instance.getFiles().contains(fileName));
         assertTrue(
-            new History(Collections.singletonList(instance)).hasFileList());
+                new History(Collections.singletonList(instance)).hasFileList());
     }
 
     /**
@@ -228,7 +229,7 @@ public class HistoryEntryTest {
      * Test of setFiles method, of class HistoryEntry.
      */
     @Test
-    public void setFiles() {        
+    public void setFiles() {
         TreeSet<String> files = new TreeSet<String>();
         files.add("file1.file");
         files.add("file2.file");
