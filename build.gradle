@@ -6,6 +6,9 @@ apply plugin: 'jetty'
 
 configurations {
     generatesrc
+    runtime {
+        extendsFrom compile
+    }
 }
 
 repositories {
@@ -50,16 +53,7 @@ task jflex(dependsOn: prepare) << {
     }
 }
 
-task testData(dependsOn: prepare) {
-    String source_zip_dir = 'build/classes/test/org/opensolaris/opengrok/index/'
-    new File(source_zip_dir).mkdirs()
-    ant.zip(destfile: source_zip_dir + 'source.zip') {
-        fileset(dir: project.ext.base + '/test/data/sources') {
-        }
-    }
-}
-
-task all(dependsOn: [build, jar, war]) {
+task all(dependsOn: [build, war, runIndexer]) {
 }
 
 compileJava {
@@ -68,10 +62,6 @@ compileJava {
 
 clean {
     dependsOn cleanup
-}
-
-test {
-    dependsOn testData
 }
 
 sourceSets {
@@ -94,11 +84,32 @@ sourceSets {
 }
 
 jar {
+    destinationDir project.ext.dist
     manifest {
         attributes('Main-Class': 'org.opensolaris.opengrok.index.Indexer')
     }
+    from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
 }
 
 war {
     from project.base + '/war'
+}
+
+task runIndexer(dependsOn: jar) << {
+    File scRoot = new File(project.ext.workspace, 'sc')
+    File scData = new File(scRoot, 'data')
+    File scEtc  = new File(scRoot, 'etc')
+
+    [scData, scEtc].each {
+        it.mkdirs()
+    }
+
+    ant.java(jar: project.ext.dist.absolutePath + '/SourceColon.jar', fork: true) {
+        arg(value: '-s')
+        arg(value: project.ext.src.absolutePath)
+        arg(value: '-d')
+        arg(value: scData.absolutePath)
+        arg(value: '-W')
+        arg(value: scEtc.absolutePath + '/configuration.xml')
+    }
 }

@@ -243,11 +243,17 @@ public final class HistoryGuru {
     public boolean hasHistory(File file) {
         Repository repos = getRepository(file);
 
-        return repos == null
-            ? false
-            : repos.isWorking() && repos.fileHasHistory(file)
-                && (RuntimeEnvironment.getInstance().isRemoteScmSupported()
-                    || !repos.isRemote());
+        if ((repos != null)) {
+            if (repos.isWorking()) {
+                if (repos.fileHasHistory(file)) {
+                    if ((RuntimeEnvironment.getInstance().isRemoteScmSupported()
+                            || !repos.isRemote())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
