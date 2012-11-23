@@ -4,13 +4,11 @@
 {
     cfg = PageConfig.get(request);
     cfg.setTitle("Search");
-%><%@ include file="header.jspf" %>
-
-
-    <div class="container">
-        <%@ include file="menu.jspf" %>
-        <%@ include file="index_body.html" %>
-    </div>
-<%
-}
-%><%@ include file="foot.jspf" %>
+%>
+<%@ include file="header.jspf" %>
+<div class="container">
+  <%@ include file="menu.jspf" %>
+  <%@ include file="index_body.html" %>
+</div>
+<% } %>
+<%@ include file="foot.jspf" %>

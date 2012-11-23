@@ -20,36 +20,14 @@ Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
 Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
---%><%@page import="
-java.util.EnumSet,
-
-org.opensolaris.opengrok.web.PageConfig,
-org.opensolaris.opengrok.web.Prefix"
-%><%!
-/* ---------------------- foot.jspf members start --------------------- */
-    private static EnumSet<Prefix> needAddDiv = EnumSet.of(
-        Prefix.HIST_L, Prefix.XREF_P, Prefix.DIFF_P, Prefix.MORE_P,
-        // could NOT find any mapping/reference to those ones:
-        Prefix.HIST_S, Prefix.XREF_S, Prefix.DIFF_S, Prefix.MORE_S);
-/* ---------------------- foot.jspf members end --------------------- */
-%><%
-/* ---------------------- foot.jspf start --------------------- */
-{
-    cfg = PageConfig.get(request);
-
-        %>
-    <div id="footer">
-<p><a href="http://www.opensolaris.org/os/project/opengrok/"
- title="Served by OpenGrok"><span id="fti"></span></a></p>
-
-    <div class="container">
-    Indexes created <%= cfg.getEnv().getDateForLastIndexRun() %>.
-    Served by <a href="https://github.com/watermint/SourceColon">Source:</a> based on
-    <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>.
-    </div>
+--%><%@page import="org.opensolaris.opengrok.web.PageConfig"
+%>
+<div class="container">
+  <div style="margin-top: 60px" class="well well-small muted credit">
+    Indexes created <span class="label label-info"><%= PageConfig.get(request).getEnv().getDateForLastIndexRun() %></span>.
+    Served by <i class="icon-leaf"></i><a href="https://github.com/watermint/SourceColon">Source:</a> based on
+  <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>.
+  </div>
+</div>
 </body>
 </html>
-<%
-}
-/* ---------------------- foot.jspf end --------------------- */
-%>

@@ -83,81 +83,57 @@ include file="header.jspf"
     document.pageReady.push(function() { pageReadyMast();});
 </script>
 
-
 <div class="container">
-    <div class="navbar">
+  <div class="navbar">
     <div class="navbar-inner">
-		    	<ul class="nav">
-			    	<%
-				    	if (!cfg.hasHistory()) {
-					%>
-					<li>History</li>
-					<%
-						} else {
-					%>
-					<li><a href="<%= context + Prefix.HIST_L + uriEncodedPath %>">History</a></li>
-					<%
-						}
-						if (!cfg.hasAnnotations()) {
-					%>
-					<li>Annotate</li>
-					<%
-						} else if (cfg.annotate()) {
-					%>
-					<li>
-						<span id="toggle-annotate-by-javascript" style="display: none">
-							<a href="#"
-								onclick="javascript:toggle_annotations(); return false;" 
-								title="Show or hide line annotation(commit revisions,authors).">
-								Annotate
-							</a>
-						</span>
-						<span id="toggle-annotate">
-							<a href="<%= context + Prefix.XREF_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">
-								Annotate
-							</a>
-						</span>
-					</li>
-					<%
-						} else {
-					%>
-					<li><a href="#" onclick="javascript:get_annotations(); return false;">Annotate</a></li>
-					<%
-						}
-						if (!cfg.isDir()) {
-							if (cfg.getPrefix() == Prefix.XREF_P) {
-					%>
-					<li><a href="#"	onclick="javascript:lntoggle();return false;"
-							title="<%= "Show or hide line numbers (might be slower if file has more than 10 000 lines)." %>">Line#</a></li>
-					<li><a href="#"	onclick="javascript:lsttoggle();return false;" title="Show or hide symbol list.">Navigate</a></li>
-					<%
-							}
-					%>
-					<li><a href="<%= context + Prefix.RAW_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">Download</a></li>
-					<%
-						}
-					%>
-				</ul>
-				<%
-                    String[] vals = cfg.getSearchOnlyIn();
-				%>
-						<form class="navbar-search pull-right" action="<%= context + Prefix.SEARCH_P %>">
-						<input type="hidden" name="path" value="<%= vals[0] %>" />
-						<input type="text"
-							class="search-query"
-							placeholder="Search under <%= cfg.getCrossFilename() %>"
-							id="search"
-							name="q" />
-						</form>
+      <ul class="nav">
+        <% if (!cfg.hasHistory()) { %>
+          <li class="disabled"><a href="#">History</a></li>
+        <% } else { %>
+          <li><a href="<%= context + Prefix.HIST_L + uriEncodedPath %>">History</a></li>
+        <% } %>
+        <% if (!cfg.hasAnnotations()) { %>
+          <li class="disabled"><a href="#">Annotate</a></li>
+        <% } else if (cfg.annotate()) { %>
+          <li>
+            <span id="toggle-annotate-by-javascript" style="display: none">
+              <a href="#" onclick="javascript:toggle_annotations(); return false;" 
+               title="Show or hide line annotation(commit revisions,authors).">Annotate</a>
+            </span>
+            <span id="toggle-annotate">
+              <a href="<%= context + Prefix.XREF_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">Annotate</a>
+            </span>
+          </li>
+        <% } else { %>
+          <li><a href="#" onclick="javascript:get_annotations(); return false;">Annotate</a></li>
+        <% } %>
+        <% if (!cfg.isDir()) { %>
+          <% if (cfg.getPrefix() == Prefix.XREF_P) { %>
+            <li>
+              <a href="#"	onclick="javascript:lntoggle();return false;"
+               title="<%= "Show or hide line numbers (might be slower if file has more than 10 000 lines)." %>">Line#</a>
+            </li>
+            <li>
+              <a href="#"	onclick="javascript:lsttoggle();return false;" title="Show or hide symbol list.">Navigate</a>
+            </li>
+          <% } %>
+          <li><a href="<%= context + Prefix.RAW_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">Download</a></li>
+        <% } %>
+      </ul>
+      <form class="navbar-search pull-right" action="<%= context + Prefix.SEARCH_P %>">
+        <input type="hidden" name="path" value="<%= cfg.getSearchOnlyIn()[0] %>" />
+        <input type="text" class="search-query" placeholder="Search under <%= cfg.getCrossFilename() %>" id="search" name="q" />
+      </form>
     </div>
-    </div>
-    <div class="container">
-            <ul class="breadcrumb">
-            	<a href="<%= context + Prefix.XREF_P %>/">xref</a>: 
-            	<%= Util.breadcrumbPath(context + Prefix.XREF_P, path,'/',"",true,cfg.isDir()) %>
-            </ul>
-    </div>
-    <div class="container">
+  </div>
+</div>
+<div class="container">
+  <ul class="breadcrumb">
+   <a href="<%= context + Prefix.XREF_P %>/">xref</a>: 
+   <%= Util.breadcrumbPath(context + Prefix.XREF_P, path,'/',"",true,cfg.isDir()) %>
+ </ul>
+</div>
+<div class="container">
 <%
 }
 /* ---------------------- mast.jsp end --------------------- */
