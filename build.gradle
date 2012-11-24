@@ -18,7 +18,7 @@ repositories {
 ext {
     src          = new File(project.projectDir, 'src')
     dist         = new File(project.projectDir, 'dist')
-    generatedsrc = new File(project.buildDir, '/generatedsrc')
+    generatedsrc = new File(project.projectDir, 'generatedsrc')
     workingdirs  = [project.buildDir, generatedsrc, dist]
 }
 

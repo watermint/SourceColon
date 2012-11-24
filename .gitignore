@@ -4,3 +4,4 @@
 *.iml
 build
 dist
+generatedsrc
