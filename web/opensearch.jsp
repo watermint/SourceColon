@@ -22,21 +22,15 @@ Copyright (c) 2009, 2012, Oracle and/or its affiliates. All rights reserved.
 
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page  session="false" errorPage="error.jsp" import="
+--%>
+<%@page session="false" errorPage="error.jsp" import="
 java.util.Set,
-
-org.opensolaris.opengrok.web.Util"
-%><%@
-
-include file="pageconfig.jspf"
-
-%><%@
-
-include file="projects.jspf"
-
-%><%
-    /* ---------------------- opensearch.jsp start --------------------- */
-{
+ org.opensolaris.opengrok.web.Util"
+    %>
+<%@ include file="pageconfig.jspf" %>
+<%@ include file="projects.jspf" %>
+<%
+  {
     cfg = PageConfig.get(request);
 
     // Optimize for URLs up to 128 characters. 
@@ -53,40 +47,41 @@ include file="projects.jspf"
     // and original server. Unfortunately the X-Forwarded-Host does not seem to
     // contain the port number so there is no way around it.
     if (ForwardedHost != null) {
-        url.append(ForwardedHost);
+      url.append(ForwardedHost);
     } else {
-        url.append(request.getServerName());
+      url.append(request.getServerName());
 
-        // Append port if needed.
-        if ((port != 80 && scheme.equals("http")) ||
-                   (port != 443 && scheme.equals("https"))) {
-            url.append(':').append(port);
-        }
+      // Append port if needed.
+      if ((port != 80 && scheme.equals("http")) ||
+          (port != 443 && scheme.equals("https"))) {
+        url.append(':').append(port);
+      }
     }
 
-    String imgurl = url +  cfg.getCssDir() + "/img/icon.png";
+    String imgurl = url + cfg.getCssDir() + "/img/icon.png";
 
     /* TODO  Bug 11749 ??? */
     StringBuilder text = new StringBuilder();
     url.append(request.getContextPath()).append(Prefix.SEARCH_P).append('?');
     Set<String> projects = cfg.getRequestedProjects();
     for (String name : projects) {
-        text.append(name).append(',');
-        Util.appendQuery(url, "project", name);
+      text.append(name).append(',');
+      Util.appendQuery(url, "project", name);
     }
     if (text.length() != 0) {
-        text.setLength(text.length()-1);
+      text.setLength(text.length() - 1);
     }
 %><?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-    <ShortName>OpenGrok <%= text.toString() %></ShortName>
-    <Description>Search in OpenGrok <%= text.toString() %></Description>
-    <InputEncoding>UTF-8</InputEncoding>
-    <Image height="16" width="16" type="image/png"><%= imgurl %></Image>
-<%-- <Url type="application/x-suggestions+json" template="suggestionURL"/>--%>
-    <Url template="<%= url.toString() %>&amp;q={searchTerms}" type="text/html"/>
+  <ShortName>OpenGrok <%= text.toString() %>
+  </ShortName>
+  <Description>Search in OpenGrok <%= text.toString() %>
+  </Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image height="16" width="16" type="image/png"><%= imgurl %>
+  </Image>
+  <Url template="<%= url.toString() %>&amp;q={searchTerms}" type="text/html"/>
 </OpenSearchDescription>
 <%
-}
-/* ---------------------- opensearch.jsp end --------------------- */
+  }
 %>

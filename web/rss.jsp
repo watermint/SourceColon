@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <%--
 $Id$
 
@@ -23,96 +24,99 @@ Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page import="
+--%>
+<%@page import="
 java.io.File,
-java.text.SimpleDateFormat,
-java.util.Set,
-
-org.opensolaris.opengrok.history.DirectoryHistoryReader,
-org.opensolaris.opengrok.history.History,
-org.opensolaris.opengrok.history.HistoryEntry,
-org.opensolaris.opengrok.history.HistoryGuru,
-org.opensolaris.opengrok.web.Util,
-org.opensolaris.opengrok.web.Prefix,
-org.opensolaris.opengrok.web.PageConfig"
-%><%@ page session="false" errorPage="error.jsp"%><%@
-
-include file="pageconfig.jspf"
-
-%><%
-/* ---------------------- rss.jsp start --------------------- */
-{
+                java.text.SimpleDateFormat,
+                java.util.Set,
+                org.opensolaris.opengrok.history.DirectoryHistoryReader,
+                org.opensolaris.opengrok.history.History,
+                org.opensolaris.opengrok.history.HistoryEntry,
+                org.opensolaris.opengrok.history.HistoryGuru,
+                org.opensolaris.opengrok.web.Util,
+                org.opensolaris.opengrok.web.Prefix,
+                org.opensolaris.opengrok.web.PageConfig"
+    %>
+<%@ page session="false" errorPage="error.jsp" %>
+<%@ include file="pageconfig.jspf" %>
+<%
+  {
     cfg = PageConfig.get(request);
     String redir = cfg.canProcess();
     if (redir == null || redir.length() > 0) {
-        if (redir != null) {
-            response.sendRedirect(redir);
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-        return;
+      if (redir != null) {
+        response.sendRedirect(redir);
+      } else {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+      }
+      return;
     }
     cfg.getEnv().setUrlPrefix(request.getContextPath() + Prefix.SEARCH_R + '?');
     String path = cfg.getPath();
     String dtag = cfg.getDefineTagsIndex();
     response.setContentType("text/xml");
-%><?xml version="1.0"?>
+%>
 <?xml-stylesheet type="text/xsl" href="<%= request.getContextPath()
-    %>/rss.xsl.xml"?>
+%>/rss.xsl.xml"?>
 <rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
-<channel>
+  <channel>
     <title>Changes in <%= path.length() == 0
         ? "Cross Reference"
-        : Util.htmlize(cfg.getResourceFile().getName()) %></title>
-    <link><%= Util.htmlize(request.getRequestURL()) %></link>
-    <description><%= Util.htmlize(dtag) %></description>
+        : Util.htmlize(cfg.getResourceFile().getName()) %>
+    </title>
+    <link><%= Util.htmlize(request.getRequestURL()) %>
+    </link>
+    <description><%= Util.htmlize(dtag) %>
+    </description>
     <language>en</language>
     <copyright>Copyright 2005</copyright>
-    <generator>Java</generator><%
-    History hist = null;
-    if(cfg.isDir()) {
+    <generator>Java</generator>
+    <%
+      History hist = null;
+      if (cfg.isDir()) {
         hist = new DirectoryHistoryReader(cfg.getHistoryDirs()).getHistory();
-    } else {
+      } else {
         hist = HistoryGuru.getInstance().getHistory(cfg.getResourceFile());
-    }
-    if (hist != null) {
+      }
+      if (hist != null) {
         int i = 20;
         for (HistoryEntry entry : hist.getHistoryEntries()) {
-            if (i-- <= 0) {
-                break;
-            }
-            if (entry.isActive()) {
+          if (i-- <= 0) {
+            break;
+          }
+          if (entry.isActive()) {
     %>
     <item>
-        <title><%= Util.htmlize(entry.getMessage()) %></title>
-        <description><%
-                if (cfg.isDir()) {
-                    Set<String> files = entry.getFiles();
-                    if (files != null) {
-                        for (String ifile : files) {
-            %><%= Util.htmlize(ifile) %><%
-                        }
-                    }
-                } else {
-            %><%= Util.htmlize(path) %> - <%=
-                Util.htmlize(entry.getRevision()) %><%
-                }
-        %></description>
-        <pubDate><%
-                SimpleDateFormat df =
-                    new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
-                Util.htmlize(df.format(entry.getDate()));
-        %></pubDate>
-        <dc:creator><%= Util.htmlize(entry.getAuthor()) %></dc:creator>
-    </item>
-<%
-            }
+      <title><%= Util.htmlize(entry.getMessage()) %>
+      </title>
+      <description><%
+        if (cfg.isDir()) {
+          Set<String> files = entry.getFiles();
+          if (files != null) {
+            for (String ifile : files) {
+      %><%= Util.htmlize(ifile) %><%
+          }
         }
-    }
-%>
-</channel>
+      } else {
+      %><%= Util.htmlize(path) %> - <%=
+      Util.htmlize(entry.getRevision()) %><%
+        }
+      %></description>
+      <pubDate><%
+        SimpleDateFormat df =
+            new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z");
+        Util.htmlize(df.format(entry.getDate()));
+      %></pubDate>
+      <dc:creator><%= Util.htmlize(entry.getAuthor()) %>
+      </dc:creator>
+    </item>
+    <%
+          }
+        }
+      }
+    %>
+  </channel>
 </rss>
 <%
-}
-/* ---------------------- rss.jsp end --------------------- */
+  }
 %>

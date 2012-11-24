@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" errorPage="error.jsp" %>
 <%@ include file="projects.jspf" %>
 <%
-{
+  {
     cfg = PageConfig.get(request);
     cfg.setTitle("Search");
 %>

@@ -21,53 +21,42 @@ CDDL HEADER END
 Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page session="false" errorPage="error.jsp" import="
+--%>
+<%@page session="false" errorPage="error.jsp" import="
 org.opensolaris.opengrok.configuration.RuntimeEnvironment,
 org.opensolaris.opengrok.web.Util"
-%><%@
-
-include file="projects.jspf"
-
-%><%
-/* ---------------------- status.jsp start --------------------- */
-{
+    %>
+<%@ include file="projects.jspf" %>
+<%
+  {
     cfg = PageConfig.get(request);
     cfg.setTitle("Status");
-%><%@
-
-include file="header.jspf"
-
 %>
-    <div id="page">
-        <div id="whole_header">
-            <div id="header"><%@
+<%@ include file="header.jspf" %>
+<div id="page">
+  <div id="whole_header">
+    <div id="header">
+      <%@ include file="pageheader.jspf" %>
+    </div>
+    <div id="Masthead"></div>
+  </div>
+  <div id="status">
+    <h1>OpenGrok status page</h1>
 
-include file="pageheader.jspf"
-
-            %>
-            </div>
-            <div id="Masthead"></div>
-        </div>
-        <div id="status">
-            <h1>OpenGrok status page</h1>
-            <p>
-This page is only used for testing purposes to dump some of the
-internal settings on your OpenGrok server.</p><%
-        if (cfg.getEnv().isChattyStatusPage()) {
-            Util.dumpConfiguration(out);
-        } else {
-        %><p>
-For security reasons, printing of internal settings is not enabled by
-default. To enable, set the property <tt>chattyStatusPage</tt> to
-<tt>true</tt> in <tt>configuration.xml</tt>.</p><%
-        }
-        %>
-        </div>
+    <p>
+      This page is only used for testing purposes to dump some of the
+      internal settings on your OpenGrok server.</p><%
+    if (cfg.getEnv().isChattyStatusPage()) {
+      Util.dumpConfiguration(out);
+    } else {
+  %><p>
+    For security reasons, printing of internal settings is not enabled by
+    default. To enable, set the property <tt>chattyStatusPage</tt> to
+    <tt>true</tt> in <tt>configuration.xml</tt>.</p><%
+    }
+  %>
+  </div>
 <%
-}
-/* ---------------------- status.jsp start --------------------- */
-%><%@
-
-include file="foot.jspf"
-
+  }
 %>
+<%@ include file="foot.jspf" %>

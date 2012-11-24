@@ -23,75 +23,75 @@ Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page import="
+--%>
+<%@page import="
 java.io.File,
-java.io.FileInputStream,
-java.io.FileNotFoundException,
-java.io.InputStream,
-java.io.OutputStream,
+                java.io.FileInputStream,
+                java.io.FileNotFoundException,
+                java.io.InputStream,
+                java.io.OutputStream,
+                org.opensolaris.opengrok.configuration.RuntimeEnvironment,
+                org.opensolaris.opengrok.history.HistoryGuru,
+                org.opensolaris.opengrok.web.PageConfig"
+    %>
+<%@
 
-org.opensolaris.opengrok.configuration.RuntimeEnvironment,
-org.opensolaris.opengrok.history.HistoryGuru,
-org.opensolaris.opengrok.web.PageConfig"
-%><%@
+    include file="pageconfig.jspf"
 
-include file="pageconfig.jspf"
-
-%><%
-/* ---------------------- raw.jsp start --------------------- */
-{
+    %>
+<%
+  {
     cfg = PageConfig.get(request);
     String redir = cfg.canProcess();
     if (redir == null || redir.length() > 0) {
-        if (redir != null) {
-            response.sendRedirect(redir);
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-        return;
+      if (redir != null) {
+        response.sendRedirect(redir);
+      } else {
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+      }
+      return;
     }
 
     File f = cfg.getResourceFile();
     String revision = cfg.getRequestedRevision();
     if (revision.length() == 0) {
-        revision = null;
+      revision = null;
     }
     InputStream in = null;
     try {
-        if (revision != null) {
-            in = HistoryGuru.getInstance().getRevision(f.getParent(),
-                f.getName(), revision.substring(2));
-        } else {
-            long flast = cfg.getLastModified();
-            if (request.getDateHeader("If-Modified-Since") >= flast) {
-                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-                return;
-            }
-            in = new FileInputStream(f);
-            response.setContentLength((int) f.length());
-            response.setDateHeader("Last-Modified", f.lastModified());
+      if (revision != null) {
+        in = HistoryGuru.getInstance().getRevision(f.getParent(),
+            f.getName(), revision.substring(2));
+      } else {
+        long flast = cfg.getLastModified();
+        if (request.getDateHeader("If-Modified-Since") >= flast) {
+          response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+          return;
         }
+        in = new FileInputStream(f);
+        response.setContentLength((int) f.length());
+        response.setDateHeader("Last-Modified", f.lastModified());
+      }
     } catch (Exception e) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-        return ;
+      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+      return;
     }
     String mimeType = getServletContext().getMimeType(f.getAbsolutePath());
     response.setContentType(mimeType);
 
     try {
-        response.setHeader("content-disposition", "attachment; filename="
-            + f.getName());
-        OutputStream o = response.getOutputStream();
-        byte[] buffer = new byte[8192];
-        int nr;
-        while ((nr = in.read(buffer)) > 0) {
-            o.write(buffer, 0, nr);
-        }
-        o.flush();
-        o.close();
+      response.setHeader("content-disposition", "attachment; filename="
+          + f.getName());
+      OutputStream o = response.getOutputStream();
+      byte[] buffer = new byte[8192];
+      int nr;
+      while ((nr = in.read(buffer)) > 0) {
+        o.write(buffer, 0, nr);
+      }
+      o.flush();
+      o.close();
     } finally {
-        in.close();
+      in.close();
     }
-}
-/* ---------------------- raw.jsp end-------------------- */
+  }
 %>

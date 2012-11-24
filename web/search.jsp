@@ -21,39 +21,42 @@ CDDL HEADER END
 Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page session="false" errorPage="error.jsp" import="
+--%>
+<%@page session="false" errorPage="error.jsp" import="
 org.opensolaris.opengrok.search.Results,
-org.opensolaris.opengrok.web.SearchHelper,
-org.opensolaris.opengrok.web.SortOrder,
-org.opensolaris.opengrok.web.Suggestion"
-%><%@
+                                                      org.opensolaris.opengrok.web.SearchHelper,
+                                                      org.opensolaris.opengrok.web.SortOrder,
+                                                      org.opensolaris.opengrok.web.Suggestion"
+    %>
+<%@
 
-include file="projects.jspf"
+    include file="projects.jspf"
 
-%><%!
-    private StringBuilder createUrl(SearchHelper sh, boolean menu) {
-        StringBuilder url = new StringBuilder(64);
-        QueryBuilder qb = sh.builder;
-        if (menu) {
-            url.append("search?");
-        } else {
-            Util.appendQuery(url, "sort", sh.order.toString());
-        }
-        if (qb != null) {
-            Util.appendQuery(url, "q", qb.getFreetext());
-            Util.appendQuery(url, "defs", qb.getDefs());
-            Util.appendQuery(url, "refs", qb.getRefs());
-            Util.appendQuery(url, "path", qb.getPath());
-            Util.appendQuery(url, "hist", qb.getHist());
-        }
-        if (sh.projects != null && sh.projects.size() != 0) {
-            Util.appendQuery(url, "project", cfg.getRequestedProjectsAsString());
-        }
-        return url;
+    %>
+<%!
+  private StringBuilder createUrl(SearchHelper sh, boolean menu) {
+    StringBuilder url = new StringBuilder(64);
+    QueryBuilder qb = sh.builder;
+    if (menu) {
+      url.append("search?");
+    } else {
+      Util.appendQuery(url, "sort", sh.order.toString());
     }
+    if (qb != null) {
+      Util.appendQuery(url, "q", qb.getFreetext());
+      Util.appendQuery(url, "defs", qb.getDefs());
+      Util.appendQuery(url, "refs", qb.getRefs());
+      Util.appendQuery(url, "path", qb.getPath());
+      Util.appendQuery(url, "hist", qb.getHist());
+    }
+    if (sh.projects != null && sh.projects.size() != 0) {
+      Util.appendQuery(url, "project", cfg.getRequestedProjectsAsString());
+    }
+    return url;
+  }
 %><%
-/* ---------------------- search.jsp start --------------------- */
-{
+  /* ---------------------- search.jsp start --------------------- */
+  {
     cfg = PageConfig.get(request);
 
     long starttime = System.currentTimeMillis();
@@ -61,76 +64,94 @@ include file="projects.jspf"
     SearchHelper searchHelper = cfg.prepareSearch()
         .prepareExec(cfg.getRequestedProjects()).executeQuery().prepareSummary();
     if (searchHelper.redirect != null) {
-        response.sendRedirect(searchHelper.redirect);
+      response.sendRedirect(searchHelper.redirect);
     }
     if (searchHelper.errorMsg != null) {
-        cfg.setTitle("Search Error");
+      cfg.setTitle("Search Error");
     } else {
-        cfg.setTitle("Search");
+      cfg.setTitle("Search");
     }
     response.addCookie(new Cookie("OpenGrokSorting", searchHelper.order.toString()));
-%><%@
-
-include file="header.jspf"
-
 %>
+<%@
+
+    include file="header.jspf"
+
+    %>
 <div class="container">
-        <div id="header"><%@ include file="pageheader.jspf" %></div>
-        <div id="menu"><%@ include file="menu.jspf" %></div>
-    <ul class="nav nav-tabs"><%
+  <div id="header">
+    <%@ include file="pageheader.jspf" %>
+  </div>
+  <div id="menu">
+    <%@ include file="menu.jspf" %>
+  </div>
+  <ul class="nav nav-tabs"><%
     StringBuilder url = createUrl(searchHelper, true).append("&amp;sort=");
     for (SortOrder o : SortOrder.values()) {
-        if (searchHelper.order == o) {
-                    %><li class="active"><a href="#"><%= o.getDesc() %></a></li><%
-        } else {
-                    %><li><a href="<%= url %><%= o %>"><%= o.getDesc() %></a></li><%
-        }
-    }
+      if (searchHelper.order == o) {
+  %>
+    <li class="active"><a href="#"><%= o.getDesc() %>
+    </a></li>
+    <%
+    } else {
     %>
-    </ul>
+    <li><a href="<%= url %><%= o %>"><%= o.getDesc() %>
+    </a></li>
+    <%
+        }
+      }
+    %>
+  </ul>
     <%
     // TODO spellchecking cycle below is not that great and we only create
     // suggest links for every token in query, not for a query as whole
     if (searchHelper.errorMsg != null) {
-        %><h3>Error</h3><p><%
-        if (searchHelper.errorMsg.startsWith((SearchHelper.PARSE_ERROR_MSG))) {
-            %><%= Util.htmlize(SearchHelper.PARSE_ERROR_MSG) %>
-            <br/>You might try to enclose your search term in quotes,
-            <a href="help.jsp#escaping">escape special characters</a>
-            with <b>\</b>, or read the <a href="help.jsp">Help</a>
-            on the query language. Error message from parser:<br/>
-            <%= Util.htmlize(searchHelper.errorMsg.substring(
-                        SearchHelper.PARSE_ERROR_MSG.length())) %><%
-        } else {
-            %><%= Util.htmlize(searchHelper.errorMsg) %><%
-        }%></p><%
+        %><h3>Error</h3>
+
+  <p><%
+    if (searchHelper.errorMsg.startsWith((SearchHelper.PARSE_ERROR_MSG))) {
+  %><%= Util.htmlize(SearchHelper.PARSE_ERROR_MSG) %>
+    <br/>You might try to enclose your search term in quotes,
+    <a href="help.jsp#escaping">escape special characters</a>
+    with <b>\</b>, or read the <a href="help.jsp">Help</a>
+    on the query language. Error message from parser:<br/>
+    <%= Util.htmlize(searchHelper.errorMsg.substring(
+        SearchHelper.PARSE_ERROR_MSG.length())) %><%
+    } else {
+    %><%= Util.htmlize(searchHelper.errorMsg) %><%
+      }%></p><%
     } else if (searchHelper.hits == null) {
         %><p>No hits</p><%
     } else if (searchHelper.hits.length == 0) {
         List<Suggestion> hints = searchHelper.getSuggestions();
         for (Suggestion hint : hints) {
         %><p><span class="text-error">Did you mean (for <%= hint.name %>)</span>:<%
-            for (String word : hint.freetext) {
-            %> <a href=search?q=<%= word %>><%= word %></a> &nbsp;  <%
-            }
-            for (String word : hint.refs) {
-            %> <a href=search?refs=<%= word %>><%= word %></a> &nbsp;  <%
-            }
-            for (String word : hint.defs) {
-            %> <a href=search?defs=<%= word %>><%= word %></a> &nbsp;  <%
-            }
-        %></p><%
+  for (String word : hint.freetext) {
+%> <a href=search?q=<%= word %>><%= word %>
+</a> &nbsp;  <%
+  }
+  for (String word : hint.refs) {
+%> <a href=search?refs=<%= word %>><%= word %>
+</a> &nbsp;  <%
+  }
+  for (String word : hint.defs) {
+%> <a href=search?defs=<%= word %>><%= word %>
+</a> &nbsp;  <%
+  }
+%></p><%
         }
         %>
-        <p> Your search <b><%= searchHelper.query %></b> did not match any files.
-            <br/> Suggestions:<br/>
-        </p>
-        <ul>
-            <li>Make sure all terms are spelled correctly.</li>
-            <li>Try different keywords.</li>
-            <li>Try more general keywords.</li>
-            <li>Use 'wil*' cards if you are looking for partial match.</li>
-        </ul><%
+  <p> Your search <b><%= searchHelper.query %>
+  </b> did not match any files.
+    <br/> Suggestions:<br/>
+  </p>
+  <ul>
+    <li>Make sure all terms are spelled correctly.</li>
+    <li>Try different keywords.</li>
+    <li>Try more general keywords.</li>
+    <li>Use 'wil*' cards if you are looking for partial match.</li>
+  </ul>
+    <%
     } else {
         // We have a lots of results to show: create a slider for
         String slider = "";
@@ -175,25 +196,40 @@ include file="header.jspf"
             thispage = totalHits - start;
         }
         %>
-    <div class="container">
-        <p class="pagetitle">Searched <b><%= searchHelper.query
-            %></b> (Results <b> <%= start + 1 %> - <%= thispage + start
-            %></b> of <b><%= totalHits %></b>) sorted by <span class="label label-info"><%=
-            searchHelper.order.getDesc() %></span></p>
-        <% if (slider.length() > 0) { %><div class="pagination"><ul><%= slider %></ul></div><% } %>
-        <table class="table table-striped"><%
-        Results.prettyPrint(out, searchHelper, start, start + thispage);
-        %>
-        </table>
-        <% if (slider.length() > 0) { %><div class="pagination"><ul><%= slider %></ul></div><% } %>
+  <div class="container">
+    <p class="pagetitle">Searched <b><%= searchHelper.query
+    %>
+    </b> (Results <b><%= start + 1 %> - <%= thispage + start
+    %>
+    </b> of <b><%= totalHits %>
+    </b>) sorted by <span class="label label-info"><%=
+    searchHelper.order.getDesc() %></span></p>
+    <% if (slider.length() > 0) { %>
+    <div class="pagination">
+      <ul><%= slider %>
+      </ul>
     </div>
-    <div class="container">
-        <p class="muted">
-        Completed in <span class="label label-info"><%= System.currentTimeMillis() - starttime %></span> milliseconds
-        </p>
-    </div><%
+    <% } %>
+    <table class="table table-striped"><%
+      Results.prettyPrint(out, searchHelper, start, start + thispage);
+    %>
+    </table>
+    <% if (slider.length() > 0) { %>
+    <div class="pagination">
+      <ul><%= slider %>
+      </ul>
+    </div>
+    <% } %>
+  </div>
+  <div class="container">
+    <p class="muted">
+      Completed in <span class="label label-info"><%= System.currentTimeMillis() - starttime %></span> milliseconds
+    </p>
+  </div>
+<%
     }
     searchHelper.destroy();
-}
+  }
 /* ---------------------- search.jsp end --------------------- */
-%><%@ include file="foot.jspf" %>
+%>
+<%@ include file="foot.jspf" %>

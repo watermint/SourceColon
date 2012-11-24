@@ -21,18 +21,18 @@ CDDL HEADER END
 Copyright (c) 2007, 2010, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page import="
+--%>
+<%@page import="
 java.util.TreeSet,
-
-org.opensolaris.opengrok.web.Prefix,
-org.opensolaris.opengrok.web.PageConfig,
-org.opensolaris.opengrok.configuration.Project
-"%><%
-/* ---------------------- projects.jspf start --------------------- */
-{
+                org.opensolaris.opengrok.web.Prefix,
+                org.opensolaris.opengrok.web.PageConfig,
+                org.opensolaris.opengrok.configuration.Project" %>
+<%
+  /* ---------------------- projects.jspf start --------------------- */
+  {
     // Use UTF-8 if no encoding is specified in the request
     if (request.getCharacterEncoding() == null) {
-        request.setCharacterEncoding("UTF-8");
+      request.setCharacterEncoding("UTF-8");
     }
 
     cfg = PageConfig.get(request);
@@ -40,9 +40,9 @@ org.opensolaris.opengrok.configuration.Project
 
     String projects = cfg.getRequestedProjectsAsString();
     if (projects.length() != 0) {
-        Cookie cookie = new Cookie("OpenGrokProject", projects);
-        response.addCookie(cookie);
+      Cookie cookie = new Cookie("OpenGrokProject", projects);
+      response.addCookie(cookie);
     }
-}
+  }
 /* ---------------------- projects.jspf end --------------------- */
 %>

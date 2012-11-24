@@ -23,91 +23,92 @@ Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
 
---%><%@page import="
+--%>
+<%@page import="
 java.util.SortedSet,
-java.util.TreeMap,
-java.util.Map.Entry,
-java.util.List,
-java.util.HashMap,
-java.util.ArrayList,
-
-org.opensolaris.opengrok.configuration.Project,
-org.opensolaris.opengrok.search.QueryBuilder,
-org.opensolaris.opengrok.web.PageConfig,
-org.opensolaris.opengrok.web.Prefix,
-org.opensolaris.opengrok.web.Util"
-%><%
-/* ---------------------- menu.jspf start --------------------- */
-{
-    // PageConfig cfg = PageConfig.get(request);
-
+                java.util.TreeMap,
+                java.util.Map.Entry,
+                java.util.List,
+                java.util.HashMap,
+                java.util.ArrayList,
+                org.opensolaris.opengrok.configuration.Project,
+                org.opensolaris.opengrok.search.QueryBuilder,
+                org.opensolaris.opengrok.web.PageConfig,
+                org.opensolaris.opengrok.web.Prefix,
+                org.opensolaris.opengrok.web.Util"
+    %>
+<%
+  {
     List<Project> projects = cfg.getEnv().getProjects();
     if (projects == null) {
-        projects = new ArrayList<Project>(0);
+      projects = new ArrayList<Project>(0);
     }
     TreeMap<String, String> pMap = new TreeMap<String, String>();
     QueryBuilder queryParams = cfg.getQueryBuilder();
     if (projects.size() != 0) {
-        for (Project p : projects) {
-            String name = p.getDescription();
-            String esc = Util.formQuoteEscape(p.getDescription());
-            pMap.put(name, esc);
-        }
-        StringBuilder jsProjects = new StringBuilder(64);
-        jsProjects.append('\'');
-        for (String name : cfg.getRequestedProjects()) {
-            jsProjects.append(name).append("','");
-        }
-        if (jsProjects.length() > 1) {
-            jsProjects.setLength(jsProjects.length()-2);
-        } else {
-            jsProjects.setLength(0);
-        }
+      for (Project p : projects) {
+        String name = p.getDescription();
+        String esc = Util.formQuoteEscape(p.getDescription());
+        pMap.put(name, esc);
+      }
+      StringBuilder jsProjects = new StringBuilder(64);
+      jsProjects.append('\'');
+      for (String name : cfg.getRequestedProjects()) {
+        jsProjects.append(name).append("','");
+      }
+      if (jsProjects.length() > 1) {
+        jsProjects.setLength(jsProjects.length() - 2);
+      } else {
+        jsProjects.setLength(0);
+      }
 %>
 <script type="text/javascript">/* <![CDATA[ */
-    document.projects = [ <%= Util.encode(jsProjects.toString())
-    %> ];document.xrefPath = '<%= request.getContextPath() + Prefix.XREF_P
-    %>';document.domReady.push(function() { domReadyMenu(); });
+document.projects = [ <%= Util.encode(jsProjects.toString()) %> ];
+document.xrefPath = '<%= request.getContextPath() + Prefix.XREF_P %>';
+document.domReady.push(function () { domReadyMenu(); });
 /* ]]> */
-</script><%
-    }
+</script>
+<%
+  }
 %>
-    <form action="<%= request.getContextPath() %>/search" class="form-horizontal">
-    <div class="control-group">
+<form action="<%= request.getContextPath() %>/search" class="form-horizontal">
+  <div class="control-group">
     <label class="control-label" for="s1">Full&nbsp;Search</label>
+
     <div class="controls">
-    <input class="search-query" name="q" id="s1" placeholder="Full Search" value="<%=
-                Util.formQuoteEscape(queryParams.getFreetext()) %>"/>
+      <input class="search-query" name="q" id="s1" placeholder="Full Search"
+             value="<%= Util.formQuoteEscape(queryParams.getFreetext()) %>"/>
     </div>
-    </div>
-    <div class="control-group">
+  </div>
+  <div class="control-group">
     <label class="control-label" for="s2">Definition</label>
+
     <div class="controls">
-    <input class="search-query" name="defs" id="s2" placeholder="Definition" value="<%=
-            Util.formQuoteEscape(queryParams.getDefs()) %>"/>
+      <input class="search-query" name="defs" id="s2" placeholder="Definition"
+             value="<%= Util.formQuoteEscape(queryParams.getDefs()) %>"/>
     </div>
-    </div>
-    <div class="control-group">
+  </div>
+  <div class="control-group">
     <label class="control-label" for="s3">Symbol</label>
+
     <div class="controls">
-    <input class="search-query" name="refs" id="s3" placeholder="Symbol" value="<%=
-            Util.formQuoteEscape(queryParams.getRefs()) %>"/>
+      <input class="search-query" name="refs" id="s3" placeholder="Symbol"
+             value="<%= Util.formQuoteEscape(queryParams.getRefs()) %>"/>
     </div>
-    </div>
-    <div class="control-group">
+  </div>
+  <div class="control-group">
     <label class="control-label" for="s4">File&nbsp;Path</label></td>
     <div class="controls">
-    <input class="search-query" name="path" id="s4" placeholder="File path" value="<%=
-            Util.formQuoteEscape(queryParams.getPath()) %>"/>
+      <input class="search-query" name="path" id="s4" placeholder="File path"
+             value="<%= Util.formQuoteEscape(queryParams.getPath()) %>"/>
     </div>
-    </div>
+  </div>
 
-    <div class="form-actions">
+  <div class="form-actions">
     <input class="btn btn-primary" type="submit" value="Search"/>
-    </div>
+  </div>
 
-    </form>
-        <%
-}
-/* ---------------------- menu.jspf end --------------------- */
+</form>
+<%
+  }
 %>
