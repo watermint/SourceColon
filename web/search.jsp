@@ -79,9 +79,6 @@ org.opensolaris.opengrok.search.Results,
 
     %>
 <div class="container">
-  <div id="header">
-    <%@ include file="pageheader.jspf" %>
-  </div>
   <div id="menu">
     <%@ include file="menu.jspf" %>
   </div>

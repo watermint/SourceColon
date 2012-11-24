@@ -570,48 +570,6 @@ public final class Configuration {
     }
 
     /**
-     * The name of the file relative to the <var>DATA_ROOT</var>, which should
-     * be included into the footer of generated web pages.
-     */
-    public static final String FOOTER_INCLUDE_FILE = "footer_include";
-
-    private transient String footer = null;
-
-    /**
-     * Get the contents of the footer include file.
-     *
-     * @return an empty string if it could not be read successfully, the
-     *         contents of the file otherwise.
-     */
-    public String getFooterIncludeFileContent() {
-        if (footer == null) {
-            footer = getFileContent(new File(getDataRoot(), FOOTER_INCLUDE_FILE));
-        }
-        return footer;
-    }
-
-    /**
-     * The name of the file relative to the <var>DATA_ROOT</var>, which should
-     * be included into the footer of generated web pages.
-     */
-    public static final String HEADER_INCLUDE_FILE = "header_include";
-
-    private transient String header = null;
-
-    /**
-     * Get the contents of the footer include file.
-     *
-     * @return an empty string if it could not be read successfully, the
-     *         contents of the file otherwise.
-     */
-    public String getHeaderIncludeFileContent() {
-        if (header == null) {
-            header = getFileContent(new File(getDataRoot(), HEADER_INCLUDE_FILE));
-        }
-        return header;
-    }
-
-    /**
      * The name of the eftar file relative to the <var>DATA_ROOT</var>, which
      * contains definition tags.
      */

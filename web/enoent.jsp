@@ -43,9 +43,6 @@ org.opensolaris.opengrok.configuration.RuntimeEnvironment" %>
 <%@ include file="header.jspf" %>
 <div id="page">
   <div id="whole_header">
-    <div id="header">
-      <%@ include file="pageheader.jspf" %>
-    </div>
     <div id="Masthead"></div>
     <div id="sbar">
       <%@ include file="menu.jspf" %>
