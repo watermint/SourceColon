@@ -69,7 +69,6 @@ public class GZIPAnalyzer extends FileAnalyzer {
         if (path != null &&
                 (path.endsWith(".gz") || path.endsWith(".GZ") || path.endsWith(".Gz"))) {
             String newname = path.substring(0, path.length() - 3);
-            //System.err.println("GZIPPED OF = " + newname);
             fa = AnalyzerGuru.getAnalyzer(gzis, newname);
             if (fa == null) {
                 this.g = Genre.DATA;

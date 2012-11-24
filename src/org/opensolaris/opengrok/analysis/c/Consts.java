@@ -33,7 +33,6 @@ public class Consts {
 
     public static final Set<String> kwd = new HashSet<String>();
 
-
     static {
         // CPP
         kwd.add("ident");
