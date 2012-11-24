@@ -219,7 +219,7 @@ org.opensolaris.opengrok.search.Results,
     <% } %>
   </div>
   <div class="container">
-    <p class="muted">
+    <p class="muted pull-right">
       Completed in <span class="label label-info"><%= System.currentTimeMillis() - starttime %></span> milliseconds
     </p>
   </div>

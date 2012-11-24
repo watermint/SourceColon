@@ -65,50 +65,52 @@ java.util.SortedSet,
 <script type="text/javascript">/* <![CDATA[ */
 document.projects = [ <%= Util.encode(jsProjects.toString()) %> ];
 document.xrefPath = '<%= request.getContextPath() + Prefix.XREF_P %>';
-document.domReady.push(function () { domReadyMenu(); });
+document.domReady.push(function () {
+  domReadyMenu();
+});
 /* ]]> */
 </script>
 <%
   }
 %>
-<form action="<%= request.getContextPath() %>/search" class="form-horizontal">
-  <div class="control-group">
-    <label class="control-label" for="s1">Full&nbsp;Search</label>
+<div class="container">
 
-    <div class="controls">
-      <input class="search-query" name="q" id="s1" placeholder="Full Search"
-             value="<%= Util.formQuoteEscape(queryParams.getFreetext()) %>"/>
+  <form action="<%= request.getContextPath() %>/search" class="form-horizontal">
+    <div class="control-group">
+      <label class="control-label" for="s1">Full&nbsp;Search</label>
+      <div class="controls">
+        <input class="search-query" name="q" id="s1" placeholder="Full Search"
+               value="<%= Util.formQuoteEscape(queryParams.getFreetext()) %>"/>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="s2">Definition</label>
+    <div class="control-group">
+      <label class="control-label" for="s2">Definition</label>
 
-    <div class="controls">
-      <input class="search-query" name="defs" id="s2" placeholder="Definition"
-             value="<%= Util.formQuoteEscape(queryParams.getDefs()) %>"/>
+      <div class="controls">
+        <input class="search-query" name="defs" id="s2" placeholder="Definition"
+               value="<%= Util.formQuoteEscape(queryParams.getDefs()) %>"/>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="s3">Symbol</label>
+    <div class="control-group">
+      <label class="control-label" for="s3">Symbol</label>
 
-    <div class="controls">
-      <input class="search-query" name="refs" id="s3" placeholder="Symbol"
-             value="<%= Util.formQuoteEscape(queryParams.getRefs()) %>"/>
+      <div class="controls">
+        <input class="search-query" name="refs" id="s3" placeholder="Symbol"
+               value="<%= Util.formQuoteEscape(queryParams.getRefs()) %>"/>
+      </div>
     </div>
-  </div>
-  <div class="control-group">
-    <label class="control-label" for="s4">File&nbsp;Path</label></td>
-    <div class="controls">
-      <input class="search-query" name="path" id="s4" placeholder="File path"
-             value="<%= Util.formQuoteEscape(queryParams.getPath()) %>"/>
+    <div class="control-group">
+      <label class="control-label" for="s4">File&nbsp;Path</label></td>
+      <div class="controls">
+        <input class="search-query" name="path" id="s4" placeholder="File path"
+               value="<%= Util.formQuoteEscape(queryParams.getPath()) %>"/>
+      </div>
     </div>
-  </div>
-
-  <div class="form-actions">
-    <input class="btn btn-primary" type="submit" value="Search"/>
-  </div>
-
-</form>
+    <div class="form-actions">
+      <input class="btn btn-primary" type="submit" value="Search"/>
+    </div>
+  </form>
+</div>
 <%
   }
 %>
