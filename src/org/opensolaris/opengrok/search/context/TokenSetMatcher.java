@@ -36,7 +36,7 @@ public class TokenSetMatcher extends LineMatcher {
         // Use a TreeSet with an explicit comparator to allow for case
         // insensitive lookups in the set if this is a case insensitive
         // matcher.
-        this.tokenSet = new TreeSet<String>(new Comparator<String>() {
+        this.tokenSet = new TreeSet<>(new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {
                 return compareStrings(s1, s2);

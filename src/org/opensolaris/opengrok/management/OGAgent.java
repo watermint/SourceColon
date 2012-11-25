@@ -249,7 +249,7 @@ final public class OGAgent {
         server.registerMBean(AgentIndexRunner.getInstance(enabled), indexRunner);
         // Add index notification to timer (read from org.opensolaris.opengrok.management.indexer.sleeptime property).
         Date date = new Date(System.currentTimeMillis() + Timer.ONE_SECOND * 5);
-        Long longPeriod = Long.valueOf(period * Timer.ONE_SECOND);
+        Long longPeriod = period * Timer.ONE_SECOND;
         Integer id = (Integer) server.invoke(timer, "addNotification",
                 new Object[]{"timer.notification", // Type
                         "Time to index again", // Message

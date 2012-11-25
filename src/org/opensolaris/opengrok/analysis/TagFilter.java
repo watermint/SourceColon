@@ -47,9 +47,9 @@ public class TagFilter extends FilterReader {
         p = false;
         esctag = new char[10];
         escs = new HashMap<String, Character>();
-        escs.put("&gt", Character.valueOf('>'));
-        escs.put("&lt", Character.valueOf('<'));
-        escs.put("&amp", Character.valueOf('&'));
+        escs.put("&gt", '>');
+        escs.put("&lt", '<');
+        escs.put("&amp", '&');
     }
 
     public final int read(char[] buf, int start, int len) throws java.io.IOException {
@@ -88,7 +88,7 @@ public class TagFilter extends FilterReader {
                         return ' ';
                     }
                     p = false;
-                    return ec.charValue();
+                    return ec;
                 } else if (sp) {
                     esc = -1;
                 } else {

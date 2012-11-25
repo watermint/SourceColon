@@ -217,7 +217,6 @@ public class Ctags {
                     //TODO if some languages use different character for separating arguments, below needs to be adjusted
                     String[] args = signature.split(",");
                     for (String arg : args) {
-                        //log.fine("Param = "+ arg);
                         int space = arg.lastIndexOf(' ');//TODO this is not the best way, but works to find the last string(name) in the argument, hence skipping type
                         if (space > 0 && space < arg.length()) {
                             String afters = arg.substring(space + 1);
@@ -225,7 +224,6 @@ public class Ctags {
                             String[] names = afters.split("[\\W]"); //this should just parse out variables, we assume first non empty text is the argument name
                             for (String name : names) {
                                 if (name.length() > 0) {
-                                    //log.fine("Param Def = "+ string);
                                     defs.addTag(Integer.parseInt(lnum), name.trim(),
                                             "argument", def.trim() + signature.trim());
                                     break;
@@ -234,7 +232,6 @@ public class Ctags {
                         }
                     }
                 }
-                //log.fine("Read = " + def + " : " + lnum + " = " + kind + " IS " + inher + " M " + match);
             } while (true);
         } catch (Exception e) {
             log.log(Level.WARNING, "CTags parsing problem: ", e);

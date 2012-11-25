@@ -183,7 +183,7 @@ public class Definitions implements Serializable {
             lines = new HashSet<Integer>();
             symbols.put(internedSymbol, lines);
         }
-        Integer aLine = Integer.valueOf(line);
+        Integer aLine = line;
         lines.add(aLine);
 
         // Get per line map

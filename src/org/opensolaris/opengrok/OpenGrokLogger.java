@@ -138,7 +138,6 @@ public final class OpenGrokLogger {
     }
 
     public static String setupLogger(String logpath, Level filelevel, Level consolelevel) throws IOException {
-        System.out.println("Logging to " + logpath);
         if (logpath != null) {
             File jlp = new File(logpath);
             if (!jlp.exists() && !jlp.mkdirs()) {

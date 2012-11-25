@@ -317,7 +317,7 @@ public class AnalyzerGuru {
     /**
      * Get the genre of a file
      *
-     * @param file The file to inpect
+     * @param file The file to inspect
      * @return The genre suitable to decide how to display the file
      */
     public static Genre getGenre(String file) {

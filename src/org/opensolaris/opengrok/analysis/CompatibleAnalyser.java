@@ -40,16 +40,18 @@ public class CompatibleAnalyser extends Analyzer {
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if ("full".equals(fieldName)) {
-            return new PlainFullTokenizer(reader);
-        } else if ("refs".equals(fieldName)) {
-            return new PlainSymbolTokenizer(reader);
-        } else if ("defs".equals(fieldName)) {
-            return new PlainSymbolTokenizer(reader);
-        } else if ("path".equals(fieldName) || "project".equals(fieldName)) {
-            return pather.tokenStream(fieldName, reader);
-        } else if ("hist".equals(fieldName)) {
-            return historer.tokenStream(fieldName, reader);
+        switch (fieldName) {
+            case "full":
+                return new PlainFullTokenizer(reader);
+            case "refs":
+                return new PlainSymbolTokenizer(reader);
+            case "defs":
+                return new PlainSymbolTokenizer(reader);
+            case "path":
+            case "project":
+                return pather.tokenStream(fieldName, reader);
+            case "hist":
+                return historer.tokenStream(fieldName, reader);
         }
         return new PlainFullTokenizer(reader);
     }

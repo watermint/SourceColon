@@ -79,7 +79,6 @@ public class Context {
         m = qm.getMatchers(query, tokenFields);
         if (m != null) {
             buildQueryAsURI(queryStrings);
-            //System.err.println("Found Matchers = "+ m.length + " for " + query);
             buffer = new char[MAXFILEREAD];
             tokens = new PlainLineTokenizer((Reader) null);
         }

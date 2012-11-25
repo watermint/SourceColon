@@ -42,7 +42,7 @@ public final class Management implements ManagementMBean, MBeanRegistration {
     private final Properties ogaProperties;
     private final long startTime; // Stores the time this bean is created
     private Boolean update = Boolean.FALSE;
-    private Integer noThreads = Integer.valueOf(1);
+    private Integer noThreads = 1;
     private String[] subFiles = new String[]{};
     private String configurationFile = null;
     private String publishHost = null;
@@ -140,7 +140,6 @@ public final class Management implements ManagementMBean, MBeanRegistration {
      */
     public void stop() {
         log.warning("STOPPING AGENT!");
-        //WrapperManager.stop(0);
     }
 
     public String getSystemProperty(String key) {
@@ -155,16 +154,8 @@ public final class Management implements ManagementMBean, MBeanRegistration {
         System.setProperty(key, value);
     }
 
-    public String getAllSystemProperties() {
-        return System.getProperties().toString();
-    }
-
     public String getSystemEnvProperty(String key) {
         return System.getenv(key);
-    }
-
-    public String getAllSystemEnvProperties() {
-        return System.getenv().toString();
     }
 
     /**
