@@ -300,7 +300,7 @@ public final class RuntimeEnvironment {
 
         executor.exec(false);
         String output = executor.getOutputString();
-        if (output == null || output.indexOf("Exuberant Ctags") == -1) {
+        if (output == null || !output.contains("Exuberant Ctags")) {
             log.log(Level.SEVERE, "Error: No Exuberant Ctags found in PATH!\n" +
                     "(tried running " + "{0}" + ")\n" +
                     "Please use option -c to specify path to a good Exuberant Ctags program\n" +
@@ -567,7 +567,7 @@ public final class RuntimeEnvironment {
 
     /**
      * Set the client command to use to access the repository for the given
-     * fully quallified classname.
+     * fully qualified class name.
      *
      * @param clazzName name of the targeting class. If {@code null} this method
      *                  does nothing.
@@ -582,7 +582,7 @@ public final class RuntimeEnvironment {
     /**
      * Sets the user page for the history listing
      *
-     * @param userPage the URL fragment preceeding the username from history
+     * @param userPage the URL fragment proceeding the username from history
      */
     public void setUserPage(String userPage) {
         threadConfig.get().setUserPage(userPage);
@@ -609,7 +609,7 @@ public final class RuntimeEnvironment {
     /**
      * Returns the bug page for the history listing
      *
-     * @return the URL string fragment preceeding the bug ID
+     * @return the URL string fragment proceeding the bug ID
      */
     public String getBugPage() {
         return threadConfig.get().getBugPage();
@@ -618,7 +618,7 @@ public final class RuntimeEnvironment {
     /**
      * Sets the bug page for the history listing
      *
-     * @param bugPage the URL fragment preceeding the bug ID
+     * @param bugPage the URL fragment proceeding the bug ID
      */
     public void setBugPage(String bugPage) {
         threadConfig.get().setBugPage(bugPage);
@@ -646,7 +646,7 @@ public final class RuntimeEnvironment {
     /**
      * Returns the review(ARC) page for the history listing
      *
-     * @return the URL string fragment preceeding the review page ID
+     * @return the URL string fragment proceeding the review page ID
      */
     public String getReviewPage() {
         return threadConfig.get().getReviewPage();
@@ -655,7 +655,7 @@ public final class RuntimeEnvironment {
     /**
      * Sets the review(ARC) page for the history listing
      *
-     * @param reviewPage the URL fragment preceeding the review page ID
+     * @param reviewPage the URL fragment proceeding the review page ID
      */
     public void setReviewPage(String reviewPage) {
         threadConfig.get().setReviewPage(reviewPage);
@@ -677,14 +677,6 @@ public final class RuntimeEnvironment {
      */
     public void setReviewPattern(String reviewPattern) {
         threadConfig.get().setReviewPattern(reviewPattern);
-    }
-
-    public String getWebappLAF() {
-        return threadConfig.get().getWebappLAF();
-    }
-
-    public void setWebappLAF(String laf) {
-        threadConfig.get().setWebappLAF(laf);
     }
 
     public boolean isRemoteScmSupported() {

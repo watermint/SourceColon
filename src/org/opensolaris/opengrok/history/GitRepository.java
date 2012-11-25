@@ -338,7 +338,7 @@ public class GitRepository extends Repository {
             throw new IOException(executor.getErrorString());
         }
 
-        if (executor.getOutputString().indexOf("remote.origin.url=") != -1) {
+        if (executor.getOutputString().contains("remote.origin.url=")) {
             cmd.clear();
             cmd.add(this.cmd);
             cmd.add("pull");
@@ -374,7 +374,7 @@ public class GitRepository extends Repository {
             ensureCommand(CMD_PROPERTY_KEY, CMD_FALLBACK);
             working = checkCmd(cmd, "--help");
         }
-        return working.booleanValue();
+        return working;
     }
 
     @Override

@@ -58,7 +58,7 @@ java.util.Set,
       }
     }
 
-    String imgurl = url + cfg.getCssDir() + "/img/icon.png";
+    String imgurl = request.getContextPath() + "/img/icon.png";
 
     /* TODO  Bug 11749 ??? */
     StringBuilder text = new StringBuilder();

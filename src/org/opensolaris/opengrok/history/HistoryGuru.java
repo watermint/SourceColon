@@ -287,7 +287,7 @@ public final class HistoryGuru {
     }
 
     /**
-     * recursivelly search for repositories with a depth limit
+     * recursively search for repositories with a depth limit
      *
      * @param files           list of files to check if they contain a repo
      * @param repos           list of found repos
@@ -303,10 +303,10 @@ public final class HistoryGuru {
             try {
                 repository = RepositoryFactory.getRepository(file);
             } catch (InstantiationException ie) {
-                log.log(Level.WARNING, "Could not create repoitory for '"
+                log.log(Level.WARNING, "Could not create repository for '"
                         + file + "', could not instantiate the repository.", ie);
             } catch (IllegalAccessException iae) {
-                log.log(Level.WARNING, "Could not create repoitory for '"
+                log.log(Level.WARNING, "Could not create repository for '"
                         + file + "', missing access rights.", iae);
             }
             if (repository == null) {

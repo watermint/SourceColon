@@ -822,19 +822,6 @@ public final class PageConfig {
     }
 
     /**
-     * Get the base path to use to refer to CSS stylesheets and related
-     * resources. Usually used to create links.
-     *
-     * @return the appropriate application directory prefixed with the
-     *         application's context path (e.g. "/source/default").
-     * @see HttpServletRequest#getContextPath()
-     * @see RuntimeEnvironment#getWebappLAF()
-     */
-    public String getCssDir() {
-        return req.getContextPath() + '/' + getEnv().getWebappLAF();
-    }
-
-    /**
      * Get the current runtime environment.
      *
      * @return the runtime env.

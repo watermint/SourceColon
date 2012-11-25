@@ -98,7 +98,6 @@ public final class Configuration {
     private String bugPattern;
     private String reviewPage;
     private String reviewPattern;
-    private String webappLAF;
     private boolean remoteScmSupported;
     private boolean optimizeDatabase;
     private boolean useLuceneLocking;
@@ -173,7 +172,6 @@ public final class Configuration {
         setBugPattern("\\b([12456789][0-9]{6})\\b");
         setReviewPage("http://arc.opensolaris.org/caselog/PSARC/");
         setReviewPattern("\\b(\\d{4}/\\d{3})\\b"); // in form e.g. PSARC 2008/305
-        setWebappLAF("default");
         setRemoteScmSupported(false);
         setOptimizeDatabase(true);
         setUsingLuceneLocking(false);
@@ -469,14 +467,6 @@ public final class Configuration {
         this.reviewPattern = reviewPattern;
     }
 
-    public String getWebappLAF() {
-        return webappLAF;
-    }
-
-    public void setWebappLAF(String webappLAF) {
-        this.webappLAF = webappLAF;
-    }
-
     public boolean isRemoteScmSupported() {
         return remoteScmSupported;
     }
@@ -530,43 +520,6 @@ public final class Configuration {
             lastModified = new Date(timestamp.lastModified());
         }
         return lastModified;
-    }
-
-    /**
-     * Get the contents of a file or empty string if the file cannot be read.
-     */
-    private static String getFileContent(File file) {
-        if (file == null || !file.canRead()) {
-            return "";
-        }
-        FileReader fin = null;
-        BufferedReader input = null;
-        try {
-            fin = new FileReader(file);
-            input = new BufferedReader(fin);
-            String line = null;
-            StringBuilder contents = new StringBuilder();
-            String EOL = System.getProperty("line.separator");
-            while ((line = input.readLine()) != null) {
-                contents.append(line).append(EOL);
-            }
-            return contents.toString();
-        } catch (java.io.FileNotFoundException e) {
-            /* should usually not happen */
-        } catch (java.io.IOException e) {
-            logger.warning("failed to read header include file: " + e.getMessage());
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Exception e) { /* nothing we can do about it */ }
-            } else if (fin != null) {
-                try {
-                    fin.close();
-                } catch (Exception e) { /* nothing we can do about it */ }
-            }
-        }
-        return "";
     }
 
     /**

@@ -56,8 +56,8 @@ public class HistoryEntry {
      */
     public HistoryEntry() {
         message = new StringBuffer();
-        files = new TreeSet<String>();
-        changeRequests = new ArrayList<String>();
+        files = new TreeSet<>();
+        changeRequests = new ArrayList<>();
     }
 
     public HistoryEntry(String revision, Date date, String author,
@@ -67,8 +67,8 @@ public class HistoryEntry {
         this.author = author;
         this.message = new StringBuffer(message);
         this.active = active;
-        this.files = new TreeSet<String>();
-        this.changeRequests = new ArrayList<String>();
+        this.files = new TreeSet<>();
+        this.changeRequests = new ArrayList<>();
     }
 
     public String getLine() {
@@ -182,7 +182,7 @@ public class HistoryEntry {
     }
 
     /**
-     * Remove "unneeded" info such as multiline history and files list
+     * Remove "unneeded" info such as multi line history and files list
      */
     public void strip() {
         files.clear();

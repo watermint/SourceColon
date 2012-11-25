@@ -286,14 +286,6 @@ public class RuntimeEnvironmentTest {
     }
 
     @Test
-    public void testWebappLAF() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertEquals("default", instance.getWebappLAF());
-        instance.setWebappLAF("foo");
-        assertEquals("foo", instance.getWebappLAF());
-    }
-
-    @Test
     public void testRemoteScmSupported() {
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
         assertFalse(instance.isRemoteScmSupported());

@@ -27,9 +27,7 @@ package org.opensolaris.opengrok.index;
  * @author Jan Berg
  */
 public class IndexerException extends Exception {
-
     IndexerException(String string) {
         super(string);
     }
-
 }

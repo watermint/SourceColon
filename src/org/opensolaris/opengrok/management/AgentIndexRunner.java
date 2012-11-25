@@ -61,7 +61,6 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
     private boolean enabled;
     private transient Thread indexThread = null;
     private static final Logger log = Logger.getLogger("org.opensolaris.opengrok");
-    private RuntimeEnvironment env = null;
     private long lastIndexStart = 0;
     private long lastIndexFinish = 0;
     private long lastIndexUsedTime = 0;
@@ -120,20 +119,20 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
             log.info("Running...");
             lastIndexStart = System.currentTimeMillis();
             lastException = null;
-            doNotify(NOTIFICATIONINFOLONGTYPE, "StartIndexing", Long.valueOf(lastIndexStart));
+            doNotify(NOTIFICATIONINFOLONGTYPE, "StartIndexing", lastIndexStart);
             String configfile = Management.getInstance().getConfigurationFile();
             if (configfile == null) {
                 doNotify(NOTIFICATIONEXCEPTIONTYPE, "Missing Configuration file", "");
             }
             File cfgFile = new File(configfile);
             if (cfgFile.exists()) {
-                env = RuntimeEnvironment.getInstance();
+                RuntimeEnvironment env = RuntimeEnvironment.getInstance();
                 log.log(Level.INFO, "Running indexer with configuration {0}", configfile);
                 env.readConfiguration(cfgFile);
 
                 Indexer index = Indexer.getInstance();
-                int noThreads = Management.getInstance().getNumberOfThreads().intValue();
-                boolean update = Management.getInstance().getUpdateIndexDatabase().booleanValue();
+                int noThreads = Management.getInstance().getNumberOfThreads();
+                boolean update = Management.getInstance().getUpdateIndexDatabase();
                 String[] sublist = Management.getInstance().getSubFiles();
                 log.info("Update source repositories");
                 HistoryGuru.getInstance().updateRepositories();
@@ -143,7 +142,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 log.info("Finished indexing");
                 lastIndexFinish = System.currentTimeMillis();
                 sendNotifications();
-                doNotify(NOTIFICATIONINFOLONGTYPE, "FinishedIndexing", Long.valueOf(lastIndexFinish));
+                doNotify(NOTIFICATIONINFOLONGTYPE, "FinishedIndexing", lastIndexFinish);
                 lastIndexUsedTime = lastIndexFinish - lastIndexStart;
                 String publishhost = Management.getInstance().getPublishServerURL();
                 if ((publishhost == null) || (publishhost.equals(""))) {
@@ -234,7 +233,6 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 log.log(Level.SEVERE,
                         "Caught Exception while waiting for indexing to finish.", e);
             }
-            return;
         }
     }
 

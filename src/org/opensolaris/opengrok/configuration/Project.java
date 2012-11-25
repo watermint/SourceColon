@@ -155,10 +155,8 @@ public class Project {
         Project ret = null;
         try {
             ret = getProject(RuntimeEnvironment.getInstance().getPathRelativeToSourceRoot(file, 0));
-        } catch (FileNotFoundException e) { // NOPMD
-            // ignore if not under source root
         } catch (IOException e) { // NOPMD
-            // problem has already been logged, just return null
+            // ignore if not under source root
         }
         return ret;
     }

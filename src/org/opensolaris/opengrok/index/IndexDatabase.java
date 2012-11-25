@@ -343,8 +343,7 @@ public class IndexDatabase {
                 HistoryGuru.getInstance().ensureHistoryCacheExists(sourceRoot);
 
                 String startuid = Util.path2uid(dir, "");
-                IndexReader reader = IndexReader.open(indexDirectory, false); // open existing index
-                try {
+                try (IndexReader reader = IndexReader.open(indexDirectory, false)) {
                     uidIter = reader.terms(new Term("u", startuid)); // init uid iterator
 
                     //TODO below should be optional, since it traverses the tree once more to get total count! :(
@@ -363,8 +362,6 @@ public class IndexDatabase {
                         removeFile();
                         uidIter.next();
                     }
-                } finally {
-                    reader.close();
                 }
             }
         } finally {
@@ -503,7 +500,7 @@ public class IndexDatabase {
                 try {
                     indexReader.close();
                 } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing reader", e);
+                    log.log(Level.WARNING, "An error occurred while closing reader", e);
                 }
             }
             if (spellDirectory != null) {
@@ -579,9 +576,7 @@ public class IndexDatabase {
      * @throws java.io.IOException if an error occurs
      */
     private void addFile(File file, String path) throws IOException {
-        final InputStream in =
-                new BufferedInputStream(new FileInputStream(file));
-        try {
+        try (InputStream in = new BufferedInputStream(new FileInputStream(file))) {
             FileAnalyzer fa = AnalyzerGuru.getAnalyzer(in, path);
             for (IndexChangedListener listener : listeners) {
                 listener.fileAdd(path, fa.getClass().getSimpleName());
@@ -618,9 +613,8 @@ public class IndexDatabase {
             for (IndexChangedListener listener : listeners) {
                 listener.fileAdded(path, fa.getClass().getSimpleName());
             }
-        } finally {
-            in.close();
         }
+
     }
 
     /**
