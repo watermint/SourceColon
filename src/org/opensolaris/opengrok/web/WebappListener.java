@@ -22,6 +22,12 @@
  */
 package org.opensolaris.opengrok.web;
 
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,12 +35,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
-import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 
 /**
  * Populate the Mercurial Repositories

@@ -22,6 +22,10 @@
  */
 package org.opensolaris.opengrok.history;
 
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
+import org.opensolaris.opengrok.util.Executor;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,10 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.util.Executor;
 
 /**
  * An interface for an external repository.

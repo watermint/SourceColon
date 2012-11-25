@@ -23,20 +23,14 @@
 
 package org.opensolaris.opengrok.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import org.opensolaris.opengrok.OpenGrokLogger;
+
+import java.io.*;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.opensolaris.opengrok.OpenGrokLogger;
 
 /**
  * Wrapper to Java Process API

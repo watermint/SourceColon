@@ -22,11 +22,11 @@
  */
 package org.opensolaris.opengrok.analysis;
 
-import java.util.Iterator;
-import java.util.Set;
-
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+
+import java.util.Iterator;
+import java.util.Set;
 
 public final class Hash2TokenStream extends TokenStream {
     int i = 0;

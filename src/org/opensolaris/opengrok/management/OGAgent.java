@@ -23,6 +23,15 @@
 
 package org.opensolaris.opengrok.management;
 
+import org.opensolaris.opengrok.Info;
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.util.IOUtils;
+
+import javax.management.*;
+import javax.management.remote.JMXConnectorServer;
+import javax.management.remote.JMXConnectorServerFactory;
+import javax.management.remote.JMXServiceURL;
+import javax.management.timer.Timer;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -37,23 +46,10 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.JMException;
-import javax.management.MBeanServer;
-import javax.management.MBeanServerFactory;
-import javax.management.NotificationFilter;
-import javax.management.ObjectName;
-import javax.management.remote.JMXConnectorServer;
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
-import javax.management.timer.Timer;
 
-import org.opensolaris.opengrok.Info;
-import org.opensolaris.opengrok.OpenGrokLogger;
+import static org.opensolaris.opengrok.management.Constants.*;
 
 // PMD thinks this import is unused (confused because it's static?)
-import org.opensolaris.opengrok.util.IOUtils;
-
-import static org.opensolaris.opengrok.management.Constants.*; // NOPMD
 
 /**
  * OG Agent main class.

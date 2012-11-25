@@ -22,16 +22,12 @@
  */
 package org.opensolaris.opengrok.web;
 
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import org.opensolaris.opengrok.util.IOUtils;
+
+import java.io.*;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.opensolaris.opengrok.util.IOUtils;
 
 
 /**

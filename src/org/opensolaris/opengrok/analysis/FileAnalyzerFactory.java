@@ -22,6 +22,10 @@
  */
 package org.opensolaris.opengrok.analysis;
 
+import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
+import org.opensolaris.opengrok.configuration.Project;
+import org.opensolaris.opengrok.history.Annotation;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -29,10 +33,6 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
-import org.opensolaris.opengrok.configuration.Project;
-import org.opensolaris.opengrok.history.Annotation;
 
 /**
  * Factory class which creates a {@code FileAnalyzer} object and

@@ -23,13 +23,13 @@
  */
 package org.opensolaris.opengrok.analysis;
 
-import java.io.Reader;
-import java.util.Set;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.TokenStream;
 import org.opensolaris.opengrok.analysis.plain.PlainFullTokenizer;
+
+import java.io.Reader;
+import java.util.Set;
 
 public final class HistoryAnalyzer extends Analyzer {
     private final Set<Object> stopWords;

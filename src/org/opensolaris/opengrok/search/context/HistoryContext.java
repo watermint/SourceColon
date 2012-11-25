@@ -23,6 +23,15 @@
 
 package org.opensolaris.opengrok.search.context;
 
+import org.apache.lucene.search.Query;
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.history.History;
+import org.opensolaris.opengrok.history.HistoryEntry;
+import org.opensolaris.opengrok.history.HistoryException;
+import org.opensolaris.opengrok.history.HistoryGuru;
+import org.opensolaris.opengrok.search.Hit;
+import org.opensolaris.opengrok.web.Constants;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -32,15 +41,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-
-import org.apache.lucene.search.Query;
-import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.history.History;
-import org.opensolaris.opengrok.history.HistoryEntry;
-import org.opensolaris.opengrok.history.HistoryException;
-import org.opensolaris.opengrok.history.HistoryGuru;
-import org.opensolaris.opengrok.search.Hit;
-import org.opensolaris.opengrok.web.Constants;
 
 /**
  * it is supposed to get the matching lines from history log files.

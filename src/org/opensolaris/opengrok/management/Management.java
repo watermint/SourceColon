@@ -23,17 +23,17 @@
  */
 package org.opensolaris.opengrok.management;
 
+import org.opensolaris.opengrok.Info;
+import org.opensolaris.opengrok.OpenGrokLogger;
+
+import javax.management.MBeanRegistration;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.management.MBeanRegistration;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-
-import org.opensolaris.opengrok.Info;
-import org.opensolaris.opengrok.OpenGrokLogger;
 
 public final class Management implements ManagementMBean, MBeanRegistration {
 

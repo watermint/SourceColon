@@ -23,14 +23,14 @@
 
 package org.opensolaris.opengrok.analysis;
 
-import java.io.CharArrayReader;
-import java.io.IOException;
-import java.io.Reader;
-
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+
+import java.io.CharArrayReader;
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * this class was created because of lucene 2.4.1 update which introduced char[] in Tokens instead of String

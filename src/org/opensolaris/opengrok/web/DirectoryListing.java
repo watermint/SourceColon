@@ -24,6 +24,9 @@
  */
 package org.opensolaris.opengrok.web;
 
+import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
+import org.opensolaris.opengrok.index.IgnoredNames;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
@@ -32,9 +35,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
-import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.index.IgnoredNames;
 
 /**
  * Generates HTML listing of a Directory

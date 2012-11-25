@@ -24,21 +24,14 @@
 
 package org.opensolaris.opengrok.web;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.util.IOUtils;
+
+import java.io.*;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Level;
-
-import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.util.IOUtils;
 
 /**
  * An Extremely Fast Tagged Attribute Read-only File System

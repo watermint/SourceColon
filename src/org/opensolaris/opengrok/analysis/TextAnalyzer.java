@@ -19,13 +19,13 @@
 
 package org.opensolaris.opengrok.analysis;
 
+import org.apache.lucene.document.Document;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
-
-import org.apache.lucene.document.Document;
 
 public abstract class TextAnalyzer extends FileAnalyzer {
     public TextAnalyzer(FileAnalyzerFactory factory) {

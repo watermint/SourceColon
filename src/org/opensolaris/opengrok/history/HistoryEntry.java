@@ -24,15 +24,11 @@
  */
 package org.opensolaris.opengrok.history;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import org.opensolaris.opengrok.OpenGrokLogger;
+
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.opensolaris.opengrok.OpenGrokLogger;
 
 /**
  * Collect all information of a given revision

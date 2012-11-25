@@ -22,12 +22,6 @@
  */
 package org.opensolaris.opengrok.analysis.archive;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.Writer;
-
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -35,6 +29,8 @@ import org.apache.tools.bzip2.CBZip2InputStream;
 import org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
+
+import java.io.*;
 
 /**
  * Analyzes a BZip2 file

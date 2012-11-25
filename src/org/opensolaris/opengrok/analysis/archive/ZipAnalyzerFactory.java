@@ -24,13 +24,13 @@
 
 package org.opensolaris.opengrok.analysis.archive;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.executables.JarAnalyzerFactory;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public final class ZipAnalyzerFactory extends FileAnalyzerFactory {
     private static final String[] SUFFIXES = {

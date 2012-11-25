@@ -22,20 +22,6 @@
  */
 package org.opensolaris.opengrok.analysis;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.logging.Level;
-
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -47,6 +33,7 @@ import org.opensolaris.opengrok.analysis.archive.TarAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.archive.ZipAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.c.CAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.c.CxxAnalyzerFactory;
+import org.opensolaris.opengrok.analysis.csharp.CSharpAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.data.IgnorantAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.data.ImageAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.document.TroffAnalyzerFactory;
@@ -65,7 +52,6 @@ import org.opensolaris.opengrok.analysis.python.PythonAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.sh.ShAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.sql.SQLAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.tcl.TclAnalyzerFactory;
-import org.opensolaris.opengrok.analysis.csharp.CSharpAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.vb.VBAnalyzerFactory;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
@@ -73,6 +59,10 @@ import org.opensolaris.opengrok.history.HistoryException;
 import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.history.HistoryReader;
 import org.opensolaris.opengrok.web.Util;
+
+import java.io.*;
+import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Manages and provides Analyzers as needed. Please see

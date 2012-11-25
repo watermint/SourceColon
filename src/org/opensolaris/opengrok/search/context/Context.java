@@ -29,6 +29,14 @@
  */
 package org.opensolaris.opengrok.search.context;
 
+import org.apache.lucene.search.Query;
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.analysis.Definitions;
+import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
+import org.opensolaris.opengrok.search.Hit;
+import org.opensolaris.opengrok.util.IOUtils;
+import org.opensolaris.opengrok.web.Util;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -37,14 +45,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
-
-import org.apache.lucene.search.Query;
-import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.analysis.Definitions;
-import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.search.Hit;
-import org.opensolaris.opengrok.util.IOUtils;
-import org.opensolaris.opengrok.web.Util;
 
 public class Context {
 

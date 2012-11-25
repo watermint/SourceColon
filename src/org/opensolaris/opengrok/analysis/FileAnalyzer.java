@@ -23,18 +23,6 @@
  */
 package org.opensolaris.opengrok.analysis;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.logging.Level;
-import java.util.zip.GZIPOutputStream;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
@@ -42,6 +30,10 @@ import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.util.IOUtils;
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Base class for all different File Analyzers

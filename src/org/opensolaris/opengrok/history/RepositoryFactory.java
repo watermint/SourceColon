@@ -23,13 +23,13 @@
 
 package org.opensolaris.opengrok.history;
 
+import org.opensolaris.opengrok.OpenGrokLogger;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-
-import org.opensolaris.opengrok.OpenGrokLogger;
 
 /**
  * This is a factory class for the different repositories.

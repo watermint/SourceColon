@@ -23,14 +23,15 @@
  */
 package org.opensolaris.opengrok.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
+import org.opensolaris.opengrok.Info;
+import org.opensolaris.opengrok.OpenGrokLogger;
+import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
+import org.opensolaris.opengrok.history.Annotation;
+import org.opensolaris.opengrok.history.HistoryException;
+import org.opensolaris.opengrok.history.HistoryGuru;
+import org.opensolaris.opengrok.util.IOUtils;
+
+import java.io.*;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.DecimalFormat;
@@ -43,14 +44,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
-
-import org.opensolaris.opengrok.Info;
-import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.Annotation;
-import org.opensolaris.opengrok.history.HistoryException;
-import org.opensolaris.opengrok.history.HistoryGuru;
-import org.opensolaris.opengrok.util.IOUtils;
 
 /**
  * Class for useful functions.

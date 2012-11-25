@@ -24,21 +24,14 @@
 
 package org.opensolaris.opengrok.history;
 
+import org.opensolaris.opengrok.web.Util;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import java.util.logging.Logger;
-
-import org.opensolaris.opengrok.web.Util;
 
 /**
  * Class representing file annotation, i.e., revision and author for the last

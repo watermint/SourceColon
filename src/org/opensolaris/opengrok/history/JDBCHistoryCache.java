@@ -24,27 +24,6 @@
 
 package org.opensolaris.opengrok.history;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.jdbc.ConnectionManager;
@@ -52,6 +31,15 @@ import org.opensolaris.opengrok.jdbc.ConnectionResource;
 import org.opensolaris.opengrok.jdbc.InsertQuery;
 import org.opensolaris.opengrok.jdbc.PreparedQuery;
 import org.opensolaris.opengrok.util.IOUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 class JDBCHistoryCache implements HistoryCache {
 

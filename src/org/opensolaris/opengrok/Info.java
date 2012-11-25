@@ -22,11 +22,11 @@
  */
 package org.opensolaris.opengrok;
 
+import org.opensolaris.opengrok.util.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.opensolaris.opengrok.util.IOUtils;
 
 /**
  * Utility class to get information of the OpenGrok version.

@@ -24,11 +24,11 @@
 
 package org.opensolaris.opengrok.analysis;
 
+import org.opensolaris.opengrok.configuration.Project;
+
 import java.io.FilterReader;
 import java.io.IOException;
 import java.io.Reader;
-
-import org.opensolaris.opengrok.configuration.Project;
 
 /**
  * Wrapper around Reader to expand tabs to spaces in the input.

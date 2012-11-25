@@ -22,11 +22,11 @@
  */
 package org.opensolaris.opengrok.analysis;
 
-import java.io.Reader;
-import java.util.Arrays;
-
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+
+import java.io.Reader;
+import java.util.Arrays;
 
 public class PathTokenizer extends Tokenizer {
 

@@ -22,22 +22,17 @@
  */
 package org.opensolaris.opengrok.analysis.archive;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.Writer;
-import java.util.logging.Level;
-import java.util.zip.GZIPInputStream;
-
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
-import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
+
+import java.io.*;
+import java.util.logging.Level;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Analyzes GZip files
@@ -87,7 +82,6 @@ public class GZIPAnalyzer extends FileAnalyzer {
                                 Field.Index.NOT_ANALYZED));
                     }
                 }
-                return;
             }
         }
     }

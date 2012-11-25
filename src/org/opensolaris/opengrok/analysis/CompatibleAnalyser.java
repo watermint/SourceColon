@@ -23,12 +23,12 @@
  */
 package org.opensolaris.opengrok.analysis;
 
-import java.io.Reader;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.opensolaris.opengrok.analysis.plain.PlainFullTokenizer;
 import org.opensolaris.opengrok.analysis.plain.PlainSymbolTokenizer;
+
+import java.io.Reader;
 
 public class CompatibleAnalyser extends Analyzer {
     PathAnalyzer pather;
