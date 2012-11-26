@@ -28,6 +28,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.queryParser.ParseException;
@@ -40,6 +41,7 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockFactory;
 import org.apache.lucene.store.NoLockFactory;
 import org.apache.lucene.store.SimpleFSLockFactory;
+import org.apache.lucene.util.Version;
 import org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.opensolaris.opengrok.analysis.Ctags;
 import org.opensolaris.opengrok.analysis.Definitions;
@@ -485,7 +487,7 @@ public class IndexDatabase {
             indexReader = IndexReader.open(indexDirectory, false);
             checker = new SpellChecker(spellDirectory);
             //TODO below seems only to index "defs" , possible bug ?
-            checker.indexDictionary(new LuceneDictionary(indexReader, "defs"));
+            checker.indexDictionary(new LuceneDictionary(indexReader, "defs"), new IndexWriterConfig(Version.LUCENE_CURRENT, null), true);
             log.info("done");
         } catch (IOException e) {
             log.log(Level.SEVERE, "ERROR: Generating spelling: {0}", e);
@@ -514,9 +516,7 @@ public class IndexDatabase {
             try {
                 if (!dirty && !dirtyFile.createNewFile()) {
                     if (!dirtyFile.exists()) {
-                        log.log(Level.FINE,
-                                "Failed to create \"dirty-file\": {0}",
-                                dirtyFile.getAbsolutePath());
+                        log.log(Level.FINE, "Failed to create \"dirty-file\": {0}", dirtyFile.getAbsolutePath());
                     }
                     dirty = true;
                 }
@@ -582,10 +582,7 @@ public class IndexDatabase {
             try {
                 d = analyzerGuru.getDocument(file, in, path, fa);
             } catch (Exception e) {
-                log.log(Level.INFO,
-                        "Skipped file ''{0}'' because the analyzer didn''t " +
-                                "understand it.",
-                        path);
+                log.log(Level.INFO, "Skipped file ''{0}'' because the analyzer didn''t " + "understand it.", path);
                 log.log(Level.FINE, "Exception from analyzer:", e);
                 return;
             }
@@ -670,8 +667,7 @@ public class IndexDatabase {
             File f1 = parent.getCanonicalFile();
             File f2 = file.getCanonicalFile();
             if (f1.equals(f2)) {
-                log.log(Level.INFO, "Skipping links to itself...: {0} {1}",
-                        new Object[]{parent.getAbsolutePath(), file.getAbsolutePath()});
+                log.log(Level.INFO, "Skipping links to itself...: {0} {1}", new Object[]{parent.getAbsolutePath(), file.getAbsolutePath()});
                 return false;
             }
 
@@ -679,16 +675,14 @@ public class IndexDatabase {
             File t1 = f1;
             while ((t1 = t1.getParentFile()) != null) {
                 if (f2.equals(t1)) {
-                    log.log(Level.INFO, "Skipping links to parent...: {0} {1}",
-                            new Object[]{parent.getAbsolutePath(), file.getAbsolutePath()});
+                    log.log(Level.INFO, "Skipping links to parent...: {0} {1}", new Object[]{parent.getAbsolutePath(), file.getAbsolutePath()});
                     return false;
                 }
             }
 
             return accept(file);
         } catch (IOException ex) {
-            log.log(Level.WARNING, "Warning: Failed to resolve name: {0} {1}",
-                    new Object[]{parent.getAbsolutePath(), file.getAbsolutePath()});
+            log.log(Level.WARNING, "Warning: Failed to resolve name: {0} {1}", new Object[]{parent.getAbsolutePath(), file.getAbsolutePath()});
         }
         return false;
     }
@@ -709,8 +703,7 @@ public class IndexDatabase {
         for (String allowedSymlink : RuntimeEnvironment.getInstance().getAllowedSymlinks()) {
             if (absolutePath.startsWith(allowedSymlink)) {
                 String allowedTarget = new File(allowedSymlink).getCanonicalPath();
-                if (canonicalPath.startsWith(allowedTarget) &&
-                        absolutePath.substring(allowedSymlink.length()).equals(canonicalPath.substring(allowedTarget.length()))) {
+                if (canonicalPath.startsWith(allowedTarget) && absolutePath.substring(allowedSymlink.length()).equals(canonicalPath.substring(allowedTarget.length()))) {
                     return true;
                 }
             }
@@ -812,9 +805,7 @@ public class IndexDatabase {
                     try {
                         addFile(file, path);
                     } catch (Exception e) {
-                        log.log(Level.WARNING,
-                                "Failed to add file " + file.getAbsolutePath(),
-                                e);
+                        log.log(Level.WARNING, "Failed to add file " + file.getAbsolutePath(), e);
                     }
                 }
             }
@@ -1045,8 +1036,7 @@ public class IndexDatabase {
      * @throws ClassNotFoundException if the class for the stored definitions
      *                                instance cannot be found
      */
-    public static Definitions getDefinitions(File file)
-            throws IOException, ParseException, ClassNotFoundException {
+    public static Definitions getDefinitions(File file) throws IOException, ParseException, ClassNotFoundException {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
         String path = env.getPathRelativeToSourceRoot(file, 0);
 
