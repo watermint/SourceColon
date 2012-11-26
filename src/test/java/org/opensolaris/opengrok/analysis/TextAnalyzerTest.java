@@ -106,7 +106,7 @@ public class TextAnalyzerTest {
         Assert.assertEquals("hello", contents);
     }
 
-    public class TestableTextAnalyzer extends TextAnalyzer {
+    public final class TestableTextAnalyzer extends TextAnalyzer {
 
         public TestableTextAnalyzer() {
             super(null);

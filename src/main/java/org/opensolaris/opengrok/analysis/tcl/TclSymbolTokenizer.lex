@@ -32,6 +32,7 @@ import org.opensolaris.opengrok.analysis.JFlexTokenizer;
 
 %%
 %public
+%final
 %class TclSymbolTokenizer
 %extends JFlexTokenizer
 %unicode

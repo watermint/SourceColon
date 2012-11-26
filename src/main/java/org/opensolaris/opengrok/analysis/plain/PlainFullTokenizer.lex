@@ -29,6 +29,7 @@ import org.opensolaris.opengrok.analysis.JFlexTokenizer;
 %%
 
 %public
+%final
 %class PlainFullTokenizer
 %extends JFlexTokenizer
 %unicode

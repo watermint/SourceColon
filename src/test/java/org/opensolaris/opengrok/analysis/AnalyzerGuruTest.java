@@ -38,7 +38,6 @@ import org.opensolaris.opengrok.analysis.archive.ZipAnalyzer;
 import org.opensolaris.opengrok.analysis.c.CxxAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.executables.JarAnalyzer;
 import org.opensolaris.opengrok.analysis.plain.PlainAnalyzer;
-import org.opensolaris.opengrok.analysis.plain.PlainAnalyzerBase;
 import org.opensolaris.opengrok.analysis.plain.XMLAnalyzer;
 import org.opensolaris.opengrok.analysis.sh.ShAnalyzer;
 import org.opensolaris.opengrok.analysis.sh.ShAnalyzerFactory;

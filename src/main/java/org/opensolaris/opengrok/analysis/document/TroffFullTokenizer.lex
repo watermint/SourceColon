@@ -30,6 +30,7 @@ import org.opensolaris.opengrok.analysis.JFlexTokenizer;
 %%
 
 %public
+%final
 %class TroffFullTokenizer
 %extends JFlexTokenizer
 %unicode

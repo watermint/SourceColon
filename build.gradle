@@ -73,11 +73,6 @@ sourceSets {
             srcDir project.ext.src
         }
     }
-    test {
-        resources {
-            srcDir new File(project.projectDir, '/test/java')
-        }
-    }
 }
 
 jettyRunWar {

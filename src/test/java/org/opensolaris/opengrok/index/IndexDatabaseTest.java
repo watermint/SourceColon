@@ -40,6 +40,7 @@ import static org.junit.Assert.*;
  */
 public class IndexDatabaseTest {
     private static TestRepository repository;
+    private static boolean skipTests = false;
 
     public IndexDatabaseTest() {
     }
@@ -47,29 +48,36 @@ public class IndexDatabaseTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        assertTrue("No ctags available", env.validateExuberantCtags());
+        skipTests = !env.validateExuberantCtags();
 
-        repository = new TestRepository();
-        repository.create(
-                IndexDatabase.class.getResourceAsStream("source.zip"));
+        if (!skipTests) {
+            repository = new TestRepository();
+            repository.create(
+                    IndexDatabase.class.getResourceAsStream("source.zip"));
 
-        env.setSourceRoot(repository.getSourceRoot());
-        env.setDataRoot(repository.getDataRoot());
+            env.setSourceRoot(repository.getSourceRoot());
+            env.setDataRoot(repository.getDataRoot());
 
-        Indexer indexer = Indexer.getInstance();
-        indexer.prepareIndexer(
-                env, true, true, "/c", null,
-                false, false, false, null, null, new ArrayList<String>(), false);
-        indexer.doIndexerExecution(true, 1, null, null);
+            Indexer indexer = Indexer.getInstance();
+            indexer.prepareIndexer(
+                    env, true, true, "/c", null,
+                    false, false, false, null, null, new ArrayList<String>(), false);
+            indexer.doIndexerExecution(true, 1, null, null);
+        }
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        repository.destroy();
+        if (!skipTests) {
+            repository.destroy();
+        }
     }
 
     @Test
     public void testGetDefinitions() throws Exception {
+        if (skipTests) {
+            return;
+        }
         // Test that we can get definitions for one of the files in the
         // repository.
         File f1 = new File(repository.getSourceRoot() + "/c/foobar.c");

@@ -28,6 +28,7 @@ import org.opensolaris.opengrok.analysis.JFlexTokenizer;
 
 %%
 %public
+%final
 %class FortranSymbolTokenizer
 %extends JFlexTokenizer
 %unicode

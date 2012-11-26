@@ -27,6 +27,7 @@ import java.io.Reader;
 import org.opensolaris.opengrok.analysis.JFlexTokenizer;
 %%
 %public
+%final
 %class PlainSymbolTokenizer
 %extends JFlexTokenizer
 %unicode

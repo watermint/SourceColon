@@ -42,26 +42,30 @@ import static org.junit.Assert.*;
 public class CtagsTest {
     private static Ctags ctags;
     private static TestRepository repository;
+    private static boolean skipTest = false;
 
     public CtagsTest() {
     }
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        ctags = new Ctags();
-        ctags.setBinary(RuntimeEnvironment.getInstance().getCtags());
-        assertTrue("No point in running ctags tests without valid ctags",
-                RuntimeEnvironment.getInstance().validateExuberantCtags());
-        repository = new TestRepository();
-        repository.create(CtagsTest.class.getResourceAsStream(
-                "/org/opensolaris/opengrok/index/source.zip"));
+        skipTest = !RuntimeEnvironment.getInstance().validateExuberantCtags();
+        if (!skipTest) {
+            ctags = new Ctags();
+            ctags.setBinary(RuntimeEnvironment.getInstance().getCtags());
+            repository = new TestRepository();
+            repository.create(CtagsTest.class.getResourceAsStream(
+                    "/org/opensolaris/opengrok/index/source.zip"));
+        }
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        ctags.close();
-        ctags = null;
-        repository.destroy();
+        if (!skipTest) {
+            ctags.close();
+            ctags = null;
+            repository.destroy();
+        }
     }
 
     @Before
@@ -89,6 +93,9 @@ public class CtagsTest {
      */
     @Test
     public void testDoCtags() throws Exception {
+        if (skipTest) {
+            return;
+        }
         Definitions result = getDefs("bug16070/arguments.c");
         assertEquals(13, result.numberOfSymbols());
     }
@@ -99,6 +106,10 @@ public class CtagsTest {
      */
     @Test
     public void bug14924() throws Exception {
+        if (skipTest) {
+            return;
+        }
+
         // Expected method names found in the file
         String[] names = {"ts", "classNameOnly", "format"};
         // Expected line numbers for the methods
