@@ -164,29 +164,6 @@ public class JFlexXrefTest {
     }
 
     /**
-     * Regression test case for bug #14663, which used to break syntax
-     * highlighting in ShXref.
-     */
-    @Test
-    public void testBug14663() throws Exception {
-        // \" should not start a new string literal
-        assertXrefLine(ShXref.class, "echo \\\"", "<b>echo</b> \\\"");
-        // \" should not terminate a string literal
-        assertXrefLine(ShXref.class, "echo \"\\\"\"",
-                "<b>echo</b> <span class=\"s\">\"\\\"\"</span>");
-        // \` should not start a command substitution
-        assertXrefLine(ShXref.class, "echo \\`", "<b>echo</b> \\`");
-        // \` should not start command substitution inside a string
-        assertXrefLine(ShXref.class, "echo \"\\`\"",
-                "<b>echo</b> <span class=\"s\">\"\\`\"</span>");
-        // \` should not terminate command substitution
-        assertXrefLine(ShXref.class, "echo `\\``",
-                "<b>echo</b> <span>`\\``</span>");
-        // $# should not start a comment
-        assertXrefLine(ShXref.class, "$#", "$#");
-    }
-
-    /**
      * Helper method that checks that the expected output is produced for a
      * line with the specified xref class. Fails if the output is not as
      * expected.
@@ -204,80 +181,6 @@ public class JFlexXrefTest {
         xref.write(output);
 
         assertEquals(FIRST_LINE_PREAMBLE + expectedOutput, output.toString());
-    }
-
-    /**
-     * Regression test case for bug #16883. Some of the state used to survive
-     * across invocations in ShXref, so that a syntax error in one file might
-     * cause broken highlighting in subsequent files. Test that the instance
-     * is properly reset now.
-     */
-    @Test
-    public void bug16883() throws Exception {
-        // Analyze a script with broken syntax (unterminated string literal)
-        ShXref xref = new ShXref(new StringReader("echo \"xyz"));
-        StringWriter out = new StringWriter();
-        xref.write(out);
-        assertEquals(
-                FIRST_LINE_PREAMBLE +
-                        "<b>echo</b> <span class=\"s\">\"xyz</span>",
-                out.toString());
-
-        // Reuse the xref and verify that the broken syntax in the previous
-        // file doesn't cause broken highlighting in the next file
-        out = new StringWriter();
-        String contents = "echo \"hello\"";
-        xref.reInit(contents.toCharArray(), contents.length());
-        xref.write(out);
-        assertEquals(
-                FIRST_LINE_PREAMBLE +
-                        "<b>echo</b> <span class=\"s\">\"hello\"</span>",
-                out.toString());
-    }
-
-    /**
-     * <p>
-     * Test the handling of #include in C and C++. In particular, these issues
-     * are tested:
-     * </p>
-     * <p/>
-     * <ul>
-     * <p/>
-     * <li>
-     * Verify that we use breadcrumb path for both #include &lt;x/y.h&gt; and
-     * #include "x/y.h" in C and C++ (bug #17817)
-     * </li>
-     * <p/>
-     * <li>
-     * Verify that the link generated for #include &lt;vector&gt; performs a
-     * path search (bug #17816)
-     * </li>
-     * <p/>
-     * </ul>
-     */
-    @Test
-    public void testCXrefInclude() throws Exception {
-        testCXrefInclude(CXref.class);
-        testCXrefInclude(CxxXref.class);
-    }
-
-    private void testCXrefInclude(Class<? extends JFlexXref> klass) throws Exception {
-        String contextRoot = "SourceColon";
-        String[][] testData = {
-                {"#include <abc.h>", "#<b>include</b> &lt;<a href=\"/" + contextRoot + "/s?path=abc.h\">abc.h</a>&gt;"},
-                {"#include <abc/def.h>", "#<b>include</b> &lt;<a href=\"/" + contextRoot + "/s?path=abc/\">abc</a>/<a href=\"/" + contextRoot + "/s?path=abc/def.h\">def.h</a>&gt;"},
-                {"#include \"abc.h\"", "#<b>include</b> <span class=\"s\">\"<a href=\"/" + contextRoot + "/s?path=abc.h\">abc.h</a>\"</span>"},
-                {"#include \"abc/def.h\"", "#<b>include</b> <span class=\"s\">\"<a href=\"/" + contextRoot + "/s?path=abc/\">abc</a>/<a href=\"/" + contextRoot + "/s?path=abc/def.h\">def.h</a>\"</span>"},
-                {"#include <vector>", "#<b>include</b> &lt;<a href=\"/" + contextRoot + "/s?path=vector\">vector</a>&gt;"},
-        };
-
-        for (String[] s : testData) {
-            StringReader in = new StringReader(s[0]);
-            StringWriter out = new StringWriter();
-            JFlexXref xref = klass.getConstructor(Reader.class).newInstance(in);
-            xref.write(out);
-            assertEquals(FIRST_LINE_PREAMBLE + s[1], out.toString());
-        }
     }
 
     /**

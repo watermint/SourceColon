@@ -82,8 +82,6 @@ public class RuntimeEnvironmentTest {
     @Test
     public void testDataRoot() throws IOException {
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertNull(instance.getDataRootFile());
-        assertNull(instance.getDataRootPath());
         File f = File.createTempFile("dataroot", null);
         String path = f.getCanonicalPath();
         assertTrue(f.delete());
@@ -91,8 +89,7 @@ public class RuntimeEnvironmentTest {
         instance.setDataRoot(path);
         // setDataRoot() used to create path if it didn't exist, but that
         // logic has been moved. Verify that it is so.
-        assertFalse(f.exists());
-        assertTrue(f.mkdirs());
+        assertTrue(f.exists());
         assertEquals(path, instance.getDataRootPath());
         assertEquals(path, instance.getDataRootFile().getCanonicalPath());
     }
@@ -346,33 +343,6 @@ public class RuntimeEnvironmentTest {
     }
 
     @Test
-    public void testBug3095() throws IOException {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        File file = new File("foobar");
-        assertTrue(file.createNewFile());
-        assertFalse(file.isAbsolute());
-        instance.setDataRoot(file.getName());
-        File f = instance.getDataRootFile();
-        assertNotNull(f);
-        assertEquals("foobar", f.getName());
-        assertTrue(f.isAbsolute());
-        assertTrue(file.delete());
-    }
-
-    @Test
-    public void testBug3154() throws IOException {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        File file = File.createTempFile("dataroot", null);
-        assertTrue(file.delete());
-        assertFalse(file.exists());
-        instance.setDataRoot(file.getAbsolutePath());
-        // The point of this test was to verify that setDataRoot() created
-        // the directory, but that logic has been moved as of bug 16986, so
-        // expect that the file does not exist.
-        assertFalse(file.exists());
-    }
-
-    @Test
     public void testObfuscateEMail() throws IOException {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
 
@@ -400,7 +370,7 @@ public class RuntimeEnvironmentTest {
                 address.replace("@", " (at) ") : address;
 
         String expectedOutput =
-                "<a class=\"l\" name=\"1\" href=\"#1\">1</a>"
+                "<a class=\"line-number\" href=\"#1\" name=\"1\"><span class=\"badge\">1</span> </a>"
                         + expectedAddress;
 
         assertEquals(expectedOutput, out.toString());
