@@ -30,6 +30,7 @@ import org.opensolaris.opengrok.util.IOUtils;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
+import java.nio.file.InvalidPathException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -162,6 +163,7 @@ public final class Configuration {
         setHitsPerPage(25);
         setCachePages(5);
         setScanningDepth(3); // default depth of scanning for repositories
+        setDataRoot(RuntimeEnvironment.DEFAULT_SOURCECOLON_DATA);
         setAllowedSymlinks(new HashSet<String>());
         //setTabSize(4);
         cmds = new HashMap<String, String>();
@@ -300,6 +302,14 @@ public final class Configuration {
     }
 
     public void setDataRoot(String dataRoot) {
+        File dr = new File(dataRoot);
+        if (!dr.isDirectory()) {
+            dr.mkdirs();
+        }
+        if (!dr.isDirectory()) {
+            // TODO: replace to appropriate exception
+            throw new RuntimeException(dataRoot + " is not a directory. or failed to create directory");
+        }
         this.dataRoot = dataRoot;
     }
 
@@ -576,6 +586,12 @@ public final class Configuration {
      * @throws IOException if an error occurs
      */
     public void write(File file) throws IOException {
+        if (!file.getParentFile().isDirectory()) {
+            file.getParentFile().mkdirs();
+        }
+        if (!file.getParentFile().isDirectory()) {
+            throw new RuntimeException("Cannot write configuration file: " + file.getAbsolutePath());
+        }
         final FileOutputStream out = new FileOutputStream(file);
         try {
             this.encodeObject(out);

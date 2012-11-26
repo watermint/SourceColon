@@ -4,11 +4,13 @@
 <web-app>
     <display-name>OpenGrok</display-name>
     <description>A wicked fast source browser</description>
+    <!--
     <context-param>
         <param-name>CONFIGURATION</param-name>
         <param-value>@CONFIG_PATH@</param-value>
-        <description>Full path to the configuration file where OpenGrok can read it's configuration</description>
+        <description>Full path to the configuration file where OpenGrok can read it's configuration. Default: $HOME/.sourcecolon/etc/config.xml</description>
     </context-param>
+    -->
 
     <listener>
         <listener-class>org.opensolaris.opengrok.web.WebappListener</listener-class>

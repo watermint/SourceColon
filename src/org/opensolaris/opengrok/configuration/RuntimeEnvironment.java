@@ -45,6 +45,18 @@ import java.util.logging.Logger;
  * configuration this execution context (classloader) is using.
  */
 public final class RuntimeEnvironment {
+    public static final String DEFAULT_SOURCECOLON_ROOT;
+    public static final String DEFAULT_SOURCECOLON_DATA;
+    public static final String DEFAULT_SOURCECOLON_ETC;
+    public static final String DEFAULT_SOURCECOLON_CONFIG;
+
+    static {
+        DEFAULT_SOURCECOLON_ROOT = System.getProperty("user.home") + File.separator + ".sourcecolon";
+        DEFAULT_SOURCECOLON_ETC  = DEFAULT_SOURCECOLON_ROOT + File.separator + "etc";
+        DEFAULT_SOURCECOLON_DATA = DEFAULT_SOURCECOLON_ROOT + File.separator + "data";
+        DEFAULT_SOURCECOLON_CONFIG = DEFAULT_SOURCECOLON_ETC + File.separator + "config.xml";
+    }
+
     private Configuration configuration;
     private final ThreadLocal<Configuration> threadConfig;
 
@@ -848,8 +860,7 @@ public final class RuntimeEnvironment {
                         try {
                             s = sock.accept();
                             bos.reset();
-                            log.log(Level.FINE, "OpenGrok: Got request from {0}",
-                                    s.getInetAddress().getHostAddress());
+                            log.log(Level.FINE, "OpenGrok: Got request from {0}", s.getInetAddress().getHostAddress());
                             in = new BufferedInputStream(s.getInputStream());
                             byte[] buf = new byte[1024];
                             int len;

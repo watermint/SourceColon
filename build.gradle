@@ -103,10 +103,6 @@ task runIndexer(dependsOn: jar) << {
     ant.java(jar: jar.archivePath, fork: true) {
         arg(value: '-s')
         arg(value: project.ext.src.absolutePath)
-        arg(value: '-d')
-        arg(value: scData.absolutePath)
-        arg(value: '-W')
-        arg(value: scConfig.absolutePath)
     }
 }
 
@@ -116,7 +112,6 @@ task prepareWar(dependsOn: [jar, runIndexer]) << {
     copy {
         from baseWar
         into destWar
-        filter(ReplaceTokens, tokens: [CONFIG_PATH: new File(project.buildDir, 'sc/etc/config.xml').absolutePath])
     }
     copy {
         from jar.archivePath

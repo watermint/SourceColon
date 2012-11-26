@@ -93,7 +93,7 @@ public final class Indexer {
         ArrayList<String> subFiles = new ArrayList<String>();
         ArrayList<String> repositories = new ArrayList<String>();
         HashSet<String> allowedSymlinks = new HashSet<String>();
-        String configFilename = null;
+        String configFilename = RuntimeEnvironment.DEFAULT_SOURCECOLON_CONFIG;
         String configHost = null;
         boolean addProjects = false;
         boolean refreshHistory = false;
