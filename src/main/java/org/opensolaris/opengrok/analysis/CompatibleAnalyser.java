@@ -30,7 +30,7 @@ import org.opensolaris.opengrok.analysis.plain.PlainSymbolTokenizer;
 
 import java.io.Reader;
 
-public class CompatibleAnalyser extends Analyzer {
+public final class CompatibleAnalyser extends Analyzer {
     PathAnalyzer pather;
     HistoryAnalyzer historer;
 

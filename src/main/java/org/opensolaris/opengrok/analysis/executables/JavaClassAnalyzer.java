@@ -44,7 +44,7 @@ import java.util.List;
  * @author Chandan
  * @author Lubos Kosco , January 2010 , updated bcel, comment on thread safety
  */
-public class JavaClassAnalyzer extends FileAnalyzer {
+public final class JavaClassAnalyzer extends FileAnalyzer {
 
     private final String urlPrefix = RuntimeEnvironment.getInstance().getUrlPrefix();
 

@@ -38,7 +38,7 @@ import java.io.*;
  *
  * @author Chandan
  */
-public class BZip2Analyzer extends FileAnalyzer {
+public final class BZip2Analyzer extends FileAnalyzer {
     private Genre g;
 
     @Override

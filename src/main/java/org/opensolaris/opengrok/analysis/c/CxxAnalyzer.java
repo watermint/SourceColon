@@ -27,7 +27,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
-import org.opensolaris.opengrok.analysis.plain.PlainAnalyzer;
+import org.opensolaris.opengrok.analysis.plain.PlainAnalyzerBase;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
 
@@ -39,7 +39,7 @@ import java.io.Writer;
 /**
  * An Analyzer for C++ files
  */
-public class CxxAnalyzer extends PlainAnalyzer {
+public final class CxxAnalyzer extends PlainAnalyzerBase {
     /**
      * Creates a new instance of CAnalyzer
      */

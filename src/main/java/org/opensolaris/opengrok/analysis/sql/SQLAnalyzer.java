@@ -25,7 +25,7 @@ package org.opensolaris.opengrok.analysis.sql;
 
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
-import org.opensolaris.opengrok.analysis.plain.PlainAnalyzer;
+import org.opensolaris.opengrok.analysis.plain.PlainAnalyzerBase;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.history.Annotation;
 
@@ -33,7 +33,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 
-public class SQLAnalyzer extends PlainAnalyzer {
+public final class SQLAnalyzer extends PlainAnalyzerBase {
 
     private final SQLXref xref = new SQLXref((Reader) null);
 

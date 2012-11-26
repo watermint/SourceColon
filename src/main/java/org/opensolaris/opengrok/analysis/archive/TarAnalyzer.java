@@ -42,7 +42,7 @@ import java.io.*;
  * @author Chandan
  */
 
-public class TarAnalyzer extends FileAnalyzer {
+public final class TarAnalyzer extends FileAnalyzer {
     private final StringBuilder content;
 
     private static final Reader dummy = new StringReader("");

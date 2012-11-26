@@ -48,7 +48,7 @@ import java.util.logging.Level;
  * @author Chandan
  * @author Trond Norbye
  */
-public class ELFAnalyzer extends FileAnalyzer {
+public final class ELFAnalyzer extends FileAnalyzer {
 
     private StringBuilder content;
     private PlainFullTokenizer plainfull;

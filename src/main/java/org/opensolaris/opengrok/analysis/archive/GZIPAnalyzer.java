@@ -40,7 +40,7 @@ import java.util.zip.GZIPInputStream;
  *
  * @author Chandan
  */
-public class GZIPAnalyzer extends FileAnalyzer {
+public final class GZIPAnalyzer extends FileAnalyzer {
     private Genre g;
 
     @Override

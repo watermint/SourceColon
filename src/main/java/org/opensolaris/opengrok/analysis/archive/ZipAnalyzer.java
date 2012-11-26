@@ -41,7 +41,7 @@ import java.util.zip.ZipInputStream;
  *
  * @author Chandan
  */
-public class ZipAnalyzer extends FileAnalyzer {
+public final class ZipAnalyzer extends FileAnalyzer {
     private final StringBuilder content;
 
     private static final Reader dummy = new StringReader("");

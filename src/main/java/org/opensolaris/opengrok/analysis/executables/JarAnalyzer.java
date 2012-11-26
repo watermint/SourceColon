@@ -43,7 +43,7 @@ import java.util.zip.ZipInputStream;
  * @author Chandan
  */
 
-public class JarAnalyzer extends FileAnalyzer {
+public final class JarAnalyzer extends FileAnalyzer {
     private Map<String, String> xrefs;
 
     protected JarAnalyzer(FileAnalyzerFactory factory) {

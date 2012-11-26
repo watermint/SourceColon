@@ -40,7 +40,7 @@ import java.util.Arrays;
  *
  * @author Chandan
  */
-public class TroffAnalyzer extends FileAnalyzer {
+public final class TroffAnalyzer extends FileAnalyzer {
     private char[] content;
     private int len;
 
