@@ -37,7 +37,6 @@ public final class Consts {
     static {
         HashSet<String> kwds = new HashSet<String>();
         try {
-            //populateKeywordSet(kwds, "sql2003reserved.dat");
             populateKeywordSet(kwds, "sql2008reserved.dat");
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
