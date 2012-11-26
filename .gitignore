@@ -4,4 +4,4 @@
 *.iml
 build
 dist
-generatedsrc
+src/jflex/java
