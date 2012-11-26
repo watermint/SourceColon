@@ -2,6 +2,8 @@
 
 Source code search based upon [OpenGrok](http://hub.opensolaris.org/bin/view/Project+opengrok/).
 
+[![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon.png)
+
 ## Objective
 
 Provide simplified interface to search large scale source code tree.
