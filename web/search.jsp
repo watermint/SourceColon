@@ -73,11 +73,7 @@ org.opensolaris.opengrok.search.Results,
     }
     response.addCookie(new Cookie("OpenGrokSorting", searchHelper.order.toString()));
 %>
-<%@
-
-    include file="header.jspf"
-
-    %>
+<%@ include file="header.jspf" %>
 <div class="container">
   <div id="menu">
     <%@ include file="menu.jspf" %>
@@ -85,15 +81,13 @@ org.opensolaris.opengrok.search.Results,
   <ul class="nav nav-tabs"><%
     StringBuilder url = createUrl(searchHelper, true).append("&amp;sort=");
     for (SortOrder o : SortOrder.values()) {
-      if (searchHelper.order == o) {
+        if (searchHelper.order == o) {
   %>
-    <li class="active"><a href="#"><%= o.getDesc() %>
-    </a></li>
+    <li class="active"><a href="#"><%= o.getDesc() %></a></li>
     <%
-    } else {
+        } else {
     %>
-    <li><a href="<%= url %><%= o %>"><%= o.getDesc() %>
-    </a></li>
+    <li><a href="<%= url %><%= o %>"><%= o.getDesc() %></a></li>
     <%
         }
       }
