@@ -16,9 +16,9 @@ repositories {
 }
 
 ext {
-    src          = new File(project.projectDir, 'src')
+    src          = new File(project.projectDir, 'src/main/java')
     dist         = new File(project.projectDir, 'dist')
-    generatedsrc = new File(project.projectDir, 'generatedsrc')
+    generatedsrc = new File(project.projectDir, 'src/jflex/java')
     workingdirs  = [project.buildDir, generatedsrc, dist]
 }
 
@@ -71,16 +71,6 @@ sourceSets {
         }
         resources {
             srcDir project.ext.src
-        }
-    }
-    test {
-        java {
-            srcDir new File(project.projectDir, '/test/java')
-        }
-        resources {
-            srcDir project.ext.src
-            srcDir new File(project.projectDir, '/test/java')
-            srcDir new File(project.projectDir, '/test/data')
         }
     }
 }
