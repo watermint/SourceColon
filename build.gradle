@@ -91,18 +91,18 @@ jar {
 }
 
 task runIndexer(dependsOn: jar) << {
-    File scRoot   = new File(project.buildDir, 'sc')
-    File scData   = new File(scRoot, 'data')
-    File scEtc    = new File(scRoot, 'etc')
-    File scConfig = new File(scEtc, 'config.xml')
-
-    [scData, scEtc].each {
-        it.mkdirs()
+    String target = project.ext.src.absolutePath
+    if (project.hasProperty('target')) {
+        if (file(project.target).isDirectory()) {
+            target = project.target
+        } else {
+            logger.warn("${project.target} is not a directory. use $target as default.")
+        }
     }
 
     ant.java(jar: jar.archivePath, fork: true) {
         arg(value: '-s')
-        arg(value: project.ext.src.absolutePath)
+        arg(value: target)
     }
 }
 
