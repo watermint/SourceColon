@@ -317,9 +317,7 @@ public class IndexDatabase {
 
         try {
             //TODO we might need to add writer.commit after certain phases of index generation, right now it will only happen in the end
-            writer = new IndexWriter(indexDirectory, AnalyzerGuru.getAnalyzer(), IndexWriter.MaxFieldLength.UNLIMITED);
-            writer.setMaxFieldLength(RuntimeEnvironment.getInstance().getIndexWordLimit());
-
+            writer = new IndexWriter(indexDirectory, new IndexWriterConfig(Version.LUCENE_36, AnalyzerGuru.getAnalyzer()));
             if (directories.isEmpty()) {
                 if (project == null) {
                     directories.add("");
