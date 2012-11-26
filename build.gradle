@@ -87,7 +87,7 @@ sourceSets {
 
 jettyRunWar {
     if (project.hasProperty('httpPort')) {
-        httpPort = Integer.parseInt(project.httpPort)
+        httpPort = project.httpPort as Integer
     }
 }
 
