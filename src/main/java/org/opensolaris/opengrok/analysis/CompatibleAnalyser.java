@@ -32,10 +32,8 @@ import java.io.Reader;
 
 public final class CompatibleAnalyser extends Analyzer {
     PathAnalyzer pather;
-    HistoryAnalyzer historer;
 
     public CompatibleAnalyser() {
-        historer = new HistoryAnalyzer();
         pather = new PathAnalyzer();
     }
 
@@ -50,8 +48,6 @@ public final class CompatibleAnalyser extends Analyzer {
             case "path":
             case "project":
                 return pather.tokenStream(fieldName, reader);
-            case "hist":
-                return historer.tokenStream(fieldName, reader);
         }
         return new PlainFullTokenizer(reader);
     }

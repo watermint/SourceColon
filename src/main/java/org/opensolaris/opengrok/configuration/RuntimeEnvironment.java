@@ -313,62 +313,6 @@ public final class RuntimeEnvironment {
     }
 
     /**
-     * Get the max time a SMC operation may use to avoid beeing cached
-     *
-     * @return the max time
-     */
-    public int getHistoryReaderTimeLimit() {
-        return threadConfig.get().getHistoryCacheTime();
-    }
-
-    /**
-     * Specify the maximum time a SCM operation should take before it will
-     * be cached (in ms)
-     *
-     * @param historyReaderTimeLimit the max time in ms before it is cached
-     */
-    public void setHistoryReaderTimeLimit(int historyReaderTimeLimit) {
-        threadConfig.get().setHistoryCacheTime(historyReaderTimeLimit);
-    }
-
-    /**
-     * Is history cache currently enabled?
-     *
-     * @return true if history cache is enabled
-     */
-    public boolean useHistoryCache() {
-        return threadConfig.get().isHistoryCache();
-    }
-
-    /**
-     * Specify if we should use history cache or not
-     *
-     * @param useHistoryCache set false if you do not want to use history cache
-     */
-    public void setUseHistoryCache(boolean useHistoryCache) {
-        threadConfig.get().setHistoryCache(useHistoryCache);
-    }
-
-    /**
-     * Should the history cache be stored in a database instead of in XML
-     * files?
-     *
-     * @return {@code true} if the cache should be stored in a database
-     */
-    public boolean storeHistoryCacheInDB() {
-        return threadConfig.get().isHistoryCacheInDB();
-    }
-
-    /**
-     * Set whether the history cache should be stored in a database.
-     *
-     * @param store {@code true} if the cache should be stored in a database
-     */
-    public void setStoreHistoryCacheInDB(boolean store) {
-        threadConfig.get().setHistoryCacheInDB(store);
-    }
-
-    /**
      * Should we generate HTML or not during the indexing phase
      *
      * @return true if HTML should be generated during the indexing phase

@@ -108,15 +108,6 @@ function domReadyMenu() {
     // p.setAttribute("autocomplete", "off");
 }
 
-function domReadyHistory() {
-    // start state should ALWAYS be: first row: r1 hidden, r2 checked ;
-    // second row: r1 clicked, (r2 hidden)(optionally)
-    // I cannot say what will happen if they are not like that, togglediffs
-    // will go mad !
-    $("#revisions input[type=radio]").bind("click",togglediffs);
-    togglediffs();
-}
-
 function get_annotations() {
     link = document.link +  "?a=true";
     if (document.rev.length > 0) {

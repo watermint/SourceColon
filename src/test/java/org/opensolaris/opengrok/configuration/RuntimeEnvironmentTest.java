@@ -105,44 +105,6 @@ public class RuntimeEnvironmentTest {
     }
 
     @Test
-    public void testProjects() throws IOException {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertFalse(instance.hasProjects());
-        assertNotNull(instance.getProjects());
-        assertEquals(0, instance.getProjects().size());
-        assertNull(instance.getDefaultProject());
-
-        File file = new File("/opengrok_automatic_test/foo/bar");
-        instance.setSourceRoot("/opengrok_automatic_test/foo");
-        Project p = new Project();
-        p.setPath("/bar");
-        assertEquals("/bar", p.getId());
-        instance.getProjects().add(p);
-        assertEquals(p, Project.getProject(file));
-        instance.setProjects(null);
-        assertNull(instance.getProjects());
-    }
-
-    @Test
-    public void testRegister() throws InterruptedException, IOException {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        String path = "/tmp/dataroot";
-        instance.setDataRoot(path);
-        instance.register();
-        Thread t = new Thread(new Runnable() {
-
-            public void run() {
-                Configuration c = new Configuration();
-                RuntimeEnvironment.getInstance().setConfiguration(c);
-
-            }
-        });
-        t.start();
-        t.join();
-//        assertEquals(new File(path).getCanonicalFile().getAbsolutePath(), instance.getDataRootPath());
-    }
-
-    @Test
     public void testUrlPrefix() {
         String contextRoot = "SourceColon";
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
@@ -159,30 +121,6 @@ public class RuntimeEnvironmentTest {
         String path = "/usr/bin/ctags";
         instance.setCtags(path);
         assertEquals(path, instance.getCtags());
-    }
-
-    @Test
-    public void testHistoryReaderTimeLimit() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertEquals(30, instance.getHistoryReaderTimeLimit());
-        instance.setHistoryReaderTimeLimit(50);
-        assertEquals(50, instance.getHistoryReaderTimeLimit());
-    }
-
-    @Test
-    public void testUseHistoryCache() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertEquals(true, instance.useHistoryCache());
-        instance.setUseHistoryCache(false);
-        assertEquals(false, instance.useHistoryCache());
-    }
-
-    @Test
-    public void testStoreHistoryCacheInDB() {
-        RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        assertFalse(env.storeHistoryCacheInDB());
-        env.setStoreHistoryCacheInDB(true);
-        assertTrue(env.storeHistoryCacheInDB());
     }
 
     @Test

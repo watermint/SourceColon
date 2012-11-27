@@ -138,14 +138,11 @@ public class FileAnalyzer extends Analyzer {
         return factory.getGenre();
     }
 
-    private final HistoryAnalyzer hista;
-
     /**
      * Creates a new instance of FileAnalyzer
      */
     public FileAnalyzer(FileAnalyzerFactory factory) {
         this.factory = factory;
-        hista = new HistoryAnalyzer();
     }
 
     public void analyze(Document doc, InputStream in) throws IOException {
@@ -156,8 +153,6 @@ public class FileAnalyzer extends Analyzer {
     public TokenStream tokenStream(String fieldName, Reader reader) {
         if ("path".equals(fieldName) || "project".equals(fieldName)) {
             return new PathTokenizer(reader);
-        } else if ("hist".equals(fieldName)) {
-            return hista.tokenStream(fieldName, reader);
         }
         OpenGrokLogger.getLogger().log(Level.WARNING, "Have no analyzer for: {0}", fieldName);
         return null;

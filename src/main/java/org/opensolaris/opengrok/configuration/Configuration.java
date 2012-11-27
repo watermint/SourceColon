@@ -42,10 +42,6 @@ public final class Configuration {
     private String ctags;
 
     /**
-     * Should the history log be cached?
-     */
-    private boolean historyCache;
-    /**
      * The maximum time in milliseconds {@code HistoryCache.get()} can take
      * before its result is cached.
      */
@@ -132,9 +128,6 @@ public final class Configuration {
      */
     public Configuration() {
         //defaults for an opengrok instance configuration
-        setHistoryCache(true);
-        setHistoryCacheTime(30);
-        setHistoryCacheInDB(false);
         setProjects(new ArrayList<Project>());
         setUrlPrefix("/SourceColon/s?");
         //setUrlPrefix("../s?"); // TODO generate relative search paths, get rid of -w <webapp> option to indexer !
@@ -211,25 +204,6 @@ public final class Configuration {
 
     public void setHitsPerPage(int hitsPerPage) {
         this.hitsPerPage = hitsPerPage;
-    }
-
-    /**
-     * Should the history log be cached?
-     *
-     * @return {@code true} if a {@code HistoryCache} implementation should
-     *         be used, {@code false} otherwise
-     */
-    public boolean isHistoryCache() {
-        return historyCache;
-    }
-
-    /**
-     * Set whether history should be cached.
-     *
-     * @param historyCache if {@code true} enable history cache
-     */
-    public void setHistoryCache(boolean historyCache) {
-        this.historyCache = historyCache;
     }
 
     /**

@@ -131,9 +131,6 @@ org.opensolaris.opengrok.web.PageConfig"
 
       <dt>path</dt>
       <dd>path of the source file.</dd>
-
-      <dt>hist</dt>
-      <dd>History log comments.</dd>
     </dl>
 
     <p>
