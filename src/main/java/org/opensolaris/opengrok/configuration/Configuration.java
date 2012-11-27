@@ -22,7 +22,6 @@
  */
 package org.opensolaris.opengrok.configuration;
 
-import org.opensolaris.opengrok.history.RepositoryInfo;
 import org.opensolaris.opengrok.index.Filter;
 import org.opensolaris.opengrok.index.IgnoredNames;
 import org.opensolaris.opengrok.util.IOUtils;
@@ -30,7 +29,6 @@ import org.opensolaris.opengrok.util.IOUtils;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
-import java.nio.file.InvalidPathException;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -61,7 +59,6 @@ public final class Configuration {
     private List<Project> projects;
     private String sourceRoot;
     private String dataRoot;
-    private List<RepositoryInfo> repositories;
     private String urlPrefix;
     private boolean generateHtml;
     /**
@@ -139,7 +136,6 @@ public final class Configuration {
         setHistoryCacheTime(30);
         setHistoryCacheInDB(false);
         setProjects(new ArrayList<Project>());
-        setRepositories(new ArrayList<RepositoryInfo>());
         setUrlPrefix("/SourceColon/s?");
         //setUrlPrefix("../s?"); // TODO generate relative search paths, get rid of -w <webapp> option to indexer !
         setCtags(System.getProperty("org.opensolaris.opengrok.analysis.Ctags", "ctags"));
@@ -311,14 +307,6 @@ public final class Configuration {
             throw new RuntimeException(dataRoot + " is not a directory. or failed to create directory");
         }
         this.dataRoot = dataRoot;
-    }
-
-    public List<RepositoryInfo> getRepositories() {
-        return repositories;
-    }
-
-    public void setRepositories(List<RepositoryInfo> repositories) {
-        this.repositories = repositories;
     }
 
     public String getUrlPrefix() {

@@ -58,6 +58,6 @@ public class PhpAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        PhpAnalyzer.writeXref(in, out, defs, annotation, project);
+        PhpAnalyzer.writeXref(in, out, defs, project);
     }
 }

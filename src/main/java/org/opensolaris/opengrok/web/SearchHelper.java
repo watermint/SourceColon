@@ -34,7 +34,6 @@ import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.search.QueryBuilder;
 import org.opensolaris.opengrok.search.Summarizer;
 import org.opensolaris.opengrok.search.context.Context;
-import org.opensolaris.opengrok.search.context.HistoryContext;
 import org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.File;
@@ -154,10 +153,6 @@ public class SearchHelper {
      * result summarizer usually created via {@link #prepareSummary()}.
      */
     public Summarizer summerizer = null;
-    /**
-     * history context usually created via {@link #prepareSummary()}.
-     */
-    public HistoryContext historyContext;
     /**
      * Default query parse error message prefix
      */
@@ -430,7 +425,6 @@ public class SearchHelper {
      * <ul>
      * <li>{@link #sourceContext}</li>
      * <li>{@link #summerizer}</li>
-     * <li>{@link #historyContext}</li>
      * </ul>
      *
      * @return this instance.
@@ -444,11 +438,6 @@ public class SearchHelper {
             summerizer = new Summarizer(query, new CompatibleAnalyser());
         } catch (Exception e) {
             OpenGrokLogger.getLogger().log(Level.WARNING, "Summerizer: {0}", e.getMessage());
-        }
-        try {
-            historyContext = new HistoryContext(query);
-        } catch (Exception e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, "HistoryContext: {0}", e.getMessage());
         }
         return this;
     }

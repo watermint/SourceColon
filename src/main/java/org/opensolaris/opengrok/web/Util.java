@@ -26,9 +26,6 @@ package org.opensolaris.opengrok.web;
 import org.opensolaris.opengrok.Info;
 import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.Annotation;
-import org.opensolaris.opengrok.history.HistoryException;
-import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.*;
@@ -439,16 +436,14 @@ public final class Util {
      * Write out line information wrt. to the given annotation in the format:
      * {@code Linenumber Blame Author} incl. appropriate links.
      *
+     *
      * @param num            linenumber to print
      * @param out            print destination
-     * @param annotation     annotation to use. If {@code null} only the
-     *                       linenumber gets printed.
-     * @param userPageLink   see {@link RuntimeEnvironment#getUserPage()}
-     * @param userPageSuffix see {@link RuntimeEnvironment#getUserPageSuffix()}
+     * @param userPageLink   see {@link org.opensolaris.opengrok.configuration.RuntimeEnvironment#getUserPage()}
+     * @param userPageSuffix see {@link org.opensolaris.opengrok.configuration.RuntimeEnvironment#getUserPageSuffix()}
      * @throws IOException depends on the destination (<var>out</var>).
      */
-    public static void readableLine(int num, Writer out, Annotation annotation,
-                                    String userPageLink, String userPageSuffix)
+    public static void readableLine(int num, Writer out, String userPageLink, String userPageSuffix)
             throws IOException {
         // this method should go to JFlexXref
         String snum = String.valueOf(num);
@@ -466,53 +461,6 @@ public final class Util {
         out.write(snum);
         out.write("</span> ");
         out.write(anchorEnd);
-        if (annotation != null) {
-            String r = annotation.getRevision(num);
-            boolean enabled = annotation.isEnabled(num);
-            out.write("<span class=\"blame\">");
-            if (enabled) {
-                out.write(anchorClassStart);
-                out.write("r\" href=\"");
-                out.write(URIEncode(annotation.getFilename()));
-                out.write("?a=true&amp;r=");
-                out.write(URIEncode(r));
-                String msg = annotation.getDesc(r);
-                if (msg != null) {
-                    out.write("\" title=\"");
-                    out.write(msg);
-                }
-                out.write(closeQuotedTag);
-            }
-            StringBuilder buf = new StringBuilder();
-            htmlize(r, buf);
-            out.write(buf.toString());
-            buf.setLength(0);
-            if (enabled) {
-                out.write(anchorEnd);
-            }
-            String a = annotation.getAuthor(num);
-            if (userPageLink == null) {
-                out.write("<span class=\"a\">");
-                htmlize(a, buf);
-                out.write(buf.toString());
-                out.write("</span>");
-                buf.setLength(0);
-            } else {
-                out.write(anchorClassStart);
-                out.write("a\" href=\"");
-                out.write(userPageLink);
-                out.write(URIEncode(a));
-                if (userPageSuffix != null) {
-                    out.write(userPageSuffix);
-                }
-                out.write(closeQuotedTag);
-                htmlize(a, buf);
-                out.write(buf.toString());
-                buf.setLength(0);
-                out.write(anchorEnd);
-            }
-            out.write("</span>");
-        }
     }
 
     /**
@@ -712,13 +660,12 @@ public final class Util {
     /**
      * Dump the configuration as an HTML table.
      *
+     *
      * @param out destination for the HTML output
      * @throws IOException      if an error happens while writing to {@code out}
-     * @throws HistoryException if the history guru cannot be accesses
      */
     @SuppressWarnings("boxing")
-    public static void dumpConfiguration(Appendable out) throws IOException,
-            HistoryException {
+    public static void dumpConfiguration(Appendable out) throws IOException {
         out.append("<table border=\"1\" width=\"100%\">");
         out.append("<tr><th>Variable</th><th>Value</th></tr>");
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
@@ -738,8 +685,6 @@ public final class Util {
         printTableRow(out, "Index word limit", env.getIndexWordLimit());
         printTableRow(out, "Allow leading wildcard in search",
                 env.isAllowLeadingWildcard());
-        printTableRow(out, "History cache", HistoryGuru.getInstance()
-                .getCacheInfo());
         out.append("</table>");
     }
 

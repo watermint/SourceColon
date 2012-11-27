@@ -49,8 +49,6 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.HistoryException;
-import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.search.QueryBuilder;
 import org.opensolaris.opengrok.web.Util;
 
@@ -295,9 +293,8 @@ public class IndexDatabase {
      * Update the content of this index database
      *
      * @throws IOException      if an error occurs
-     * @throws HistoryException if an error occurs when accessing the history
      */
-    public void update() throws IOException, HistoryException {
+    public void update() throws IOException {
         synchronized (lock) {
             if (running) {
                 throw new IOException("Indexer already running!");
@@ -333,8 +330,6 @@ public class IndexDatabase {
                 } else {
                     sourceRoot = new File(RuntimeEnvironment.getInstance().getSourceRootFile(), dir);
                 }
-
-                HistoryGuru.getInstance().ensureHistoryCacheExists(sourceRoot);
 
                 String startuid = Util.path2uid(dir, "");
                 try (IndexReader reader = IndexReader.open(indexDirectory, false)) {
@@ -485,7 +480,7 @@ public class IndexDatabase {
             indexReader = IndexReader.open(indexDirectory, false);
             checker = new SpellChecker(spellDirectory);
             //TODO below seems only to index "defs" , possible bug ?
-            checker.indexDictionary(new LuceneDictionary(indexReader, "defs"), new IndexWriterConfig(Version.LUCENE_CURRENT, null), true);
+            checker.indexDictionary(new LuceneDictionary(indexReader, "defs"), new IndexWriterConfig(Version.LUCENE_36, null), true);
             log.info("done");
         } catch (IOException e) {
             log.log(Level.SEVERE, "ERROR: Generating spelling: {0}", e);
@@ -648,11 +643,6 @@ public class IndexDatabase {
 
         if (file.isDirectory()) {
             // always accept directories so that their files can be examined
-            return true;
-        }
-
-        if (HistoryGuru.getInstance().hasHistory(file)) {
-            // versioned files should always be accepted
             return true;
         }
 

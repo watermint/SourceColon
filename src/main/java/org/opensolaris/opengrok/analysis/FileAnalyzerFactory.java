@@ -24,7 +24,6 @@ package org.opensolaris.opengrok.analysis;
 
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.configuration.Project;
-import org.opensolaris.opengrok.history.Annotation;
 
 import java.io.IOException;
 import java.io.InputStream;

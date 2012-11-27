@@ -23,7 +23,6 @@
 package org.opensolaris.opengrok.management;
 
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.index.IndexChangedListener;
 import org.opensolaris.opengrok.index.Indexer;
 
@@ -123,7 +122,6 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 boolean update = Management.getInstance().getUpdateIndexDatabase();
                 String[] sublist = Management.getInstance().getSubFiles();
                 log.info("Update source repositories");
-                HistoryGuru.getInstance().updateRepositories();
                 List<String> subFiles = Arrays.asList(sublist);
                 log.log(Level.INFO, "Starting index, update {0} noThreads {1} subfiles {2}", new Object[]{String.valueOf(update), String.valueOf(noThreads), String.valueOf(subFiles.size())});
                 index.doIndexerExecution(update, noThreads, subFiles, this);

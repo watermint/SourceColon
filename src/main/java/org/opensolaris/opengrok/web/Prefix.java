@@ -70,10 +70,6 @@ public enum Prefix {
      */
     HIST_S("/hi"),
     /**
-     * RSS XML Feed of latest changes (link prefix)
-     */
-    RSS_P("/rss"),
-    /**
      * Download file (link prefix)
      */
     RAW_P("/raw"),

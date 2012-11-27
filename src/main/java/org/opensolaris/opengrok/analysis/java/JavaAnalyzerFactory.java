@@ -54,6 +54,6 @@ public class JavaAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        JavaAnalyzer.writeXref(in, out, defs, annotation, project);
+        JavaAnalyzer.writeXref(in, out, defs, project);
     }
 }

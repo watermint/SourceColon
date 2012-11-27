@@ -60,6 +60,6 @@ public class CAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        CAnalyzer.writeXref(in, out, defs, annotation, project);
+        CAnalyzer.writeXref(in, out, defs, project);
     }
 }

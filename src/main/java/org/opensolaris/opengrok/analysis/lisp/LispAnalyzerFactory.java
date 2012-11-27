@@ -53,6 +53,6 @@ public class LispAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        LispAnalyzer.writeXref(in, out, defs, annotation, project);
+        LispAnalyzer.writeXref(in, out, defs, project);
     }
 }

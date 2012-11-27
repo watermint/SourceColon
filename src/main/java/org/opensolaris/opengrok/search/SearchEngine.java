@@ -37,10 +37,8 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.TagFilter;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.HistoryException;
 import org.opensolaris.opengrok.search.Summary.Fragment;
 import org.opensolaris.opengrok.search.context.Context;
-import org.opensolaris.opengrok.search.context.HistoryContext;
 import org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.*;
@@ -101,7 +99,6 @@ public class SearchEngine {
     private Query query;
     private final CompatibleAnalyser analyzer = new CompatibleAnalyser();
     private Context sourceContext;
-    private HistoryContext historyContext;
     private Summarizer summarizer;
     // internal structure to hold the results from lucene
     private final List<org.apache.lucene.document.Document> docs;
@@ -260,16 +257,6 @@ public class SearchEngine {
             } catch (Exception e) {
                 OpenGrokLogger.getLogger().log(Level.WARNING, "An error occured while creating summary", e);
             }
-
-            historyContext = null;
-            try {
-                historyContext = new HistoryContext(query);
-                if (historyContext.isEmpty()) {
-                    historyContext = null;
-                }
-            } catch (Exception e) {
-                OpenGrokLogger.getLogger().log(Level.WARNING, "An error occured while getting history context", e);
-            }
         }
         return hits.length;
     }
@@ -377,9 +364,6 @@ public class SearchEngine {
                         hasContext |= sourceContext.getContext(null, null, null, null, filename, tags, false, ret);
                     }
                 }
-                if (historyContext != null) {
-                    hasContext |= historyContext.getContext(source + filename, filename, ret);
-                }
                 if (!hasContext) {
                     ret.add(new Hit(filename, "...", "", false, alt));
                 }
@@ -387,9 +371,6 @@ public class SearchEngine {
                 OpenGrokLogger.getLogger().log(
                         Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             } catch (ClassNotFoundException e) {
-                OpenGrokLogger.getLogger().log(
-                        Level.WARNING, SEARCH_EXCEPTION_MSG, e);
-            } catch (HistoryException e) {
                 OpenGrokLogger.getLogger().log(
                         Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             }

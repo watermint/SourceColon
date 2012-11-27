@@ -55,6 +55,6 @@ public class VBAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        VBAnalyzer.writeXref(in, out, defs, annotation, project);
+        VBAnalyzer.writeXref(in, out, defs, project);
     }
 }

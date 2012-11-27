@@ -30,13 +30,11 @@ import org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.opensolaris.opengrok.configuration.Configuration;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.*;
 import org.opensolaris.opengrok.util.Executor;
 import org.opensolaris.opengrok.util.Getopt;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.InetAddress;
 import java.text.ParseException;
 import java.util.*;
@@ -185,12 +183,6 @@ public final class Indexer {
                         break;
                     case 'n':
                         runIndex = false;
-                        break;
-                    case 'H':
-                        refreshHistory = true;
-                        break;
-                    case 'h':
-                        repositories.add(getopt.getOptarg());
                         break;
                     case 'D':
                         cfg.setHistoryCacheInDB(true);
@@ -376,12 +368,6 @@ public final class Indexer {
                         System.out.println(Info.getFullVersion());
                         System.exit(0);
                         break;
-                    case 'k':
-                        zapCache.add(getopt.getOptarg());
-                        break;
-                    case 'K':
-                        listRepos = true;
-                        break;
                     case '?':
                         System.err.println(cmdOptions.getUsage());
                         System.exit(0);
@@ -401,20 +387,6 @@ public final class Indexer {
                 }
             }
 
-            List<Class<? extends Repository>> repositoryClasses =
-                    RepositoryFactory.getRepositoryClasses();
-            for (Class<? extends Repository> clazz : repositoryClasses) {
-                try {
-                    Field f = clazz.getDeclaredField("CMD_PROPERTY_KEY");
-                    Object key = f.get(null);
-                    if (key != null) {
-                        cfg.setRepoCmd(clazz.getCanonicalName(),
-                                System.getProperty(key.toString()));
-                    }
-                } catch (Exception e) {
-                    // don't care
-                }
-            }
             int optind = getopt.getOptind();
             if (optind != -1) {
                 while (optind < argv.length) {
@@ -529,57 +501,6 @@ public final class Indexer {
             throw new IndexerException("Internal error, zapCache shouldn't be null");
         }
 
-        if (searchRepositories || listRepoPathes || !zapCache.isEmpty()) {
-            log.log(Level.INFO, "Scanning for repositories...");
-            long start = System.currentTimeMillis();
-            HistoryGuru.getInstance().addRepositories(env.getSourceRootPath());
-            long time = (System.currentTimeMillis() - start) / 1000;
-            log.log(Level.INFO, "Done scanning for repositories ({0}s)", time);
-            if (listRepoPathes || !zapCache.isEmpty()) {
-                List<RepositoryInfo> repos = env.getRepositories();
-                String prefix = env.getSourceRootPath();
-                if (listRepoPathes) {
-                    if (repos.isEmpty()) {
-                        System.out.println("No repositories found.");
-                        return;
-                    }
-                    System.out.println("Repositories in " + prefix + ":");
-                    for (RepositoryInfo info : env.getRepositories()) {
-                        String dir = info.getDirectoryName();
-                        System.out.println(dir.substring(prefix.length()));
-                    }
-                }
-                if (!zapCache.isEmpty()) {
-                    HashSet<String> toZap = new HashSet<String>(zapCache.size() << 1);
-                    boolean all = false;
-                    for (String repo : zapCache) {
-                        if ("*".equals(repo)) {
-                            all = true;
-                            break;
-                        }
-                        if (repo.startsWith(prefix)) {
-                            repo = repo.substring(prefix.length());
-                        }
-                        toZap.add(repo);
-                    }
-                    if (all) {
-                        toZap.clear();
-                        for (RepositoryInfo info : env.getRepositories()) {
-                            toZap.add(info.getDirectoryName()
-                                    .substring(prefix.length()));
-                        }
-                    }
-                    try {
-                        HistoryGuru.getInstance().removeCache(toZap);
-                    } catch (HistoryException e) {
-                        log.warning("Clearing history cache faild: "
-                                + e.getLocalizedMessage());
-                    }
-                }
-                return;
-            }
-        }
-
         if (addProjects) {
             File files[] = env.getSourceRootFile().listFiles();
             List<Project> projects = env.getProjects();
@@ -644,16 +565,6 @@ public final class Indexer {
         if (configFilename != null) {
             log.log(Level.INFO, "Writing configuration to {0}", configFilename);
             env.writeConfiguration(new File(configFilename));
-            log.info("Done...");
-        }
-
-        if (refreshHistory) {
-            log.log(Level.INFO, "Generating history cache for all repositories ...");
-            HistoryGuru.getInstance().createCache();
-            log.info("Done...");
-        } else if (repositories != null && !repositories.isEmpty()) {
-            log.log(Level.INFO, "Generating history cache for specified repositories ...");
-            HistoryGuru.getInstance().createCache(repositories);
             log.info("Done...");
         }
 

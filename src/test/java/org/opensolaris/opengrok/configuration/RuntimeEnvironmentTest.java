@@ -28,8 +28,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -37,7 +35,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opensolaris.opengrok.analysis.plain.PlainXref;
-import org.opensolaris.opengrok.history.RepositoryInfo;
 
 import static org.junit.Assert.*;
 
@@ -210,17 +207,6 @@ public class RuntimeEnvironmentTest {
         assertTrue(instance.isQuickContextScan());
         instance.setQuickContextScan(false);
         assertFalse(instance.isQuickContextScan());
-    }
-
-    @Test
-    public void testRepositories() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertNotNull(instance.getRepositories());
-        instance.setRepositories(null);
-        assertNull(instance.getRepositories());
-        List<RepositoryInfo> reps = new ArrayList<RepositoryInfo>();
-        instance.setRepositories(reps);
-        assertSame(reps, instance.getRepositories());
     }
 
     @Test

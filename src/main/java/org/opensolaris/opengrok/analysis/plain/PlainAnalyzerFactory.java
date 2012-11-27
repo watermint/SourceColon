@@ -100,6 +100,6 @@ public final class PlainAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        PlainAnalyzer.writeXref(in, out, defs, annotation, project);
+        PlainAnalyzer.writeXref(in, out, defs, project);
     }
 }

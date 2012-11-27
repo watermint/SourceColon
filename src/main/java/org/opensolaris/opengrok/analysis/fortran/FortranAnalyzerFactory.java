@@ -51,6 +51,6 @@ public class FortranAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        FortranAnalyzer.writeXref(in, out, defs, annotation, project);
+        FortranAnalyzer.writeXref(in, out, defs, project);
     }
 }

@@ -25,7 +25,6 @@ package org.opensolaris.opengrok.analysis;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.archive.BZip2AnalyzerFactory;
 import org.opensolaris.opengrok.analysis.archive.GZIPAnalyzerFactory;
@@ -54,15 +53,10 @@ import org.opensolaris.opengrok.analysis.sql.SQLAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.tcl.TclAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.vb.VBAnalyzerFactory;
 import org.opensolaris.opengrok.configuration.Project;
-import org.opensolaris.opengrok.history.Annotation;
-import org.opensolaris.opengrok.history.HistoryException;
-import org.opensolaris.opengrok.history.HistoryGuru;
-import org.opensolaris.opengrok.history.HistoryReader;
 import org.opensolaris.opengrok.web.Util;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
 
 /**
  * Manages and provides Analyzers as needed. Please see
@@ -239,15 +233,6 @@ public class AnalyzerGuru {
         doc.add(new Field("fullpath", file.getAbsolutePath(),
                 Field.Store.NO, Field.Index.NOT_ANALYZED));
 
-        try {
-            HistoryReader hr = HistoryGuru.getInstance().getHistoryReader(file);
-            if (hr != null) {
-                doc.add(new Field("hist", hr));
-                // date = hr.getLastCommentDate() //RFE
-            }
-        } catch (HistoryException e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, "An error occurred while reading history: ", e);
-        }
         doc.add(new Field("date", date, Field.Store.YES, Field.Index.NOT_ANALYZED));
         if (path != null) {
             doc.add(new Field("path", path, Field.Store.YES, Field.Index.ANALYZED));

@@ -29,7 +29,6 @@ import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.opensolaris.opengrok.configuration.Project;
-import org.opensolaris.opengrok.history.Annotation;
 
 import java.io.*;
 import java.util.Arrays;
@@ -106,9 +105,8 @@ public final class TroffAnalyzer extends FileAnalyzer {
      * @param in         Input source
      * @param out        Output xref writer
      * @param defs       definitions for the file (could be null)
-     * @param annotation annotation for the file (could be null)
      */
-    static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {
+    static void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         TroffXref xref = new TroffXref(in);
         xref.project = project;
         xref.setDefs(defs);

@@ -30,7 +30,6 @@ After include you are here: /body/div#page/div#content/
 java.io.File,
                                                        java.io.IOException,
                                                        org.opensolaris.opengrok.configuration.Project,
-                                                       org.opensolaris.opengrok.history.HistoryGuru,
                                                        org.opensolaris.opengrok.web.EftarFileReader,
                                                        org.opensolaris.opengrok.web.PageConfig,
                                                        org.opensolaris.opengrok.web.Prefix,

@@ -202,7 +202,11 @@ org.opensolaris.opengrok.search.Results,
     </div>
     <% } %>
     <table class="table table-striped"><%
-      Results.prettyPrint(out, searchHelper, start, start + thispage);
+        try {
+            Results.prettyPrint(out, searchHelper, start, start + thispage);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     %>
     </table>
     <% if (slider.length() > 0) { %>

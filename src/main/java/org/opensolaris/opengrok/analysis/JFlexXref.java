@@ -27,7 +27,6 @@ package org.opensolaris.opengrok.analysis;
 import org.opensolaris.opengrok.analysis.Definitions.Tag;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.Annotation;
 import org.opensolaris.opengrok.web.Util;
 
 import java.io.CharArrayReader;
@@ -45,7 +44,6 @@ import java.util.*;
 public abstract class JFlexXref {
     public Writer out;
     public String urlPrefix = RuntimeEnvironment.getInstance().getUrlPrefix();
-    public Annotation annotation;
     public Project project;
     protected Definitions defs;
     /**
@@ -159,7 +157,6 @@ public abstract class JFlexXref {
      */
     public void reInit(char[] contents, int length) {
         yyreset(new CharArrayReader(contents, 0, length));
-        annotation = null;
     }
 
     public void setDefs(Definitions defs) {
@@ -317,7 +314,7 @@ public abstract class JFlexXref {
     protected void startNewLine() throws IOException {
         int line = getLineNumber() + 1;
         setLineNumber(line);
-        Util.readableLine(line, out, annotation, userPageLink, userPageSuffix);
+        Util.readableLine(line, out, userPageLink, userPageSuffix);
     }
 
     /**

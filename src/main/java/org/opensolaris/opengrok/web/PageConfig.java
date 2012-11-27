@@ -23,24 +23,15 @@
  */
 package org.opensolaris.opengrok.web;
 
-import org.apache.commons.jrcs.diff.Diff;
-import org.apache.commons.jrcs.diff.DifferentiationFailedException;
-import org.opensolaris.opengrok.analysis.AnalyzerGuru;
-import org.opensolaris.opengrok.analysis.ExpandTabsReader;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.Annotation;
-import org.opensolaris.opengrok.history.HistoryGuru;
 import org.opensolaris.opengrok.index.IgnoredNames;
 import org.opensolaris.opengrok.search.QueryBuilder;
-import org.opensolaris.opengrok.util.IOUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.logging.Level;
@@ -83,10 +74,7 @@ public final class PageConfig {
     private String pageTitle;
     private String dtag;
     private String rev;
-    private Boolean hasAnnotation;
     private Boolean annotate;
-    private Annotation annotation;
-    private Boolean hasHistory;
     private static final EnumSet<Genre> txtGenres =
             EnumSet.of(Genre.DATA, Genre.PLAIN, Genre.HTML);
     private SortedSet<String> requestedProjects;
@@ -416,13 +404,9 @@ public final class PageConfig {
      * Check, whether the request related resource has history information.
      *
      * @return {@code true} if history is available.
-     * @see HistoryGuru#hasHistory(File)
      */
     public boolean hasHistory() {
-        if (hasHistory == null) {
-            hasHistory = Boolean.valueOf(HistoryGuru.getInstance().hasHistory(getResourceFile()));
-        }
-        return hasHistory.booleanValue();
+        return false;
     }
 
     /**
@@ -431,11 +415,7 @@ public final class PageConfig {
      * @return {@code true} if annotions are available.
      */
     public boolean hasAnnotations() {
-        if (hasAnnotation == null) {
-            hasAnnotation = Boolean.valueOf(!isDir()
-                    && HistoryGuru.getInstance().hasHistory(getResourceFile()));
-        }
-        return hasAnnotation.booleanValue();
+        return false;
     }
 
     /**
@@ -448,30 +428,7 @@ public final class PageConfig {
             annotate = Boolean.valueOf(hasAnnotations()
                     && Boolean.parseBoolean(req.getParameter("a")));
         }
-        return annotate.booleanValue();
-    }
-
-    /**
-     * Get the annotation for the reqested resource.
-     *
-     * @return {@code null} if not available or annotation was not requested,
-     *         the cached annotation otherwise.
-     */
-    public Annotation getAnnotation() {
-        if (isDir() || getResourcePath().equals("/") || !annotate()) {
-            return null;
-        }
-        if (annotation != null) {
-            return annotation;
-        }
-        getRequestedRevision();
-        try {
-            annotation = HistoryGuru.getInstance().annotate(resourceFile, rev.isEmpty() ? null : rev.substring(2));
-        } catch (IOException e) {
-            log.log(Level.WARNING, "Failed to get annotations: ", e);
-            /* ignore */
-        }
-        return annotation;
+        return annotate;
     }
 
     /**

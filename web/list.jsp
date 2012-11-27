@@ -109,13 +109,6 @@ document.pageReady.push(function () {
   String error = null;
   if (g == Genre.PLAIN || g == Genre.HTML || g == null) {
     InputStream in = null;
-    try {
-      in = HistoryGuru.getInstance()
-          .getRevision(resourceFile.getParent(), basename, rev.substring(2));
-    } catch (Exception e) {
-      // fall through to error message
-      error = e.getMessage();
-    }
     if (in != null) {
       try {
         if (g == null) {

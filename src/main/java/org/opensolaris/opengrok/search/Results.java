@@ -32,7 +32,6 @@ import org.opensolaris.opengrok.OpenGrokLogger;
 import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.TagFilter;
-import org.opensolaris.opengrok.history.HistoryException;
 import org.opensolaris.opengrok.util.IOUtils;
 import org.opensolaris.opengrok.web.Prefix;
 import org.opensolaris.opengrok.web.SearchHelper;
@@ -124,7 +123,6 @@ public final class Results {
      * <li>{@link SearchHelper#contextPath}</li>
      * <li>{@link SearchHelper#searcher}</li>
      * <li>{@link SearchHelper#hits}</li>
-     * <li>{@link SearchHelper#historyContext} (ignored if {@code null})</li>
      * <li>{@link SearchHelper#sourceContext} (ignored if {@code null})</li>
      * <li>{@link SearchHelper#summerizer} (if sourceContext is not {@code null})</li>
      * <li>{@link SearchHelper#compressed} (if sourceContext is not {@code null})</li>
@@ -132,17 +130,16 @@ public final class Results {
      * is not {@code null})</li>
      * </ul>
      *
+     *
      * @param out   write destination
      * @param sh    search helper which has all required fields set
      * @param start index of the first hit to print
      * @param end   index of the last hit to print
-     * @throws HistoryException
      * @throws IOException
      * @throws ClassNotFoundException
      */
     public static void prettyPrint(Writer out, SearchHelper sh, int start,
-                                   int end)
-            throws HistoryException, IOException, ClassNotFoundException {
+                                   int end) throws IOException, ClassNotFoundException {
         String ctxE = Util.URIEncodePath(sh.contextPath);
         String xrefPrefix = sh.contextPath + Prefix.XREF_P;
         String morePrefix = sh.contextPath + Prefix.MORE_P;
@@ -205,10 +202,6 @@ public final class Results {
                         sh.sourceContext.getContext(r, out, xrefPrefix,
                                 morePrefix, rpath, tags, true, null);
                     }
-                }
-                if (sh.historyContext != null) {
-                    sh.historyContext.getContext(new File(sh.sourceRoot, rpath),
-                            rpath, out, sh.contextPath);
                 }
                 out.write("</td></tr>\n");
             }

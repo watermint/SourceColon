@@ -56,6 +56,6 @@ public class XMLAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        XMLAnalyzer.writeXref(in, out, defs, annotation, project);
+        XMLAnalyzer.writeXref(in, out, defs, project);
     }
 }

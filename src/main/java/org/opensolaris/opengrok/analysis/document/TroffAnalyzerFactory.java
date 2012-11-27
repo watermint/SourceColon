@@ -50,7 +50,7 @@ public class TroffAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        TroffAnalyzer.writeXref(in, out, defs, annotation, project);
+        TroffAnalyzer.writeXref(in, out, defs, project);
     }
 
 }

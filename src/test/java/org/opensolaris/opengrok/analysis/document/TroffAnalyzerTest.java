@@ -116,25 +116,4 @@ public class TroffAnalyzerTest {
         StringWriter out = new StringWriter(content.length() + 1024);
         analyzer.writeXref(out);
     }
-
-    /**
-     * Test method for {@link org.opensolaris.opengrok.analysis.document
-     * .TroffAnalyzer#tokenStream(java.lang.String, java.io.Reader)}.
-     */
-    @Ignore
-    public void testTokenStreamStringReader() {
-        fail("Not yet implemented");
-    }
-
-    /**
-     * Test method for {@link org.opensolaris.opengrok.analysis.document
-     * .TroffAnalyzer#writeXref(java.io.Reader, java.io.Writer,
-     * org.opensolaris.opengrok.analysis.Definitions,
-     * org.opensolaris.opengrok.history.Annotation,
-     * org.opensolaris.opengrok.configuration.Project)}.
-     */
-    @Ignore
-    public void xtestWriteXrefReaderWriterDefinitionsAnnotationProject() {
-        fail("Not yet implemented");
-    }
 }

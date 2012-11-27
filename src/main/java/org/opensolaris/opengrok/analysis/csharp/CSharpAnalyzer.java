@@ -26,7 +26,6 @@ import org.opensolaris.opengrok.analysis.Definitions;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.opensolaris.opengrok.analysis.plain.PlainAnalyzerBase;
 import org.opensolaris.opengrok.configuration.Project;
-import org.opensolaris.opengrok.history.Annotation;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -79,11 +78,9 @@ public final class CSharpAnalyzer extends PlainAnalyzerBase {
      *
      * @param in         Input source
      * @param out        Output xref writer
-     * @param annotation annotation for the file (could be null)
      */
-    static void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project) throws IOException {
+    static void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         CSharpXref xref = new CSharpXref(in);
-        xref.annotation = annotation;
         xref.project = project;
         //xref.setDefs(defs);
         xref.write(out);

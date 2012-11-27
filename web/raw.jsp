@@ -27,11 +27,9 @@ Portions Copyright 2011 Jens Elkner.
 <%@page import="
 java.io.File,
                 java.io.FileInputStream,
-                java.io.FileNotFoundException,
                 java.io.InputStream,
                 java.io.OutputStream,
                 org.opensolaris.opengrok.configuration.RuntimeEnvironment,
-                org.opensolaris.opengrok.history.HistoryGuru,
                 org.opensolaris.opengrok.web.PageConfig"
     %>
 <%@
@@ -53,25 +51,11 @@ java.io.File,
     }
 
     File f = cfg.getResourceFile();
-    String revision = cfg.getRequestedRevision();
-    if (revision.length() == 0) {
-      revision = null;
-    }
     InputStream in = null;
     try {
-      if (revision != null) {
-        in = HistoryGuru.getInstance().getRevision(f.getParent(),
-            f.getName(), revision.substring(2));
-      } else {
-        long flast = cfg.getLastModified();
-        if (request.getDateHeader("If-Modified-Since") >= flast) {
-          response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-          return;
-        }
         in = new FileInputStream(f);
         response.setContentLength((int) f.length());
         response.setDateHeader("Last-Modified", f.lastModified());
-      }
     } catch (Exception e) {
       response.sendError(HttpServletResponse.SC_NOT_FOUND);
       return;

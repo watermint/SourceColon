@@ -23,8 +23,6 @@
 package org.opensolaris.opengrok.configuration;
 
 import org.opensolaris.opengrok.OpenGrokLogger;
-import org.opensolaris.opengrok.history.HistoryGuru;
-import org.opensolaris.opengrok.history.RepositoryInfo;
 import org.opensolaris.opengrok.index.Filter;
 import org.opensolaris.opengrok.index.IgnoredNames;
 import org.opensolaris.opengrok.util.Executor;
@@ -413,19 +411,6 @@ public final class RuntimeEnvironment {
 
     public void setQuickContextScan(boolean quickContextScan) {
         threadConfig.get().setQuickContextScan(quickContextScan);
-    }
-
-    public List<RepositoryInfo> getRepositories() {
-        return threadConfig.get().getRepositories();
-    }
-
-    /**
-     * Set the map of external SCM repositories
-     *
-     * @param repositories the repositories to use
-     */
-    public void setRepositories(List<RepositoryInfo> repositories) {
-        threadConfig.get().setRepositories(repositories);
     }
 
     /**
@@ -819,7 +804,6 @@ public final class RuntimeEnvironment {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
         register();
-        HistoryGuru.getInstance().invalidateRepositories(configuration.getRepositories());
     }
 
     public Configuration getConfiguration() {

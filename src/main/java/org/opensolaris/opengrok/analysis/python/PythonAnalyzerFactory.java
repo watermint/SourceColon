@@ -62,6 +62,6 @@ public class PythonAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        PythonAnalyzer.writeXref(in, out, defs, annotation, project);
+        PythonAnalyzer.writeXref(in, out, defs, project);
     }
 }

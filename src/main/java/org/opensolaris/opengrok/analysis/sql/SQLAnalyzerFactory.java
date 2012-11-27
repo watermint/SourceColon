@@ -50,6 +50,6 @@ public class SQLAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        SQLAnalyzer.writeXref(in, out, defs, annotation, project);
+        SQLAnalyzer.writeXref(in, out, defs, project);
     }
 }

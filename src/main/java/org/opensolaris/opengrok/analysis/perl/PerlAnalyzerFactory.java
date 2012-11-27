@@ -62,6 +62,6 @@ public class PerlAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        PerlAnalyzer.writeXref(in, out, defs, annotation, project);
+        PerlAnalyzer.writeXref(in, out, defs, project);
     }
 }

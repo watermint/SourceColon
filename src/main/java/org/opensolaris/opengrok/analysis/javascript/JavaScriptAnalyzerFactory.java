@@ -53,6 +53,6 @@ public class JavaScriptAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        JavaScriptAnalyzer.writeXref(in, out, defs, annotation, project);
+        JavaScriptAnalyzer.writeXref(in, out, defs, project);
     }
 }

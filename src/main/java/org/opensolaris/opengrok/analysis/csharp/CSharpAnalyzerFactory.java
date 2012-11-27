@@ -54,6 +54,6 @@ public class CSharpAnalyzerFactory extends FileAnalyzerFactory {
     @Override
     public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
-        CSharpAnalyzer.writeXref(in, out, defs, annotation, project);
+        CSharpAnalyzer.writeXref(in, out, defs, project);
     }
 }

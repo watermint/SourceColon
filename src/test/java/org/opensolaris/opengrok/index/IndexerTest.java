@@ -38,10 +38,6 @@ import org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.opensolaris.opengrok.history.HistoryGuru;
-import org.opensolaris.opengrok.history.Repository;
-import org.opensolaris.opengrok.history.RepositoryFactory;
-import org.opensolaris.opengrok.history.RepositoryInfo;
 import org.opensolaris.opengrok.util.Executor;
 import org.opensolaris.opengrok.util.FileUtilities;
 import org.opensolaris.opengrok.util.TestRepository;
@@ -201,45 +197,6 @@ public class IndexerTest {
 
         @Override
         public void fileRemoved(String path) {
-        }
-    }
-
-    @Test
-    public void testRFE2575() throws Exception {
-        RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        env.setCtags(System.getProperty("org.opensolaris.opengrok.configuration.ctags", "ctags"));
-        env.setSourceRoot(repository.getSourceRoot());
-        env.setDataRoot(repository.getDataRoot());
-        HistoryGuru.getInstance().addRepositories(repository.getSourceRoot());
-
-        List<RepositoryInfo> repos = env.getRepositories();
-        Repository r = null;
-        for (RepositoryInfo ri : repos) {
-            if (ri.getDirectoryName().equals(repository.getSourceRoot() + "/rfe2575")) {
-                r = RepositoryFactory.getRepository(ri);
-                break;
-            }
-        }
-
-        if (r != null && r.isWorking() && env.validateExuberantCtags()) {
-            Project project = new Project();
-            project.setPath("/rfe2575");
-            IndexDatabase idb = new IndexDatabase(project);
-            assertNotNull(idb);
-            MyIndexChangeListener listener = new MyIndexChangeListener();
-            idb.addIndexChangedListener(listener);
-            idb.update();
-            assertEquals(2, listener.files.size());
-            repository.purgeData();
-            RuntimeEnvironment.getInstance().setIndexVersionedFilesOnly(true);
-            idb = new IndexDatabase(project);
-            listener = new MyIndexChangeListener();
-            idb.addIndexChangedListener(listener);
-            idb.update();
-            assertEquals(1, listener.files.size());
-            RuntimeEnvironment.getInstance().setIndexVersionedFilesOnly(false);
-        } else {
-            System.out.println("Skipping test. Repository for rfe2575 not found or could not find a ctags or an sccs I could use in path.");
         }
     }
 

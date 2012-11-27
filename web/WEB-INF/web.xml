@@ -32,11 +32,6 @@
         <jsp-file>/more.jsp</jsp-file>
     </servlet>
     <servlet>
-        <servlet-name>rss</servlet-name>
-        <display-name>Source Changes in RSS format</display-name>
-        <jsp-file>/rss.jsp</jsp-file>
-    </servlet>
-    <servlet>
         <servlet-name>opensearch</servlet-name>
         <display-name>OpenSearch link for current project</display-name>
         <jsp-file>/opensearch.jsp</jsp-file>
@@ -85,11 +80,6 @@
         <servlet-name>more</servlet-name>
         <url-pattern>/more/*</url-pattern>
         <!-- MORE_P -->
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>rss</servlet-name>
-        <url-pattern>/rss/*</url-pattern>
-        <!-- RSS_P -->
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>error</servlet-name>
