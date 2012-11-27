@@ -113,31 +113,6 @@ public final class PageConfig {
     }
 
     /**
-     * Get the diff display type to use wrt. the request parameter {@code format}.
-     *
-     * @return {@link DiffType#SIDEBYSIDE} if the request contains no such parameter
-     *         or one with an unknown value, the recognized diff type otherwise.
-     * @see DiffType#get(String)
-     * @see DiffType#getAbbrev()
-     * @see DiffType#toString()
-     */
-    public DiffType getDiffType() {
-        DiffType d = DiffType.get(req.getParameter("format"));
-        return d == null ? DiffType.SIDEBYSIDE : d;
-    }
-
-    /**
-     * Check, whether a full diff should be displayed.
-     *
-     * @return {@code true} if a request parameter {@code full} with the
-     *         literal value {@code 1} was found.
-     */
-    public boolean fullDiff() {
-        String val = req.getParameter("full");
-        return val != null && val.equals("1");
-    }
-
-    /**
      * Check, whether the request contains minimal information required to
      * produce a valid page. If this method returns an empty string, the
      * referred file or directory actually exists below the source root
