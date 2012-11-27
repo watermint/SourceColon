@@ -26,11 +26,7 @@ package org.opensolaris.opengrok.index;
 import org.apache.lucene.document.DateTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.index.TermEnum;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -332,6 +328,7 @@ public class IndexDatabase {
                 }
 
                 String startuid = Util.path2uid(dir, "");
+
                 try (IndexReader reader = IndexReader.open(indexDirectory)) {
                     uidIter = reader.terms(new Term("u", startuid)); // init uid iterator
 
@@ -422,45 +419,6 @@ public class IndexDatabase {
                         }
                     }
                 });
-            }
-        }
-    }
-
-    /**
-     * Optimize the index database
-     */
-    public void optimize() {
-        synchronized (lock) {
-            if (running) {
-                log.warning("Optimize terminated... Someone else is updating / optimizing it!");
-                return;
-            }
-            running = true;
-        }
-        IndexWriter wrt = null;
-        try {
-            log.info("Optimizing the index ... ");
-            wrt = new IndexWriter(indexDirectory, null, false, IndexWriter.MaxFieldLength.UNLIMITED);
-            wrt.optimize();
-            log.info("done");
-            synchronized (lock) {
-                if (dirtyFile.exists() && !dirtyFile.delete()) {
-                    log.log(Level.FINE, "Failed to remove \"dirty-file\": {0}", dirtyFile.getAbsolutePath());
-                }
-                dirty = false;
-            }
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "ERROR: optimizing index: {0}", e);
-        } finally {
-            if (wrt != null) {
-                try {
-                    wrt.close();
-                } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing writer", e);
-                }
-            }
-            synchronized (lock) {
-                running = false;
             }
         }
     }
