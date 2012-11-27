@@ -187,9 +187,7 @@ document.pageReady.push(function () {
 } else {
   // requesting cross referenced file
   File xrefFile = null;
-  if (!cfg.annotate()) {
-    xrefFile = cfg.findDataFile();
-  }
+  xrefFile = cfg.findDataFile();
   if (xrefFile != null) {
 %>
 <div id="src">

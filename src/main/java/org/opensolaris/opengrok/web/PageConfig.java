@@ -74,7 +74,6 @@ public final class PageConfig {
     private String pageTitle;
     private String dtag;
     private String rev;
-    private Boolean annotate;
     private static final EnumSet<Genre> txtGenres =
             EnumSet.of(Genre.DATA, Genre.PLAIN, Genre.HTML);
     private SortedSet<String> requestedProjects;
@@ -138,7 +137,7 @@ public final class PageConfig {
         if (isDir()) {
             if (getPrefix() == Prefix.XREF_P) {
                 if (getResourceFileList().isEmpty() &&
-                        !getRequestedRevision().isEmpty() && !hasHistory()) {
+                        !getRequestedRevision().isEmpty()) {
                     return null;
                 }
             } else if (getPrefix() == Prefix.RAW_P) {
@@ -182,28 +181,6 @@ public final class PageConfig {
      */
     public long getLastModified() {
         return getResourceFile().lastModified();
-    }
-
-    /**
-     * Get all RSS related directories from the request using its {@code also}
-     * parameter.
-     *
-     * @return an empty string if the requested resource is not a directory, a
-     *         space (' ') separated list of unchecked directory names otherwise.
-     */
-    public String getHistoryDirs() {
-        if (!isDir()) {
-            return "";
-        }
-        String[] val = req.getParameterValues("also");
-        if (val == null || val.length == 0) {
-            return path;
-        }
-        StringBuilder paths = new StringBuilder(path);
-        for (int i = 0; i < val.length; i++) {
-            paths.append(' ').append(val[i]);
-        }
-        return paths.toString();
     }
 
     /**
@@ -371,37 +348,6 @@ public final class PageConfig {
             rev = (tmp != null && tmp.length() > 0) ? "r=" + tmp : "";
         }
         return rev;
-    }
-
-    /**
-     * Check, whether the request related resource has history information.
-     *
-     * @return {@code true} if history is available.
-     */
-    public boolean hasHistory() {
-        return false;
-    }
-
-    /**
-     * Check, whether annotations are available for the related resource.
-     *
-     * @return {@code true} if annotions are available.
-     */
-    public boolean hasAnnotations() {
-        return false;
-    }
-
-    /**
-     * Check, whether the resource to show should be annotated.
-     *
-     * @return {@code true} if annotation is desired and available.
-     */
-    public boolean annotate() {
-        if (annotate == null) {
-            annotate = Boolean.valueOf(hasAnnotations()
-                    && Boolean.parseBoolean(req.getParameter("a")));
-        }
-        return annotate;
     }
 
     /**

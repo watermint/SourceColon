@@ -70,7 +70,6 @@ java.io.File,
   document.hash = '<%= cfg.getDocumentHash() %>';
   document.rev = '<%= rev %>';
   document.link = '<%= context + Prefix.XREF_P + uriEncodedPath %>';
-  document.annotate = <%= cfg.annotate() %>;
   document.domReady.push(function () {
     domReadyMast();
   });
@@ -83,21 +82,6 @@ java.io.File,
   <div class="navbar">
     <div class="navbar-inner">
       <ul class="nav">
-        <% if (!cfg.hasAnnotations()) { %>
-        <li class="disabled"><a href="#">Annotate</a></li>
-        <% } else if (cfg.annotate()) { %>
-        <li>
-            <span id="toggle-annotate-by-javascript" style="display: none">
-              <a href="#" onclick="javascript:toggle_annotations(); return false;"
-                 title="Show or hide line annotation(commit revisions,authors).">Annotate</a>
-            </span>
-            <span id="toggle-annotate">
-              <a href="<%= context + Prefix.XREF_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">Annotate</a>
-            </span>
-        </li>
-        <% } else { %>
-        <li><a href="#" onclick="javascript:get_annotations(); return false;">Annotate</a></li>
-        <% } %>
         <% if (!cfg.isDir()) { %>
         <% if (cfg.getPrefix() == Prefix.XREF_P) { %>
         <li>
