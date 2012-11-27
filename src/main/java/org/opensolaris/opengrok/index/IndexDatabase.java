@@ -376,9 +376,6 @@ public class IndexDatabase {
         }
 
         if (!isInterrupted() && isDirty()) {
-            if (RuntimeEnvironment.getInstance().isOptimizeDatabase()) {
-                optimize();
-            }
             createSpellingSuggestions();
             RuntimeEnvironment env = RuntimeEnvironment.getInstance();
             File timestamp = new File(env.getDataRootFile(), "timestamp");

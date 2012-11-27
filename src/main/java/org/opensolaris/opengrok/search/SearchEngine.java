@@ -66,7 +66,7 @@ public class SearchEngine {
     /**
      * version of lucene index common for whole app
      */
-    public static final Version LUCENE_VERSION = Version.LUCENE_30;
+    public static final Version LUCENE_VERSION = Version.LUCENE_36;
 
     /**
      * Holds value of property definition.
@@ -165,8 +165,8 @@ public class SearchEngine {
             searcher.search(query, collector);
         }
         hits = collector.topDocs().scoreDocs;
-        for (int i = 0; i < hits.length; i++) {
-            int docId = hits[i].doc;
+        for (ScoreDoc hit : hits) {
+            int docId = hit.doc;
             Document d = searcher.doc(docId);
             docs.add(d);
         }
@@ -198,8 +198,8 @@ public class SearchEngine {
             searcher.search(query, collector);
         }
         hits = collector.topDocs().scoreDocs;
-        for (int i = 0; i < hits.length; i++) {
-            int docId = hits[i].doc;
+        for (ScoreDoc hit : hits) {
+            int docId = hit.doc;
             Document d = searcher.doc(docId);
             docs.add(d);
         }
@@ -344,11 +344,11 @@ public class SearchEngine {
                             //TODO FIX below fragmenter according to either summarizer or context (to get line numbers, might be hard, since xref writers will need to be fixed too, they generate just one line of html code now :( )
                             Summary sum = summarizer.getSummary(new String(content, 0, l));
                             Fragment fragments[] = sum.getFragments();
-                            for (int jj = 0; jj < fragments.length; ++jj) {
-                                String match = fragments[jj].toString();
+                            for (Fragment fragment : fragments) {
+                                String match = fragment.toString();
                                 if (match.length() > 0) {
-                                    if (!fragments[jj].isEllipsis()) {
-                                        Hit hit = new Hit(filename, fragments[jj].toString(), "", true, alt);
+                                    if (!fragment.isEllipsis()) {
+                                        Hit hit = new Hit(filename, fragment.toString(), "", true, alt);
                                         ret.add(hit);
                                     }
                                     hasContext = true;
@@ -366,10 +366,7 @@ public class SearchEngine {
                 if (!hasContext) {
                     ret.add(new Hit(filename, "...", "", false, alt));
                 }
-            } catch (IOException e) {
-                OpenGrokLogger.getLogger().log(
-                        Level.WARNING, SEARCH_EXCEPTION_MSG, e);
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 OpenGrokLogger.getLogger().log(
                         Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             }

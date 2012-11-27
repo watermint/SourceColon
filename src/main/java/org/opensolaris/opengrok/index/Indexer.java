@@ -213,22 +213,6 @@ public final class Indexer {
                         }
                     }
                     break;
-                    case 'O': {
-                        boolean oldval = cfg.isOptimizeDatabase();
-                        if (getopt.getOptarg().equalsIgnoreCase(ON)) {
-                            cfg.setOptimizeDatabase(true);
-                        } else if (getopt.getOptarg().equalsIgnoreCase(OFF)) {
-                            cfg.setOptimizeDatabase(false);
-                        } else {
-                            System.err.println("ERROR: You should pass either \"on\" or \"off\" as argument to -O");
-                            System.err.println("       Ex: \"-O on\" will optimize the database as part of the index generation");
-                            System.err.println("           \"-O off\" disable optimization of the index database");
-                        }
-                        if (oldval != cfg.isOptimizeDatabase()) {
-                            optimizedChanged = true;
-                        }
-                    }
-                    break;
                     case 'v':
                         cfg.setVerbose(true);
                         OpenGrokLogger.setOGConsoleLogLevel(Level.INFO);
@@ -621,7 +605,6 @@ public final class Indexer {
             }
 
             for (final IndexDatabase db : dbs) {
-                final boolean optimize = env.isOptimizeDatabase();
                 db.addIndexChangedListener(progress);
                 executor.submit(new Runnable() {
 
@@ -630,8 +613,6 @@ public final class Indexer {
                         try {
                             if (update) {
                                 db.update();
-                            } else if (optimize) {
-                                db.optimize();
                             }
                         } catch (Throwable e) {
                             log.log(Level.SEVERE, "An error occured while "
