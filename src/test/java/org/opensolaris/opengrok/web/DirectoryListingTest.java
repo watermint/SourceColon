@@ -22,22 +22,15 @@
  */
 package org.opensolaris.opengrok.web;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.opensolaris.opengrok.util.FileUtilities;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -227,39 +220,4 @@ public class DirectoryListingTest {
         fail("Could not find a match for: " + entry.name);
     }
 
-    /**
-     * Test directory listing
-     *
-     * @throws java.lang.Exception if an error occurs while generating the
-     *                             list.
-     */
-    @Test
-    public void directoryListing() throws Exception {
-        StringWriter out = new StringWriter();
-        out.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<start>\n");
-
-        DirectoryListing instance = new DirectoryListing();
-        instance.listTo(directory, out, directory.getPath(),
-                Arrays.asList(directory.list()));
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        assertNotNull("DocumentBuilderFactory is null", factory);
-
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        assertNotNull("DocumentBuilder is null", out);
-
-        out.append("</start>\n");
-        String str = out.toString();
-        System.out.println(str);
-        Document document = builder.parse(new ByteArrayInputStream(str.getBytes()));
-
-        NodeList nl = document.getElementsByTagName("tr");
-        int len = nl.getLength();
-        // add one extra for header and one for parent directory link
-        assertEquals(entries.length + 2, len);
-        // Skip the the header and parent link
-        for (int i = 2; i < len; ++i) {
-            validateEntry((Element) nl.item(i));
-        }
-    }
 }

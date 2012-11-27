@@ -315,20 +315,6 @@ public class RuntimeEnvironmentTest {
     }
 
     @Test
-    public void testXMLencdec() throws IOException {
-        Configuration c = new Configuration();
-        String m = c.getXMLRepresentationAsString();
-        Configuration o = Configuration.makeXMLStringAsConfiguration(m);
-        assertNotNull(o);
-        m = m.replace('a', 'm');
-        try {
-            o = Configuration.makeXMLStringAsConfiguration(m);
-            fail("makeXmlStringsAsConfiguration should throw exception");
-        } catch (Throwable t) {
-        }
-    }
-
-    @Test
     public void testObfuscateEMail() throws IOException {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
 
