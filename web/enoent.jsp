@@ -20,9 +20,7 @@ Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
 
 --%>
-<%@page session="false" isErrorPage="true" import="
-org.opensolaris.opengrok.web.Prefix,
-org.opensolaris.opengrok.configuration.RuntimeEnvironment" %>
+<%@page session="false" isErrorPage="true" import="org.opensolaris.opengrok.web.Prefix" %>
 <%
   /* ---------------------- enoent.jsp start --------------------- */
   {
@@ -33,26 +31,19 @@ org.opensolaris.opengrok.configuration.RuntimeEnvironment" %>
     cfg.getEnv().setUrlPrefix(context + Prefix.SEARCH_R + "?");
     String configError = "";
     if (cfg.getSourceRootPath().isEmpty()) {
-      configError = "CONFIGURATION parameter has not been configured in "
-          + "web.xml! Please configure your webapp.";
+      configError = "CONFIGURATION parameter has not been configured in " + "web.xml! Please configure your webapp.";
     } else if (!cfg.getEnv().getSourceRootFile().isDirectory()) {
-      configError = "The source root specified in your configuration does "
-          + "not point to a valid directory! Please configure your webapp.";
+      configError = "The source root specified in your configuration does " + "not point to a valid directory! Please configure your webapp.";
     }
 %>
 <%@ include file="header.jspf" %>
 <div id="page">
-  <div id="whole_header">
-    <div id="Masthead"></div>
-    <div id="sbar">
-      <%@ include file="menu.jspf" %>
-    </div>
-  </div>
+  <%@ include file="menu.jspf" %>
   <h3 class="error">Error: File not found!</h3>
 
   <p>The requested resource is not available. <%= configError %>
   </p>
-<%
+    <%
   }
 /* ---------------------- enoent.jsp end --------------------- */
 %>

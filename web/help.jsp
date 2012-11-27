@@ -33,9 +33,6 @@ org.opensolaris.opengrok.web.PageConfig"
 %>
 <%@ include file="header.jspf" %>
 <div class="container">
-  <div id="whole_header">
-    <div id="Masthead"></div>
-  </div>
   <div id="sbar">
     <div id="menu">
       <%@ include file="menu.jspf" %>

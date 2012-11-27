@@ -34,9 +34,6 @@ org.opensolaris.opengrok.web.Util"
 %>
 <%@ include file="header.jspf" %>
 <div id="page">
-  <div id="whole_header">
-    <div id="Masthead"></div>
-  </div>
   <div id="status">
     <h1>OpenGrok status page</h1>
 

@@ -89,20 +89,10 @@ public class ContextTest {
         c = new Context(qb.build(), qb.getQueries());
         assertFalse(c.isEmpty());
 
-        // History search should not be used
-        qb = new QueryBuilder().setHist(term);
-        c = new Context(qb.build(), qb.getQueries());
-        assertTrue(c.isEmpty());
-
         // Path search should not be used
         qb = new QueryBuilder().setPath(term);
         c = new Context(qb.build(), qb.getQueries());
         assertTrue(c.isEmpty());
-
-        // Combined search should be fine
-        qb = new QueryBuilder().setHist(term).setFreetext(term);
-        c = new Context(qb.build(), qb.getQueries());
-        assertFalse(c.isEmpty());
     }
 
     /**
@@ -209,14 +199,6 @@ public class ContextTest {
         in = new StringReader("abc def ghi\n");
         out = hitList ? null : new StringWriter();
         hits = hitList ? new ArrayList<Hit>() : null;
-        qb = new QueryBuilder().setHist("abc");
-        c = new Context(qb.build(), qb.getQueries());
-        assertFalse(c.getContext(in, out, "", "", "", null, limit, hits));
-        if (hitList) {
-            assertEquals(0, hits.size());
-        } else {
-            assertEquals("", out.toString());
-        }
     }
 
     /**
@@ -387,11 +369,6 @@ public class ContextTest {
         // regardless of case
         bug17582(new QueryBuilder().setRefs("Bug17582").setFreetext("Bug17582"),
                 new int[]{2, 3}, new String[]{"type1", "type2"});
-
-        // Refs should only match if case matches, hist shouldn't match
-        // anything in source
-        bug17582(new QueryBuilder().setRefs("Bug17582").setHist("bug17582"),
-                new int[]{3}, new String[]{"type2"});
     }
 
     /**

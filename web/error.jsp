@@ -31,23 +31,17 @@ java.io.PrintWriter,
     cfg = PageConfig.get(request);
     cfg.setTitle("Error!");
 
-    String context = request.getContextPath();
     String configError = "";
     if (cfg.getSourceRootPath().isEmpty()) {
-      configError = "CONFIGURATION parameter has not been configured in "
-          + "web.xml! Please configure your webapp.";
+      configError = "CONFIGURATION parameter has not been configured in " + "web.xml! Please configure your webapp.";
     } else if (!cfg.getEnv().getSourceRootFile().isDirectory()) {
-      configError = "The source root specified in your configuration does "
-          + "not point to a valid directory! Please configure your webapp.";
+      configError = "The source root specified in your configuration does " + "not point to a valid directory! Please configure your webapp.";
     }
 %>
 <%@ include file="header.jspf" %>
 <div id="page">
-  <div id="whole_header">
-    <div id="Masthead"></div>
-    <div id="sbar">
-      <%@ include file="menu.jspf" %>
-    </div>
+  <div id="sbar">
+    <%@ include file="menu.jspf" %>
   </div>
   <h3 class="error">There was an error!</h3>
 

@@ -28,11 +28,7 @@ org.opensolaris.opengrok.search.Results,
                                                       org.opensolaris.opengrok.web.SortOrder,
                                                       org.opensolaris.opengrok.web.Suggestion"
     %>
-<%@
-
-    include file="projects.jspf"
-
-    %>
+<%@ include file="projects.jspf" %>
 <%!
   private StringBuilder createUrl(SearchHelper sh, boolean menu) {
     StringBuilder url = new StringBuilder(64);
@@ -47,7 +43,6 @@ org.opensolaris.opengrok.search.Results,
       Util.appendQuery(url, "defs", qb.getDefs());
       Util.appendQuery(url, "refs", qb.getRefs());
       Util.appendQuery(url, "path", qb.getPath());
-      Util.appendQuery(url, "hist", qb.getHist());
     }
     if (sh.projects != null && sh.projects.size() != 0) {
       Util.appendQuery(url, "project", cfg.getRequestedProjectsAsString());

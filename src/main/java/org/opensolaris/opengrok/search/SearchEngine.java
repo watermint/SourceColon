@@ -134,8 +134,7 @@ public class SearchEngine {
                 .setFreetext(freetext)
                 .setDefs(definition)
                 .setRefs(symbol)
-                .setPath(file)
-                .setHist(history);
+                .setPath(file);
     }
 
     public boolean isValidQuery() {

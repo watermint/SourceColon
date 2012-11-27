@@ -44,7 +44,6 @@ public class QueryBuilder {
     static final String DEFS = "defs";
     static final String REFS = "refs";
     static final String PATH = "path";
-    static final String HIST = "hist";
     /**
      * A map containing the query text for each field. (We use a sorted map here
      * only because we have tests that check the generated query string. If we
@@ -127,25 +126,6 @@ public class QueryBuilder {
      */
     public String getPath() {
         return getQueryText(PATH);
-    }
-
-    /**
-     * Set search string for the "hist" field.
-     *
-     * @param hist query string to set
-     * @return this instance
-     */
-    public QueryBuilder setHist(String hist) {
-        return addQueryText(HIST, hist);
-    }
-
-    /**
-     * Get search string for the "hist" field.
-     *
-     * @return {@code null} if not set, the query string otherwise.
-     */
-    public String getHist() {
-        return getQueryText(HIST);
     }
 
     /**

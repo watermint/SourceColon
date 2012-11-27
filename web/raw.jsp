@@ -29,7 +29,6 @@ java.io.File,
                 java.io.FileInputStream,
                 java.io.InputStream,
                 java.io.OutputStream,
-                org.opensolaris.opengrok.configuration.RuntimeEnvironment,
                 org.opensolaris.opengrok.web.PageConfig"
     %>
 <%@
