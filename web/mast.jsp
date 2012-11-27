@@ -38,15 +38,6 @@ java.io.File,
   /* ---------------------- mast.jsp start --------------------- */
   {
     cfg = PageConfig.get(request);
-    String redir = cfg.canProcess();
-    if (redir == null || redir.length() > 0) {
-      if (redir == null) {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-      } else {
-        response.sendRedirect(redir);
-      }
-      return;
-    }
     // jel: hmmm - questionable for dynamic content
     long flast = cfg.getLastModified();
     if (request.getDateHeader("If-Modified-Since") >= flast) {

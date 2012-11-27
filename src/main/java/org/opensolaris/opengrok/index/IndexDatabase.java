@@ -332,7 +332,7 @@ public class IndexDatabase {
                 }
 
                 String startuid = Util.path2uid(dir, "");
-                try (IndexReader reader = IndexReader.open(indexDirectory, false)) {
+                try (IndexReader reader = IndexReader.open(indexDirectory)) {
                     uidIter = reader.terms(new Term("u", startuid)); // init uid iterator
 
                     //TODO below should be optional, since it traverses the tree once more to get total count! :(

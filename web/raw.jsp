@@ -40,15 +40,6 @@ java.io.File,
 <%
   {
     cfg = PageConfig.get(request);
-    String redir = cfg.canProcess();
-    if (redir == null || redir.length() > 0) {
-      if (redir != null) {
-        response.sendRedirect(redir);
-      } else {
-        response.sendError(HttpServletResponse.SC_NOT_FOUND);
-      }
-      return;
-    }
 
     File f = cfg.getResourceFile();
     InputStream in = null;
@@ -57,7 +48,7 @@ java.io.File,
         response.setContentLength((int) f.length());
         response.setDateHeader("Last-Modified", f.lastModified());
     } catch (Exception e) {
-      response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        response.sendError(HttpServletResponse.SC_NOT_FOUND);
       return;
     }
     String mimeType = getServletContext().getMimeType(f.getAbsolutePath());
