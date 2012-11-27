@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'jetty'
 
-import org.apache.tools.ant.filters.ReplaceTokens
+sourceCompatibility = '1.7'
 
 configurations {
     jflex

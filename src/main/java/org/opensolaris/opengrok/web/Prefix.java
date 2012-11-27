@@ -58,10 +58,6 @@ public enum Prefix {
      */
     MORE_S("/mo"),
     /**
-     * diff to previous version (link prefix)
-     */
-    DIFF_P("/diff"),
-    /**
      * reserved (not used)
      */
     DIFF_S("/di"),
@@ -73,10 +69,6 @@ public enum Prefix {
      * reserved (not used)
      */
     HIST_S("/hi"),
-    /**
-     * show the history for a file (link prefix)
-     */
-    HIST_L("/history"),
     /**
      * RSS XML Feed of latest changes (link prefix)
      */

@@ -147,7 +147,6 @@ public final class Results {
         String xrefPrefix = sh.contextPath + Prefix.XREF_P;
         String morePrefix = sh.contextPath + Prefix.MORE_P;
         String xrefPrefixE = ctxE + Prefix.XREF_P;
-        String histPrefixE = ctxE + Prefix.HIST_L;
         String rawPrefixE = ctxE + Prefix.RAW_P;
         File xrefDataDir = new File(sh.dataRoot, Prefix.XREF_P.toString());
 
@@ -170,9 +169,6 @@ public final class Results {
                 String rpath = doc.get("path");
                 String rpathE = Util.URIEncodePath(rpath);
                 out.write("<tr><td><a href=\"");
-                out.write(histPrefixE);
-                out.write(rpathE);
-                out.write("\" title=\"History\"><i class=\"icon-time\"></i></a> <a href=\"");
                 out.write(xrefPrefixE);
                 out.write(rpathE);
                 out.write("?a=true\" title=\"Annotate\"><i class=\"icon-pencil\"></i></a> <a href=\"");

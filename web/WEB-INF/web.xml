@@ -20,37 +20,11 @@
         <servlet-name>search</servlet-name>
         <display-name>Source Finder</display-name>
         <jsp-file>/search.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </servlet>
-    <servlet>
-        <servlet-name>history</servlet-name>
-        <display-name>Source History</display-name>
-        <jsp-file>/history.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>lister</servlet-name>
         <display-name>Source lister</display-name>
         <jsp-file>/list.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
-    </servlet>
-    <servlet>
-        <servlet-name>diff</servlet-name>
-        <display-name>Source diffs between revisions</display-name>
-        <jsp-file>/diff.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>more</servlet-name>
@@ -61,46 +35,26 @@
         <servlet-name>rss</servlet-name>
         <display-name>Source Changes in RSS format</display-name>
         <jsp-file>/rss.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>opensearch</servlet-name>
         <display-name>OpenSearch link for current project</display-name>
         <jsp-file>/opensearch.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>raw</servlet-name>
         <display-name>Raw Source lister</display-name>
         <jsp-file>/raw.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>error</servlet-name>
         <display-name>Error Handler</display-name>
         <jsp-file>/error.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet>
         <servlet-name>enoent</servlet-name>
         <display-name>File not found handler</display-name>
         <jsp-file>/enoent.jsp</jsp-file>
-        <init-param>
-            <param-name>keepgenerated</param-name>
-            <param-value>true</param-value>
-        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>search</servlet-name>
@@ -111,11 +65,6 @@
         <servlet-name>opensearch</servlet-name>
         <url-pattern>/opensearch</url-pattern>
         <!-- SEARCH_O -->
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>history</servlet-name>
-        <url-pattern>/history/*</url-pattern>
-        <!-- HIST_L -->
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>lister</servlet-name>
@@ -131,11 +80,6 @@
         <servlet-name>search</servlet-name>
         <url-pattern>/s</url-pattern>
         <!-- SEARCH_R -->
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>diff</servlet-name>
-        <url-pattern>/diff/*</url-pattern>
-        <!-- DIFF_P -->
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>more</servlet-name>

@@ -93,11 +93,6 @@ java.io.File,
   <div class="navbar">
     <div class="navbar-inner">
       <ul class="nav">
-        <% if (!cfg.hasHistory()) { %>
-        <li class="disabled"><a href="#">History</a></li>
-        <% } else { %>
-        <li><a href="<%= context + Prefix.HIST_L + uriEncodedPath %>">History</a></li>
-        <% } %>
         <% if (!cfg.hasAnnotations()) { %>
         <li class="disabled"><a href="#">Annotate</a></li>
         <% } else if (cfg.annotate()) { %>

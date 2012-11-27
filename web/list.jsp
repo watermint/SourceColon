@@ -41,28 +41,9 @@ java.io.BufferedInputStream,
                 org.opensolaris.opengrok.analysis.Definitions,
                 org.opensolaris.opengrok.analysis.FileAnalyzer.Genre,
                 org.opensolaris.opengrok.analysis.FileAnalyzerFactory,
-                org.opensolaris.opengrok.history.Annotation,
                 org.opensolaris.opengrok.index.IndexDatabase,
                 org.opensolaris.opengrok.web.DirectoryListing"
     %>
-<%
-  {
-    // need to set it here since requesting parameters
-    if (request.getCharacterEncoding() == null) {
-      request.setCharacterEncoding("UTF-8");
-    }
-    cfg = PageConfig.get(request);
-    Annotation annotation = cfg.getAnnotation();
-    if (annotation != null) {
-      int r = annotation.getWidestRevision();
-      int a = annotation.getWidestAuthor();
-      cfg.addHeaderData("<style type=\"text/css\">"
-          + ".blame .r { width: " + (r == 0 ? 6 : r) + "ex; } "
-          + ".blame .a { width: " + (a == 0 ? 6 : a) + "ex; } "
-          + "</style>");
-    }
-  }
-%>
 <%@include file="mast.jsp" %>
 <script type="text/javascript">/* <![CDATA[ */
 document.pageReady.push(function () {
@@ -159,12 +140,11 @@ document.pageReady.push(function () {
         // We don't have any way to get definitions
         // for old revisions currently.
         Definitions defs = null;
-        Annotation annotation = cfg.getAnnotation();
         //not needed yet
         //annotation.writeTooltipMap(out);
         r = new InputStreamReader(in);
         AnalyzerGuru.writeXref(a, r, out, defs,
-            annotation, Project.getProject(resourceFile));
+            Project.getProject(resourceFile));
       } else if (g == Genre.IMAGE) {
     %></pre>
   <img src="<%= rawPath %>?<%= rev %>"/>
@@ -259,9 +239,8 @@ document.pageReady.push(function () {
       // We're generating xref for the latest revision, so we can
       // find the definitions in the index.
       Definitions defs = IndexDatabase.getDefinitions(resourceFile);
-      Annotation annotation = cfg.getAnnotation();
       r = new InputStreamReader(bin);
-      AnalyzerGuru.writeXref(a, r, out, defs, annotation,
+      AnalyzerGuru.writeXref(a, r, out, defs,
           Project.getProject(resourceFile));
     %></pre>
 </div>

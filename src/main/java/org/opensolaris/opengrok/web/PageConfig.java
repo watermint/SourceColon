@@ -125,118 +125,6 @@ public final class PageConfig {
     }
 
     /**
-     * Get all data required to create a diff view wrt. to this request in one go.
-     *
-     * @return an instance with just enough information to render a sufficient
-     *         view. If not all required parameters were given either they are
-     *         supplemented with reasonable defaults if possible, otherwise the
-     *         related field(s) are {@code null}. {@link DiffData#errorMsg}
-     *         {@code != null} indicates, that an error occured and one should not
-     *         try to render a view.
-     */
-    public DiffData getDiffData() {
-        DiffData data = new DiffData();
-        data.path = getPath().substring(0, path.lastIndexOf('/'));
-        data.filename = Util.htmlize(getResourceFile().getName());
-
-        String srcRoot = getSourceRootPath();
-        String context = req.getContextPath();
-
-        String[] filepath = new String[2];
-        data.rev = new String[2];
-        data.file = new String[2][];
-        data.param = new String[2];
-        for (int i = 1; i <= 2; i++) {
-            String[] tmp = null;
-            String p = req.getParameter("r" + i);
-            if (p != null) {
-                tmp = p.split("@");
-            }
-            if (tmp != null && tmp.length == 2) {
-                filepath[i - 1] = tmp[0];
-                data.rev[i - 1] = tmp[1];
-            }
-        }
-        if (data.rev[0] == null || data.rev[1] == null
-                || data.rev[0].length() == 0 || data.rev[1].length() == 0
-                || data.rev[0].equals(data.rev[1])) {
-            data.errorMsg = "Please pick two revisions to compare the changed "
-                    + "from the <a href=\"" + context + Prefix.HIST_L
-                    + getUriEncodedPath() + "\">history</a>";
-            return data;
-        }
-        data.genre = AnalyzerGuru.getGenre(getResourceFile().getName());
-
-        if (data.genre == null || txtGenres.contains(data.genre)) {
-            InputStream[] in = new InputStream[2];
-            BufferedReader br = null;
-            try {
-                for (int i = 0; i < 2; i++) {
-                    File f = new File(srcRoot + filepath[i]);
-                    in[i] = HistoryGuru.getInstance().getRevision(f.getParent(), f.getName(), data.rev[i]);
-                }
-
-                if (data.genre == null) {
-                    try {
-                        data.genre = AnalyzerGuru.getGenre(in[0]);
-                    } catch (IOException e) {
-                        data.errorMsg = "Unable to determine the file type: "
-                                + Util.htmlize(e.getMessage());
-                    }
-                }
-
-                if (data.genre != Genre.PLAIN && data.genre != Genre.HTML) {
-                    return data;
-                }
-
-                ArrayList<String> lines = new ArrayList<String>();
-                Project p = getProject();
-                for (int i = 0; i < 2; i++) {
-                    br = new BufferedReader(ExpandTabsReader.wrap(new InputStreamReader(in[i]), p));
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        lines.add(line);
-                    }
-                    data.file[i] = lines.toArray(new String[lines.size()]);
-                    lines.clear();
-                    IOUtils.close(br);
-                    in[i] = null;
-                    br = null;
-                }
-            } catch (Exception e) {
-                data.errorMsg = "Error reading revisions: "
-                        + Util.htmlize(e.getMessage());
-            } finally {
-                IOUtils.close(br);
-                for (int i = 0; i < 2; i++) {
-                    IOUtils.close(in[i]);
-                }
-            }
-            if (data.errorMsg != null) {
-                return data;
-            }
-            try {
-                data.revision = Diff.diff(data.file[0], data.file[1]);
-            } catch (DifferentiationFailedException e) {
-                data.errorMsg = "Unable to get diffs: "
-                        + Util.htmlize(e.getMessage());
-            }
-            for (int i = 0; i < 2; i++) {
-                try {
-                    URI u = new URI(null, null, null,
-                            filepath[i] + "@" + data.rev[i], null);
-                    data.param[i] = u.getRawQuery();
-                } catch (URISyntaxException e) {
-                    log.log(Level.WARNING, "Failed to create URI: ", e);
-                }
-            }
-            data.full = fullDiff();
-            data.type = getDiffType();
-        }
-        return data;
-    }
-
-    /**
      * Get the diff display type to use wrt. the request parameter {@code format}.
      *
      * @return {@link DiffType#SIDEBYSIDE} if the request contains no such parameter
@@ -280,7 +168,7 @@ public final class PageConfig {
             return getOnRedirect();
         }
         String redir = getDirectoryRedirect();
-        if (redir == null && getPrefix() == Prefix.HIST_L && !hasHistory()) {
+        if (redir == null) {
             return null;
         }
         // jel: outfactored from list.jsp - seems to be bogus
@@ -1067,7 +955,7 @@ public final class PageConfig {
                 return null;
             }
             getPrefix();
-            if (prefix != Prefix.XREF_P && prefix != Prefix.HIST_L) {
+            if (prefix != Prefix.XREF_P) {
                 //if it is an existing dir perhaps people wanted dir xref
                 return req.getContextPath() + Prefix.XREF_P
                         + getUriEncodedPath() + trailingSlash(path);

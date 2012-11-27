@@ -76,12 +76,12 @@ public class SortOrderTest {
         System.out.println("valueOf");
         SortOrder result = SortOrder.valueOf("LASTMODIFIED");
         assertNotNull(result);
-        assertEquals("last modified time", result.getDesc());
+        assertEquals("Last Modified Time", result.getDesc());
         result = SortOrder.valueOf("RELEVANCY");
         assertNotNull(result);
-        assertEquals("relevance", result.getDesc());
+        assertEquals("Relevance", result.getDesc());
         result = SortOrder.valueOf("BY_PATH");
         assertNotNull(result);
-        assertEquals("path", result.getDesc());
+        assertEquals("Path", result.getDesc());
     }
 }

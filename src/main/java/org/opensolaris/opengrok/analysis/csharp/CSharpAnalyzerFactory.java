@@ -29,7 +29,6 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.opensolaris.opengrok.configuration.Project;
-import org.opensolaris.opengrok.history.Annotation;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -53,7 +52,7 @@ public class CSharpAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Annotation annotation, Project project)
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
             throws IOException {
         CSharpAnalyzer.writeXref(in, out, defs, annotation, project);
     }

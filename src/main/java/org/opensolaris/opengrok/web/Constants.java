@@ -37,11 +37,7 @@ public final class Constants {
     public static final String xrefS = "/xr";
     public static final String moreP = "/more";
     public static final String moreS = "/mo";
-    public static final String diffP = "/diff";
     public static final String diffS = "/di";
-    public static final String histP = "/hist";
-    public static final String histL = "/history";
-    public static final String histS = "/hi";
     public static final String rssP = "/rss";
     public static final String rawP = "/raw";
     //full blown search from main page or top bar
