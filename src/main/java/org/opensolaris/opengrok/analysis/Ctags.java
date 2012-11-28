@@ -23,6 +23,8 @@
 
 package org.opensolaris.opengrok.analysis;
 
+import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
+import org.opensolaris.opengrok.util.Executor;
 import org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.BufferedReader;
@@ -115,6 +117,9 @@ public class Ctags {
     }
 
     public Definitions doCtags(String file) throws IOException {
+        if (!RuntimeEnvironment.getInstance().validateExuberantCtags()) {
+            return null;
+        }
         boolean ctagsRunning = false;
         if (ctags != null) {
             try {

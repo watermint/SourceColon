@@ -296,20 +296,12 @@ public final class RuntimeEnvironment {
      * @return true if success, false otherwise
      */
     public boolean validateExuberantCtags() {
-        boolean ret = true;
         Executor executor = new Executor(new String[]{getCtags(), "--version"});
 
         executor.exec(false);
         String output = executor.getOutputString();
-        if (output == null || !output.contains("Exuberant Ctags")) {
-            log.log(Level.SEVERE, "Error: No Exuberant Ctags found in PATH!\n" +
-                    "(tried running " + "{0}" + ")\n" +
-                    "Please use option -c to specify path to a good Exuberant Ctags program\n" +
-                    "Or set it in java property org.opensolaris.opengrok.analysis.Ctags", getCtags());
-            ret = false;
-        }
-
-        return ret;
+        
+        return !(output == null || !output.contains("Exuberant Ctags"));
     }
 
     /**

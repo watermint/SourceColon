@@ -12,7 +12,6 @@ Provide simplified interface to search large scale source code tree.
 
 * [Java SE 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * [Gradle](http://www.gradle.org/)
-* [Exuberant Ctags](http://ctags.sourceforge.net) 
 
 ## Quick Start
 
@@ -22,16 +21,6 @@ Make sure your Java is later than Java SE 7 (1.7.0_xx or above)
     java version "1.7.0_07"
 	Java(TM) SE Runtime Environment (build 1.7.0_07-b10)
 	Java HotSpot(TM) 64-Bit Server VM (build 23.3-b01, mixed mode)
-	
-Make sure you have Exuberant Ctags
-
-	$ ctags --version
-	Exuberant Ctags 5.8J2, Copyright (C) 1996-2009 Darren Hiebert
-	  Compiled: Apr 15 2011, 14:31:12
-	  Addresses: <dhiebert@users.sourceforge.net>, http://ctags.sourceforge.net
-	  Japanese patch  by HIGASHI Hirohito <Twitter: @h_east>
-	                     http://hp.vector.co.jp/authors/VA025040/
-	  Optional compiled features: +wildcards, +regex, +kanji
 	  
 Make sure you also have gradle
 

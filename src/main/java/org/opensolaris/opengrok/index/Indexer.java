@@ -478,9 +478,6 @@ public final class Indexer {
         if (env.getSourceRootFile() == null) {
             throw new IndexerException("ERROR: please specify a SRC_ROOT with option -s !");
         }
-        if (!env.validateExuberantCtags()) {
-            throw new IndexerException("Didn't find Exuberant Ctags");
-        }
         if (zapCache == null) {
             throw new IndexerException("Internal error, zapCache shouldn't be null");
         }
