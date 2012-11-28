@@ -1,5 +1,7 @@
 # SourceColon (Source: )
 
+![Source:](https://raw.github.com/watermint/SourceColon/master/doc/icon-64.png)
+
 Source code search based upon [OpenGrok](http://hub.opensolaris.org/bin/view/Project+opengrok/).
 
 [![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon.png)
