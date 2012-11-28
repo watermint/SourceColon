@@ -20,7 +20,7 @@
   <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-ui-1.9.2.custom.min.js"></script>
   <script type="text/javascript" src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/utils.js"></script>
+  <script type="text/javascript" src="<%=request.getContextPath()%>/js/sourcecolon.js"></script>
   <title><%=cfg.getTitle()%>
   </title>
   <% out.write(cfg.getHeaderData()); %>

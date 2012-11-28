@@ -39,8 +39,9 @@ java.io.BufferedInputStream,
     %>
 <%@include file="mast.jsp" %>
 <script type="text/javascript">/* <![CDATA[ */
-document.pageReady.push(function () {
+$(document).ready(function () {
   pageReadyList();
+  fixNavBarAnchorPosition();
 });
 /* ]]> */</script>
 <%
