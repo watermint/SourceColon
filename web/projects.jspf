@@ -40,7 +40,7 @@ java.util.TreeSet,
 
     String projects = cfg.getRequestedProjectsAsString();
     if (projects.length() != 0) {
-      Cookie cookie = new Cookie("OpenGrokProject", projects);
+      Cookie cookie = new Cookie("sourcecolon_prj", projects);
       response.addCookie(cookie);
     }
   }

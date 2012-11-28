@@ -58,7 +58,7 @@ java.util.Set,
       }
     }
 
-    String imgurl = request.getContextPath() + "/img/icon.png";
+    String imgurl = request.getContextPath() + "/img/icon-64.png";
 
     /* TODO  Bug 11749 ??? */
     StringBuilder text = new StringBuilder();
@@ -73,9 +73,9 @@ java.util.Set,
     }
 %><?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
-  <ShortName>OpenGrok <%= text.toString() %>
+  <ShortName>Source: <%= text.toString() %>
   </ShortName>
-  <Description>Search in OpenGrok <%= text.toString() %>
+  <Description>Search in Source: <%= text.toString() %>
   </Description>
   <InputEncoding>UTF-8</InputEncoding>
   <Image height="16" width="16" type="image/png"><%= imgurl %>

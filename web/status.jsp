@@ -35,11 +35,11 @@ org.opensolaris.opengrok.web.Util"
 <%@ include file="header.jspf" %>
 <div id="page">
   <div id="status">
-    <h1>OpenGrok status page</h1>
+    <h1>Source: status page</h1>
 
     <p>
       This page is only used for testing purposes to dump some of the
-      internal settings on your OpenGrok server.</p><%
+      internal settings on your Source: server.</p><%
     if (cfg.getEnv().isChattyStatusPage()) {
       Util.dumpConfiguration(out);
     } else {

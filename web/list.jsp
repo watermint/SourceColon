@@ -69,7 +69,7 @@ $(document).ready(function () {
           cookieValue = cookieValue.length() == 0
               ? activeProject.getDescription()
               : activeProject.getDescription() + '/' + cookieValue;
-          Cookie cookie = new Cookie("OpenGrokProject", cookieValue);
+          Cookie cookie = new Cookie("sourcecolon_prj", cookieValue);
           // TODO hmmm, projects.jspf doesn't set a path
           cookie.setPath(request.getContextPath() + '/');
           response.addCookie(cookie);

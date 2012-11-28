@@ -12,9 +12,10 @@
   <meta name="robots" content="noindex,nofollow"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=8"/>
-  <link rel="icon" href="<%=request.getContextPath()%>/img/icon.png" type="image/png"/>
+  <link rel="icon" href="<%=request.getContextPath()%>/img/icon-16.png" type="image/png"/>
   <link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css" media="screen">
   <link rel="stylesheet" href="<%=request.getContextPath()%>/css/ui-lightness/jquery-ui-1.9.2.custom.min.css" media="screen">
+  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sourcecolon.css" media="screen">
   <link rel="search" href="<%=request.getContextPath()%>/opensearch" type="application/opensearchdescription+xml"
         title="Source: Search"/>
   <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.8.3.min.js"></script>

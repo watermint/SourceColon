@@ -66,7 +66,7 @@ org.opensolaris.opengrok.search.Results,
     } else {
       cfg.setTitle("Search");
     }
-    response.addCookie(new Cookie("OpenGrokSorting", searchHelper.order.toString()));
+    response.addCookie(new Cookie("sourccolon_sort", searchHelper.order.toString()));
 %>
 <%@ include file="header.jspf" %>
 <div class="container">

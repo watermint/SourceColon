@@ -29,7 +29,7 @@ org.opensolaris.opengrok.web.PageConfig"
   /* ---------------------- help.jsp start --------------------- */
   {
     cfg = PageConfig.get(request);
-    cfg.setTitle("OpenGrok Help");
+    cfg.setTitle("Source: Help");
 %>
 <%@ include file="header.jspf" %>
 <div class="container">

@@ -25,7 +25,7 @@ Portions Copyright 2011 Jens Elkner.
 <div class="container">
   <div style="margin-top: 60px" class="well well-small muted credit">
     Indexes created <span class="label label-info"><%= PageConfig.get(request).getEnv().getDateForLastIndexRun() %></span>.
-    Served by <i class="icon-leaf"></i><a href="https://github.com/watermint/SourceColon">Source:</a> based on
+    Served by <i class="logo-sourcecolon"></i> <a href="https://github.com/watermint/SourceColon">Source:</a> based on
   <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>.
   </div>
 </div>
