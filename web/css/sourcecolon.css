@@ -1,0 +1,11 @@
+i.logo-sourcecolon {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    *margin-right: .3em;
+    line-height: 14px;
+    vertical-align: text-top;
+    background: url("../img/icon-64.png") no-repeat;
+    background-size: 14px 14px;
+}
