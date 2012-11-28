@@ -20,120 +20,6 @@
  * Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
  * Portions Copyright 2011 Jens Elkner.
  */
-document.pageReady = [];
-document.domReady = [];
-
-window.onload = function() {
-    for(var i in document.pageReady) {
-        document.pageReady[i]();
-    }
-}
-
-$(document).ready(function() {
-    for(var i in this.domReady) {
-        document.domReady[i]();
-    }
-});
-
-/**
- * Resize the element with the ID 'content' so that it fills the whole browser
- * window (i.e. the space between the header and the bottom of the window) and
- * thus get rid off the scrollbar in the page header.
- */
-function resizeContent() {
-    if (document.adjustContent != 0) {
-        $('#content').css('top', $('body').outerHeight(true)).css('bottom', 0);
-    }
-}
-
-function domReadyMast() {
-    var h = document.locHash;
-    if (!window.location.hash) {
-        if (h != null && h != "null")  {
-            window.location.hash=h
-        } else {
-            $('#content').focus();
-        }
-    }
-    if (document.annotate) {
-        $('a[class=r]').tooltip({ left: 5, showURL: false });
-        var toggle_js = document.getElementById('toggle-annotate-by-javascript');
-        var toggle_ss = document.getElementById('toggle-annotate');
-
-        toggle_js.style.display = 'inline';
-        toggle_ss.style.display = 'none';
-    }
-}
-
-function pageReadyMast() {
-    document.adjustContent = 0;
-    if ($('#whole_header') != null && $('#content') != null) {
-        document.adjustContent = 1;
-        resizeContent();
-    }
-    $(window).resize(
-        function() {
-            resizeContent();
-        }
-    );
-}
-
-function domReadyMenu() {
-    var projects = document.projects;
-    var sbox = document.getElementById('sbox');
-/*
-    $("#project").autocomplete(projects, {
-        minChars: 0,
-        multiple: true,
-        multipleSeparator: ",",
-        //mustMatch: true,
-        matchContains: "word",
-        max: 200,
-        cacheLength:20,
-        //autoFill: false,
-        formatItem: function(row, i, max) {
-                return (row != null) ? i + "/" + max + ": " + row[0] : "";
-            },
-        formatMatch: function(row, i, max) {
-                return (row != null) ? row[0] : "";
-            },
-        formatResult: function(row) {
-                return (row != null) ? row[0] : "";
-            },
-        width: "300px"
-    });
-*/
-    // TODO  Bug 11749
-    // var p = document.getElementById('project');
-    // p.setAttribute("autocomplete", "off");
-}
-
-function get_annotations() {
-    link = document.link +  "?a=true";
-    if (document.rev.length > 0) {
-        link += '&' + document.rev;
-    }
-    hash = "&h=" + window.location.hash.substring(1, window.location.hash.length);
-    window.location = link + hash;
-}
-
-function toggle_annotations() {
-    $("span").each(
-        function() {
-            if (this.className == 'blame') {
-                this.className = 'blame-hidden';
-            } else if (this.className == 'blame-hidden') {
-                this.className = 'blame';
-            }
-        }
-    );
-}
-
-/** list.jsp */
-
-/**
- * Initialize defaults for list.jsp
- */
 function pageReadyList() {
     document.sym_div_width = 240;
     document.sym_div_height_max = 480;
@@ -153,13 +39,13 @@ function pageReadyList() {
 /**
  * Create the Navigation toggle link as well as its contents.
  */
-function get_sym_list_contents() {
+function getNavigationSymbolContents() {
     var contents = "";
-    if (typeof get_sym_list != 'function') {
+    if (typeof getNavigationSymbols != 'function') {
         return contents;
     }
 
-    var symbol_classes = get_sym_list();
+    var symbol_classes = getNavigationSymbols();
     for ( var i = 0; i < symbol_classes.length; i++) {
         if (i > 0) {
             contents += "<br/>";
@@ -184,50 +70,28 @@ function escape_html(string) {
     return string.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 }
 
-function get_sym_div_left() {
-    document.sym_div_left = $(window)
-        .width() - (document.sym_div_width + document.sym_div_left_margin);
-    return document.sym_div_left;
-}
-
-function get_sym_div_height() {
-    document.sym_div_height = $(window)
-        .height() - document.sym_div_top - document.sym_div_height_margin;
-
-    if (document.sym_div_height > document.sym_div_height_max) {
-        document.sym_div_height = document.sym_div_height_max;
-    }
-    return document.sym_div_height;
-}
-
-function get_sym_div_top() {
-    return document.sym_div_top;
-}
-
-function get_sym_div_width() {
-    return document.sym_div_width;
-}
-
 /**
  * Toggle the display of the 'Navigation' window used to highlight definitions.
  */
-function lsttoggle() {
+function toggleSourceNavigation() {
     if (document.sym_div == null) {
         document.sym_div = document.createElement("div");
         document.sym_div.id = "sym_div";
         document.sym_div_container = document.createElement("div");
         document.sym_div_container.className = "modal-body";
-        document.sym_div_container.innerHTML = get_sym_list_contents();
+        document.sym_div_container.innerHTML = getNavigationSymbolContents();
         document.sym_div.appendChild(document.sym_div_container);
         document.body.appendChild(document.sym_div);
 
         $('#sym_div').dialog({
+            title: "Navigation",
             closeOnEscape: false,
+            resizable: false,
             closeText: 'Close',
             show: "fade",
             hide: "fade",
             dialogClass: "modal",
-            position: { my: "right-60", at: "right", of: window },
+            position: { my: "right", at: "right-60", of: window },
             open: function(event, ui) {
                 $(this).parent().find('div.ui-dialog-titlebar').addClass('modal-header');
             }
@@ -240,128 +104,8 @@ function lsttoggle() {
 /**
  * Toggle the display of line numbers.
  */
-function lntoggle() {
+function toggleSourceLineNumber() {
     $("a.line-number").toggle();
 }
 
-/**
- *  Highlight keywords by changeing the style of matching tags.
- */
-function HighlightKeyword(keyword) {
-    var high_colors = [ "#ffff66", "#ffcccc", "#ccccff", "#99ff99", "#cc66ff" ];
-    var pattern = "a:contains('" + keyword + "')";
-    $(pattern).css({
-        'text-decoration' : 'underline',
-        'background-color' : high_colors[document.highlight_count
-            % high_colors.length],
-        'font-weight' : 'bold'
-    });
-    document.highlight_count++;
-}
-//Test: HighlightKeyword('timeval');
 
-/**
- * Highlight the text given as value of the element with the ID "input_highlight" .
- * @see HighlightKeyword
- */
-function add_highlight() {
-    var tbox = document.getElementById('input_highlight');
-    HighlightKeyword(tbox.value);
-}
-
-function toggle_filelist() {
-    $("span").each(
-        function() {
-            if (this.className == "filelist") {
-                this.setAttribute("style", "display: none;");
-                this.className = "filelist-hidden";
-            } else if (this.className == "filelist-hidden") {
-                this.setAttribute("style", "display: inline;");
-                this.className = "filelist";
-            }
-        }
-    );
-}
-
-function togglediffs() {
-    var cr2 = false;
-    var cr1 = false;
-    $("#revisions input[type=radio]").each(
-        function() {
-            if (this.name=="r1") {
-                if (this.checked) {
-                    cr1 = true;
-                    return true;
-                }
-                if (cr2) {
-                    this.disabled = ''
-                } else {
-                    this.disabled = 'true'
-                }
-            } else if (this.name=="r2") {
-                if (this.checked) {
-                    cr2=true;
-                    return true;
-                }
-                if (!cr1) {
-                    this.disabled = ''
-                } else {
-                    this.disabled = 'true'
-                }
-            }
-        }
-    );
-}
-
-function selectAllProjects() {
-    $("#project *").attr("selected", "selected");
-}
-
-function invertAllProjects() {
-    $("#project *").each(
-        function() {
-            if ($(this).attr("selected")) {
-                $(this).removeAttr("selected")
-            } else {
-                $(this).attr("selected", "true");
-            }
-        }
-    );
-}
-
-function goFirstProject() {
-    var selected=$.map($('#project :selected'), function(e) {
-            return $(e).text();
-        });
-    window.location = document.xrefPath + '/' + selected[0];
-}
-
-function clearSearchFrom() {
-    $("#sbox :input[type=text]").each(
-        function() {            
-                $(this).attr("value", "");            
-        }
-    );    
-    $("#project *").each(
-        function() {
-            if ($(this).attr("selected")) {
-                $(this).removeAttr("selected")
-            } 
-        }
-    );
-}
-
-function checkEnter(event) {
-    concat='';
-    $("#sbox :input[type=text]").each(
-        function() {            
-                concat+=$.trim($(this).val());
-        }
-    );
-    if (event.keyCode == '13' && concat=='')
-    {
-        goFirstProject();
-    } else if (event.keyCode == '13') {
-        $("#sbox").submit();
-    }
-}

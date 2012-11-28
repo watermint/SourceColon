@@ -253,7 +253,7 @@ public abstract class JFlexXref {
         }
 
         out.append("<script type=\"text/javascript\">/* <![CDATA[ */\n");
-        out.append("function get_sym_list(){return [");
+        out.append("function getNavigationSymbols(){return [");
 
         boolean first = true;
         for (Style style : DEFINITION_STYLES) {

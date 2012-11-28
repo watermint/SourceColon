@@ -61,21 +61,11 @@ java.io.File,
     String uriEncodedPath = cfg.getUriEncodedPath();
     String rev = cfg.getRequestedRevision();
 %>
-<%@
-
-    include file="header.jspf"
-
-    %>
+<%@ include file="header.jspf" %>
 <script type="text/javascript">
   document.hash = '<%= cfg.getDocumentHash() %>';
   document.rev = '<%= rev %>';
   document.link = '<%= context + Prefix.XREF_P + uriEncodedPath %>';
-  document.domReady.push(function () {
-    domReadyMast();
-  });
-  document.pageReady.push(function () {
-    pageReadyMast();
-  });
 </script>
 
 <div class="container">
@@ -85,11 +75,11 @@ java.io.File,
         <% if (!cfg.isDir()) { %>
         <% if (cfg.getPrefix() == Prefix.XREF_P) { %>
         <li>
-          <a href="#" onclick="javascript:lntoggle();return false;"
+          <a href="javascript:toggleSourceLineNumber();return false;"
              title="<%= "Show or hide line numbers (might be slower if file has more than 10 000 lines)." %>">Line#</a>
         </li>
         <li>
-          <a href="#" onclick="javascript:lsttoggle();return false;" title="Show or hide symbol list.">Navigate</a>
+          <a href="javascript:toggleSourceNavigation();return false;" title="Show or hide symbol list.">Navigate</a>
         </li>
         <% } %>
         <li><a href="<%= context + Prefix.RAW_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">Download</a>
