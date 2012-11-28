@@ -309,8 +309,8 @@ public class IndexDatabase {
         }
 
         try {
-            //TODO we might need to add writer.commit after certain phases of index generation, right now it will only happen in the end
             writer = new IndexWriter(indexDirectory, new IndexWriterConfig(Version.LUCENE_36, AnalyzerGuru.getAnalyzer()));
+            writer.commit();
             if (directories.isEmpty()) {
                 if (project == null) {
                     directories.add("");
@@ -432,7 +432,7 @@ public class IndexDatabase {
 
         try {
             log.info("Generating spelling suggestion index ... ");
-            indexReader = IndexReader.open(indexDirectory, false);
+            indexReader = IndexReader.open(indexDirectory);
             checker = new SpellChecker(spellDirectory);
             //TODO below seems only to index "defs" , possible bug ?
             checker.indexDictionary(new LuceneDictionary(indexReader, "defs"), new IndexWriterConfig(Version.LUCENE_36, null), true);
@@ -844,7 +844,7 @@ public class IndexDatabase {
         TermEnum iter = null;
 
         try {
-            ireader = IndexReader.open(indexDirectory, false); // open existing index
+            ireader = IndexReader.open(indexDirectory); // open existing index
             iter = ireader.terms(new Term("u", "")); // init uid iterator
             while (iter.term() != null) {
                 log.fine(Util.uid2url(iter.term().text()));
@@ -905,7 +905,7 @@ public class IndexDatabase {
         TermEnum iter = null;
 
         try {
-            ireader = IndexReader.open(indexDirectory, false);
+            ireader = IndexReader.open(indexDirectory);
             iter = ireader.terms(new Term("defs", ""));
             while (iter.term() != null) {
                 if (iter.term().field().startsWith("f")) {
@@ -959,7 +959,7 @@ public class IndexDatabase {
         try {
             FSDirectory fdir = FSDirectory.open(indexDir, NoLockFactory.getNoLockFactory());
             if (indexDir.exists() && IndexReader.indexExists(fdir)) {
-                ret = IndexReader.open(fdir, false);
+                ret = IndexReader.open(fdir);
             }
         } catch (Exception ex) {
             log.log(Level.SEVERE, "Failed to open index: {0}", indexDir.getAbsolutePath());

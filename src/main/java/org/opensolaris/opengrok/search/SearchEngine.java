@@ -155,7 +155,7 @@ public class SearchEngine {
      * @throws IOException
      */
     private void searchSingleDatabase(File root, boolean paging) throws IOException {
-        IndexReader ireader = IndexReader.open(FSDirectory.open(root), true);
+        IndexReader ireader = IndexReader.open(FSDirectory.open(root));
         searcher = new IndexSearcher(ireader);
         collector = TopScoreDocCollector.create(hitsPerPage * cachePages, docsScoredInOrder);
         searcher.search(query, collector);
@@ -182,7 +182,7 @@ public class SearchEngine {
         File droot = new File(RuntimeEnvironment.getInstance().getDataRootFile(), "index");
         int ii = 0;
         for (Project project : root) {
-            IndexReader ireader = (IndexReader.open(FSDirectory.open(new File(droot, project.getPath())), true));
+            IndexReader ireader = (IndexReader.open(FSDirectory.open(new File(droot, project.getPath()))));
             searchables[ii++] = new IndexSearcher(ireader);
         }
         if (Runtime.getRuntime().availableProcessors() > 1) {
