@@ -154,13 +154,7 @@ function pageReadyList() {
  * Create the Navigation toggle link as well as its contents.
  */
 function get_sym_list_contents() {
-    // var contents = "<input id=\"input_highlight\" name=\"input_highlight\"
-    // class=\"q\"/>";
-    // contents += "&nbsp;&nbsp;";
-    // contents += "<b><a href=\"#\" onclick=\"javascript:add_highlight();return
-    // false;\" title=\"Add highlight\">Highlight</a></b><br/>";
-    var contents =
-        "<a href=\"#\" onclick=\"javascript:lsttoggle();\">[Close]</a><br/>"
+    var contents = "";
     if (typeof get_sym_list != 'function') {
         return contents;
     }
@@ -221,28 +215,25 @@ function lsttoggle() {
     if (document.sym_div == null) {
         document.sym_div = document.createElement("div");
         document.sym_div.id = "sym_div";
-
-        document.sym_div.className = "sym_list_style";
-        document.sym_div.style.margin = "0px auto";
-        document.sym_div.style.width = get_sym_div_width() + "px";
-        document.sym_div.style.height = get_sym_div_height() + "px";
-        document.sym_div.style.top = get_sym_div_top() + "px";
-        document.sym_div.style.left = get_sym_div_left() + "px";
-
-        document.sym_div.innerHTML = get_sym_list_contents();
-
+        document.sym_div_container = document.createElement("div");
+        document.sym_div_container.className = "modal-body";
+        document.sym_div_container.innerHTML = get_sym_list_contents();
+        document.sym_div.appendChild(document.sym_div_container);
         document.body.appendChild(document.sym_div);
-        document.sym_div_shown = 1;
-    } else if (document.sym_div_shown == 1) {
-        document.sym_div.className = "sym_list_style_hide";
-        document.sym_div_shown = 0;
+
+        $('#sym_div').dialog({
+            closeOnEscape: false,
+            closeText: 'Close',
+            show: "fade",
+            hide: "fade",
+            dialogClass: "modal",
+            position: { my: "right-60", at: "right", of: window },
+            open: function(event, ui) {
+                $(this).parent().find('div.ui-dialog-titlebar').addClass('modal-header');
+            }
+        })
     } else {
-        document.sym_div.style.height = get_sym_div_height() + "px";
-        document.sym_div.style.width = get_sym_div_width() + "px";
-        document.sym_div.style.top = get_sym_div_top() + "px";
-        document.sym_div.style.left = get_sym_div_left() + "px";
-        document.sym_div.className = "sym_list_style";
-        document.sym_div_shown = 1;
+        $('#sym_div').dialog("open");
     }
 }
 

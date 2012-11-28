@@ -300,7 +300,7 @@ public final class RuntimeEnvironment {
 
         executor.exec(false);
         String output = executor.getOutputString();
-        
+
         return !(output == null || !output.contains("Exuberant Ctags"));
     }
 
