@@ -71,7 +71,6 @@ public final class Indexer {
     public static void main(String argv[]) {
         boolean runIndex = true;
         boolean update = true;
-        boolean optimizedChanged = false;
         ArrayList<String> zapCache = new ArrayList<>();
         CommandLineOptions cmdOptions = new CommandLineOptions();
 
@@ -82,15 +81,12 @@ public final class Indexer {
 
         Executor.registerErrorHandler();
         ArrayList<String> subFiles = new ArrayList<>();
-        ArrayList<String> repositories = new ArrayList<>();
         HashSet<String> allowedSymlinks = new HashSet<>();
         String configFilename = RuntimeEnvironment.DEFAULT_SOURCECOLON_CONFIG;
         String configHost = null;
         boolean addProjects = false;
-        boolean refreshHistory = false;
         String defaultProject = null;
         boolean listFiles = false;
-        boolean listRepos = false;
         boolean createDict = false;
         int noThreads = 2 + (2 * Runtime.getRuntime().availableProcessors());
 
@@ -348,7 +344,7 @@ public final class Indexer {
 
             getInstance().prepareIndexer(env, addProjects,
                     defaultProject, configFilename, listFiles, createDict, subFiles, zapCache);
-            if (listRepos || !zapCache.isEmpty()) {
+            if (!zapCache.isEmpty()) {
                 return;
             }
             if (runIndex) {
@@ -356,7 +352,7 @@ public final class Indexer {
                 getInstance().doIndexerExecution(update, noThreads, subFiles,
                         progress);
             }
-            getInstance().sendToConfigHost(env, configHost);
+            getInstance().sendToConfigHost(configHost);
         } catch (IndexerException ex) {
             log.log(Level.SEVERE, "Exception running indexer", ex);
             System.err.println(cmdOptions.getUsage());
@@ -531,7 +527,7 @@ public final class Indexer {
         }
     }
 
-    public void sendToConfigHost(RuntimeEnvironment env, String configHost) {
+    public void sendToConfigHost(String configHost) {
         if (configHost != null) {
             String[] cfg = configHost.split(":");
             log.log(Level.INFO, "Send configuration to: {0}", configHost);

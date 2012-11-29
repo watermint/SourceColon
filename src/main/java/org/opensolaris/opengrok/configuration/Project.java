@@ -80,7 +80,7 @@ public class Project {
     }
 
     /**
-     * Set a textual description of this project, prefferably don't use " , " in the name, since it's used as delimiter for more projects
+     * Set a textual description of this project, preferably don't use " , " in the name, since it's used as delimiter for more projects
      *
      * @param description a textual description of the project
      */
@@ -92,7 +92,7 @@ public class Project {
      * Set the path (relative from source root) this project is located
      * It seems that you should ALWAYS prefix the path with current file.separator , current environment should always have it set up
      *
-     * @param path the relative path from source sroot where this project is
+     * @param path the relative path from source root where this project is
      *             located.
      */
     public void setPath(String path) {

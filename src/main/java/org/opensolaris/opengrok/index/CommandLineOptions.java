@@ -45,10 +45,10 @@ public class CommandLineOptions {
         String argument;
         String description;
 
-        public Option(char opt, String arg, String descr) {
+        public Option(char opt, String arg, String desc) {
             option = opt;
             argument = arg;
-            description = descr;
+            description = desc;
         }
 
         public String getUsage() {
