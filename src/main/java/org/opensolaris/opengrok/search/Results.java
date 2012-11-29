@@ -156,11 +156,6 @@ public final class Results {
             out.write("/\">");
             out.write(parent); // htmlize ???
             out.write("/</a>");
-            if (sh.desc != null) {
-                out.write(" - <i>");
-                out.write(sh.desc.get(parent)); // htmlize ???
-                out.write("</i>");
-            }
             out.write("</td></tr>");
             for (Document doc : entry.getValue()) {
                 String rpath = doc.get("path");

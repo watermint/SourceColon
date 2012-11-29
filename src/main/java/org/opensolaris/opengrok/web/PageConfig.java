@@ -64,13 +64,11 @@ public final class PageConfig {
     private String path;
     private File resourceFile;
     private String resourcePath;
-    private EftarFileReader eftarReader;
     private String sourceRootPath;
     private Boolean isDir;
     private String uriEncodedPath;
     private Prefix prefix;
     private String pageTitle;
-    private String dtag;
     private String rev;
     private SortedSet<String> requestedProjects;
     private String requestedProjectsString;
@@ -219,30 +217,6 @@ public final class PageConfig {
             }
         }
         return queryBuilder;
-    }
-
-    /**
-     * Get the eftar reader for the opengrok data directory. If it has been
-     * already opened and not closed, this instance gets returned. One should
-     * not close it once used: {@link #cleanup()} takes care to close it.
-     *
-     * @return {@code null} if a reader can't be established, the reader
-     *         otherwise.
-     */
-    public EftarFileReader getEftarReader() {
-        if (eftarReader == null || eftarReader.isClosed()) {
-            File f = getEnv().getConfiguration().getDtagsEftar();
-            if (f == null) {
-                eftarReader = null;
-            } else {
-                try {
-                    eftarReader = new EftarFileReader(f);
-                } catch (Exception e) {
-                    log.log(Level.FINE, "Failed to create EftarFileReader: ", e);
-                }
-            }
-        }
-        return eftarReader;
     }
 
     /**
@@ -395,7 +369,7 @@ public final class PageConfig {
      * Get the parameter values for the given name. Splits comma separated
      * values automatically into a list of Strings.
      *
-     * @param name name of the parameter.
+     * @param paramName name of the parameter.
      * @return a possible empty list.
      */
     private List<String> getParamVals(String paramName) {
@@ -816,7 +790,6 @@ public final class PageConfig {
         sh.contextPath = req.getContextPath();
         sh.isCrossRefSearch = getPrefix() == Prefix.SEARCH_R;
         sh.compressed = env.isCompressXref();
-        sh.desc = getEftarReader();
         sh.sourceRoot = new File(getSourceRootPath());
         return sh;
     }
@@ -857,8 +830,5 @@ public final class PageConfig {
             req = null;
         }
         env = null;
-        if (eftarReader != null) {
-            eftarReader.close();
-        }
     }
 }

@@ -40,12 +40,9 @@ import java.util.Locale;
  * Generates HTML listing of a Directory
  */
 public class DirectoryListing {
-
-    private final EftarFileReader desc;
     private final long now;
 
-    public DirectoryListing(EftarFileReader desc) {
-        this.desc = desc;
+    public DirectoryListing() {
         now = System.currentTimeMillis();
     }
 
@@ -94,13 +91,6 @@ public class DirectoryListing {
         // TODO this belongs to a jsp, not here
         ArrayList<String> readMes = new ArrayList<>();
         int offset = -1;
-        EftarFileReader.FNode parentFNode = null;
-        if (desc != null) {
-            parentFNode = desc.getNode(path);
-            if (parentFNode != null) {
-                offset = parentFNode.childOffset;
-            }
-        }
 
         out.write("<table class=\"table table-striped\">");
         out.write("<tr class=\"info\"><td/><td><strong>Name</strong></td><td><strong>Date</strong></td><td><strong>Size</strong></td>");
@@ -145,16 +135,7 @@ public class DirectoryListing {
                 }
                 out.write("</td>");
                 PrintDateSize(out, child, dateFormatter);
-                if (offset > 0) {
-                    String briefDesc = desc.getChildTag(parentFNode, file);
-                    if (briefDesc == null) {
-                        out.write("<td/>");
-                    } else {
-                        out.write("<td>");
-                        out.write(briefDesc);
-                        out.write("</td>");
-                    }
-                }
+                out.write("<td/>");
                 out.write("</tr>");
             }
         }

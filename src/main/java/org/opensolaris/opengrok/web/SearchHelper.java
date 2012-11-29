@@ -77,10 +77,6 @@ public class SearchHelper {
      */
     public File sourceRoot;
     /**
-     * piggyback: the eftar filereader to use.
-     */
-    public EftarFileReader desc;
-    /**
      * the result cursor start index, i.e. where to start displaying results
      */
     public int start;

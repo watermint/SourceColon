@@ -76,7 +76,7 @@ $(document).ready(function () {
         }
       }
       // requesting a directory listing
-      DirectoryListing dl = new DirectoryListing(cfg.getEftarReader());
+      DirectoryListing dl = new DirectoryListing();
       List<String> files = cfg.getResourceFileList();
       if (!files.isEmpty()) {
         List<String> readMes = dl.listTo(resourceFile, out, path, files);
