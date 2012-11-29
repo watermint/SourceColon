@@ -411,13 +411,12 @@ public final class Util {
      * {@code Linenumber Blame Author} incl. appropriate links.
      *
      *
+     *
      * @param num            linenumber to print
      * @param out            print destination
-     * @param userPageLink   see {@link org.opensolaris.opengrok.configuration.RuntimeEnvironment#getUserPage()}
-     * @param userPageSuffix see {@link org.opensolaris.opengrok.configuration.RuntimeEnvironment#getUserPageSuffix()}
      * @throws IOException depends on the destination (<var>out</var>).
      */
-    public static void readableLine(int num, Writer out, String userPageLink, String userPageSuffix)
+    public static void readableLine(int num, Writer out)
             throws IOException {
         // this method should go to JFlexXref
         String snum = String.valueOf(num);
@@ -646,12 +645,6 @@ public final class Util {
         printTableRow(out, "Source root", env.getSourceRootPath());
         printTableRow(out, "Data root", env.getDataRootPath());
         printTableRow(out, "CTags", env.getCtags());
-        printTableRow(out, "Bug page", env.getBugPage());
-        printTableRow(out, "Bug pattern", env.getBugPattern());
-        printTableRow(out, "User page", env.getUserPage());
-        printTableRow(out, "User page suffix", env.getUserPageSuffix());
-        printTableRow(out, "Review page", env.getReviewPage());
-        printTableRow(out, "Review pattern", env.getReviewPattern());
         printTableRow(out, "Using projects", env.hasProjects());
         out.append("<tr><td>Ignored files</td><td>");
         printUnorderedList(out, env.getIgnoredNames().getItems());

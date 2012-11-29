@@ -50,22 +50,6 @@ public abstract class JFlexXref {
      * EOF value returned by yylex().
      */
     private final int yyeof;
-    /**
-     * See {@link RuntimeEnvironment#getUserPage()}. Per default initialized
-     * in the constructor and here to be consistent and avoid lot of
-     * unnecessary lookups.
-     *
-     * @see #startNewLine()
-     */
-    protected String userPageLink;
-    /**
-     * See {@link RuntimeEnvironment#getUserPageSuffix()}. Per default
-     * initialized in the constructor and here to be consistent and avoid lot of
-     * unnecessary lookups.
-     *
-     * @see #startNewLine()
-     */
-    protected String userPageSuffix;
 
     /**
      * Description of the style to use for a type of definitions.
@@ -129,14 +113,6 @@ public abstract class JFlexXref {
             // reflection.
             Field f = getClass().getField("YYEOF");
             yyeof = f.getInt(null);
-            userPageLink = RuntimeEnvironment.getInstance().getUserPage();
-            if (userPageLink != null && userPageLink.length() == 0) {
-                userPageLink = null;
-            }
-            userPageSuffix = RuntimeEnvironment.getInstance().getUserPageSuffix();
-            if (userPageSuffix != null && userPageSuffix.length() == 0) {
-                userPageSuffix = null;
-            }
         } catch (Exception e) {
             // The auto-generated constructors for the Xref classes don't
             // expect a checked exception, so wrap it in an AssertionError.
@@ -314,7 +290,7 @@ public abstract class JFlexXref {
     protected void startNewLine() throws IOException {
         int line = getLineNumber() + 1;
         setLineNumber(line);
-        Util.readableLine(line, out, userPageLink, userPageSuffix);
+        Util.readableLine(line, out);
     }
 
     /**

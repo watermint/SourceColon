@@ -71,7 +71,7 @@ public final class Info {
      * @return full version
      */
     public static String getFullVersion() {
-        return "OpenGrok v" + VERSION + " rev " + REVISION;
+        return "Source: v" + VERSION + " rev " + REVISION;
     }
 
     /**

@@ -56,27 +56,14 @@ public final class Configuration {
     private boolean printProgress;
     private boolean allowLeadingWildcard;
     private IgnoredNames ignoredNames;
-    private Filter includedNames;
-    private String userPage;
-    private String userPageSuffix;
-    private String bugPage;
-    private String bugPattern;
-    private String reviewPage;
-    private String reviewPattern;
-    private boolean remoteScmSupported;
-    private boolean optimizeDatabase;
     private boolean useLuceneLocking;
     private boolean compressXref;
     private boolean indexVersionedFilesOnly;
     private int hitsPerPage;
     private int cachePages;
-    private String databaseDriver;
-    private String databaseUrl;
-    private int scanningDepth;
     private Set<String> allowedSymlinks;
     private boolean obfuscatingEMailAddresses;
     private boolean chattyStatusPage;
-    private final Map<String, String> cmds;
     private int tabSize;
 
     /**
@@ -103,14 +90,6 @@ public final class Configuration {
         this.tabSize = tabSize;
     }
 
-    public int getScanningDepth() {
-        return scanningDepth;
-    }
-
-    public void setScanningDepth(int scanningDepth) {
-        this.scanningDepth = scanningDepth;
-    }
-
     /**
      * Creates a new instance of Configuration
      */
@@ -118,7 +97,6 @@ public final class Configuration {
         //defaults for an opengrok instance configuration
         setProjects(new ArrayList<Project>());
         setUrlPrefix("/SourceColon/s?");
-        //setUrlPrefix("../s?"); // TODO generate relative search paths, get rid of -w <webapp> option to indexer !
         setCtags(System.getProperty("org.opensolaris.opengrok.analysis.Ctags", "ctags"));
         //below can cause an out of memory error, since it is defaulting to NO LIMIT
         setIndexWordLimit(Integer.MAX_VALUE);
@@ -128,36 +106,13 @@ public final class Configuration {
         setQuickContextScan(true);
         setIgnoredNames(new IgnoredNames());
         setIncludedNames(new Filter());
-        setBugPage("http://bugs.opensolaris.org/bugdatabase/view_bug.do?bug_id=");
-        setBugPattern("\\b([12456789][0-9]{6})\\b");
-        setReviewPage("http://arc.opensolaris.org/caselog/PSARC/");
-        setReviewPattern("\\b(\\d{4}/\\d{3})\\b"); // in form e.g. PSARC 2008/305
-        setRemoteScmSupported(false);
-        setOptimizeDatabase(true);
         setUsingLuceneLocking(false);
         setCompressXref(true);
         setIndexVersionedFilesOnly(false);
         setHitsPerPage(25);
         setCachePages(5);
-        setScanningDepth(3); // default depth of scanning for repositories
         setDataRoot(RuntimeEnvironment.DEFAULT_SOURCECOLON_DATA);
         setAllowedSymlinks(new HashSet<String>());
-        //setTabSize(4);
-        cmds = new HashMap<>();
-    }
-
-    public String getRepoCmd(String clazzName) {
-        return cmds.get(clazzName);
-    }
-
-    public String setRepoCmd(String clazzName, String cmd) {
-        if (clazzName == null) {
-            return null;
-        }
-        if (cmd == null || cmd.length() == 0) {
-            return cmds.remove(clazzName);
-        }
-        return cmds.put(clazzName, cmd);
     }
 
     public String getCtags() {
@@ -305,71 +260,6 @@ public final class Configuration {
     public Filter getIncludedNames() {
         return includedNames;
     }
-
-    public void setUserPage(String userPage) {
-        this.userPage = userPage;
-    }
-
-    public String getUserPage() {
-        return userPage;
-    }
-
-    public void setUserPageSuffix(String userPageSuffix) {
-        this.userPageSuffix = userPageSuffix;
-    }
-
-    public String getUserPageSuffix() {
-        return userPageSuffix;
-    }
-
-    public void setBugPage(String bugPage) {
-        this.bugPage = bugPage;
-    }
-
-    public String getBugPage() {
-        return bugPage;
-    }
-
-    public void setBugPattern(String bugPattern) {
-        this.bugPattern = bugPattern;
-    }
-
-    public String getBugPattern() {
-        return bugPattern;
-    }
-
-    public String getReviewPage() {
-        return reviewPage;
-    }
-
-    public void setReviewPage(String reviewPage) {
-        this.reviewPage = reviewPage;
-    }
-
-    public String getReviewPattern() {
-        return reviewPattern;
-    }
-
-    public void setReviewPattern(String reviewPattern) {
-        this.reviewPattern = reviewPattern;
-    }
-
-    public boolean isRemoteScmSupported() {
-        return remoteScmSupported;
-    }
-
-    public void setRemoteScmSupported(boolean remoteScmSupported) {
-        this.remoteScmSupported = remoteScmSupported;
-    }
-
-    public boolean isOptimizeDatabase() {
-        return optimizeDatabase;
-    }
-
-    public void setOptimizeDatabase(boolean optimizeDatabase) {
-        this.optimizeDatabase = optimizeDatabase;
-    }
-
     public boolean isUsingLuceneLocking() {
         return useLuceneLocking;
     }
@@ -432,22 +322,6 @@ public final class Configuration {
             }
         }
         return dtagsEftar.isEmpty() ? null : new File(dtagsEftar);
-    }
-
-    public String getDatabaseDriver() {
-        return databaseDriver;
-    }
-
-    public void setDatabaseDriver(String databaseDriver) {
-        this.databaseDriver = databaseDriver;
-    }
-
-    public String getDatabaseUrl() {
-        return databaseUrl;
-    }
-
-    public void setDatabaseUrl(String databaseUrl) {
-        this.databaseUrl = databaseUrl;
     }
 
     public Set<String> getAllowedSymlinks() {

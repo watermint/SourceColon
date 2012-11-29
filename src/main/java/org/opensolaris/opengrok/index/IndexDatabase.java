@@ -373,41 +373,6 @@ public class IndexDatabase {
     }
 
     /**
-     * Optimize all index databases
-     *
-     * @param executor An executor to run the job
-     * @throws IOException if an error occurs
-     */
-    static void optimizeAll(ExecutorService executor) throws IOException {
-        List<IndexDatabase> dbs = new ArrayList<>();
-        RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        if (env.hasProjects()) {
-            for (Project project : env.getProjects()) {
-                dbs.add(new IndexDatabase(project));
-            }
-        } else {
-            dbs.add(new IndexDatabase());
-        }
-
-        for (IndexDatabase d : dbs) {
-            final IndexDatabase db = d;
-            if (db.isDirty()) {
-                executor.submit(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            db.update();
-                        } catch (Throwable e) {
-                            log.log(Level.SEVERE, "Problem updating lucene index database: ", e);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
-    /**
      * Generate a spelling suggestion for the definitions stored in defs
      */
     public void createSpellingSuggestions() {

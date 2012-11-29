@@ -180,49 +180,6 @@ public class RuntimeEnvironmentTest {
     }
 
     @Test
-    public void testBugPattern() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        String page = "\\b([12456789][0-9]{6})\\b";
-        assertEquals(page, instance.getBugPattern());
-        instance.setBugPattern(page.substring(5));
-        assertEquals(page.substring(5), instance.getBugPattern());
-    }
-
-    @Test
-    public void testReviewPage() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        String page = "http://arc.opensolaris.org/caselog/PSARC/";
-        assertEquals(page, instance.getReviewPage());
-        instance.setReviewPage(page.substring(5));
-        assertEquals(page.substring(5), instance.getReviewPage());
-    }
-
-    @Test
-    public void testReviewPattern() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        String page = "\\b(\\d{4}/\\d{3})\\b";
-        assertEquals(page, instance.getReviewPattern());
-        instance.setReviewPattern(page.substring(5));
-        assertEquals(page.substring(5), instance.getReviewPattern());
-    }
-
-    @Test
-    public void testRemoteScmSupported() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertFalse(instance.isRemoteScmSupported());
-        instance.setRemoteScmSupported(true);
-        assertTrue(instance.isRemoteScmSupported());
-    }
-
-    @Test
-    public void testOptimizeDatabase() {
-        RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
-        assertTrue(instance.isOptimizeDatabase());
-        instance.setOptimizeDatabase(false);
-        assertFalse(instance.isOptimizeDatabase());
-    }
-
-    @Test
     public void testUsingLuceneLocking() {
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
         assertFalse(instance.isUsingLuceneLocking());

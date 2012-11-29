@@ -58,12 +58,6 @@ public final class Indexer {
     private static Indexer index = new Indexer();
     private static final Logger log = Logger.getLogger(Indexer.class.getName());
 
-    private static final String DERBY_EMBEDDED_DRIVER =
-            "org.apache.derby.jdbc.EmbeddedDriver";
-
-    private static final String DERBY_CLIENT_DRIVER =
-            "org.apache.derby.jdbc.ClientDriver";
-
     public static Indexer getInstance() {
         return index;
     }
@@ -87,7 +81,6 @@ public final class Indexer {
         }
 
         Executor.registerErrorHandler();
-        boolean searchRepositories = false;
         ArrayList<String> subFiles = new ArrayList<>();
         ArrayList<String> repositories = new ArrayList<>();
         HashSet<String> allowedSymlinks = new HashSet<>();
@@ -128,9 +121,6 @@ public final class Indexer {
             if (cfg == null) {
                 cfg = new Configuration();
             }
-
-            String databaseDriver = cfg.getDatabaseDriver();
-            String databaseURL = cfg.getDatabaseUrl();
 
             // Now we can handle all the other options..
             getopt.reset();
@@ -184,32 +174,6 @@ public final class Indexer {
                     case 'n':
                         runIndex = false;
                         break;
-                    case 'j':
-                        databaseDriver = getopt.getOptarg();
-                        // Should be a full class name, but we also accept
-                        // the shorthands "client" and "embedded". Expand
-                        // the shorthands here.
-                        if ("client".equals(databaseDriver)) {
-                            databaseDriver = DERBY_CLIENT_DRIVER;
-                        } else if ("embedded".equals(databaseDriver)) {
-                            databaseDriver = DERBY_EMBEDDED_DRIVER;
-                        }
-                        break;
-                    case 'u':
-                        databaseURL = getopt.getOptarg();
-                        break;
-                    case 'r': {
-                        if (getopt.getOptarg().equalsIgnoreCase(ON)) {
-                            cfg.setRemoteScmSupported(true);
-                        } else if (getopt.getOptarg().equalsIgnoreCase(OFF)) {
-                            cfg.setRemoteScmSupported(false);
-                        } else {
-                            System.err.println("ERROR: You should pass either \"on\" or \"off\" as argument to -r");
-                            System.err.println("       Ex: \"-r on\" will allow retrival for remote SCM systems");
-                            System.err.println("           \"-r off\" will ignore SCM for remote systems");
-                        }
-                    }
-                    break;
                     case 'v':
                         cfg.setVerbose(true);
                         OpenGrokLogger.setOGConsoleLogLevel(Level.INFO);
@@ -247,7 +211,6 @@ public final class Indexer {
                         cfg.getIncludedNames().add(getopt.getOptarg());
                         break;
                     case 'S':
-                        searchRepositories = true;
                         break;
                     case 'Q':
                         if (getopt.getOptarg().equalsIgnoreCase(ON)) {
@@ -320,14 +283,6 @@ public final class Indexer {
                             System.exit(1);
                         }
                         break;
-                    case 'z':
-                        try {
-                            cfg.setScanningDepth(Integer.parseInt(getopt.getOptarg()));
-                        } catch (NumberFormatException exp) {
-                            System.err.println("ERROR: Failed to parse argument to \"-z\": " + exp.getMessage());
-                            System.exit(1);
-                        }
-                        break;
                     case 'l':
                         if (getopt.getOptarg().equalsIgnoreCase(ON)) {
                             cfg.setUsingLuceneLocking(true);
@@ -338,12 +293,6 @@ public final class Indexer {
                             System.err.println("       Ex: \"-l on\" will enable locks in Lucene");
                             System.err.println("           \"-l off\" will disable locks in Lucene");
                         }
-                        break;
-                    case 'B':
-                        cfg.setUserPage(getopt.getOptarg());
-                        break;
-                    case 'X':
-                        cfg.setUserPageSuffix(getopt.getOptarg());
                         break;
                     case 'V':
                         System.out.println(Info.getFullVersion());
@@ -384,9 +333,6 @@ public final class Indexer {
                 }
             }
 
-            cfg.setDatabaseDriver(databaseDriver);
-            cfg.setDatabaseUrl(databaseURL);
-
             // automatically allow symlinks that are directly in source root
             String file = cfg.getSourceRoot();
             if (file != null) {
@@ -408,14 +354,12 @@ public final class Indexer {
             RuntimeEnvironment env = RuntimeEnvironment.getInstance();
             env.setConfiguration(cfg);
 
-            getInstance().prepareIndexer(env, searchRepositories, addProjects,
-                    defaultProject, configFilename, refreshHistory,
-                    listFiles, createDict, subFiles, repositories,
-                    zapCache, listRepos);
+            getInstance().prepareIndexer(env, addProjects,
+                    defaultProject, configFilename, listFiles, createDict, subFiles, zapCache);
             if (listRepos || !zapCache.isEmpty()) {
                 return;
             }
-            if (runIndex || (optimizedChanged && env.isOptimizeDatabase())) {
+            if (runIndex) {
                 IndexChangedListener progress = new DefaultIndexChangedListener();
                 getInstance().doIndexerExecution(update, noThreads, subFiles,
                         progress);
@@ -435,18 +379,7 @@ public final class Indexer {
     // PMD wants us to use length() > 0 && charAt(0) instead of startsWith()
     // for performance. We prefer clarity over performance here, so silence it.
     @SuppressWarnings("PMD.SimplifyStartsWith")
-    public void prepareIndexer(RuntimeEnvironment env,
-                               boolean searchRepositories,
-                               boolean addProjects,
-                               String defaultProject,
-                               String configFilename,
-                               boolean refreshHistory,
-                               boolean listFiles,
-                               boolean createDict,
-                               List<String> subFiles,
-                               List<String> repositories,
-                               List<String> zapCache,
-                               boolean listRepoPathes) throws IndexerException, IOException {
+    public void prepareIndexer(RuntimeEnvironment env, boolean addProjects, String defaultProject, String configFilename, boolean listFiles, boolean createDict, List<String> subFiles, List<String> zapCache) throws IndexerException, IOException {
 
         if (env.getDataRootPath() == null) {
             throw new IndexerException("ERROR: Please specify a DATA ROOT path");
@@ -545,8 +478,6 @@ public final class Indexer {
         if (subFiles == null || subFiles.isEmpty()) {
             if (update) {
                 IndexDatabase.updateAll(executor, progress);
-            } else if (env.isOptimizeDatabase()) {
-                IndexDatabase.optimizeAll(executor);
             }
         } else {
             List<IndexDatabase> dbs = new ArrayList<>();
