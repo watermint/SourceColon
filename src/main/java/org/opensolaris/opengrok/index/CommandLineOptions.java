@@ -79,7 +79,6 @@ public class CommandLineOptions {
         options.add(new Option('e', null, "Economical - consumes less disk space. It does not generate hyper text cross reference files offline, but will do so on demand - which could be sightly slow."));
         options.add(new Option('I', "pattern", "Only files matching this pattern will be examined (supports wildcards, example: -I *.java -I *.c)"));
         options.add(new Option('i', "pattern", "Ignore the named files or directories (supports wildcards, example: -i *.so -i *.dll)"));
-        options.add(new Option('j', "class", "Name of the JDBC driver class used by the history cache. Can use one of the shorthands \"client\" (org.apache.derby.jdbc.ClientDriver) or \"embedded\" (org.apache.derby.jdbc.EmbeddedDriver). Default: \"client\""));
         options.add(new Option('l', ON_OFF, "Turn on/off locking of the Lucene database during index generation"));
         options.add(new Option('m', NUMBER, "The maximum words to index in a file"));
         options.add(new Option('N', "/path/to/symlink", "Allow this symlink to be followed. Option may be repeated."));
@@ -88,20 +87,14 @@ public class CommandLineOptions {
         options.add(new Option('p', "/path/to/default/project", "This is the path to the project that should be selected by default in the web application(when no other project set either in cookie or in parameter). You should strip off the source root."));
         options.add(new Option('Q', ON_OFF, "Turn on/off quick context scan. By default only the first 32k of a file is scanned, and a '[..all..]' link is inserted if the file is bigger. Activating this may slow the server down (Note: this is setting only affects the web application)"));
         options.add(new Option('q', null, "Run as quietly as possible"));
-        options.add(new Option('R', "/path/to/configuration", "Read configuration from the specified file"));
-        options.add(new Option('r', ON_OFF, "Turn on/off support for remote SCM systems"));
-        options.add(new Option('S', null, "Search for \"external\" source repositories and add them"));
         options.add(new Option('s', "/path/to/source/root", "The root directory of the source tree"));
         options.add(new Option('T', NUMBER, "The number of threads to use for index generation. By default the number of threads will be set to the number of available CPUs"));
         options.add(new Option('t', NUMBER, "Default tabsize to use (number of spaces per tab character)"));
-        options.add(new Option('U', "host:port", "Send the current configuration to the specified address (This is most likely the web-app configured with ConfigAddress)"));
-        options.add(new Option('u', "url", "URL to the database that contains the history cache. Default: If -j specifies \"embedded\", \"jdbc:derby:$DATA_ROOT/cachedb;create=true\"; otherwise, \"jdbc:derby://localhost/cachedb;create=true\""));
         options.add(new Option('V', null, "Print version and quit"));
         options.add(new Option('v', null, "Print progress information as we go along"));
         options.add(new Option('W', "/path/to/configuration", "Write the current configuration to the specified file (so that the web application can use the same configuration"));
         options.add(new Option('w', "webapp-context", "Context of webapp. Default is /source. If you specify a different name, make sure to rename source.war to that name."));
         options.add(new Option('X', "url:suffix", "URL Suffix for the user Information provider. Default: \"\""));
-        options.add(new Option('z', NUMBER, "depth of scanning for repositories in directory structure relative to source root"));
     }
 
     public String getCommandString() {

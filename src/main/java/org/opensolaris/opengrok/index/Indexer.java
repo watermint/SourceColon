@@ -162,12 +162,6 @@ public final class Indexer {
                     case 'W':
                         configFilename = getopt.getOptarg();
                         break;
-                    case 'U':
-                        configHost = getopt.getOptarg();
-                        break;
-                    case 'R':
-                        // already handled
-                        break;
                     case 'N':
                         allowedSymlinks.add(getopt.getOptarg());
                         break;
@@ -209,8 +203,6 @@ public final class Indexer {
                         break;
                     case 'I':
                         cfg.getIncludedNames().add(getopt.getOptarg());
-                        break;
-                    case 'S':
                         break;
                     case 'Q':
                         if (getopt.getOptarg().equalsIgnoreCase(ON)) {
