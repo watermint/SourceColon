@@ -63,7 +63,6 @@ public final class Configuration {
     private int cachePages;
     private Set<String> allowedSymlinks;
     private boolean obfuscatingEMailAddresses;
-    private boolean chattyStatusPage;
     private int tabSize;
     private Filter includedNames;
 
@@ -339,14 +338,6 @@ public final class Configuration {
 
     public void setObfuscatingEMailAddresses(boolean obfuscate) {
         this.obfuscatingEMailAddresses = obfuscate;
-    }
-
-    public boolean isChattyStatusPage() {
-        return chattyStatusPage;
-    }
-
-    public void setChattyStatusPage(boolean chattyStatusPage) {
-        this.chattyStatusPage = chattyStatusPage;
     }
 
     /**

@@ -631,31 +631,6 @@ public final class Util {
     }
 
     /**
-     * Dump the configuration as an HTML table.
-     *
-     *
-     * @param out destination for the HTML output
-     * @throws IOException      if an error happens while writing to {@code out}
-     */
-    @SuppressWarnings("boxing")
-    public static void dumpConfiguration(Appendable out) throws IOException {
-        out.append("<table border=\"1\" width=\"100%\">");
-        out.append("<tr><th>Variable</th><th>Value</th></tr>");
-        RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        printTableRow(out, "Source root", env.getSourceRootPath());
-        printTableRow(out, "Data root", env.getDataRootPath());
-        printTableRow(out, "CTags", env.getCtags());
-        printTableRow(out, "Using projects", env.hasProjects());
-        out.append("<tr><td>Ignored files</td><td>");
-        printUnorderedList(out, env.getIgnoredNames().getItems());
-        out.append("</td></tr>");
-        printTableRow(out, "Index word limit", env.getIndexWordLimit());
-        printTableRow(out, "Allow leading wildcard in search",
-                env.isAllowLeadingWildcard());
-        out.append("</table>");
-    }
-
-    /**
      * Just read the given source and dump as is to the given destionation.
      * Does nothing, if one or more of the parameters is {@code null}.
      *
