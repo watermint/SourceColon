@@ -117,7 +117,7 @@ public class IndexDatabase {
      */
     static void updateAll(ExecutorService executor, IndexChangedListener listener) throws IOException {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        List<IndexDatabase> dbs = new ArrayList<IndexDatabase>();
+        List<IndexDatabase> dbs = new ArrayList<>();
 
         if (env.hasProjects()) {
             for (Project project : env.getProjects()) {
@@ -152,12 +152,11 @@ public class IndexDatabase {
      *
      * @param executor An executor to run the job
      * @param listener where to signal the changes to the database
-     * @param paths
-     * @throws IOException if an error occurs
+     * @param paths paths
      */
     public static void update(ExecutorService executor, IndexChangedListener listener, List<String> paths) {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        List<IndexDatabase> dbs = new ArrayList<IndexDatabase>();
+        List<IndexDatabase> dbs = new ArrayList<>();
 
         for (String path : paths) {
             Project project = Project.getProject(path);
@@ -243,10 +242,10 @@ public class IndexDatabase {
             if (env.isGenerateHtml()) {
                 xrefDir = new File(env.getDataRootFile(), "xref");
             }
-            listeners = new ArrayList<IndexChangedListener>();
+            listeners = new ArrayList<>();
             dirtyFile = new File(indexDir, "dirty");
             dirty = dirtyFile.exists();
-            directories = new ArrayList<String>();
+            directories = new ArrayList<>();
         }
     }
 
@@ -380,7 +379,7 @@ public class IndexDatabase {
      * @throws IOException if an error occurs
      */
     static void optimizeAll(ExecutorService executor) throws IOException {
-        List<IndexDatabase> dbs = new ArrayList<IndexDatabase>();
+        List<IndexDatabase> dbs = new ArrayList<>();
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
         if (env.hasProjects()) {
             for (Project project : env.getProjects()) {
@@ -977,8 +976,7 @@ public class IndexDatabase {
 
         try {
             Query q = new QueryBuilder().setPath(path).build();
-            IndexSearcher searcher = new IndexSearcher(ireader);
-            try {
+            try (IndexSearcher searcher = new IndexSearcher(ireader)) {
                 TopDocs top = searcher.search(q, 1);
                 if (top.totalHits == 0) {
                     // No hits, no definitions...
@@ -994,9 +992,8 @@ public class IndexDatabase {
                         return Definitions.deserialize(tags.getBinaryValue());
                     }
                 }
-            } finally {
-                searcher.close();
             }
+
         } finally {
             ireader.close();
         }

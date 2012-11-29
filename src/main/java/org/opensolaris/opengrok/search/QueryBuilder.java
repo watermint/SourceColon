@@ -50,7 +50,7 @@ public class QueryBuilder {
      * had used a hash map, the order of the terms could have varied between
      * platforms and it would be harder to test.)
      */
-    private final Map<String, String> queries = new TreeMap<String, String>();
+    private final Map<String, String> queries = new TreeMap<>();
 
     /**
      * Set search string for the "full" field.
@@ -160,7 +160,7 @@ public class QueryBuilder {
             return null;
         }
         // Parse each of the query texts separately
-        ArrayList<Query> queryList = new ArrayList<Query>(queries.size());
+        ArrayList<Query> queryList = new ArrayList<>(queries.size());
         for (Map.Entry<String, String> entry : queries.entrySet()) {
             String field = entry.getKey();
             String queryText = entry.getValue();

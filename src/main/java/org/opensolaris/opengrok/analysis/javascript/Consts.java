@@ -32,7 +32,7 @@ import java.util.Set;
  * * ECMA-262 5.1 Edition June 2011
  */
 public class Consts {
-    public static final Set<String> kwd = new HashSet<String>();
+    public static final Set<String> kwd = new HashSet<>();
 
     static {
         //constants

@@ -170,7 +170,7 @@ public final class PageConfig {
      *         the same order supplied by the request parameter or cookie(s).
      */
     public List<SortOrder> getSortOrder() {
-        List<SortOrder> sort = new ArrayList<SortOrder>();
+        List<SortOrder> sort = new ArrayList<>();
         List<String> vals = getParamVals("sort");
         for (String s : vals) {
             SortOrder so = SortOrder.get(s);
@@ -365,9 +365,9 @@ public final class PageConfig {
             return;
         }
         String p[] = COMMA_PATTERN.split(value);
-        for (int k = 0; k < p.length; k++) {
-            if (p[k].length() != 0) {
-                result.add(p[k]);
+        for (String aP : p) {
+            if (aP.length() != 0) {
+                result.add(aP);
             }
         }
     }
@@ -381,7 +381,7 @@ public final class PageConfig {
      */
     public List<String> getCookieVals(String cookieName) {
         Cookie[] cookies = req.getCookies();
-        ArrayList<String> res = new ArrayList<String>();
+        ArrayList<String> res = new ArrayList<>();
         if (cookies != null) {
             for (int i = cookies.length - 1; i >= 0; i--) {
                 if (cookies[i].getName().equals(cookieName)) {
@@ -401,7 +401,7 @@ public final class PageConfig {
      */
     private List<String> getParamVals(String paramName) {
         String vals[] = req.getParameterValues(paramName);
-        List<String> res = new ArrayList<String>();
+        List<String> res = new ArrayList<>();
         if (vals != null) {
             for (int i = vals.length - 1; i >= 0; i--) {
                 splitByComma(vals[i], res);
@@ -423,7 +423,7 @@ public final class PageConfig {
      */
     protected SortedSet<String> getRequestedProjects(String paramName,
                                                      String cookieName) {
-        TreeSet<String> set = new TreeSet<String>();
+        TreeSet<String> set = new TreeSet<>();
         List<Project> projects = getEnv().getProjects();
         if (projects == null) {
             return set;
@@ -626,9 +626,9 @@ public final class PageConfig {
      */
     public boolean isDir() {
         if (isDir == null) {
-            isDir = Boolean.valueOf(getResourceFile().isDirectory());
+            isDir = getResourceFile().isDirectory();
         }
-        return isDir.booleanValue();
+        return isDir;
     }
 
     private static String trailingSlash(String path) {

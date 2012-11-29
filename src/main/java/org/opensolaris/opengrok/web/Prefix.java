@@ -114,7 +114,7 @@ public enum Prefix {
     private static Map<String, Prefix> lookupTable;
 
     static {
-        lookupTable = new TreeMap<String, Prefix>();
+        lookupTable = new TreeMap<>();
         for (Prefix p : Prefix.values()) {
             lookupTable.put(p.toString(), p);
         }

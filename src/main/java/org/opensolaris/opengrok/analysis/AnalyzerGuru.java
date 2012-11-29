@@ -79,33 +79,33 @@ public class AnalyzerGuru {
      * Map from file names to analyzer factories.
      */
     private static final Map<String, FileAnalyzerFactory>
-            FILE_NAMES = new HashMap<String, FileAnalyzerFactory>();
+            FILE_NAMES = new HashMap<>();
 
     /**
      * Map from file extensions to analyzer factories.
      */
     private static final Map<String, FileAnalyzerFactory>
-            ext = new HashMap<String, FileAnalyzerFactory>();
+            ext = new HashMap<>();
 
     // @TODO: have a comparator
     /**
      * Map from magic strings to analyzer factories.
      */
     private static final SortedMap<String, FileAnalyzerFactory>
-            magics = new TreeMap<String, FileAnalyzerFactory>();
+            magics = new TreeMap<>();
 
     /**
      * List of matcher objects which can be used to determine which analyzer
      * factory to use.
      */
     private static final List<FileAnalyzerFactory.Matcher>
-            matchers = new ArrayList<FileAnalyzerFactory.Matcher>();
+            matchers = new ArrayList<>();
 
     /**
      * List of all registered {@code FileAnalyzerFactory} instances.
      */
     private static final List<FileAnalyzerFactory>
-            factories = new ArrayList<FileAnalyzerFactory>();
+            factories = new ArrayList<>();
 
     /*
      * If you write your own analyzer please register it here
@@ -220,8 +220,7 @@ public class AnalyzerGuru {
      * @param in   The data to generate the index for
      * @param path Where the file is located (from source root)
      * @return The Lucene document to add to the index database
-     * @throws java.io.IOException If an exception occurs while collecting the
-     *                             datas
+     * @throws java.io.IOException If an exception occurs while collecting the data
      */
     public Document getDocument(File file, InputStream in, String path,
                                 FileAnalyzer fa) throws IOException {
@@ -456,7 +455,7 @@ public class AnalyzerGuru {
      * Byte-order markers.
      */
     private static final Map<String, byte[]> BOMS =
-            new HashMap<String, byte[]>();
+            new HashMap<>();
 
     static {
         BOMS.put("UTF-8", new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});

@@ -69,7 +69,7 @@ public class CommandLineOptions {
     private final List<Option> options;
 
     public CommandLineOptions() {
-        options = new ArrayList<Option>();
+        options = new ArrayList<>();
         options.add(new Option('?', null, "Help"));
         options.add(new Option('A', "ext:analyzer", "Files with the named extension should be analyzed with the specified class"));
         options.add(new Option('a', ON_OFF, "Allow or disallow leading wildcards in a search"));

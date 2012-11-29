@@ -56,7 +56,7 @@ public final class ELFAnalyzer extends FileAnalyzer {
     private static final List<String> READABLE_SECTIONS;
 
     static {
-        READABLE_SECTIONS = new ArrayList<String>();
+        READABLE_SECTIONS = new ArrayList<>();
         READABLE_SECTIONS.add(".debug_str");
         READABLE_SECTIONS.add(".comment");
         READABLE_SECTIONS.add(".data");
@@ -115,7 +115,7 @@ public final class ELFAnalyzer extends FileAnalyzer {
             return;
         }
 
-        HashMap<String, Integer> sectionMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> sectionMap = new HashMap<>();
         ELFSection[] sections = new ELFSection[eh.e_shnum];
         int[] readables = new int[eh.e_shnum];
 

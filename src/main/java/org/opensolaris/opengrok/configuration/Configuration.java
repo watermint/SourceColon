@@ -120,7 +120,7 @@ public final class Configuration {
         setUrlPrefix("/SourceColon/s?");
         //setUrlPrefix("../s?"); // TODO generate relative search paths, get rid of -w <webapp> option to indexer !
         setCtags(System.getProperty("org.opensolaris.opengrok.analysis.Ctags", "ctags"));
-        //below can cause an outofmemory error, since it is defaulting to NO LIMIT
+        //below can cause an out of memory error, since it is defaulting to NO LIMIT
         setIndexWordLimit(Integer.MAX_VALUE);
         setVerbose(false);
         setPrintProgress(false);
@@ -143,7 +143,7 @@ public final class Configuration {
         setDataRoot(RuntimeEnvironment.DEFAULT_SOURCECOLON_DATA);
         setAllowedSymlinks(new HashSet<String>());
         //setTabSize(4);
-        cmds = new HashMap<String, String>();
+        cmds = new HashMap<>();
     }
 
     public String getRepoCmd(String clazzName) {

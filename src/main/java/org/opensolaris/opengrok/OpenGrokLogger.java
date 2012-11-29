@@ -52,8 +52,7 @@ public final class OpenGrokLogger {
 
     public static void setConsoleLogLevel(Level level) {
         Handler[] handlers = log.getHandlers();
-        for (int i = 0; i < handlers.length; i++) {
-            Handler h = handlers[i];
+        for (Handler h : handlers) {
             if (h instanceof ConsoleHandler) {
                 h.setLevel(level);
                 consoleLevel = level;
@@ -75,8 +74,7 @@ public final class OpenGrokLogger {
             Logger l = Logger.getLogger(loggerName);
             Handler[] h = l.getHandlers();
             if (!loggerName.startsWith("org.opensolaris.opengrok")) {
-                for (int i = 0; i < h.length; ++i) {
-                    Handler hi = h[i];
+                for (Handler hi : h) {
                     if (hi instanceof ConsoleHandler) {
                         hi.setLevel(level);
                     }
@@ -88,8 +86,7 @@ public final class OpenGrokLogger {
 
     public static void setFileLogLevel(Level level) {
         Handler[] handlers = log.getHandlers();
-        for (int i = 0; i < handlers.length; i++) {
-            Handler h = handlers[i];
+        for (Handler h : handlers) {
             if (h instanceof FileHandler) {
                 h.setLevel(level);
                 fileLevel = level;
@@ -120,12 +117,10 @@ public final class OpenGrokLogger {
         logfile.append(File.separatorChar).append("opengrok%g.%u.log");
 
         Handler[] handlers = log.getHandlers();
-        for (int i = 0; i < handlers.length; i++) {
-            Handler h = handlers[i];
+        for (Handler h : handlers) {
             if (h instanceof FileHandler) {
                 FileHandler fh = (FileHandler) h;
-                FileHandler nfh = new FileHandler(logfile.toString(),
-                        LOGFILESIZELIMIT, // size (unlimited)
+                FileHandler nfh = new FileHandler(logfile.toString(), LOGFILESIZELIMIT, // size (unlimited)
                         LOGFILESCOUNT); // # rotations
 
                 nfh.setLevel(fh.getLevel());
@@ -190,8 +185,8 @@ public final class OpenGrokLogger {
             Logger l = Logger.getLogger(loggerName);
             Handler[] h = l.getHandlers();
             if (!loggerName.startsWith("org.opensolaris.opengrok")) {
-                for (int i = 0; i < h.length; ++i) {
-                    l.removeHandler(h[i]);
+                for (Handler aH : h) {
+                    l.removeHandler(aH);
                 }
             }
             h = l.getHandlers();

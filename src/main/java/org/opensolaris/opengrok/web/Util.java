@@ -296,7 +296,7 @@ public final class Util {
      * @return a possible empty array of names all with a length &gt; 0.
      */
     private static String[] normalize(String[] names, boolean canonical) {
-        LinkedList<String> res = new LinkedList<String>();
+        LinkedList<String> res = new LinkedList<>();
         if (names == null || names.length == 0) {
             return new String[0];
         }

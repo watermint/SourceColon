@@ -135,7 +135,7 @@ public class Summary {
         }
     }
 
-    private final List<Fragment> fragments = new ArrayList<Fragment>();
+    private final List<Fragment> fragments = new ArrayList<>();
 
     private static final Fragment[] FRAGMENT_PROTO = new Fragment[0];
 
@@ -158,8 +158,8 @@ public class Summary {
      */
     public String toString() {
         StringBuilder buffer = new StringBuilder();
-        for (int i = 0; i < fragments.size(); i++) {
-            buffer.append(fragments.get(i));
+        for (Fragment fragment : fragments) {
+            buffer.append(fragment);
         }
         return buffer.toString();
     }

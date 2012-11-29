@@ -324,11 +324,11 @@ public class SearchHelper {
             return;
         }
         String[] toks = TABSPACE.split(term, 0);
-        for (int j = 0; j < toks.length; j++) {
-            if (toks[j].length() <= 3) {
+        for (String tok : toks) {
+            if (tok.length() <= 3) {
                 continue;
             }
-            result.addAll(Arrays.asList(checker.suggestSimilar(toks[j].toLowerCase(), 5)));
+            result.addAll(Arrays.asList(checker.suggestSimilar(tok.toLowerCase(), 5)));
         }
     }
 
@@ -348,7 +348,7 @@ public class SearchHelper {
      */
     public List<Suggestion> getSuggestions() {
         if (projects == null) {
-            return new ArrayList<Suggestion>(0);
+            return new ArrayList<>(0);
         }
         File[] spellIndex = null;
         if (projects.isEmpty()) {
@@ -365,17 +365,17 @@ public class SearchHelper {
                 spellIndex[ii++] = new File(indexDir, proj);
             }
         }
-        List<Suggestion> res = new ArrayList<Suggestion>();
-        List<String> dummy = new ArrayList<String>();
-        for (int idx = 0; idx < spellIndex.length; idx++) {
-            if (!spellIndex[idx].exists()) {
+        List<Suggestion> res = new ArrayList<>();
+        List<String> dummy = new ArrayList<>();
+        for (File aSpellIndex : spellIndex) {
+            if (!aSpellIndex.exists()) {
                 continue;
             }
             FSDirectory spellDirectory = null;
             SpellChecker checker = null;
-            Suggestion s = new Suggestion(spellIndex[idx].getName());
+            Suggestion s = new Suggestion(aSpellIndex.getName());
             try {
-                spellDirectory = FSDirectory.open(spellIndex[idx]);
+                spellDirectory = FSDirectory.open(aSpellIndex);
                 checker = new SpellChecker(spellDirectory);
                 getSuggestion(builder.getFreetext(), checker, dummy);
                 s.freetext = dummy.toArray(new String[dummy.size()]);

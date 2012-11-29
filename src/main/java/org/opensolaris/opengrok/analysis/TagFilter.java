@@ -46,7 +46,7 @@ public class TagFilter extends FilterReader {
         esc = 0;
         p = false;
         esctag = new char[10];
-        escs = new HashMap<String, Character>();
+        escs = new HashMap<>();
         escs.put("&gt", '>');
         escs.put("&lt", '<');
         escs.put("&amp", '&');

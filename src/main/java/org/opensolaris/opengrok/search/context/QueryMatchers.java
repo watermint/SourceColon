@@ -51,9 +51,9 @@ public final class QueryMatchers {
      * @return list of LineMatching DFAs
      */
     public LineMatcher[] getMatchers(Query query, Map<String, Boolean> fields) {
-        caseSensitiveTerms = new HashSet<String>();
-        caseInsensitiveTerms = new HashSet<String>();
-        matchers = new ArrayList<LineMatcher>();
+        caseSensitiveTerms = new HashSet<>();
+        caseInsensitiveTerms = new HashSet<>();
+        matchers = new ArrayList<>();
         this.fields = fields;
         getTerms(query);
         if (!caseSensitiveTerms.isEmpty()) {
@@ -85,9 +85,9 @@ public final class QueryMatchers {
 
     private void getBooleans(BooleanQuery query) {
         BooleanClause[] queryClauses = query.getClauses();
-        for (int i = 0; i < queryClauses.length; i++) {
-            if (!queryClauses[i].isProhibited()) {
-                getTerms(queryClauses[i].getQuery());
+        for (BooleanClause queryClause : queryClauses) {
+            if (!queryClause.isProhibited()) {
+                getTerms(queryClause.getQuery());
             }
         }
     }

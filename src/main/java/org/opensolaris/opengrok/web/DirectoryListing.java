@@ -97,7 +97,7 @@ public class DirectoryListing {
      */
     public List<String> listTo(File dir, Writer out, String path, List<String> files) throws IOException {
         // TODO this belongs to a jsp, not here
-        ArrayList<String> readMes = new ArrayList<String>();
+        ArrayList<String> readMes = new ArrayList<>();
         int offset = -1;
         EftarFileReader.FNode parentFNode = null;
         if (desc != null) {

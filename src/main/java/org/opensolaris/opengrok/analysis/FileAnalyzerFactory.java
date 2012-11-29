@@ -95,7 +95,7 @@ public class FileAnalyzerFactory {
             String[] names, String[] suffixes, String[] magics,
             Matcher matcher, String contentType,
             Genre genre) {
-        cachedAnalyzer = new ThreadLocal<FileAnalyzer>();
+        cachedAnalyzer = new ThreadLocal<>();
         this.names = asList(names);
         this.suffixes = asList(suffixes);
         this.magics = asList(magics);

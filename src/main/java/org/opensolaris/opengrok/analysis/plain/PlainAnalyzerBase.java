@@ -95,14 +95,15 @@ public class PlainAnalyzerBase extends TextAnalyzer {
 
     @Override
     public TokenStream tokenStream(String fieldName, Reader reader) {
-        if ("full".equals(fieldName)) {
-            plainfull.reInit(content, len);
-            return plainfull;
-        } else if ("refs".equals(fieldName)) {
-            plainref.reInit(content, len);
-            return plainref;
-        } else if ("defs".equals(fieldName)) {
-            return new Hash2TokenStream(defs.getSymbols());
+        switch (fieldName) {
+            case "full":
+                plainfull.reInit(content, len);
+                return plainfull;
+            case "refs":
+                plainref.reInit(content, len);
+                return plainref;
+            case "defs":
+                return new Hash2TokenStream(defs.getSymbols());
         }
         return super.tokenStream(fieldName, reader);
     }

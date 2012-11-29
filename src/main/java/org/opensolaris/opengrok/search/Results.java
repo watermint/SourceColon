@@ -67,7 +67,7 @@ public final class Results {
     createMap(Searcher searcher, ScoreDoc[] hits, int startIdx, int stopIdx)
             throws IOException {
         LinkedHashMap<String, ArrayList<Document>> dirHash =
-                new LinkedHashMap<String, ArrayList<Document>>();
+                new LinkedHashMap<>();
         for (int i = startIdx; i < stopIdx; i++) {
             int docId = hits[i].doc;
             Document doc = searcher.doc(docId);
@@ -75,7 +75,7 @@ public final class Results {
             String parent = rpath.substring(0, rpath.lastIndexOf('/'));
             ArrayList<Document> dirDocs = dirHash.get(parent);
             if (dirDocs == null) {
-                dirDocs = new ArrayList<Document>();
+                dirDocs = new ArrayList<>();
                 dirHash.put(parent, dirDocs);
             }
             dirDocs.add(doc);

@@ -65,7 +65,7 @@ public class Ctags {
 
     private void initialize() throws IOException {
         if (processBuilder == null) {
-            List<String> command = new ArrayList<String>();
+            List<String> command = new ArrayList<>();
             command.add(binary);
             command.add("--c-kinds=+l");
             // Workaround for bug #14924: Don't get local variables in Java
@@ -161,7 +161,7 @@ public class Ctags {
                     } catch (Exception e) {
                         log.log(Level.WARNING, "Ctags problem: ", e);
                     }
-                    log.fine("Ctag read");
+                    log.fine("Ctags read");
                     return;
                 }
 

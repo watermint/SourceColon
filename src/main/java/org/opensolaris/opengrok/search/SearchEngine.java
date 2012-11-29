@@ -120,7 +120,7 @@ public class SearchEngine {
      * Creates a new instance of SearchEngine
      */
     public SearchEngine() {
-        docs = new ArrayList<org.apache.lucene.document.Document>();
+        docs = new ArrayList<>();
     }
 
     /**

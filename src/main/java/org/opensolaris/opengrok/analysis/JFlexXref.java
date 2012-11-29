@@ -238,14 +238,14 @@ public abstract class JFlexXref {
         };
 
         Map<String, SortedSet<Tag>> symbols =
-                new HashMap<String, SortedSet<Tag>>();
+                new HashMap<>();
 
         for (Tag tag : defs.getTags()) {
             Style style = getStyle(tag.type);
             if (style != null && style.title != null) {
                 SortedSet<Tag> tags = symbols.get(style.name);
                 if (tags == null) {
-                    tags = new TreeSet<Tag>(cmp);
+                    tags = new TreeSet<>(cmp);
                     symbols.put(style.name, tags);
                 }
                 tags.add(tag);

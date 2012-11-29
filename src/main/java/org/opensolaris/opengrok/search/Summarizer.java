@@ -53,7 +53,7 @@ public class Summarizer {
      */
     private final Analyzer analyzer;
 
-    private final Set<String> highlight = new HashSet<String>();            // put query terms in table
+    private final Set<String> highlight = new HashSet<>();            // put query terms in table
 
     public Summarizer(Query query, Analyzer a) {
         analyzer = a;
@@ -65,8 +65,8 @@ public class Summarizer {
      * document, with some appropriate regions highlit.
      */
     static class Excerpt {
-        List<Summary.Fragment> passages = new ArrayList<Summary.Fragment>();
-        Set<String> tokenSet = new TreeSet<String>();
+        List<Summary.Fragment> passages = new ArrayList<>();
+        Set<String> tokenSet = new TreeSet<>();
         int numTerms = 0;
 
         /**
@@ -136,7 +136,7 @@ public class Summarizer {
         // how many query terms are present.  An excerpt is
         // a List full of Fragments and Highlights
         //
-        SortedSet<Excerpt> excerptSet = new TreeSet<Excerpt>(new Comparator<Excerpt>() {
+        SortedSet<Excerpt> excerptSet = new TreeSet<>(new Comparator<Excerpt>() {
             @Override
             public int compare(Excerpt excerpt1, Excerpt excerpt2) {
                 if (excerpt1 == null) {
@@ -283,7 +283,7 @@ public class Summarizer {
     private Token[] getTokens(String text) throws IOException {
         //FIXME somehow integrate below cycle to getSummary to save the cloning and memory,
         //also creating Tokens is suboptimal with 3.0.0 , this whole class could be replaced by highlighter
-        ArrayList<Token> result = new ArrayList<Token>();
+        ArrayList<Token> result = new ArrayList<>();
         TokenStream ts = analyzer.tokenStream("full", new StringReader(text));
         TermAttribute term = ts.addAttribute(TermAttribute.class);
         OffsetAttribute offset = ts.addAttribute(OffsetAttribute.class);
@@ -318,17 +318,17 @@ public class Summarizer {
 
     private void getBooleans(BooleanQuery query) {
         BooleanClause[] queryClauses = query.getClauses();
-        for (int i = 0; i < queryClauses.length; i++) {
-            if (!queryClauses[i].isProhibited()) {
-                getTerms(queryClauses[i].getQuery());
+        for (BooleanClause queryClause : queryClauses) {
+            if (!queryClause.isProhibited()) {
+                getTerms(queryClause.getQuery());
             }
         }
     }
 
     private void getPhrases(PhraseQuery query) {
         Term[] queryTerms = query.getTerms();
-        for (int i = 0; i < queryTerms.length; i++) {
-            highlight.add(queryTerms[i].text());
+        for (Term queryTerm : queryTerms) {
+            highlight.add(queryTerm.text());
         }
     }
 

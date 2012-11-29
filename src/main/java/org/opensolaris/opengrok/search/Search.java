@@ -46,7 +46,7 @@ final class Search {
             "\t -f Full text";
 
     private SearchEngine engine;
-    private final List<Hit> results = new ArrayList<Hit>();
+    private final List<Hit> results = new ArrayList<>();
     private int totalResults = 0;
     private int nhits = 0;
 

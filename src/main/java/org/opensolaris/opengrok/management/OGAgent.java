@@ -211,7 +211,7 @@ final public class OGAgent {
 
         // Create and start connector server
         String urlString = props.getProperty(JMX_URL);
-        HashMap<String, Object> env = new HashMap<String, Object>();
+        HashMap<String, Object> env = new HashMap<>();
         JMXServiceURL url = new JMXServiceURL(urlString);
 
         // If the protocol is RMI we need to have an RMI registry running.

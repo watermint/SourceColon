@@ -78,7 +78,7 @@ public final class Indexer {
         boolean runIndex = true;
         boolean update = true;
         boolean optimizedChanged = false;
-        ArrayList<String> zapCache = new ArrayList<String>();
+        ArrayList<String> zapCache = new ArrayList<>();
         CommandLineOptions cmdOptions = new CommandLineOptions();
 
         if (argv.length == 0) {
@@ -88,9 +88,9 @@ public final class Indexer {
 
         Executor.registerErrorHandler();
         boolean searchRepositories = false;
-        ArrayList<String> subFiles = new ArrayList<String>();
-        ArrayList<String> repositories = new ArrayList<String>();
-        HashSet<String> allowedSymlinks = new HashSet<String>();
+        ArrayList<String> subFiles = new ArrayList<>();
+        ArrayList<String> repositories = new ArrayList<>();
+        HashSet<String> allowedSymlinks = new HashSet<>();
         String configFilename = RuntimeEnvironment.DEFAULT_SOURCECOLON_CONFIG;
         String configHost = null;
         boolean addProjects = false;
@@ -464,7 +464,7 @@ public final class Indexer {
 
             // Keep a copy of the old project list so that we can preserve
             // the customization of existing projects.
-            Map<String, Project> oldProjects = new HashMap<String, Project>();
+            Map<String, Project> oldProjects = new HashMap<>();
             for (Project p : projects) {
                 oldProjects.put(p.getPath(), p);
             }
@@ -549,7 +549,7 @@ public final class Indexer {
                 IndexDatabase.optimizeAll(executor);
             }
         } else {
-            List<IndexDatabase> dbs = new ArrayList<IndexDatabase>();
+            List<IndexDatabase> dbs = new ArrayList<>();
 
             for (String path : subFiles) {
                 Project project = Project.getProject(path);

@@ -53,7 +53,7 @@ public class Interner<T> {
     /**
      * Map of interned objects. Key and value contain the same object.
      */
-    private final Map<T, T> map = new HashMap<T, T>();
+    private final Map<T, T> map = new HashMap<>();
 
     /**
      * <p>

@@ -65,9 +65,9 @@ public final class JavaClassAnalyzer extends FileAnalyzer {
 
     @Override
     public void analyze(Document doc, InputStream in) throws IOException {
-        defs = new ArrayList<String>();
-        refs = new ArrayList<String>();
-        full = new ArrayList<String>();
+        defs = new ArrayList<>();
+        refs = new ArrayList<>();
+        full = new ArrayList<>();
         xref = null;
 
         ClassParser classparser = new ClassParser(in, doc.get("path"));
@@ -219,7 +219,7 @@ public final class JavaClassAnalyzer extends FileAnalyzer {
                 }
             }
             out.write(") ");
-            ArrayList<LocalVariable[]> locals = new ArrayList<LocalVariable[]>();
+            ArrayList<LocalVariable[]> locals = new ArrayList<>();
             for (Attribute a : m.getAttributes()) {
                 if (a.getTag() == org.apache.bcel.Constants.ATTR_EXCEPTIONS) {
                     for (int i : ((ExceptionTable) a).getExceptionIndexTable()) {

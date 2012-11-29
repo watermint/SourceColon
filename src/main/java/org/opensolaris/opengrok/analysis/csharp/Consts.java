@@ -28,7 +28,7 @@ import java.util.Set;
  * @author Christoph Hofmann
  */
 public class Consts {
-    public static final Set<String> kwd = new HashSet<String>();
+    public static final Set<String> kwd = new HashSet<>();
 
     static {
         // C# Keywords

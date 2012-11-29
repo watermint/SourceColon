@@ -51,7 +51,7 @@ public final class JarAnalyzer extends FileAnalyzer {
     }
 
     public void analyze(Document doc, InputStream in) throws IOException {
-        xrefs = new LinkedHashMap<String, String>();
+        xrefs = new LinkedHashMap<>();
 
         ZipInputStream zis = new ZipInputStream(in);
         ZipEntry entry;

@@ -35,7 +35,7 @@ public class Definitions implements Serializable {
         private final Map<String, Set<Tag>> sym_tags; //NOPMD
 
         protected LineTagMap() {
-            this.sym_tags = new HashMap<String, Set<Tag>>();
+            this.sym_tags = new HashMap<>();
         }
     }
 
@@ -52,9 +52,9 @@ public class Definitions implements Serializable {
     private final List<Tag> tags;
 
     public Definitions() {
-        symbols = new HashMap<String, Set<Integer>>();
-        line_maps = new HashMap<Integer, LineTagMap>();
-        tags = new ArrayList<Tag>();
+        symbols = new HashMap<>();
+        line_maps = new HashMap<>();
+        tags = new ArrayList<>();
     }
 
     /**
@@ -180,7 +180,7 @@ public class Definitions implements Serializable {
         tags.add(new_tag);
         Set<Integer> lines = symbols.get(internedSymbol);
         if (lines == null) {
-            lines = new HashSet<Integer>();
+            lines = new HashSet<>();
             symbols.put(internedSymbol, lines);
         }
         Integer aLine = line;
@@ -196,7 +196,7 @@ public class Definitions implements Serializable {
         // Insert sym->tag map for this line
         Set<Tag> tags = line_map.sym_tags.get(internedSymbol);
         if (tags == null) {
-            tags = new HashSet<Tag>();
+            tags = new HashSet<>();
             line_map.sym_tags.put(internedSymbol, tags);
         }
         tags.add(new_tag);

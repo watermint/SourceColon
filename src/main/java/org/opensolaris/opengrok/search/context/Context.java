@@ -60,7 +60,7 @@ public class Context {
      * insensitivity, false for sensitivity).
      */
     private static final Map<String, Boolean> tokenFields =
-            new HashMap<String, Boolean>();
+            new HashMap<>();
 
     static {
         tokenFields.put("full", Boolean.TRUE);
@@ -141,27 +141,20 @@ public class Context {
                 (urlPrefix == null) ? "" : Util.URIEncodePath(urlPrefix);
         String pathE = Util.URIEncodePath(path);
         if (tags != null) {
-            matchingTags = new TreeMap<Integer, String[]>();
+            matchingTags = new TreeMap<>();
             try {
                 for (Definitions.Tag tag : tags.getTags()) {
-                    for (int i = 0; i < m.length; i++) {
-                        if (m[i].match(tag.symbol) == LineMatcher.MATCHED) {
+                    for (LineMatcher aM : m) {
+                        if (aM.match(tag.symbol) == LineMatcher.MATCHED) {
                             /* desc[0] is matched symbol
                              * desc[1] is line number
                              * desc[2] is type
                              * desc[3] is matching line;
                              */
-                            String[] desc = {
-                                    tag.symbol,
-                                    Integer.toString(tag.line),
-                                    tag.type,
-                                    tag.text,};
+                            String[] desc = {tag.symbol, Integer.toString(tag.line), tag.type, tag.text,};
                             if (in == null) {
                                 if (out == null) {
-                                    Hit hit = new Hit(path,
-                                            Util.htmlize(desc[3]).replace(
-                                                    desc[0], "<b>" + desc[0] + "</b>"),
-                                            desc[1], false, alt);
+                                    Hit hit = new Hit(path, Util.htmlize(desc[3]).replace(desc[0], "<b>" + desc[0] + "</b>"), desc[1], false, alt);
                                     hits.add(hit);
                                     anything = true;
                                 } else {
@@ -173,8 +166,7 @@ public class Context {
                                     out.write("\"><span class=\"badge\">");
                                     out.write(desc[1]);
                                     out.write("</span> ");
-                                    out.write(Util.htmlize(desc[3]).replace(
-                                            desc[0], "<b>" + desc[0] + "</b>"));
+                                    out.write(Util.htmlize(desc[3]).replace(desc[0], "<b>" + desc[0] + "</b>"));
                                     out.write("</a> <i>");
                                     out.write(desc[2]);
                                     out.write("</i><br/>");
@@ -249,8 +241,8 @@ public class Context {
             int matchState = LineMatcher.NOT_MATCHED;
             int matchedLines = 0;
             while ((token = tokens.yylex()) != null && (!lim || matchedLines < 10)) {
-                for (int i = 0; i < m.length; i++) {
-                    matchState = m[i].match(token);
+                for (LineMatcher aM : m) {
+                    matchState = aM.match(token);
                     if (matchState == LineMatcher.MATCHED) {
                         tokens.printContext();
                         matchedLines++;

@@ -51,7 +51,7 @@ public class Getopt {
      * @param opts the list of allowed options
      */
     public Getopt(String[] argv, String opts) {
-        options = new ArrayList<Option>();
+        options = new ArrayList<>();
         current = -1;
         optind = -1;
         this.argv = argv.clone();
