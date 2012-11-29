@@ -45,13 +45,13 @@ public final class TroffAnalyzer extends FileAnalyzer {
 
     private final TroffFullTokenizer troffull;
     private final TroffXref xref;
-    Reader dummy = new StringReader("");
 
     /**
      * Creates a new instance of TroffAnalyzer
      */
     protected TroffAnalyzer(FileAnalyzerFactory factory) {
         super(factory);
+        Reader dummy = new StringReader("");
         troffull = new TroffFullTokenizer(dummy);
         xref = new TroffXref(dummy);
         content = new char[12 * 1024];

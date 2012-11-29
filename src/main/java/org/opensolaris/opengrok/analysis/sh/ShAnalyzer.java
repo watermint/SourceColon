@@ -45,9 +45,9 @@ public final class ShAnalyzer extends PlainAnalyzerBase {
     /**
      * Creates a new instance of ShAnalyzer
      */
-    ShSymbolTokenizer shref;
-    ShXref xref;
-    Reader dummy = new StringReader("");
+    private ShSymbolTokenizer shref;
+    private ShXref xref;
+    private Reader dummy = new StringReader("");
 
     protected ShAnalyzer(FileAnalyzerFactory factory) {
         super(factory);

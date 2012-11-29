@@ -107,14 +107,14 @@ public class SearchEngine {
     private String data;
     private static final boolean docsScoredInOrder = false;
 
-    int hitsPerPage = RuntimeEnvironment.getInstance().getHitsPerPage();
-    int cachePages = RuntimeEnvironment.getInstance().getCachePages();
+    private int hitsPerPage = RuntimeEnvironment.getInstance().getHitsPerPage();
+    private int cachePages = RuntimeEnvironment.getInstance().getCachePages();
     int totalHits = 0;
 
     private ScoreDoc[] hits;
     private TopScoreDocCollector collector;
     private Searcher searcher;
-    boolean allCollected;
+    private boolean allCollected;
 
     /**
      * Creates a new instance of SearchEngine

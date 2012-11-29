@@ -29,10 +29,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 public final class Hash2TokenStream extends TokenStream {
-    int i = 0;
-    String term;
-    String terms[];
-    Iterator<String> keys;
+    private int i = 0;
+    private String[] terms;
+    private Iterator<String> keys;
     private final TermAttribute termAtt = addAttribute(TermAttribute.class);
 
     public Hash2TokenStream(Set<String> symbols) {
@@ -43,7 +42,7 @@ public final class Hash2TokenStream extends TokenStream {
     public boolean incrementToken() throws java.io.IOException {
         while (i <= 0) {
             if (keys.hasNext()) {
-                term = keys.next();
+                String term = keys.next();
                 terms = term.split("[^a-zA-Z_0-9]+");
                 i = terms.length;
                 if (i > 0) {

@@ -37,9 +37,9 @@ import java.io.Writer;
  */
 public final class CSharpAnalyzer extends PlainAnalyzerBase {
 
-    CSharpSymbolTokenizer cref;
-    CSharpXref xref;
-    Reader dummy = new StringReader("");
+    private CSharpSymbolTokenizer cref;
+    private CSharpXref xref;
+    private Reader dummy = new StringReader("");
 
     protected CSharpAnalyzer(FileAnalyzerFactory factory) {
         super(factory);

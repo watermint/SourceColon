@@ -46,9 +46,9 @@ final class Search {
             "\t -f Full text";
 
     private SearchEngine engine;
-    final List<Hit> results = new ArrayList<Hit>();
-    int totalResults = 0;
-    int nhits = 0;
+    private final List<Hit> results = new ArrayList<Hit>();
+    private int totalResults = 0;
+    private int nhits = 0;
 
     @SuppressWarnings({"PMD.SwitchStmtsShouldHaveDefault"})
     protected boolean parseCmdLine(String[] argv) {

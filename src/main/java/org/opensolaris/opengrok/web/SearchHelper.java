@@ -139,7 +139,7 @@ public class SearchHelper {
      * the lucene sort instruction based on {@link #order} created via
      * {@link #prepareExec(SortedSet)}.
      */
-    protected Sort sort;
+    private Sort sort;
     /**
      * projects to use to setup indexer searchers. Usually setup via
      * {@link #prepareExec(SortedSet)}.

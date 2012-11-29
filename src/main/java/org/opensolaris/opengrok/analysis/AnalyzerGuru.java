@@ -255,26 +255,6 @@ public class AnalyzerGuru {
     }
 
     /**
-     * Get the content type for a named file.
-     *
-     * @param in   The input stream we want to get the content type for (if
-     *             we cannot determine the content type by the filename)
-     * @param file The name of the file
-     * @return The contentType suitable for printing to response.setContentType() or null
-     *         if the factory was not found
-     * @throws java.io.IOException If an error occurs while accessing the input
-     *                             stream.
-     */
-    public static String getContentType(InputStream in, String file) throws IOException {
-        FileAnalyzerFactory factory = find(in, file);
-        String type = null;
-        if (factory != null) {
-            type = factory.getContentType();
-        }
-        return type;
-    }
-
-    /**
      * Write a browsable version of the file
      *
      *
@@ -295,27 +275,6 @@ public class AnalyzerGuru {
             input = ExpandTabsReader.wrap(in, project);
         }
         factory.writeXref(input, out, defs, project);
-    }
-
-    /**
-     * Get the genre of a file
-     *
-     * @param file The file to inspect
-     * @return The genre suitable to decide how to display the file
-     */
-    public static Genre getGenre(String file) {
-        return getGenre(find(file));
-    }
-
-    /**
-     * Get the genre of a bulk of data
-     *
-     * @param in A stream containing the data
-     * @return The genre suitable to decide how to display the file
-     * @throws java.io.IOException If an error occurs while getting the content
-     */
-    public static Genre getGenre(InputStream in) throws IOException {
-        return getGenre(find(in));
     }
 
     /**

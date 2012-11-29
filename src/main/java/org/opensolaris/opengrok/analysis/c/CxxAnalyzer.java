@@ -42,9 +42,9 @@ public final class CxxAnalyzer extends PlainAnalyzerBase {
     /**
      * Creates a new instance of CAnalyzer
      */
-    CxxSymbolTokenizer cref;
-    CxxXref xref;
-    Reader dummy = new StringReader("");
+    private CxxSymbolTokenizer cref;
+    private CxxXref xref;
+    private Reader dummy = new StringReader("");
 
     protected CxxAnalyzer(FileAnalyzerFactory factory) {
         super(factory);

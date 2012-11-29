@@ -37,9 +37,9 @@ import java.io.Writer;
 
 public final class TclAnalyzer extends PlainAnalyzerBase {
 
-    TclSymbolTokenizer cref;
-    TclXref xref;
-    Reader dummy = new StringReader("");
+    private TclSymbolTokenizer cref;
+    private TclXref xref;
+    private Reader dummy = new StringReader("");
 
     protected TclAnalyzer(FileAnalyzerFactory factory) {
         super(factory);

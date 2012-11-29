@@ -37,9 +37,9 @@ import java.io.Writer;
 
 public final class LispAnalyzer extends PlainAnalyzerBase {
 
-    LispSymbolTokenizer cref;
-    LispXref xref;
-    Reader dummy = new StringReader("");
+    private LispSymbolTokenizer cref;
+    private LispXref xref;
+    private Reader dummy = new StringReader("");
 
     protected LispAnalyzer(FileAnalyzerFactory factory) {
         super(factory);

@@ -124,17 +124,6 @@ public final class Util {
     private static String versionP = htmlize(Info.getRevision());
 
     /**
-     * used by BUI - CSS needs this parameter for proper cache refresh (per
-     * changeset) in client browser jel: but useless, since the page cached
-     * anyway.
-     *
-     * @return html escaped version (hg changeset)
-     */
-    public static String versionParameter() {
-        return versionP;
-    }
-
-    /**
      * Convinience method for {@code breadcrumbPath(urlPrefix, path, '/')}.
      *
      * @param urlPrefix prefix to add to each url
@@ -282,8 +271,8 @@ public final class Util {
         }
         StringBuilder buf = new StringBuilder(path.length());
         buf.append('/');
-        for (int i = 0; i < pnames.length; i++) {
-            buf.append(pnames[i]).append('/');
+        for (String pname : pnames) {
+            buf.append(pname).append('/');
         }
         if (path.charAt(path.length() - 1) != sep) {
             // since is not a general purpose method. So we waive to handle
@@ -296,24 +285,6 @@ public final class Util {
 
     private final static Pattern EMAIL_PATTERN =
             Pattern.compile("([^<\\s]+@[^>\\s]+)");
-
-    /**
-     * Get email address of the author.
-     *
-     * @param author string containing author and possibly email address.
-     * @return email address of the author or
-     *         full author string if the author string does not contain an email
-     *         address.
-     */
-    public static String getEmail(String author) {
-        Matcher email_matcher = EMAIL_PATTERN.matcher(author);
-        String email = author;
-        if (email_matcher.find()) {
-            email = email_matcher.group(1).trim();
-        }
-
-        return email;
-    }
 
     /**
      * Remove all empty and {@code null} string elements from the given
@@ -329,22 +300,25 @@ public final class Util {
         if (names == null || names.length == 0) {
             return new String[0];
         }
-        for (int i = 0; i < names.length; i++) {
-            if (names[i] == null || names[i].length() == 0) {
+        for (String name : names) {
+            if (name == null || name.length() == 0) {
                 continue;
             }
             if (canonical) {
-                if (names[i].equals("..")) {
-                    if (!res.isEmpty()) {
-                        res.removeLast();
-                    }
-                } else if (names[i].equals(".")) {
-                    continue;
-                } else {
-                    res.add(names[i]);
+                switch (name) {
+                    case "..":
+                        if (!res.isEmpty()) {
+                            res.removeLast();
+                        }
+                        break;
+                    case ".":
+                        continue;
+                    default:
+                        res.add(name);
+                        break;
                 }
             } else {
-                res.add(names[i]);
+                res.add(name);
             }
         }
         return res.size() == names.length ? names : res.toArray(new String[res
@@ -706,23 +680,6 @@ public final class Util {
         while ((len = in.read(buf)) >= 0) {
             out.write(buf, 0, len);
         }
-    }
-
-    /**
-     * Silently dump a file to the given destionation. All {@link IOException}s
-     * gets caught and logged, but not re-thrown.
-     *
-     * @param out        dump destination
-     * @param dir        directory, which should contains the file.
-     * @param filename   the basename of the file to dump.
-     * @param compressed if {@code true} the denoted file is assumed to be
-     *                   gzipped.
-     * @return {@code true} on success (everything read and written).
-     * @throws NullPointerException if a parameter is {@code null}.
-     */
-    public static boolean dump(Writer out, File dir, String filename,
-                               boolean compressed) {
-        return dump(out, new File(dir, filename), compressed);
     }
 
     /**

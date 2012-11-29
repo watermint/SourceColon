@@ -26,7 +26,7 @@ package org.opensolaris.opengrok.search.context;
 import org.apache.lucene.search.WildcardTermEnum;
 
 public class WildCardMatcher extends LineMatcher {
-    final String pattern;
+    private final String pattern;
 
     public WildCardMatcher(String pattern, boolean caseInsensitive) {
         super(caseInsensitive);

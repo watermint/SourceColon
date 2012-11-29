@@ -159,10 +159,7 @@ public final class ELFAnalyzer extends FileAnalyzer {
     }
 
     private boolean isReadable(int c) {
-        if (c > ' ' && c <= 127) {
-            return true;
-        }
-        return false;
+        return c > ' ' && c <= 127;
     }
 
     private String getName(int tab, int stroff, MappedByteBuffer fmap) {

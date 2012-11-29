@@ -59,12 +59,11 @@ public class EftarFile {
         public Map<Long, Node> children;
         public long tagOffset;
         public long childOffset;
-        public long myOffset;
 
         public Node(long hash, String tag) {
             this.hash = hash;
             this.tag = tag;
-            children = new TreeMap<Long, Node>();
+            children = new TreeMap<>();
         }
 
         public Node put(long hash, String desc) {
@@ -223,7 +222,7 @@ public class EftarFile {
         }
     }
 
-    public void write(String outPath) throws FileNotFoundException, IOException {
+    public void write(String outPath) throws IOException {
         offset = RECORD_LENGTH;
         traverse(root);
         out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(outPath)));
@@ -236,7 +235,7 @@ public class EftarFile {
         IOUtils.close(out);
     }
 
-    public void create(String[] args) throws IOException, FileNotFoundException {
+    public void create(String[] args) throws IOException {
         for (int i = 0; i < args.length - 1; i++) {
             readInput(args[i]);
         }

@@ -32,6 +32,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static java.lang.Thread.getDefaultUncaughtExceptionHandler;
+
 /**
  * Wrapper to Java Process API
  *
@@ -301,7 +303,7 @@ public class Executor {
 
     public static void registerErrorHandler() {
         UncaughtExceptionHandler dueh =
-                Thread.currentThread().getDefaultUncaughtExceptionHandler();
+                getDefaultUncaughtExceptionHandler();
         if (dueh == null) {
             log.fine("Installing default uncaught exception handler");
             Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {

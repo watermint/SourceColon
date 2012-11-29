@@ -59,7 +59,7 @@ import static org.opensolaris.opengrok.management.Constants.*;
  * @author Jan S Berg
  */
 final public class OGAgent {
-    Properties props;
+    private Properties props;
 
     private static final Logger log = Logger.getLogger("org.opensolaris.opengrok");
     private MBeanServer server = null;
@@ -180,7 +180,7 @@ final public class OGAgent {
         }
     }
 
-    public void runOGA() throws MalformedURLException, IOException, JMException {
+    public void runOGA() throws IOException, JMException {
         String javaver = System.getProperty("java.version");
 
 

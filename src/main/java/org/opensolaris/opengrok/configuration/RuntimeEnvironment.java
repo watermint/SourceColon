@@ -479,31 +479,6 @@ public final class RuntimeEnvironment {
     }
 
     /**
-     * Get the client command to use to access the repository for the given
-     * fully quallified classname.
-     *
-     * @param clazzName name of the targeting class
-     * @return {@code null} if not yet set, the client command otherwise.
-     */
-    public String getRepoCmd(String clazzName) {
-        return threadConfig.get().getRepoCmd(clazzName);
-    }
-
-    /**
-     * Set the client command to use to access the repository for the given
-     * fully qualified class name.
-     *
-     * @param clazzName name of the targeting class. If {@code null} this method
-     *                  does nothing.
-     * @param cmd       the client command to use. If {@code null} the corresponding
-     *                  entry for the given clazzName get removed.
-     * @return the client command previously set, which might be {@code null}.
-     */
-    public String setRepoCmd(String clazzName, String cmd) {
-        return threadConfig.get().setRepoCmd(clazzName, cmd);
-    }
-
-    /**
      * Sets the user page for the history listing
      *
      * @param userPage the URL fragment proceeding the username from history
@@ -637,22 +612,6 @@ public final class RuntimeEnvironment {
 
     public Date getDateForLastIndexRun() {
         return threadConfig.get().getDateForLastIndexRun();
-    }
-
-    public String getDatabaseDriver() {
-        return threadConfig.get().getDatabaseDriver();
-    }
-
-    public void setDatabaseDriver(String databaseDriver) {
-        threadConfig.get().setDatabaseDriver(databaseDriver);
-    }
-
-    public String getDatabaseUrl() {
-        return threadConfig.get().getDatabaseUrl();
-    }
-
-    public void setDatabaseUrl(String databaseUrl) {
-        threadConfig.get().setDatabaseUrl(databaseUrl);
     }
 
     public Set<String> getAllowedSymlinks() {

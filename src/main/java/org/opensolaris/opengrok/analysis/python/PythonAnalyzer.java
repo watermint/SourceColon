@@ -41,9 +41,9 @@ import java.io.Writer;
 
 public final class PythonAnalyzer extends PlainAnalyzerBase {
 
-    PythonSymbolTokenizer cref;
-    PythonXref xref;
-    Reader dummy = new StringReader("");
+    private PythonSymbolTokenizer cref;
+    private PythonXref xref;
+    private Reader dummy = new StringReader("");
 
     /**
      * Creates a new instance of PythonAnalyzer

@@ -46,9 +46,9 @@ public final class CAnalyzer extends PlainAnalyzerBase {
     /**
      * Creates a new instance of CAnalyzer
      */
-    CSymbolTokenizer cref;
-    CXref xref;
-    Reader dummy = new StringReader("");
+    private CSymbolTokenizer cref;
+    private CXref xref;
+    private Reader dummy = new StringReader("");
 
     protected CAnalyzer(FileAnalyzerFactory factory) {
         super(factory);

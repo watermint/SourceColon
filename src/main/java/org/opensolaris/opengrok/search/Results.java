@@ -65,7 +65,7 @@ public final class Results {
      */
     private static Map<String, ArrayList<Document>>
     createMap(Searcher searcher, ScoreDoc[] hits, int startIdx, int stopIdx)
-            throws CorruptIndexException, IOException {
+            throws IOException {
         LinkedHashMap<String, ArrayList<Document>> dirHash =
                 new LinkedHashMap<String, ArrayList<Document>>();
         for (int i = startIdx; i < stopIdx; i++) {

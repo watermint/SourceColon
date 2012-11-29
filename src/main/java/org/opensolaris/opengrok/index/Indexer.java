@@ -56,7 +56,7 @@ public final class Indexer {
     private static final String ON = "on";
     private static final String OFF = "off";
     private static Indexer index = new Indexer();
-    static final Logger log = Logger.getLogger(Indexer.class.getName());
+    private static final Logger log = Logger.getLogger(Indexer.class.getName());
 
     private static final String DERBY_EMBEDDED_DRIVER =
             "org.apache.derby.jdbc.EmbeddedDriver";
@@ -183,9 +183,6 @@ public final class Indexer {
                         break;
                     case 'n':
                         runIndex = false;
-                        break;
-                    case 'D':
-                        cfg.setHistoryCacheInDB(true);
                         break;
                     case 'j':
                         databaseDriver = getopt.getOptarg();
@@ -384,27 +381,6 @@ public final class Indexer {
                 String fn = LogManager.getLogManager().getProperty("java.util.logging.FileHandler.pattern");
                 if (fn != null) {
                     System.out.println("Logging filehandler pattern: " + fn);
-                }
-            }
-
-            if (cfg.isHistoryCacheInDB()) {
-                // The default database driver is Derby's client driver.
-                if (databaseDriver == null) {
-                    databaseDriver = DERBY_CLIENT_DRIVER;
-                }
-
-                // The default URL depends on the database driver.
-                if (databaseURL == null) {
-                    StringBuilder defaultURL = new StringBuilder();
-                    defaultURL.append("jdbc:derby:");
-                    if (databaseDriver.equals(DERBY_EMBEDDED_DRIVER)) {
-                        defaultURL.append(cfg.getDataRoot())
-                                .append(File.separator);
-                    } else {
-                        defaultURL.append("//localhost/");
-                    }
-                    defaultURL.append("cachedb;create=true");
-                    databaseURL = defaultURL.toString();
                 }
             }
 

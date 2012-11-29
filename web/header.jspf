@@ -24,7 +24,6 @@
   <script type="text/javascript" src="<%=request.getContextPath()%>/js/sourcecolon.js"></script>
   <title><%=cfg.getTitle()%>
   </title>
-  <% out.write(cfg.getHeaderData()); %>
   <style>
     body {
       padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */

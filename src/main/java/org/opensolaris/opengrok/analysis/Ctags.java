@@ -56,7 +56,7 @@ public class Ctags {
         this.binary = binary;
     }
 
-    public void close() throws IOException {
+    public void close() {
         IOUtils.close(ctagsIn);
         if (ctags != null) {
             ctags.destroy();

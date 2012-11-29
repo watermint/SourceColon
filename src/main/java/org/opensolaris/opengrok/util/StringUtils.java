@@ -32,22 +32,7 @@ public final class StringUtils {
         // Only static utility methods
     }
 
-    /**
-     * Returns true if the string is empty or only includes whitespace characters.
-     *
-     * @param str the string to be checked
-     * @return true if string is empty or only contains whitespace charadcters
-     */
-    public static boolean isOnlyWhitespace(String str) {
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isWhitespace(str.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    static final Pattern javaClassPattern =
+    private static final Pattern javaClassPattern =
             Pattern.compile("([a-z][A-Za-z]*\\.)+[A-Z][A-Za-z0-9]*");
 
     /**

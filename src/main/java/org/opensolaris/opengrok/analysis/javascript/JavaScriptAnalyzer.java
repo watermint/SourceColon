@@ -40,9 +40,9 @@ import java.io.Writer;
  */
 public final class JavaScriptAnalyzer extends PlainAnalyzerBase {
 
-    JavaScriptSymbolTokenizer cref;
-    JavaScriptXref xref;
-    Reader dummy = new StringReader("");
+    private JavaScriptSymbolTokenizer cref;
+    private JavaScriptXref xref;
+    private Reader dummy = new StringReader("");
 
     /**
      * Creates a new instance of JavaAnalyzer

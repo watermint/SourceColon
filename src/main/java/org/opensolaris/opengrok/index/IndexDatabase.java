@@ -82,7 +82,7 @@ public class IndexDatabase {
     private boolean dirty;
     private boolean running;
     private List<String> directories;
-    static final Logger log = Logger.getLogger(IndexDatabase.class.getName());
+    private static final Logger log = Logger.getLogger(IndexDatabase.class.getName());
     private Ctags ctags;
     private LockFactory lockfact;
 
@@ -106,17 +106,6 @@ public class IndexDatabase {
         this.project = project;
         lockfact = new SimpleFSLockFactory();
         initialize();
-    }
-
-    /**
-     * Update the index database for all of the projects. Print progress to
-     * standard out.
-     *
-     * @param executor An executor to run the job
-     * @throws IOException if an error occurs
-     */
-    public static void updateAll(ExecutorService executor) throws IOException {
-        updateAll(executor, null);
     }
 
     /**
@@ -166,7 +155,7 @@ public class IndexDatabase {
      * @param paths
      * @throws IOException if an error occurs
      */
-    public static void update(ExecutorService executor, IndexChangedListener listener, List<String> paths) throws IOException {
+    public static void update(ExecutorService executor, IndexChangedListener listener, List<String> paths) {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
         List<IndexDatabase> dbs = new ArrayList<IndexDatabase>();
 
@@ -360,11 +349,7 @@ public class IndexDatabase {
             }
 
             if (ctags != null) {
-                try {
-                    ctags.close();
-                } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing ctags process", e);
-                }
+                ctags.close();
             }
 
             synchronized (lock) {
@@ -688,7 +673,7 @@ public class IndexDatabase {
      * Generate indexes recursively
      *
      * @param dir        the root indexDirectory to generate indexes for
-     * @param path       the path
+     * @param parent     parent
      * @param count_only if true will just traverse the source root and count files
      * @param cur_count  current count during the traversal of the tree
      * @param est_total  estimate total files to process
@@ -1029,10 +1014,7 @@ public class IndexDatabase {
             return false;
         }
         final IndexDatabase other = (IndexDatabase) obj;
-        if (this.project != other.project && (this.project == null || !this.project.equals(other.project))) {
-            return false;
-        }
-        return true;
+        return !(this.project != other.project && (this.project == null || !this.project.equals(other.project)));
     }
 
     @Override

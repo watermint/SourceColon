@@ -31,7 +31,7 @@ import org.opensolaris.opengrok.analysis.plain.PlainSymbolTokenizer;
 import java.io.Reader;
 
 public final class CompatibleAnalyser extends Analyzer {
-    PathAnalyzer pather;
+    private PathAnalyzer pather;
 
     public CompatibleAnalyser() {
         pather = new PathAnalyzer();

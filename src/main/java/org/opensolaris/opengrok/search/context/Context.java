@@ -51,8 +51,8 @@ public class Context {
     private final LineMatcher[] m;
     static final int MAXFILEREAD = 1024 * 1024;
     private char[] buffer;
-    PlainLineTokenizer tokens;
-    String queryAsURI;
+    private PlainLineTokenizer tokens;
+    private String queryAsURI;
 
     /**
      * Map whose keys tell which fields to look for in the source file, and

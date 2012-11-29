@@ -60,7 +60,6 @@ import java.util.regex.Pattern;
 public final class PageConfig {
     // TODO if still used, get it from the app context
 
-    boolean check4on = true;
     private RuntimeEnvironment env;
     private IgnoredNames ignoredNames;
     private String path;
@@ -74,78 +73,12 @@ public final class PageConfig {
     private String pageTitle;
     private String dtag;
     private String rev;
-    private static final EnumSet<Genre> txtGenres =
-            EnumSet.of(Genre.DATA, Genre.PLAIN, Genre.HTML);
     private SortedSet<String> requestedProjects;
     private String requestedProjectsString;
     private List<String> dirFileList;
     private QueryBuilder queryBuilder;
     private File dataRoot;
-    private StringBuilder headLines;
     private static final Logger log = Logger.getLogger(PageConfig.class.getName());
-
-    /**
-     * Add the given data to the &lt;head&gt; section of the html page to
-     * generate.
-     *
-     * @param data data to add. It is copied as is, so remember to escape
-     *             special characters ...
-     */
-    public void addHeaderData(String data) {
-        if (data == null || data.length() == 0) {
-            return;
-        }
-        if (headLines == null) {
-            headLines = new StringBuilder();
-        }
-        headLines.append(data);
-    }
-
-    /**
-     * Get addition data, which should be added as is to the &lt;head&gt;
-     * section of the html page.
-     *
-     * @return an empty string if nothing to add, the data otherwise.
-     */
-    public String getHeaderData() {
-        return headLines == null ? "" : headLines.toString();
-    }
-
-    /**
-     * Check, whether the request contains minimal information required to
-     * produce a valid page. If this method returns an empty string, the
-     * referred file or directory actually exists below the source root
-     * directory and is readable.
-     *
-     * @return {@code null} if the referred src file, directory or history is not
-     *         available, an empty String if further processing is ok and a non-empty
-     *         string which contains the URI encoded redirect path if the request
-     *         should be redirected.
-     * @see #resourceNotAvailable()
-     * @see #getOnRedirect()
-     * @see #getDirectoryRedirect()
-     */
-    public String canProcess() {
-        if (resourceNotAvailable()) {
-            return getOnRedirect();
-        }
-        String redir = getDirectoryRedirect();
-        if (redir == null) {
-            return null;
-        }
-        // jel: outfactored from list.jsp - seems to be bogus
-        if (isDir()) {
-            if (getPrefix() == Prefix.XREF_P) {
-                if (getResourceFileList().isEmpty() &&
-                        !getRequestedRevision().isEmpty()) {
-                    return null;
-                }
-            } else if (getPrefix() == Prefix.RAW_P) {
-                return null;
-            }
-        }
-        return redir == null ? "" : redir;
-    }
 
     /**
      * Get a list of filenames in the requested path.
@@ -314,30 +247,6 @@ public final class PageConfig {
     }
 
     /**
-     * Get the definition tag for the request related file or directory.
-     *
-     * @return an empty string if not found, the tag otherwise.
-     */
-    public String getDefineTagsIndex() {
-        if (dtag != null) {
-            return dtag;
-        }
-        getEftarReader();
-        if (eftarReader != null) {
-            try {
-                dtag = eftarReader.get(getPath());
-                // cfg.getPrefix() != Prefix.XREF_S) {
-            } catch (IOException e) {
-                log.log(Level.INFO, "Failed to get entry from eftar reader: ", e);
-            }
-        }
-        if (dtag == null) {
-            dtag = "";
-        }
-        return dtag;
-    }
-
-    /**
      * Get the revision parameter {@code r} from the request.
      *
      * @return {@code "r=<i>revision</i>"} if found, an empty string otherwise.
@@ -380,15 +289,6 @@ public final class PageConfig {
         res[1] = path.substring(res[0].length());
         res[2] = "";
         return res;
-    }
-
-    /**
-     * Get the project {@link #getPath()} refers to.
-     *
-     * @return {@code null} if not available, the project otherwise.
-     */
-    public Project getProject() {
-        return Project.getProject(getResourceFile());
     }
 
     /**
@@ -654,6 +554,7 @@ public final class PageConfig {
      *         used to redirect the client to the propper path.
      */
     public String getOnRedirect() {
+        boolean check4on = true;
         if (check4on) {
             File newFile = new File(getSourceRootPath() + "/on/" + getPath());
             if (newFile.canRead()) {

@@ -39,9 +39,9 @@ import java.io.Writer;
  */
 public final class FortranAnalyzer extends PlainAnalyzerBase {
 
-    FortranSymbolTokenizer fref;
-    FortranXref xref;
-    Reader dummy = new StringReader("");
+    private FortranSymbolTokenizer fref;
+    private FortranXref xref;
+    private Reader dummy = new StringReader("");
 
     FortranAnalyzer(FortranAnalyzerFactory factory) {
         super(factory);

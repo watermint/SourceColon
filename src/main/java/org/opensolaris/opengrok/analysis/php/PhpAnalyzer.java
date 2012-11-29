@@ -34,9 +34,9 @@ import java.io.Writer;
 
 public final class PhpAnalyzer extends PlainAnalyzerBase {
 
-    PhpSymbolTokenizer cref;
-    PhpXref xref;
-    Reader dummy = new StringReader("");
+    private PhpSymbolTokenizer cref;
+    private PhpXref xref;
+    private Reader dummy = new StringReader("");
 
     /**
      * Creates a new instance of PhpAnalyzer

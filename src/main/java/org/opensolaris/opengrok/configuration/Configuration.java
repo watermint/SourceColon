@@ -41,17 +41,6 @@ import java.util.logging.Logger;
 public final class Configuration {
     private String ctags;
 
-    /**
-     * The maximum time in milliseconds {@code HistoryCache.get()} can take
-     * before its result is cached.
-     */
-    private int historyCacheTime;
-
-    /**
-     * Should the history cache be stored in a database?
-     */
-    private boolean historyCacheInDB;
-
     private List<Project> projects;
     private String sourceRoot;
     private String dataRoot;
@@ -89,7 +78,6 @@ public final class Configuration {
     private boolean chattyStatusPage;
     private final Map<String, String> cmds;
     private int tabSize;
-    private static final Logger logger = Logger.getLogger(Configuration.class.getName());
 
     /**
      * Get the default tab size (number of space characters per tab character)
@@ -172,16 +160,6 @@ public final class Configuration {
         return cmds.put(clazzName, cmd);
     }
 
-    // just to satisfy bean/de|encoder stuff
-    public Map<String, String> getCmds() {
-        return Collections.unmodifiableMap(cmds);
-    }
-
-    public void setCmds(Map<String, String> cmds) {
-        this.cmds.clear();
-        this.cmds.putAll(cmds);
-    }
-
     public String getCtags() {
         return ctags;
     }
@@ -204,51 +182,6 @@ public final class Configuration {
 
     public void setHitsPerPage(int hitsPerPage) {
         this.hitsPerPage = hitsPerPage;
-    }
-
-    /**
-     * How long can a history request take before it's cached? If the time
-     * is exceeded, the result is cached. This setting only affects
-     * {@code FileHistoryCache}.
-     *
-     * @return the maximum time in milliseconds a history request can take
-     *         before it's cached
-     */
-    public int getHistoryCacheTime() {
-        return historyCacheTime;
-    }
-
-    /**
-     * Set the maximum time a history request can take before it's cached.
-     * This setting is only respected if {@code FileHistoryCache} is used.
-     *
-     * @param historyCacheTime maximum time in milliseconds
-     */
-    public void setHistoryCacheTime(int historyCacheTime) {
-        this.historyCacheTime = historyCacheTime;
-    }
-
-    /**
-     * Should the history cache be stored in a database? If yes,
-     * {@code JDBCHistoryCache} will be used to cache the history; otherwise,
-     * {@code FileHistoryCache} is used.
-     *
-     * @return whether the history cache should be stored in a database
-     */
-    public boolean isHistoryCacheInDB() {
-        return historyCacheInDB;
-    }
-
-    /**
-     * Set whether the history cache should be stored in a database, and
-     * {@code JDBCHistoryCache} should be used instead of {@code
-     * FileHistoryCache}.
-     *
-     * @param historyCacheInDB whether the history cached should be stored in
-     *                         a database
-     */
-    public void setHistoryCacheInDB(boolean historyCacheInDB) {
-        this.historyCacheInDB = historyCacheInDB;
     }
 
     public List<Project> getProjects() {

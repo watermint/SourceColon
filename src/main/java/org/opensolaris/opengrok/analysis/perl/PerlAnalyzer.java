@@ -41,9 +41,9 @@ import java.io.Writer;
 
 public final class PerlAnalyzer extends PlainAnalyzerBase {
 
-    PerlSymbolTokenizer cref;
-    PerlXref xref;
-    Reader dummy = new StringReader("");
+    private PerlSymbolTokenizer cref;
+    private PerlXref xref;
+    private Reader dummy = new StringReader("");
 
     /**
      * Creates a new instance of PerlAnalyzer

@@ -40,9 +40,9 @@ import java.io.Writer;
  */
 public final class JavaAnalyzer extends PlainAnalyzerBase {
 
-    JavaSymbolTokenizer cref;
-    JavaXref xref;
-    Reader dummy = new StringReader("");
+    private JavaSymbolTokenizer cref;
+    private JavaXref xref;
+    private Reader dummy = new StringReader("");
 
     /**
      * Creates a new instance of JavaAnalyzer

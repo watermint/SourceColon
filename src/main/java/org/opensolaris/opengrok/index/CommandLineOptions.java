@@ -75,7 +75,6 @@ public class CommandLineOptions {
         options.add(new Option('a', ON_OFF, "Allow or disallow leading wildcards in a search"));
         options.add(new Option('C', null, "Print per project percentage progress information(I/O extensive, since one read through dir structure is made before indexing, needs -v, otherwise it just goes to the log)"));
         options.add(new Option('c', "/path/to/ctags", "Path to Exuberant Ctags from http://ctags.sf.net by default takes the Exuberant Ctags in PATH."));
-        options.add(new Option('D', null, "Store history cache in a database (needs the JDBC driver in the classpath, typically derbyclient.jar or derby.jar)"));
         options.add(new Option('d', "/path/to/data/root", "The directory where OpenGrok stores the generated data"));
         options.add(new Option('e', null, "Economical - consumes less disk space. It does not generate hyper text cross reference files offline, but will do so on demand - which could be sightly slow."));
         options.add(new Option('I', "pattern", "Only files matching this pattern will be examined (supports wildcards, example: -I *.java -I *.c)"));
@@ -124,16 +123,6 @@ public class CommandLineOptions {
         }
 
         return null;
-    }
-
-    private void spool(BufferedReader reader, PrintWriter out, String tag) throws IOException {
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (line.equals(tag)) {
-                return;
-            }
-            out.println(line);
-        }
     }
 
     public String getUsage() {
