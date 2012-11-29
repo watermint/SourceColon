@@ -579,13 +579,9 @@ public final class RuntimeEnvironment {
                 public void run() {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream(1 << 13);
                     while (!sock.isClosed()) {
-                        Socket s = null;
-                        BufferedInputStream in = null;
-                        try {
-                            s = sock.accept();
+                        try (Socket s = sock.accept(); BufferedInputStream in = new BufferedInputStream(s.getInputStream())) {
                             bos.reset();
                             log.log(Level.FINE, "OpenGrok: Got request from {0}", s.getInetAddress().getHostAddress());
-                            in = new BufferedInputStream(s.getInputStream());
                             byte[] buf = new byte[1024];
                             int len;
                             while ((len = in.read(buf)) != -1) {
@@ -607,9 +603,6 @@ public final class RuntimeEnvironment {
                             log.log(Level.SEVERE, "Error reading config file: ", e);
                         } catch (RuntimeException e) {
                             log.log(Level.SEVERE, "Error parsing config file: ", e);
-                        } finally {
-                            IOUtils.close(s);
-                            IOUtils.close(in);
                         }
                     }
                 }

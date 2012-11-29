@@ -44,11 +44,6 @@ public class DirectoryListing {
     private final EftarFileReader desc;
     private final long now;
 
-    public DirectoryListing() {
-        desc = null;
-        now = System.currentTimeMillis();
-    }
-
     public DirectoryListing(EftarFileReader desc) {
         this.desc = desc;
         now = System.currentTimeMillis();

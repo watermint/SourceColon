@@ -353,12 +353,10 @@ public final class Configuration {
         if (!file.getParentFile().isDirectory()) {
             throw new RuntimeException("Cannot write configuration file: " + file.getAbsolutePath());
         }
-        final FileOutputStream out = new FileOutputStream(file);
-        try {
+        try (FileOutputStream out = new FileOutputStream(file)) {
             this.encodeObject(out);
-        } finally {
-            IOUtils.close(out);
         }
+
     }
 
     public String getXMLRepresentationAsString() {
@@ -374,11 +372,8 @@ public final class Configuration {
     }
 
     public static Configuration read(File file) throws IOException {
-        final FileInputStream in = new FileInputStream(file);
-        try {
+        try (FileInputStream in = new FileInputStream(file)) {
             return decodeObject(in);
-        } finally {
-            IOUtils.close(in);
         }
     }
 

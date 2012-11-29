@@ -41,9 +41,7 @@ public final class Info {
     private static final String REVISION;
 
     static {
-        InputStream in = null;
-        try {
-            in = Info.class.getResourceAsStream("info.properties");
+        try (InputStream in = Info.class.getResourceAsStream("info.properties")) {
             if (in != null) {
                 properties.load(in);
             }
@@ -51,8 +49,6 @@ public final class Info {
             REVISION = properties.getProperty("changeset", "unknown");
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
-        } finally {
-            IOUtils.close(in);
         }
     }
 

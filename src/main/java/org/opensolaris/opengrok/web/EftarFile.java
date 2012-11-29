@@ -194,12 +194,10 @@ public class EftarFile {
     private Node root;
 
     public void readInput(String tagsPath) throws IOException {
-        BufferedReader r = new BufferedReader(new FileReader(tagsPath));
-        try {
+        try (BufferedReader r = new BufferedReader(new FileReader(tagsPath))) {
             readInput(r);
-        } finally {
-            IOUtils.close(r);
         }
+
     }
 
     private void readInput(BufferedReader r) throws IOException {

@@ -85,14 +85,11 @@ public final class ELFAnalyzer extends FileAnalyzer {
             }
         } else {
             String fullpath = doc.get("fullpath");
-            final FileInputStream fin = new FileInputStream(fullpath);
-            try {
+            try (FileInputStream fin = new FileInputStream(fullpath)) {
                 parseELF(fin);
                 if (content.length() > 0) {
                     doc.add(new Field("full", " ", Field.Store.YES, Field.Index.ANALYZED));
                 }
-            } finally {
-                IOUtils.close(fin);
             }
         }
     }
