@@ -405,7 +405,7 @@ public final class Indexer {
                     // Found a new directory with no matching project, so
                     // create a new project with default properties.
                     Project p = new Project();
-                    p.setDescription(name);
+                    p.setProjectId(name);
                     p.setPath(path);
                     p.setTabSize(env.getConfiguration().getTabSize());
                     projects.add(p);
@@ -417,8 +417,8 @@ public final class Indexer {
 
                 @Override
                 public int compare(Project p1, Project p2) {
-                    String s1 = p1.getDescription();
-                    String s2 = p2.getDescription();
+                    String s1 = p1.getProjectId();
+                    String s2 = p2.getProjectId();
 
                     int ret;
                     if (s1 == null) {

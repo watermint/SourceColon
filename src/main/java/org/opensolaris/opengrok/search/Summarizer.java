@@ -296,12 +296,11 @@ public class Summarizer {
 
 
     /**
-     * Get the terms from a query and adds them to hightlite
+     * Get the terms from a query and adds them to hightailed
      * a stream of tokens
      *
      * @param query
      */
-
     private void getTerms(Query query) {
         if (query instanceof BooleanQuery) {
             getBooleans((BooleanQuery) query);

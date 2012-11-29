@@ -63,12 +63,12 @@ $(document).ready(function () {
       String cookieValue = cfg.getRequestedProjectsAsString();
       if (activeProject != null) {
         Set<String> projects = cfg.getRequestedProjects();
-        if (!projects.contains(activeProject.getDescription())) {
-          projects.add(activeProject.getDescription());
+        if (!projects.contains(activeProject.getProjectId())) {
+          projects.add(activeProject.getProjectId());
           // update cookie
           cookieValue = cookieValue.length() == 0
-              ? activeProject.getDescription()
-              : activeProject.getDescription() + '/' + cookieValue;
+              ? activeProject.getProjectId()
+              : activeProject.getProjectId() + '/' + cookieValue;
           Cookie cookie = new Cookie("sourcecolon_prj", cookieValue);
           // TODO hmmm, projects.jspf doesn't set a path
           cookie.setPath(request.getContextPath() + '/');

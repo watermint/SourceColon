@@ -47,8 +47,8 @@ java.util.SortedSet,
     QueryBuilder queryParams = cfg.getQueryBuilder();
     if (projects.size() != 0) {
       for (Project p : projects) {
-        String name = p.getDescription();
-        String esc = Util.formQuoteEscape(p.getDescription());
+        String name = p.getProjectId();
+        String esc = Util.formQuoteEscape(p.getProjectId());
         pMap.put(name, esc);
       }
       StringBuilder jsProjects = new StringBuilder(64);

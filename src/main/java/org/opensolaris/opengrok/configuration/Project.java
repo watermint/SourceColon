@@ -31,10 +31,7 @@ import java.io.IOException;
  */
 public class Project {
     private String path;
-    // this variable is very important, since it's used as the project identifier
-    // all over xrefs and webapp
-    // jel: and yes - awefully misleading. It should be called 'name'!
-    private String description;
+    private String projectId;
 
     /**
      * Size of tabs in this project. Used for displaying the xrefs correctly in
@@ -43,12 +40,12 @@ public class Project {
     private int tabSize;
 
     /**
-     * Get a textual description of this project
+     * projectId of this project
      *
-     * @return a textual description of the project
+     * @return a textual projectId of the project
      */
-    public String getDescription() {
-        return description;
+    public String getProjectId() {
+        return projectId;
     }
 
     /**
@@ -57,15 +54,6 @@ public class Project {
      * @return the relative path
      */
     public String getPath() {
-        return path;
-    }
-
-    /**
-     * Get the project id
-     *
-     * @return the id of the project
-     */
-    public String getId() {
         return path;
     }
 
@@ -80,12 +68,12 @@ public class Project {
     }
 
     /**
-     * Set a textual description of this project, preferably don't use " , " in the name, since it's used as delimiter for more projects
+     * Set a textual projectId of this project, preferably don't use " , " in the name, since it's used as delimiter for more projects
      *
-     * @param description a textual description of the project
+     * @param projectId a textual projectId of the project
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
     /**
@@ -161,17 +149,17 @@ public class Project {
     }
 
     /**
-     * Returns project object by its description, used in webapp to figure out which project is to be searched
+     * Returns project object by its projectId, used in webapp to figure out which project is to be searched
      *
-     * @param desc description of the project
-     * @return project that fits the description
+     * @param id projectId of the project
+     * @return project that fits the projectId
      */
-    public static Project getByDescription(String desc) {
+    public static Project getByProjectId(String id) {
         Project ret = null;
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
         if (env.hasProjects()) {
             for (Project proj : env.getProjects()) {
-                if (desc.indexOf(proj.getDescription()) == 0) {
+                if (id.indexOf(proj.getProjectId()) == 0) {
                     ret = proj;
                 }
             }

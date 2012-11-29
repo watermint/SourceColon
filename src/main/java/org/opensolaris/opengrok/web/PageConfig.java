@@ -23,7 +23,6 @@
  */
 package org.opensolaris.opengrok.web;
 
-import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.configuration.Project;
 import org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.opensolaris.opengrok.index.IgnoredNames;
@@ -429,19 +428,19 @@ public final class PageConfig {
             return set;
         }
         if (projects.size() == 1) {
-            set.add(projects.get(0).getDescription());
+            set.add(projects.get(0).getProjectId());
             return set;
         }
         List<String> vals = getParamVals(paramName);
         for (String s : vals) {
-            if (Project.getByDescription(s) != null) {
+            if (Project.getByProjectId(s) != null) {
                 set.add(s);
             }
         }
         if (set.isEmpty()) {
             List<String> cookies = getCookieVals(cookieName);
             for (String s : cookies) {
-                if (Project.getByDescription(s) != null) {
+                if (Project.getByProjectId(s) != null) {
                     set.add(s);
                 }
             }
@@ -449,7 +448,7 @@ public final class PageConfig {
         if (set.isEmpty()) {
             Project defaultProject = env.getDefaultProject();
             if (defaultProject != null) {
-                set.add(defaultProject.getDescription());
+                set.add(defaultProject.getProjectId());
             }
         }
         return set;
