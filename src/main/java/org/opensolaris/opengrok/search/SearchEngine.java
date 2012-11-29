@@ -27,6 +27,7 @@ package org.opensolaris.opengrok.search;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
@@ -113,7 +114,7 @@ public class SearchEngine {
 
     private ScoreDoc[] hits;
     private TopScoreDocCollector collector;
-    private Searcher searcher;
+    private IndexSearcher searcher;
     private boolean allCollected;
 
     /**
@@ -178,18 +179,13 @@ public class SearchEngine {
      * @throws IOException
      */
     private void searchMultiDatabase(List<Project> root, boolean paging) throws IOException {
-        IndexSearcher[] searchables = new IndexSearcher[root.size()];
+        IndexReader[] searchables = new IndexReader[root.size()];
         File droot = new File(RuntimeEnvironment.getInstance().getDataRootFile(), "index");
         int ii = 0;
         for (Project project : root) {
-            IndexReader ireader = (IndexReader.open(FSDirectory.open(new File(droot, project.getPath()))));
-            searchables[ii++] = new IndexSearcher(ireader);
+            searchables[ii++] = (IndexReader.open(FSDirectory.open(new File(droot, project.getPath()))));
         }
-        if (Runtime.getRuntime().availableProcessors() > 1) {
-            searcher = new ParallelMultiSearcher(searchables);
-        } else {
-            searcher = new MultiSearcher(searchables);
-        }
+        searcher = new IndexSearcher(new MultiReader(searchables));
         collector = TopScoreDocCollector.create(hitsPerPage * cachePages, docsScoredInOrder);
         searcher.search(query, collector);
         totalHits = collector.getTotalHits();

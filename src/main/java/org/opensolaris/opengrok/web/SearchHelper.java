@@ -24,6 +24,8 @@
 package org.opensolaris.opengrok.web;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.spell.SpellChecker;
@@ -121,7 +123,7 @@ public class SearchHelper {
      * the searcher used to open/search the index. Automatically set via
      * {@link #prepareExec(SortedSet)}.
      */
-    public Searcher searcher;
+    public IndexSearcher searcher;
     /**
      * list of docs which result from the executing the query
      */
@@ -211,17 +213,15 @@ public class SearchHelper {
                 searcher = new IndexSearcher(dir);
             } else {
                 //more projects
-                IndexSearcher[] searchables = new IndexSearcher[projects.size()];
+                IndexReader[] searchables = new IndexReader[projects.size()];
                 int ii = 0;
                 //TODO might need to rewrite to Project instead of
                 // String , need changes in projects.jspf too
                 for (String proj : projects) {
                     FSDirectory dir = FSDirectory.open(new File(indexDir, proj));
-                    searchables[ii++] = new IndexSearcher(dir);
+                    searchables[ii++] = IndexReader.open(dir);
                 }
-                searcher = parallel
-                        ? new ParallelMultiSearcher(searchables)
-                        : new MultiSearcher(searchables);
+                searcher = new IndexSearcher(new MultiReader(searchables));
             }
             // TODO check if below is somehow reusing sessions so we don't
             // requery again and again, I guess 2min timeout sessions could be
