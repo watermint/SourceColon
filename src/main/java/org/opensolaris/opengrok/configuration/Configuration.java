@@ -65,6 +65,7 @@ public final class Configuration {
     private boolean obfuscatingEMailAddresses;
     private boolean chattyStatusPage;
     private int tabSize;
+    private Filter includedNames;
 
     /**
      * Get the default tab size (number of space characters per tab character)
