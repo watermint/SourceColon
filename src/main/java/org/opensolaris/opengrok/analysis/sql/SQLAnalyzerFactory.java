@@ -34,7 +34,9 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class SQLAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"SQL"};
+    private static final String[] SUFFIXES = {
+            "SQL"
+    };
 
     public SQLAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);
@@ -46,7 +48,8 @@ public class SQLAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         SQLAnalyzer.writeXref(in, out, defs, project);
     }
 }

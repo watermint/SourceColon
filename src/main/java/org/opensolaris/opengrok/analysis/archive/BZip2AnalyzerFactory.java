@@ -27,9 +27,12 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class BZip2AnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"BZ", "BZ2"};
+    private static final String[] SUFFIXES = {
+            "BZ", "BZ2"
+    };
 
-    private static final String[] MAGICS = {"BZh"                   // Bzip files
+    private static final String[] MAGICS = {
+            "BZh"                   // Bzip files
     };
 
     public BZip2AnalyzerFactory() {

@@ -131,7 +131,11 @@ public class SearchEngine {
      * @return a query builder
      */
     private QueryBuilder createQueryBuilder() {
-        return new QueryBuilder().setFreetext(freetext).setDefs(definition).setRefs(symbol).setPath(file);
+        return new QueryBuilder()
+                .setFreetext(freetext)
+                .setDefs(definition)
+                .setRefs(symbol)
+                .setPath(file);
     }
 
     public boolean isValidQuery() {
@@ -232,7 +236,8 @@ public class SearchEngine {
                 }
             }
         } catch (Exception e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, SEARCH_EXCEPTION_MSG, e);
+            OpenGrokLogger.getLogger().log(
+                    Level.WARNING, SEARCH_EXCEPTION_MSG, e);
         }
 
         if (!docs.isEmpty()) {
@@ -278,7 +283,8 @@ public class SearchEngine {
             try {
                 searcher.search(query, collector);
             } catch (Exception e) { // this exception should never be hit, since search() will hit this before
-                OpenGrokLogger.getLogger().log(Level.WARNING, SEARCH_EXCEPTION_MSG, e);
+                OpenGrokLogger.getLogger().log(
+                        Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             }
             hits = collector.topDocs().scoreDocs;
             Document d = null;
@@ -287,7 +293,8 @@ public class SearchEngine {
                 try {
                     d = searcher.doc(docId);
                 } catch (Exception e) {
-                    OpenGrokLogger.getLogger().log(Level.SEVERE, SEARCH_EXCEPTION_MSG, e);
+                    OpenGrokLogger.getLogger().log(
+                            Level.SEVERE, SEARCH_EXCEPTION_MSG, e);
                 }
                 docs.add(d);
             }
@@ -314,7 +321,9 @@ public class SearchEngine {
                 if (sourceContext != null) {
                     try {
                         if (Genre.PLAIN == genre && (source != null)) {
-                            hasContext = sourceContext.getContext(new InputStreamReader(new FileInputStream(source + filename)), null, null, null, filename, tags, nhits > 100, ret);
+                            hasContext = sourceContext.getContext(new InputStreamReader(new FileInputStream(source +
+                                    filename)), null, null, null, filename,
+                                    tags, nhits > 100, ret);
                         } else if (Genre.XREFABLE == genre && data != null && summarizer != null) {
                             int l = 0;
                             Reader r = null;
@@ -354,7 +363,8 @@ public class SearchEngine {
                     ret.add(new Hit(filename, "...", "", false, alt));
                 }
             } catch (IOException | ClassNotFoundException e) {
-                OpenGrokLogger.getLogger().log(Level.WARNING, SEARCH_EXCEPTION_MSG, e);
+                OpenGrokLogger.getLogger().log(
+                        Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             }
         }
 

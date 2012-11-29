@@ -24,9 +24,9 @@
 package org.opensolaris.opengrok.analysis;
 
 import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
 
 import java.io.CharArrayReader;
 import java.io.IOException;
@@ -72,7 +72,7 @@ public abstract class JFlexTokenizer extends Tokenizer {
         yyclose();
     }
 
-    protected TermAttribute termAtt = addAttribute(TermAttribute.class);
+    protected CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
     protected OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
     protected PositionIncrementAttribute posIncrAtt = addAttribute(PositionIncrementAttribute.class);
 
@@ -90,7 +90,8 @@ public abstract class JFlexTokenizer extends Tokenizer {
     protected void setAttribs(String str, int start, int end) {
         //FIXME increasing below by one(default) might be tricky, need more analysis
         this.posIncrAtt.setPositionIncrement(1);
-        this.termAtt.setTermBuffer(str);
+        this.termAtt.setEmpty();
+        this.termAtt.append(str);
         this.offsetAtt.setOffset(start, end);
     }
 }

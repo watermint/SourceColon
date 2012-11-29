@@ -261,7 +261,6 @@ public final class Configuration {
     public Filter getIncludedNames() {
         return includedNames;
     }
-
     public boolean isUsingLuceneLocking() {
         return useLuceneLocking;
     }

@@ -63,8 +63,11 @@ public final class Results {
      * @throws CorruptIndexException
      * @throws IOException
      */
-    private static Map<String, ArrayList<Document>> createMap(IndexSearcher searcher, ScoreDoc[] hits, int startIdx, int stopIdx) throws IOException {
-        LinkedHashMap<String, ArrayList<Document>> dirHash = new LinkedHashMap<>();
+    private static Map<String, ArrayList<Document>>
+    createMap(IndexSearcher searcher, ScoreDoc[] hits, int startIdx, int stopIdx)
+            throws IOException {
+        LinkedHashMap<String, ArrayList<Document>> dirHash =
+                new LinkedHashMap<>();
         for (int i = startIdx; i < stopIdx; i++) {
             int docId = hits[i].doc;
             Document doc = searcher.doc(docId);
@@ -100,7 +103,9 @@ public final class Results {
             int len = r.read(content);
             return new String(content, 0, len);
         } catch (Exception e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, "An error reading tags from " + basedir + path + (compressed ? ".gz" : ""), e);
+            OpenGrokLogger.getLogger().log(
+                    Level.WARNING, "An error reading tags from " + basedir + path
+                    + (compressed ? ".gz" : ""), e);
         } finally {
             IOUtils.close(r);
             IOUtils.close(gis);
@@ -125,6 +130,7 @@ public final class Results {
      * is not {@code null})</li>
      * </ul>
      *
+     *
      * @param out   write destination
      * @param sh    search helper which has all required fields set
      * @param start index of the first hit to print
@@ -132,7 +138,8 @@ public final class Results {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static void prettyPrint(Writer out, SearchHelper sh, int start, int end) throws IOException, ClassNotFoundException {
+    public static void prettyPrint(Writer out, SearchHelper sh, int start,
+                                   int end) throws IOException, ClassNotFoundException {
         String ctxE = Util.URIEncodePath(sh.contextPath);
         String xrefPrefix = sh.contextPath + Prefix.XREF_P;
         String morePrefix = sh.contextPath + Prefix.MORE_P;
@@ -140,7 +147,8 @@ public final class Results {
         String rawPrefixE = ctxE + Prefix.RAW_P;
         File xrefDataDir = new File(sh.dataRoot, Prefix.XREF_P.toString());
 
-        for (Map.Entry<String, ArrayList<Document>> entry : createMap(sh.searcher, sh.hits, start, end).entrySet()) {
+        for (Map.Entry<String, ArrayList<Document>> entry :
+                createMap(sh.searcher, sh.hits, start, end).entrySet()) {
             String parent = entry.getKey();
             out.write("<tr class=\"success\"><td colspan=\"3\"><a href=\"");
             out.write(xrefPrefixE);
@@ -188,8 +196,11 @@ public final class Results {
                         String htags = getTags(sh.sourceRoot, rpath, false);
                         out.write(sh.summerizer.getSummary(htags).toString());
                     } else {
-                        FileReader r = genre == Genre.PLAIN ? new FileReader(new File(sh.sourceRoot, rpath)) : null;
-                        sh.sourceContext.getContext(r, out, xrefPrefix, morePrefix, rpath, tags, true, null);
+                        FileReader r = genre == Genre.PLAIN
+                                ? new FileReader(new File(sh.sourceRoot, rpath))
+                                : null;
+                        sh.sourceContext.getContext(r, out, xrefPrefix,
+                                morePrefix, rpath, tags, true, null);
                     }
                 }
                 out.write("</td></tr>\n");

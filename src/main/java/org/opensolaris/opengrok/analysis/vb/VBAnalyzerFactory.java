@@ -34,7 +34,14 @@ import java.io.Writer;
 
 public class VBAnalyzerFactory extends FileAnalyzerFactory {
 
-    private static final String[] SUFFIXES = {"VB", "CLS", "CTL", "BAS", "FRM", "VBS"};
+    private static final String[] SUFFIXES = {
+            "VB",
+            "CLS",
+            "CTL",
+            "BAS",
+            "FRM",
+            "VBS"
+    };
 
     public VBAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);
@@ -46,7 +53,8 @@ public class VBAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         VBAnalyzer.writeXref(in, out, defs, project);
     }
 }

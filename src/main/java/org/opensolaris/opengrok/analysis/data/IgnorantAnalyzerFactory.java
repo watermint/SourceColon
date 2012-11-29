@@ -32,10 +32,15 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
  * text data, but ignores them.
  */
 public class IgnorantAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"BDF", "XPM", "PS", "AFM", "PDF"};
+    private static final String[] SUFFIXES = {
+            "BDF", "XPM", "PS", "AFM", "PDF"
+    };
 
-    private static final String[] MAGICS = {"%!PS-",                // post script files
-            "# PaCkAg", "%PDF",};
+    private static final String[] MAGICS = {
+            "%!PS-",                // post script files
+            "# PaCkAg",
+            "%PDF",
+    };
 
     public IgnorantAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, null, null);

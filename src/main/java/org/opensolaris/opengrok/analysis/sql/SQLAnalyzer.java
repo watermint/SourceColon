@@ -56,9 +56,9 @@ public final class SQLAnalyzer extends PlainAnalyzerBase {
      * Write a cross referenced HTML file. Reads the source from
      * an input stream.
      *
-     * @param in   input source
-     * @param out  output xref writer
-     * @param defs definitions for the file (could be null)
+     * @param in         input source
+     * @param out        output xref writer
+     * @param defs       definitions for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         SQLXref xref = new SQLXref(in);

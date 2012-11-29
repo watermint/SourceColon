@@ -225,8 +225,10 @@ public class Definitions implements Serializable {
      * @throws ClassCastException     if the array contains an object of another
      *                                type than {@code Definitions}
      */
-    public static Definitions deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(bytes));
+    public static Definitions deserialize(byte[] bytes)
+            throws IOException, ClassNotFoundException {
+        ObjectInputStream in =
+                new ObjectInputStream(new ByteArrayInputStream(bytes));
         return (Definitions) in.readObject();
     }
 }

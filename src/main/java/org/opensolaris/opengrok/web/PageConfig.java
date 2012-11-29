@@ -99,7 +99,8 @@ public final class PageConfig {
                 dirFileList = Collections.emptyList();
             } else {
                 Arrays.sort(files, String.CASE_INSENSITIVE_ORDER);
-                dirFileList = Collections.unmodifiableList(Arrays.asList(files));
+                dirFileList =
+                        Collections.unmodifiableList(Arrays.asList(files));
             }
         }
         return dirFileList;
@@ -279,7 +280,9 @@ public final class PageConfig {
      */
     public String[] getSearchOnlyIn() {
         if (isDir()) {
-            return path.length() == 0 ? new String[]{"/", "/", "disabled=\"\""} : new String[]{path, path, ""};
+            return path.length() == 0
+                    ? new String[]{"/", "/", "disabled=\"\""}
+                    : new String[]{path, path, ""};
         }
         String[] res = new String[3];
         res[0] = path.substring(0, path.lastIndexOf('/') + 1);
@@ -349,7 +352,8 @@ public final class PageConfig {
      */
     public SortedSet<String> getRequestedProjects() {
         if (requestedProjects == null) {
-            requestedProjects = getRequestedProjects("project", "OpenGrokProject");
+            requestedProjects =
+                    getRequestedProjects("project", "OpenGrokProject");
         }
         return requestedProjects;
     }
@@ -417,7 +421,8 @@ public final class PageConfig {
      *                   lists used as fallback
      * @return a possible empty set but never {@code null}.
      */
-    protected SortedSet<String> getRequestedProjects(String paramName, String cookieName) {
+    protected SortedSet<String> getRequestedProjects(String paramName,
+                                                     String cookieName) {
         TreeSet<String> set = new TreeSet<>();
         List<Project> projects = getEnv().getProjects();
         if (projects == null) {
@@ -553,7 +558,9 @@ public final class PageConfig {
         if (check4on) {
             File newFile = new File(getSourceRootPath() + "/on/" + getPath());
             if (newFile.canRead()) {
-                return req.getContextPath() + req.getServletPath() + "/on" + getUriEncodedPath() + (newFile.isDirectory() ? trailingSlash(path) : "");
+                return req.getContextPath() + req.getServletPath() + "/on"
+                        + getUriEncodedPath()
+                        + (newFile.isDirectory() ? trailingSlash(path) : "");
             }
         }
         return null;
@@ -608,7 +615,8 @@ public final class PageConfig {
      */
     public boolean resourceNotAvailable() {
         getIgnoredNames();
-        return getResourcePath().equals("/") || ignoredNames.ignore(getPath()) || ignoredNames.ignore(resourceFile.getParentFile().getName());
+        return getResourcePath().equals("/") || ignoredNames.ignore(getPath())
+                || ignoredNames.ignore(resourceFile.getParentFile().getName());
     }
 
     /**
@@ -624,19 +632,23 @@ public final class PageConfig {
     }
 
     private static String trailingSlash(String path) {
-        return path.length() == 0 || path.charAt(path.length() - 1) != '/' ? "/" : "";
+        return path.length() == 0 || path.charAt(path.length() - 1) != '/'
+                ? "/"
+                : "";
     }
 
     private File checkFile(File dir, String name, boolean compressed) {
         File f = null;
         if (compressed) {
             f = new File(dir, name + ".gz");
-            if (f.exists() && f.isFile() && f.lastModified() >= resourceFile.lastModified()) {
+            if (f.exists() && f.isFile()
+                    && f.lastModified() >= resourceFile.lastModified()) {
                 return f;
             }
         }
         f = new File(dir, name);
-        if (f.exists() && f.isFile() && f.lastModified() >= resourceFile.lastModified()) {
+        if (f.exists() && f.isFile()
+                && f.lastModified() >= resourceFile.lastModified()) {
             return f;
         }
         return null;
@@ -650,12 +662,14 @@ public final class PageConfig {
         File f = null;
         if (compressed) {
             f = new File(dir, name + ".gz");
-            if (f.exists() && f.isFile() && f.lastModified() >= lresourceFile.lastModified()) {
+            if (f.exists() && f.isFile()
+                    && f.lastModified() >= lresourceFile.lastModified()) {
                 return f;
             }
         }
         f = new File(dir, name);
-        if (f.exists() && f.isFile() && f.lastModified() >= lresourceFile.lastModified()) {
+        if (f.exists() && f.isFile()
+                && f.lastModified() >= lresourceFile.lastModified()) {
             return f;
         }
         return null;
@@ -701,7 +715,8 @@ public final class PageConfig {
      * @return {@code null} if not found, the file otherwise.
      */
     public File findDataFile() {
-        return checkFile(new File(getEnv().getDataRootPath() + Prefix.XREF_P), path, env.isCompressXref());
+        return checkFile(new File(getEnv().getDataRootPath() + Prefix.XREF_P),
+                path, env.isCompressXref());
     }
 
     /**
@@ -719,7 +734,8 @@ public final class PageConfig {
             getPrefix();
             if (prefix != Prefix.XREF_P) {
                 //if it is an existing dir perhaps people wanted dir xref
-                return req.getContextPath() + Prefix.XREF_P + getUriEncodedPath() + trailingSlash(path);
+                return req.getContextPath() + Prefix.XREF_P
+                        + getUriEncodedPath() + trailingSlash(path);
             }
             String ts = trailingSlash(path);
             if (ts.length() != 0) {
@@ -756,11 +772,14 @@ public final class PageConfig {
         if (dataRoot == null) {
             String tmp = getEnv().getDataRootPath();
             if (tmp == null || tmp.length() == 0) {
-                throw new InvalidParameterException("dataRoot parameter is not " + "set in configuration.xml!");
+                throw new InvalidParameterException("dataRoot parameter is not "
+                        + "set in configuration.xml!");
             }
             dataRoot = new File(tmp);
             if (!(dataRoot.isDirectory() && dataRoot.canRead())) {
-                throw new InvalidParameterException("The configured dataRoot '" + tmp + "' refers to a none-exsting or unreadable directory!");
+                throw new InvalidParameterException("The configured dataRoot '"
+                        + tmp
+                        + "' refers to a none-exsting or unreadable directory!");
             }
         }
         return dataRoot;

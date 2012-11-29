@@ -118,7 +118,12 @@ public class Executor {
             }
         }
 
-        OpenGrokLogger.getLogger().log(Level.FINE, "Executing command {0} in directory {1}", new Object[]{processBuilder.command(), processBuilder.directory(),});
+        OpenGrokLogger.getLogger().log(Level.FINE,
+                "Executing command {0} in directory {1}",
+                new Object[]{
+                        processBuilder.command(),
+                        processBuilder.directory(),
+                });
 
         Process process = null;
         try {
@@ -134,7 +139,8 @@ public class Executor {
                         err.processStream(errorStream);
                     } catch (IOException ex) {
                         if (reportExceptions) {
-                            OpenGrokLogger.getLogger().log(Level.SEVERE, "Error during process pipe listening", ex);
+                            OpenGrokLogger.getLogger().log(Level.SEVERE,
+                                    "Error during process pipe listening", ex);
                         }
                     }
                 }
@@ -149,11 +155,13 @@ public class Executor {
             stderr = err.getBytes();
         } catch (IOException e) {
             if (reportExceptions) {
-                OpenGrokLogger.getLogger().log(Level.SEVERE, "Failed to read from process: " + cmdList.get(0), e);
+                OpenGrokLogger.getLogger().log(Level.SEVERE,
+                        "Failed to read from process: " + cmdList.get(0), e);
             }
         } catch (InterruptedException e) {
             if (reportExceptions) {
-                OpenGrokLogger.getLogger().log(Level.SEVERE, "Waiting for process interrupted: " + cmdList.get(0), e);
+                OpenGrokLogger.getLogger().log(Level.SEVERE,
+                        "Waiting for process interrupted: " + cmdList.get(0), e);
             }
         } finally {
             try {
@@ -167,7 +175,10 @@ public class Executor {
 
         if (ret != 0 && reportExceptions) {
             int MAX_MSG_SZ = 512; /* limit to avoid floodding the logs */
-            StringBuilder msg = new StringBuilder("Non-zero exit status ").append(ret).append(" from command ").append(processBuilder.command().toString()).append(" in directory ");
+            StringBuilder msg = new StringBuilder("Non-zero exit status ")
+                    .append(ret).append(" from command ")
+                    .append(processBuilder.command().toString())
+                    .append(" in directory ");
             File cwd = processBuilder.directory();
             if (cwd == null) {
                 msg.append(System.getProperty("user.dir"));
@@ -291,13 +302,16 @@ public class Executor {
     }
 
     public static void registerErrorHandler() {
-        UncaughtExceptionHandler dueh = getDefaultUncaughtExceptionHandler();
+        UncaughtExceptionHandler dueh =
+                getDefaultUncaughtExceptionHandler();
         if (dueh == null) {
             log.fine("Installing default uncaught exception handler");
             Thread.setDefaultUncaughtExceptionHandler(new UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {
-                    log.log(Level.SEVERE, "Uncaught exception in thread " + t.getName() + " with ID " + t.getId() + ": " + e.getMessage(), e);
+                    log.log(Level.SEVERE, "Uncaught exception in thread "
+                            + t.getName() + " with ID " + t.getId() + ": "
+                            + e.getMessage(), e);
                 }
             });
         }

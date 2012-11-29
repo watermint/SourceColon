@@ -34,9 +34,13 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class JavaAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"JAVA"};
+    private static final String[] SUFFIXES = {
+            "JAVA"
+    };
 
-    private static final String[] MAGICS = {"/*"};
+    private static final String[] MAGICS = {
+            "/*"
+    };
 
     public JavaAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -48,7 +52,8 @@ public class JavaAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         JavaAnalyzer.writeXref(in, out, defs, project);
     }
 }

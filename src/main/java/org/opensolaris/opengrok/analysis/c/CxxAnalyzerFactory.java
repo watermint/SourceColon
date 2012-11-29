@@ -33,7 +33,16 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class CxxAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"CPP", "HPP", "CC", "C++", "HH", "CXX", "HXX", "TXX"};
+    private static final String[] SUFFIXES = {
+            "CPP",
+            "HPP",
+            "CC",
+            "C++",
+            "HH",
+            "CXX",
+            "HXX",
+            "TXX"
+    };
 
     public CxxAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);
@@ -45,7 +54,8 @@ public class CxxAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         CxxAnalyzer.writeXref(in, out, defs, project);
     }
 }

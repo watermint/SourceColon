@@ -30,9 +30,12 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class JavaClassAnalyzerFactory extends FileAnalyzerFactory {
 
-    private static final String[] SUFFIXES = {"CLASS"};
+    private static final String[] SUFFIXES = {
+            "CLASS"
+    };
 
-    private static final String[] MAGICS = {"\312\376\272\276"      // cafebabe
+    private static final String[] MAGICS = {
+            "\312\376\272\276"      // cafebabe
     };
 
     public JavaClassAnalyzerFactory() {

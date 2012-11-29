@@ -36,6 +36,8 @@ public class WildCardMatcher extends LineMatcher {
     @Override
     public int match(String token) {
         String tokenToMatch = normalizeString(token);
-        return WildcardTermEnum.wildcardEquals(pattern, 0, tokenToMatch, 0) ? MATCHED : NOT_MATCHED;
+        return WildcardTermEnum.wildcardEquals(pattern, 0, tokenToMatch, 0)
+                ? MATCHED
+                : NOT_MATCHED;
     }
 }

@@ -187,7 +187,8 @@ public class QueryBuilder {
         for (Query query : queryList) {
             if (query instanceof BooleanQuery) {
                 BooleanQuery boolQuery = (BooleanQuery) query;
-                if (hasClause(boolQuery, Occur.SHOULD) && !hasClause(boolQuery, Occur.MUST)) {
+                if (hasClause(boolQuery, Occur.SHOULD)
+                        && !hasClause(boolQuery, Occur.MUST)) {
                     combinedQuery.add(query, Occur.MUST);
                 } else {
                     for (BooleanClause clause : boolQuery) {
@@ -246,7 +247,8 @@ public class QueryBuilder {
      * @return a parsed query
      * @throws ParseException if the query text cannot be parsed
      */
-    private Query buildQuery(String field, String queryText) throws ParseException {
+    private Query buildQuery(String field, String queryText)
+            throws ParseException {
         return new CustomQueryParser(field).parse(queryText);
     }
 

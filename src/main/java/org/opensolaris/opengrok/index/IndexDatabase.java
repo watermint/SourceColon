@@ -152,7 +152,7 @@ public class IndexDatabase {
      *
      * @param executor An executor to run the job
      * @param listener where to signal the changes to the database
-     * @param paths    paths
+     * @param paths paths
      */
     public static void update(ExecutorService executor, IndexChangedListener listener, List<String> paths) {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
@@ -276,7 +276,7 @@ public class IndexDatabase {
     /**
      * Update the content of this index database
      *
-     * @throws IOException if an error occurs
+     * @throws IOException      if an error occurs
      */
     public void update() throws IOException {
         synchronized (lock) {

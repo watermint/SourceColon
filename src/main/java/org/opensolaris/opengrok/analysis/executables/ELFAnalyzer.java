@@ -353,7 +353,9 @@ public final class ELFAnalyzer extends FileAnalyzer {
         ELFCLASS32(1),
         ELFCLASS64(2);
 
-        final String[] textual = {"None", "32", "64"};
+        final String[] textual = {
+                "None", "32", "64"
+        };
 
         private final int value;
 
@@ -421,7 +423,9 @@ public final class ELFAnalyzer extends FileAnalyzer {
         ET_CORE(4),
         ET_UNKNOWN(0xFFFF);
 
-        final String[] textual = {"None", "Relocable", "Executable", "Shared object", "Core"};
+        final String[] textual = {
+                "None", "Relocable", "Executable", "Shared object", "Core"
+        };
 
         private final int value;
 
@@ -470,7 +474,11 @@ public final class ELFAnalyzer extends FileAnalyzer {
         EM_MIPS(8),
         EM_UNKNOWN(0xFFFF);
 
-        final String[] textual = {"No machine", "AT&T WE 32100", "SPARC", "Intel 80386", "Motorola 68000", "Motorola 88000", null, "Intel 80860", "MIPS RS3000"};
+        final String[] textual = {
+                "No machine", "AT&T WE 32100", "SPARC", "Intel 80386",
+                "Motorola 68000", "Motorola 88000", null,
+                "Intel 80860", "MIPS RS3000"
+        };
 
         private final int value;
 
@@ -518,7 +526,9 @@ public final class ELFAnalyzer extends FileAnalyzer {
         EV_NONE(0),
         EV_CURRENT(1);
 
-        final String[] textual = {"Invalid", "Current"};
+        final String[] textual = {
+                "Invalid", "Current"
+        };
 
         private final int value;
 

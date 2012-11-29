@@ -29,7 +29,9 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class TarAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"TAR"};
+    private static final String[] SUFFIXES = {
+            "TAR"
+    };
 
     public TarAnalyzerFactory() {
         super(null, SUFFIXES, null, null, null, Genre.XREFABLE);

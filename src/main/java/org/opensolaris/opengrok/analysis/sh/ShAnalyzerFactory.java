@@ -33,13 +33,33 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class ShAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] NAMES = {"MAKEFILE", "GNUMAKEFILE"};
-
-    private static final String[] SUFFIXES = {"SH", "KSH", "KSHLIB",   // RFE #17849
-            "CSH", "BASH", "RUBY", "RB", "P5", "AWK", "GMK", "CONF", "COM", "SPEC", "FLG", "XCL",                  // message
+    private static final String[] NAMES = {
+            "MAKEFILE", "GNUMAKEFILE"
     };
 
-    private static final String[] MAGICS = {"#!", "##", "#\n#",};
+    private static final String[] SUFFIXES = {
+            "SH",
+            "KSH",
+            "KSHLIB",   // RFE #17849
+            "CSH",
+            "BASH",
+            "RUBY",
+            "RB",
+            "P5",
+            "AWK",
+            "GMK",
+            "CONF",
+            "COM",
+            "SPEC",
+            "FLG",
+            "XCL",                  // message
+    };
+
+    private static final String[] MAGICS = {
+            "#!",
+            "##",
+            "#\n#",
+    };
 
     public ShAnalyzerFactory() {
         super(NAMES, SUFFIXES, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -51,7 +71,8 @@ public class ShAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         ShAnalyzer.writeXref(in, out, defs, project);
     }
 }

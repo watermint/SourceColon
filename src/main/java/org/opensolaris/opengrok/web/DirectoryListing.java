@@ -63,7 +63,8 @@ public class DirectoryListing {
      * @param dateFormatter the formatter to use for pretty printing dates
      * @throws NullPointerException if a parameter is {@code null}
      */
-    private void PrintDateSize(Writer out, File child, Format dateFormatter) throws IOException {
+    private void PrintDateSize(Writer out, File child, Format dateFormatter)
+            throws IOException {
         long lastm = child.lastModified();
 
         out.write("<td>");
@@ -130,7 +131,8 @@ public class DirectoryListing {
                     continue;
                 }
                 File child = new File(dir, file);
-                if (file.startsWith("README") || file.endsWith("README") || file.startsWith("readme")) {
+                if (file.startsWith("README") || file.endsWith("README")
+                        || file.startsWith("readme")) {
                     readMes.add(file);
                 }
                 boolean isDir = child.isDirectory();

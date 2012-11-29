@@ -129,11 +129,13 @@ public enum Prefix {
      * @see #toString()
      */
     public static Prefix get(String servletPath) {
-        if (servletPath == null || servletPath.length() < 3 || servletPath.charAt(0) != '/') {
+        if (servletPath == null || servletPath.length() < 3
+                || servletPath.charAt(0) != '/') {
             return UNKNOWN;
         }
         int idx = servletPath.indexOf('/', 1);
-        String pathPrefix = (idx == -1) ? servletPath : servletPath.substring(0, idx);
+        String pathPrefix = (idx == -1) ?
+                servletPath : servletPath.substring(0, idx);
         Prefix p = lookupTable.get(pathPrefix);
         return p == null ? UNKNOWN : p;
     }

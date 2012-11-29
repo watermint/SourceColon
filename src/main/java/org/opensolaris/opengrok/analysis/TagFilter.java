@@ -107,11 +107,12 @@ public class TagFilter extends FilterReader {
     }
 
     public static boolean isSpace(int ch) {
-        return (ch <= 0x0020) && (((((1L << 0x0009) |
-                (1L << 0x000A) |
-                (1L << 0x000C) |
-                (1L << 0x000D) |
-                (1L << 0x0020)) >> ch) & 1L) != 0);
+        return (ch <= 0x0020) &&
+                (((((1L << 0x0009) |
+                        (1L << 0x000A) |
+                        (1L << 0x000C) |
+                        (1L << 0x000D) |
+                        (1L << 0x0020)) >> ch) & 1L) != 0);
     }
 
 }

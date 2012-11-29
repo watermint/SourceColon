@@ -34,7 +34,16 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class TclAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"TCL", "TM", "TK", "WISH", "EXP", "TCLX", "ITCL", "ITK",};
+    private static final String[] SUFFIXES = {
+            "TCL",
+            "TM",
+            "TK",
+            "WISH",
+            "EXP",
+            "TCLX",
+            "ITCL",
+            "ITK",
+    };
 
     public TclAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);
@@ -46,7 +55,8 @@ public class TclAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         TclAnalyzer.writeXref(in, out, defs, project);
     }
 }

@@ -34,7 +34,10 @@ import java.io.Writer;
 
 public class FortranAnalyzerFactory extends FileAnalyzerFactory {
 
-    private static final String[] SUFFIXES = {"F", "F90", "INC",};
+    private static final String[] SUFFIXES = {
+            "F",
+            "F90",
+            "INC",};
 
     public FortranAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);
@@ -46,7 +49,8 @@ public class FortranAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         FortranAnalyzer.writeXref(in, out, defs, project);
     }
 }

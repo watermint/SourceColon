@@ -35,9 +35,12 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class CSharpAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"CS"};
+    private static final String[] SUFFIXES = {
+            "CS"
+    };
 
-    private static final String[] MAGICS = {};
+    private static final String[] MAGICS = {
+    };
 
     public CSharpAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -49,7 +52,8 @@ public class CSharpAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         CSharpAnalyzer.writeXref(in, out, defs, project);
     }
 }

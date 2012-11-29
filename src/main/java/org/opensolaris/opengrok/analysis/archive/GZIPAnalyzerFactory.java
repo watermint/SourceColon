@@ -28,9 +28,13 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class GZIPAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"GZ"};
+    private static final String[] SUFFIXES = {
+            "GZ"
+    };
 
-    private static final String[] MAGICS = {"\037\213"};
+    private static final String[] MAGICS = {
+            "\037\213"
+    };
 
     public GZIPAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, null, null);

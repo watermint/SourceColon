@@ -84,7 +84,27 @@ public abstract class JFlexXref {
     /**
      * Description of styles to use for different types of definitions.
      */
-    private static final Style[] DEFINITION_STYLES = {new Style("macro", "xm", "Macro"), new Style("argument", "xa", null), new Style("local", "xl", null), new Style("variable", "xv", "Variable"), new Style("class", "xc", "Class"), new Style("package", "xp", "Package"), new Style("interface", "xi", "Interface"), new Style("namespace", "xn", "Namespace"), new Style("enumerator", "xer", null), new Style("enum", "xe", "Enum"), new Style("struct", "xs", "Struct"), new Style("typedefs", "xts", null), new Style("typedef", "xt", "Typedef"), new Style("union", "xu", null), new Style("field", "xfld", null), new Style("member", "xmb", null), new Style("function", "xf", "Function"), new Style("method", "xmt", "Method"), new Style("subroutine", "xsr", "Subroutine"),};
+    private static final Style[] DEFINITION_STYLES = {
+            new Style("macro", "xm", "Macro"),
+            new Style("argument", "xa", null),
+            new Style("local", "xl", null),
+            new Style("variable", "xv", "Variable"),
+            new Style("class", "xc", "Class"),
+            new Style("package", "xp", "Package"),
+            new Style("interface", "xi", "Interface"),
+            new Style("namespace", "xn", "Namespace"),
+            new Style("enumerator", "xer", null),
+            new Style("enum", "xe", "Enum"),
+            new Style("struct", "xs", "Struct"),
+            new Style("typedefs", "xts", null),
+            new Style("typedef", "xt", "Typedef"),
+            new Style("union", "xu", null),
+            new Style("field", "xfld", null),
+            new Style("member", "xmb", null),
+            new Style("function", "xf", "Function"),
+            new Style("method", "xmt", "Method"),
+            new Style("subroutine", "xsr", "Subroutine"),
+    };
 
     protected JFlexXref() {
         try {
@@ -193,7 +213,8 @@ public abstract class JFlexXref {
             }
         };
 
-        Map<String, SortedSet<Tag>> symbols = new HashMap<>();
+        Map<String, SortedSet<Tag>> symbols =
+                new HashMap<>();
 
         for (Tag tag : defs.getTags()) {
             Style style = getStyle(tag.type);
@@ -281,7 +302,8 @@ public abstract class JFlexXref {
      * @param line     the line number on which the symbol appears
      * @throws IOException if an error occurs while writing to the stream
      */
-    protected void writeSymbol(String symbol, Set<String> keywords, int line) throws IOException {
+    protected void writeSymbol(String symbol, Set<String> keywords, int line)
+            throws IOException {
         String[] strs = new String[1];
         strs[0] = "";
 

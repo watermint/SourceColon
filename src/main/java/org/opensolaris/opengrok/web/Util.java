@@ -170,11 +170,13 @@ public final class Util {
      * @see #breadcrumbPath(String, String, char, String, boolean, boolean, boolean)
      * @see #getCanonicalPath(String, char)
      */
-    public static String breadcrumbPath(String urlPrefix, String path, char sep, String urlPostfix, boolean compact) {
+    public static String breadcrumbPath(String urlPrefix, String path,
+                                        char sep, String urlPostfix, boolean compact) {
         if (path == null || path.length() == 0) {
             return path;
         }
-        return breadcrumbPath(urlPrefix, path, sep, urlPostfix, compact, path.charAt(path.length() - 1) == sep, false);
+        return breadcrumbPath(urlPrefix, path, sep, urlPostfix, compact,
+                path.charAt(path.length() - 1) == sep, false);
     }
 
     /**
@@ -199,7 +201,8 @@ public final class Util {
      * @return <var>path</var> if it resolves to an empty or "/" or
      *         {@code null} path, the HTML markup for the breadcrumb path otherwise.
      */
-    public static String breadcrumbPath(String urlPrefix, String path, char sep, String urlPostfix, boolean compact, boolean isDir, boolean asList) {
+    public static String breadcrumbPath(String urlPrefix, String path,
+                                        char sep, String urlPostfix, boolean compact, boolean isDir, boolean asList) {
         if (path == null || path.length() == 0) {
             return path;
         }
@@ -225,7 +228,9 @@ public final class Util {
             if (isDir || i < pnames.length - 1) {
                 pwd.append('/');
             }
-            markup.append(anchorLinkStart).append(prefix).append(pwd).append(postfix).append(closeQuotedTag).append(pnames[i]).append(anchorEnd);
+            markup.append(anchorLinkStart).append(prefix).append(pwd)
+                    .append(postfix).append(closeQuotedTag).append(pnames[i])
+                    .append(anchorEnd);
             if (isDir || i < pnames.length - 1) {
                 markup.append(divider);
             }
@@ -278,7 +283,8 @@ public final class Util {
         return buf.toString();
     }
 
-    private final static Pattern EMAIL_PATTERN = Pattern.compile("([^<\\s]+@[^>\\s]+)");
+    private final static Pattern EMAIL_PATTERN =
+            Pattern.compile("([^<\\s]+@[^>\\s]+)");
 
     /**
      * Remove all empty and {@code null} string elements from the given
@@ -315,7 +321,8 @@ public final class Util {
                 res.add(name);
             }
         }
-        return res.size() == names.length ? names : res.toArray(new String[res.size()]);
+        return res.size() == names.length ? names : res.toArray(new String[res
+                .size()]);
     }
 
     /**
@@ -403,11 +410,14 @@ public final class Util {
      * Write out line information wrt. to the given annotation in the format:
      * {@code Linenumber Blame Author} incl. appropriate links.
      *
-     * @param num linenumber to print
-     * @param out print destination
+     *
+     *
+     * @param num            linenumber to print
+     * @param out            print destination
      * @throws IOException depends on the destination (<var>out</var>).
      */
-    public static void readableLine(int num, Writer out) throws IOException {
+    public static void readableLine(int num, Writer out)
+            throws IOException {
         // this method should go to JFlexXref
         String snum = String.valueOf(num);
         if (num > 1) {
@@ -481,7 +491,8 @@ public final class Util {
      * @throws NullPointerException if the given buffer is {@code null}.
      * @see #URIEncode(String)
      */
-    public static void appendQuery(StringBuilder buf, String key, String value) {
+    public static void appendQuery(StringBuilder buf, String key,
+                                   String value) {
         if (value != null) {
             buf.append("&amp;").append(key).append('=').append(URIEncode(value));
         }
@@ -525,7 +536,8 @@ public final class Util {
                     // Add leading zero if required.
                     sb.append('0');
                 }
-                sb.append(Integer.toHexString(u).toUpperCase(Locale.ENGLISH));
+                sb.append(
+                        Integer.toHexString(u).toUpperCase(Locale.ENGLISH));
             }
         }
         return sb.toString();
@@ -621,8 +633,9 @@ public final class Util {
     /**
      * Dump the configuration as an HTML table.
      *
+     *
      * @param out destination for the HTML output
-     * @throws IOException if an error happens while writing to {@code out}
+     * @throws IOException      if an error happens while writing to {@code out}
      */
     @SuppressWarnings("boxing")
     public static void dumpConfiguration(Appendable out) throws IOException {
@@ -637,7 +650,8 @@ public final class Util {
         printUnorderedList(out, env.getIgnoredNames().getItems());
         out.append("</td></tr>");
         printTableRow(out, "Index word limit", env.getIndexWordLimit());
-        printTableRow(out, "Allow leading wildcard in search", env.isAllowLeadingWildcard());
+        printTableRow(out, "Allow leading wildcard in search",
+                env.isAllowLeadingWildcard());
         out.append("</table>");
     }
 
@@ -690,7 +704,8 @@ public final class Util {
             dump(out, in);
             return true;
         } catch (IOException e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, "An error occured while piping file " + file + ": ", e);
+            OpenGrokLogger.getLogger().log(Level.WARNING,
+                    "An error occured while piping file " + file + ": ", e);
         } finally {
             IOUtils.close(in);
             IOUtils.close(gis);
@@ -706,7 +721,8 @@ public final class Util {
      * @param cells the values to print in the cells of the row
      * @throws IOException if an error happens while writing to {@code out}
      */
-    private static void printTableRow(Appendable out, Object... cells) throws IOException {
+    private static void printTableRow(Appendable out, Object... cells)
+            throws IOException {
         out.append("<tr>");
         StringBuilder buf = new StringBuilder(256);
         for (Object cell : cells) {
@@ -727,7 +743,8 @@ public final class Util {
      * @param items the list items
      * @throws IOException if an error happens while writing to {@code out}
      */
-    private static void printUnorderedList(Appendable out, Collection<String> items) throws IOException {
+    private static void printUnorderedList(Appendable out,
+                                           Collection<String> items) throws IOException {
         out.append("<ul>");
         StringBuilder buf = new StringBuilder(256);
         for (String item : items) {

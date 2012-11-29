@@ -64,7 +64,8 @@ public class PlainAnalyzerBase extends TextAnalyzer {
 
     @Override
     public void analyze(Document doc, Reader in) throws IOException {
-        Reader inReader = ExpandTabsReader.wrap(in, project);
+        Reader inReader =
+                ExpandTabsReader.wrap(in, project);
 
         len = 0;
         do {
@@ -122,9 +123,9 @@ public class PlainAnalyzerBase extends TextAnalyzer {
     /**
      * Write a cross referenced HTML file reads the source from in
      *
-     * @param in   Input source
-     * @param out  Output xref writer
-     * @param defs definitions for the file (could be null)
+     * @param in         Input source
+     * @param out        Output xref writer
+     * @param defs       definitions for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         PlainXref xref = new PlainXref(in);

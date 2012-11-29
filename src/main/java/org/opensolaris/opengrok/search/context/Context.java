@@ -59,7 +59,8 @@ public class Context {
      * whose values tell if the field is case insensitive (true for
      * insensitivity, false for sensitivity).
      */
-    private static final Map<String, Boolean> tokenFields = new HashMap<>();
+    private static final Map<String, Boolean> tokenFields =
+            new HashMap<>();
 
     static {
         tokenFields.put("full", Boolean.TRUE);
@@ -105,7 +106,8 @@ public class Context {
             if ("full".equals(field)) {
                 field = "q"; // bah - search query params should be consistent!
             }
-            sb.append(field).append("=").append(Util.URIEncode(queryText)).append('&');
+            sb.append(field).append("=").append(Util.URIEncode(queryText))
+                    .append('&');
         }
         sb.setLength(sb.length() - 1);
         queryAsURI = sb.toString();
@@ -125,7 +127,9 @@ public class Context {
      * @param limit      should the number of matching lines be limited?
      * @return Did it get any matching context?
      */
-    public boolean getContext(Reader in, Writer out, String urlPrefix, String morePrefix, String path, Definitions tags, boolean limit, List<Hit> hits) {
+    public boolean getContext(Reader in, Writer out, String urlPrefix,
+                              String morePrefix, String path, Definitions tags,
+                              boolean limit, List<Hit> hits) {
         alt = !alt;
         if (m == null) {
             IOUtils.close(in);
@@ -133,7 +137,8 @@ public class Context {
         }
         boolean anything = false;
         TreeMap<Integer, String[]> matchingTags = null;
-        String urlPrefixE = (urlPrefix == null) ? "" : Util.URIEncodePath(urlPrefix);
+        String urlPrefixE =
+                (urlPrefix == null) ? "" : Util.URIEncodePath(urlPrefix);
         String pathE = Util.URIEncodePath(path);
         if (tags != null) {
             matchingTags = new TreeMap<>();

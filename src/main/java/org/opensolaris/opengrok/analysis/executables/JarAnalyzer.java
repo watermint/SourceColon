@@ -61,7 +61,8 @@ public final class JarAnalyzer extends FileAnalyzer {
             doc.add(new Field("full", new StringReader(ename)));
             FileAnalyzerFactory fac = AnalyzerGuru.find(ename);
             if (fac instanceof JavaClassAnalyzerFactory) {
-                JavaClassAnalyzer jca = (JavaClassAnalyzer) fac.getAnalyzer();
+                JavaClassAnalyzer jca =
+                        (JavaClassAnalyzer) fac.getAnalyzer();
                 jca.analyze(doc, new BufferedInputStream(zis));
                 xref = jca.getXref();
             }

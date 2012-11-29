@@ -119,14 +119,16 @@ public final class QueryMatchers {
     private void getWildTerm(WildcardQuery query) {
         Term term = query.getTerm();
         if (useTerm(term)) {
-            matchers.add(new WildCardMatcher(term.text(), isCaseInsensitive(term)));
+            matchers.add(
+                    new WildCardMatcher(term.text(), isCaseInsensitive(term)));
         }
     }
 
     private void getPrefix(PrefixQuery query) {
         Term term = query.getPrefix();
         if (useTerm(term)) {
-            matchers.add(new PrefixMatcher(term.text(), isCaseInsensitive(term)));
+            matchers.add(
+                    new PrefixMatcher(term.text(), isCaseInsensitive(term)));
         }
     }
 

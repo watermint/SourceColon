@@ -68,7 +68,8 @@ public final class OpenGrokLogger {
      * @param level new level for console
      */
     public static void setOGConsoleLogLevel(Level level) {
-        for (Enumeration<String> e = LogManager.getLogManager().getLoggerNames(); e.hasMoreElements(); ) {
+        for (Enumeration<String> e = LogManager.getLogManager().getLoggerNames();
+             e.hasMoreElements(); ) {
             String loggerName = e.nextElement();
             Logger l = Logger.getLogger(loggerName);
             Handler[] h = l.getHandlers();
@@ -101,7 +102,8 @@ public final class OpenGrokLogger {
         if (path != null) {
             File jlp = new File(path);
             if (!jlp.exists() && !jlp.mkdirs()) {
-                throw new IOException("could not make logpath: " + jlp.getAbsolutePath());
+                throw new IOException("could not make logpath: " +
+                        jlp.getAbsolutePath());
             }
         }
 
@@ -134,7 +136,8 @@ public final class OpenGrokLogger {
         if (logpath != null) {
             File jlp = new File(logpath);
             if (!jlp.exists() && !jlp.mkdirs()) {
-                throw new RuntimeException("could not make logpath: " + jlp.getAbsolutePath());
+                throw new RuntimeException("could not make logpath: " +
+                        jlp.getAbsolutePath());
             }
             if (!jlp.canWrite() && !Level.OFF.equals(filelevel)) {
                 throw new IOException("logpath not writeable " + jlp.getAbsolutePath());
@@ -151,7 +154,8 @@ public final class OpenGrokLogger {
         filepath = logfile.toString();
         logfile.append(File.separatorChar).append("opengrok%g.%u.log");
         try {
-            FileHandler fh = new FileHandler(logfile.toString(), LOGFILESIZELIMIT, // size (unlimited)
+            FileHandler fh = new FileHandler(logfile.toString(),
+                    LOGFILESIZELIMIT, // size (unlimited)
                     LOGFILESCOUNT); // # rotations
 
             fh.setLevel(filelevel);
@@ -175,7 +179,8 @@ public final class OpenGrokLogger {
     }
 
     private static void clearForeignHandlers() {
-        for (Enumeration<String> e = LogManager.getLogManager().getLoggerNames(); e.hasMoreElements(); ) {
+        for (Enumeration<String> e = LogManager.getLogManager().getLoggerNames();
+             e.hasMoreElements(); ) {
             String loggerName = e.nextElement();
             Logger l = Logger.getLogger(loggerName);
             Handler[] h = l.getHandlers();

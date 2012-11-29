@@ -33,7 +33,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public final class ZipAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"ZIP"};
+    private static final String[] SUFFIXES = {
+            "ZIP"
+    };
 
     private static final byte[] MAGIC = {'P', 'K', 3, 4};
 
@@ -60,7 +62,8 @@ public final class ZipAnalyzerFactory extends FileAnalyzerFactory {
 
         private static final int XFHSIZ = 4;
 
-        public FileAnalyzerFactory isMagic(byte[] contents, InputStream in) throws IOException {
+        public FileAnalyzerFactory isMagic(byte[] contents, InputStream in)
+                throws IOException {
             assert in.markSupported();
             if (contents.length < MAGIC.length) {
                 return null;
@@ -93,7 +96,8 @@ public final class ZipAnalyzerFactory extends FileAnalyzerFactory {
 
     };
 
-    public static final ZipAnalyzerFactory DEFAULT_INSTANCE = new ZipAnalyzerFactory();
+    public static final ZipAnalyzerFactory DEFAULT_INSTANCE =
+            new ZipAnalyzerFactory();
 
     private ZipAnalyzerFactory() {
         super(null, SUFFIXES, null, MATCHER, null, Genre.XREFABLE);

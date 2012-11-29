@@ -76,8 +76,8 @@ public final class CSharpAnalyzer extends PlainAnalyzerBase {
     /**
      * Write a cross referenced HTML file reads the source from in
      *
-     * @param in  Input source
-     * @param out Output xref writer
+     * @param in         Input source
+     * @param out        Output xref writer
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         CSharpXref xref = new CSharpXref(in);

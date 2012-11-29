@@ -34,9 +34,12 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class JavaScriptAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"JS"};
+    private static final String[] SUFFIXES = {
+            "JS"
+    };
 
-    private static final String[] MAGICS = {};
+    private static final String[] MAGICS = {
+    };
 
     public JavaScriptAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -48,7 +51,8 @@ public class JavaScriptAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         JavaScriptAnalyzer.writeXref(in, out, defs, project);
     }
 }

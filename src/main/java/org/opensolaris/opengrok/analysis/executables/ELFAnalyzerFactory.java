@@ -29,7 +29,9 @@ import org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 public class ELFAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] MAGICS = {"\177ELF"};
+    private static final String[] MAGICS = {
+            "\177ELF"
+    };
 
     public ELFAnalyzerFactory() {
         super(null, null, MAGICS, null, null, Genre.XREFABLE);

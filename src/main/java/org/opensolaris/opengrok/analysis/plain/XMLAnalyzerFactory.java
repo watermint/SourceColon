@@ -34,9 +34,15 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class XMLAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {"HTML", "HTM", "XML", "ASPX", "ASCX", "ASAX", "MASTER", "XAML"};
+    private static final String[] SUFFIXES = {
+            "HTML", "HTM", "XML", "ASPX", "ASCX", "ASAX", "MASTER", "XAML"
+    };
 
-    private static final String[] MAGICS = {"<htm", "<HTM", "<?xm", "<?Xm", "<?XM", "<!--", "<!EN", "<!DO", "<tit", "<TIT", "<XML", "<xml", "<HEA", "<hea"};
+    private static final String[] MAGICS = {
+            "<htm", "<HTM", "<?xm", "<?Xm", "<?XM",
+            "<!--", "<!EN", "<!DO", "<tit",
+            "<TIT", "<XML", "<xml", "<HEA", "<hea"
+    };
 
     public XMLAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, "text/html", Genre.PLAIN);
@@ -48,7 +54,8 @@ public class XMLAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         XMLAnalyzer.writeXref(in, out, defs, project);
     }
 }

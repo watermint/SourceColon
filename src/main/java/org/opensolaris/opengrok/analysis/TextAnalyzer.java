@@ -40,7 +40,9 @@ public abstract class TextAnalyzer extends FileAnalyzer {
         byte[] head = new byte[3];
         int br = in.read(head, 0, 3);
 
-        if (br >= 2 && (head[0] == (byte) 0xFE && head[1] == (byte) 0xFF) || (head[0] == (byte) 0xFF && head[1] == (byte) 0xFE)) {
+        if (br >= 2 &&
+                (head[0] == (byte) 0xFE && head[1] == (byte) 0xFF) ||
+                (head[0] == (byte) 0xFF && head[1] == (byte) 0xFE)) {
             charset = "UTF-16";
             in.reset();
         } else if (br >= 3 && head[0] == (byte) 0xEF && head[1] == (byte) 0xBB &&

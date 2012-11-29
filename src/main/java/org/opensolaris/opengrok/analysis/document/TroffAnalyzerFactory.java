@@ -34,7 +34,9 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class TroffAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] MAGICS = {"'\\\"", ".so", ".\\\"", ".TH"};
+    private static final String[] MAGICS = {
+            "'\\\"", ".so", ".\\\"", ".TH"
+    };
 
     public TroffAnalyzerFactory() {
         super(null, null, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -46,7 +48,8 @@ public class TroffAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
+            throws IOException {
         TroffAnalyzer.writeXref(in, out, defs, project);
     }
 

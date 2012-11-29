@@ -23,7 +23,7 @@
 package org.opensolaris.opengrok.analysis;
 
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -32,7 +32,7 @@ public final class Hash2TokenStream extends TokenStream {
     private int i = 0;
     private String[] terms;
     private Iterator<String> keys;
-    private final TermAttribute termAtt = addAttribute(TermAttribute.class);
+    private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 
     public Hash2TokenStream(Set<String> symbols) {
         keys = symbols.iterator();
@@ -46,7 +46,8 @@ public final class Hash2TokenStream extends TokenStream {
                 terms = term.split("[^a-zA-Z_0-9]+");
                 i = terms.length;
                 if (i > 0) {
-                    termAtt.setTermBuffer(terms[--i]);
+                    termAtt.setEmpty();
+                    termAtt.append(terms[--i]);
                     return true;
                 }
                 // no tokens found in this key, try next
@@ -55,7 +56,8 @@ public final class Hash2TokenStream extends TokenStream {
             return false;
         }
 
-        termAtt.setTermBuffer(terms[--i]);
+        termAtt.setEmpty();
+        termAtt.append(terms[--i]);
         return true;
     }
 

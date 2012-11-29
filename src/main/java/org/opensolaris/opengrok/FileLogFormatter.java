@@ -38,7 +38,8 @@ import java.util.logging.LogRecord;
  */
 final public class FileLogFormatter extends Formatter {
 
-    private final java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSZ");
+    private final java.text.SimpleDateFormat formatter =
+            new java.text.SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss.SSSZ");
     private static final String lineSeparator = System.
             getProperty("line.separator");
 
