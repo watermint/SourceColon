@@ -26,16 +26,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Principal;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 /**
  * <p>
@@ -54,277 +47,335 @@ import javax.servlet.http.HttpSession;
  */
 class DummyHttpServletRequest implements HttpServletRequest {
 
-    private final Map<String, Object> attrs = new HashMap<String, Object>();
+    private final Map<String, Object> attrs = new HashMap<>();
 
     @Override
     public String getAuthType() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public Cookie[] getCookies() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public long getDateHeader(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public long getDateHeader(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public String getHeader(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getHeader(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Enumeration getHeaders(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Enumeration<String> getHeaders(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Enumeration getHeaderNames() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Enumeration<String> getHeaderNames() {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public int getIntHeader(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public int getIntHeader(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getMethod() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getPathInfo() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getPathTranslated() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getContextPath() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getQueryString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getRemoteUser() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public boolean isUserInRole(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean isUserInRole(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public Principal getUserPrincipal() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getRequestedSessionId() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getRequestURI() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public StringBuffer getRequestURL() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getServletPath() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public HttpSession getSession(boolean bln) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public HttpSession getSession(boolean b) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public HttpSession getSession() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public boolean isRequestedSessionIdValid() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public boolean isRequestedSessionIdFromCookie() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public boolean isRequestedSessionIdFromURL() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    @Deprecated
     public boolean isRequestedSessionIdFromUrl() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Object getAttribute(String string) {
-        return attrs.get(string);
+    public boolean authenticate(HttpServletResponse httpServletResponse) throws IOException, ServletException {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Enumeration getAttributeNames() {
-        return Collections.enumeration(attrs.keySet());
+    public void login(String s, String s1) throws ServletException {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public void logout() throws ServletException {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public Collection<Part> getParts() throws IOException, ServletException {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public Part getPart(String s) throws IOException, ServletException {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public Object getAttribute(String s) {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public Enumeration<String> getAttributeNames() {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getCharacterEncoding() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public void setCharacterEncoding(String string) throws UnsupportedEncodingException {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void setCharacterEncoding(String s) throws UnsupportedEncodingException {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public int getContentLength() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getContentType() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public String getParameter(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getParameter(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Enumeration getParameterNames() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Enumeration<String> getParameterNames() {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public String[] getParameterValues(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String[] getParameterValues(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Map getParameterMap() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Map<String, String[]> getParameterMap() {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getProtocol() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getScheme() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getServerName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public int getServerPort() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public BufferedReader getReader() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getRemoteAddr() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getRemoteHost() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public void setAttribute(String name, Object o) {
-        attrs.put(name, o);
+    public void setAttribute(String s, Object o) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public void removeAttribute(String name) {
-        attrs.remove(name);
+    public void removeAttribute(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public Locale getLocale() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public Enumeration getLocales() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Enumeration<Locale> getLocales() {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public boolean isSecure() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    public RequestDispatcher getRequestDispatcher(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public RequestDispatcher getRequestDispatcher(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
-    @Deprecated
-    public String getRealPath(String string) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public String getRealPath(String s) {
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public int getRemotePort() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getLocalName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public String getLocalAddr() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
     }
 
     @Override
     public int getLocalPort() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public AsyncContext startAsync() throws IllegalStateException {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public AsyncContext startAsync(ServletRequest servletRequest, ServletResponse servletResponse) throws IllegalStateException {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public boolean isAsyncStarted() {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public boolean isAsyncSupported() {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public AsyncContext getAsyncContext() {
+        throw new IllegalStateException("No implementation");
+    }
+
+    @Override
+    public DispatcherType getDispatcherType() {
+        throw new IllegalStateException("No implementation");
     }
 }

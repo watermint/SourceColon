@@ -32,7 +32,7 @@ dependencies {
     ]
     jflex 'de.jflex:maven-jflex-plugin:1.4.3'
     compile common
-    compile 'javax.servlet:servlet-api:2.5'
+    compile 'javax:javaee-web-api:6.0'
     runtime common
     testCompile 'junit:junit:4.8.2'
 }
