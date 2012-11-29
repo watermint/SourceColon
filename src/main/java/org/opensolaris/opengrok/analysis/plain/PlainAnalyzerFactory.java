@@ -38,8 +38,7 @@ import java.io.Writer;
 public final class PlainAnalyzerFactory extends FileAnalyzerFactory {
 
     private static final Matcher MATCHER = new Matcher() {
-        public FileAnalyzerFactory isMagic(byte[] content, InputStream in)
-                throws IOException {
+        public FileAnalyzerFactory isMagic(byte[] content, InputStream in) throws IOException {
             if (isPlainText(content)) {
                 return DEFAULT_INSTANCE;
             } else {
@@ -85,8 +84,7 @@ public final class PlainAnalyzerFactory extends FileAnalyzerFactory {
         }
     };
 
-    public static final PlainAnalyzerFactory DEFAULT_INSTANCE =
-            new PlainAnalyzerFactory();
+    public static final PlainAnalyzerFactory DEFAULT_INSTANCE = new PlainAnalyzerFactory();
 
     private PlainAnalyzerFactory() {
         super(null, null, null, MATCHER, "text/plain", Genre.PLAIN);
@@ -98,8 +96,7 @@ public final class PlainAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
-            throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         PlainAnalyzer.writeXref(in, out, defs, project);
     }
 }

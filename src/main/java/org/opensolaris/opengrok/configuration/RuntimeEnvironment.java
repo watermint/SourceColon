@@ -50,7 +50,7 @@ public final class RuntimeEnvironment {
 
     static {
         DEFAULT_SOURCECOLON_ROOT = System.getProperty("user.home") + File.separator + ".sourcecolon";
-        DEFAULT_SOURCECOLON_ETC  = DEFAULT_SOURCECOLON_ROOT + File.separator + "etc";
+        DEFAULT_SOURCECOLON_ETC = DEFAULT_SOURCECOLON_ROOT + File.separator + "etc";
         DEFAULT_SOURCECOLON_DATA = DEFAULT_SOURCECOLON_ROOT + File.separator + "data";
         DEFAULT_SOURCECOLON_CONFIG = DEFAULT_SOURCECOLON_ETC + File.separator + "config.xml";
     }
@@ -460,6 +460,7 @@ public final class RuntimeEnvironment {
     public void setIncludedNames(Filter includedNames) {
         threadConfig.get().setIncludedNames(includedNames);
     }
+
     public boolean isUsingLuceneLocking() {
         return threadConfig.get().isUsingLuceneLocking();
     }

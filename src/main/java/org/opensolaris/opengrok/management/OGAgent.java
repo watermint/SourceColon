@@ -129,8 +129,7 @@ final public class OGAgent {
         if (success) {
             setIfNotSet(props, LOG_PATH, uri.getPath() + "/log");
 
-            setIfNotSet(props, CONFIG_FILE,
-                    uri.getPath() + "/etc/configuration.xml");
+            setIfNotSet(props, CONFIG_FILE, uri.getPath() + "/etc/configuration.xml");
 
             setIfNotSet(props, JMX_HOST, uri.getHost());
 
@@ -138,11 +137,10 @@ final public class OGAgent {
 
             setIfNotSet(props, RMI_PORT, String.valueOf(uri.getPort() + 1));
 
-            setIfNotSet(props, JMX_URL,
-                    "service:jmx:rmi://" + props.getProperty(JMX_HOST) + ":" +
-                            props.getProperty(JMX_PORT) + "/jndi/rmi://" +
-                            props.getProperty(JMX_HOST) + ":" +
-                            props.getProperty(RMI_PORT) + "/opengrok");
+            setIfNotSet(props, JMX_URL, "service:jmx:rmi://" + props.getProperty(JMX_HOST) + ":" +
+                    props.getProperty(JMX_PORT) + "/jndi/rmi://" +
+                    props.getProperty(JMX_HOST) + ":" +
+                    props.getProperty(RMI_PORT) + "/opengrok");
 
             success = createLogger(props);
         }
@@ -216,16 +214,14 @@ final public class OGAgent {
 
         // If the protocol is RMI we need to have an RMI registry running.
         // Start an embedded registry if so requested.
-        if (url.getProtocol().equals(RMI_PROTOCOL) &&
-                Boolean.parseBoolean(props.getProperty(RMI_START))) {
+        if (url.getProtocol().equals(RMI_PROTOCOL) && Boolean.parseBoolean(props.getProperty(RMI_START))) {
             int rmiport = Integer.parseInt(props.getProperty(RMI_PORT));
             log.log(Level.FINE, "Starting RMI registry on port {0}", rmiport);
             LocateRegistry.createRegistry(rmiport);
         }
 
         log.log(Level.FINE, "Starting JMX connector on {0}", urlString);
-        JMXConnectorServer connectorServer =
-                JMXConnectorServerFactory.newJMXConnectorServer(url, env, server);
+        JMXConnectorServer connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, env, server);
 
         connectorServer.start();
 
@@ -250,18 +246,12 @@ final public class OGAgent {
         // Add index notification to timer (read from org.opensolaris.opengrok.management.indexer.sleeptime property).
         Date date = new Date(System.currentTimeMillis() + Timer.ONE_SECOND * 5);
         Long longPeriod = period * Timer.ONE_SECOND;
-        Integer id = (Integer) server.invoke(timer, "addNotification",
-                new Object[]{"timer.notification", // Type
-                        "Time to index again", // Message
-                        null, // user data
-                        date, // Start time
-                        longPeriod, // Period
-                },
-                new String[]{String.class.getName(),
-                        String.class.getName(),
-                        Object.class.getName(),
-                        Date.class.getName(),
-                        "long",});
+        Integer id = (Integer) server.invoke(timer, "addNotification", new Object[]{"timer.notification", // Type
+                "Time to index again", // Message
+                null, // user data
+                date, // Start time
+                longPeriod, // Period
+        }, new String[]{String.class.getName(), String.class.getName(), Object.class.getName(), Date.class.getName(), "long",});
 
         // Add indexer as listener to index notifications
         NotificationFilter filter = new TimerFilter(id);

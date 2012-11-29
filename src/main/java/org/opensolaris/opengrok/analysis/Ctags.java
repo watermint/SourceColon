@@ -215,8 +215,7 @@ public class Ctags {
                     continue;
                 }
 
-                final String type =
-                        inher == null ? kind : kind + " in " + inher;
+                final String type = inher == null ? kind : kind + " in " + inher;
                 defs.addTag(Integer.parseInt(lnum), def.trim(), type.trim(), match.trim());
                 if (signature != null) {
                     //TODO if some languages use different character for separating arguments, below needs to be adjusted
@@ -229,8 +228,7 @@ public class Ctags {
                             String[] names = afters.split("[\\W]"); //this should just parse out variables, we assume first non empty text is the argument name
                             for (String name : names) {
                                 if (name.length() > 0) {
-                                    defs.addTag(Integer.parseInt(lnum), name.trim(),
-                                            "argument", def.trim() + signature.trim());
+                                    defs.addTag(Integer.parseInt(lnum), name.trim(), "argument", def.trim() + signature.trim());
                                     break;
                                 }
                             }

@@ -37,8 +37,7 @@ import java.util.logging.LogRecord;
  */
 final public class ConsoleFormatter extends Formatter {
 
-    private final java.text.SimpleDateFormat formatter =
-            new java.text.SimpleDateFormat("HH:mm:ss.SSS");
+    private final java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("HH:mm:ss.SSS");
     private static final String lineSeparator = System.
             getProperty("line.separator");
 

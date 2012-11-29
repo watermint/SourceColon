@@ -257,9 +257,7 @@ public final class Indexer {
                         }
 
                         try {
-                            AnalyzerGuru.addExtension(
-                                    arg[0],
-                                    AnalyzerGuru.findFactory(arg[1]));
+                            AnalyzerGuru.addExtension(arg[0], AnalyzerGuru.findFactory(arg[1]));
                         } catch (Exception e) {
                             log.log(Level.SEVERE, "Unable to use {0} as a FileAnalyzerFactory", arg[1]);
                             log.log(Level.SEVERE, "Stack: ", e.fillInStackTrace());
@@ -346,15 +344,13 @@ public final class Indexer {
             RuntimeEnvironment env = RuntimeEnvironment.getInstance();
             env.setConfiguration(cfg);
 
-            getInstance().prepareIndexer(env, addProjects,
-                    defaultProject, configFilename, listFiles, createDict, subFiles, zapCache);
+            getInstance().prepareIndexer(env, addProjects, defaultProject, configFilename, listFiles, createDict, subFiles, zapCache);
             if (listRepos || !zapCache.isEmpty()) {
                 return;
             }
             if (runIndex) {
                 IndexChangedListener progress = new DefaultIndexChangedListener();
-                getInstance().doIndexerExecution(update, noThreads, subFiles,
-                        progress);
+                getInstance().doIndexerExecution(update, noThreads, subFiles, progress);
             }
             getInstance().sendToConfigHost(env, configHost);
         } catch (IndexerException ex) {
@@ -459,9 +455,7 @@ public final class Indexer {
         }
     }
 
-    public void doIndexerExecution(final boolean update, int noThreads, List<String> subFiles,
-                                   IndexChangedListener progress)
-            throws IOException {
+    public void doIndexerExecution(final boolean update, int noThreads, List<String> subFiles, IndexChangedListener progress) throws IOException {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance().register();
         log.info("Starting indexing");
 
@@ -511,9 +505,7 @@ public final class Indexer {
                                 db.update();
                             }
                         } catch (Throwable e) {
-                            log.log(Level.SEVERE, "An error occured while "
-                                    + (update ? "updating" : "optimizing")
-                                    + " index", e);
+                            log.log(Level.SEVERE, "An error occured while " + (update ? "updating" : "optimizing") + " index", e);
                         }
                     }
                 });

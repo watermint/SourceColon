@@ -202,8 +202,7 @@ public class SearchHelper {
                 searcher = new IndexSearcher(IndexReader.open(dir));
             } else if (projects.size() == 1) {
                 // just 1 project selected
-                FSDirectory dir =
-                        FSDirectory.open(new File(indexDir, projects.first()));
+                FSDirectory dir = FSDirectory.open(new File(indexDir, projects.first()));
                 searcher = new IndexSearcher(IndexReader.open(dir));
             } else {
                 //more projects
@@ -277,8 +276,7 @@ public class SearchHelper {
             // Bug #3900: Check if this is a search for a single term, and that
             // term is a definition. If that's the case, and we only have one match,
             // we'll generate a direct link instead of a listing.
-            boolean isSingleDefinitionSearch =
-                    (query instanceof TermQuery) && (builder.getDefs() != null);
+            boolean isSingleDefinitionSearch = (query instanceof TermQuery) && (builder.getDefs() != null);
 
             // Attempt to create a direct link to the definition if we search for
             // one single definition term AND we have exactly one match AND there
@@ -298,9 +296,7 @@ public class SearchHelper {
             // @TODO fix me. I should try to figure out where the exact hit is
             // instead of returning a page with just _one_ entry in....
             if (uniqueDefinition && hits != null && hits.length > 0 && isCrossRefSearch) {
-                redirect = contextPath + Prefix.XREF_P
-                        + Util.URIEncodePath(searcher.doc(hits[0].doc).get("path"))
-                        + '#' + Util.URIEncode(((TermQuery) query).getTerm().text());
+                redirect = contextPath + Prefix.XREF_P + Util.URIEncodePath(searcher.doc(hits[0].doc).get("path")) + '#' + Util.URIEncode(((TermQuery) query).getTerm().text());
             }
         } catch (BooleanQuery.TooManyClauses e) {
             errorMsg = "Too many results for wildcard!";
@@ -312,8 +308,7 @@ public class SearchHelper {
 
     private static final Pattern TABSPACE = Pattern.compile("[\t ]+");
 
-    private static void getSuggestion(String term, SpellChecker checker,
-                                      List<String> result) throws IOException {
+    private static void getSuggestion(String term, SpellChecker checker, List<String> result) throws IOException {
         if (term == null) {
             return;
         }
@@ -348,9 +343,7 @@ public class SearchHelper {
         if (projects.isEmpty()) {
             spellIndex = new File[]{new File(dataRoot, "spellIndex")};
         } else if (projects.size() == 1) {
-            spellIndex = new File[]{
-                    new File(dataRoot, "spellIndex/" + projects.first())
-            };
+            spellIndex = new File[]{new File(dataRoot, "spellIndex/" + projects.first())};
         } else {
             spellIndex = new File[projects.size()];
             int ii = 0;

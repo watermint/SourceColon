@@ -37,8 +37,7 @@ import java.util.logging.Logger;
  *
  * @author Jan S Berg
  */
-public final class AgentIndexRunner implements AgentIndexRunnerMBean, NotificationListener,
-        MBeanRegistration, Runnable, IndexChangedListener, NotificationEmitter {
+public final class AgentIndexRunner implements AgentIndexRunnerMBean, NotificationListener, MBeanRegistration, Runnable, IndexChangedListener, NotificationEmitter {
 
     private transient static AgentIndexRunner indexerInstance = null;
     private static final String NOTIFICATIONACTIONTYPE = "ogaaction";
@@ -52,8 +51,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
     private long lastIndexFinish = 0;
     private long lastIndexUsedTime = 0;
     private Exception lastException = null;
-    private final Set<NotificationHolder> notifListeners =
-            new HashSet<>();
+    private final Set<NotificationHolder> notifListeners = new HashSet<>();
     private static long sequenceNo = 0;
     private final StringBuilder notifications = new StringBuilder();
     private static final int MAXMESSAGELENGTH = 50000;
@@ -144,8 +142,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 doNotify(NOTIFICATIONEXCEPTIONTYPE, "Configuration file not valid", configfile);
             }
         } catch (Exception e) {
-            log.log(Level.SEVERE,
-                    "Exception running indexing ", e);
+            log.log(Level.SEVERE, "Exception running indexing ", e);
             lastException = e;
         }
     }
@@ -216,8 +213,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 indexThread.join();
                 log.fine("indexer finished.");
             } catch (Exception e) {
-                log.log(Level.SEVERE,
-                        "Caught Exception while waiting for indexing to finish.", e);
+                log.log(Level.SEVERE, "Caught Exception while waiting for indexing to finish.", e);
             }
         }
     }
@@ -325,9 +321,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
             Iterator<NotificationHolder> it = notifListeners.iterator();
             while (it.hasNext()) {
                 NotificationHolder mnf = it.next();
-                if (mnf.getNL().equals(notiflistener)
-                        && ((mnf.getFilter() == null) || mnf.getFilter().equals(filt))
-                        && ((mnf.getFilter() == null) || mnf.getObj().equals(obj))) {
+                if (mnf.getNL().equals(notiflistener) && ((mnf.getFilter() == null) || mnf.getFilter().equals(filt)) && ((mnf.getFilter() == null) || mnf.getObj().equals(obj))) {
                     it.remove();
                     removed = true;
                 }
@@ -349,8 +343,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
         String[] supptypes = {NOTIFICATIONACTIONTYPE, NOTIFICATIONINFOLONGTYPE, NOTIFICATIONINFOSTRINGTYPE};
         String name = "AgentIndexRunner";
         String descr = "OpenGrok Indexer Notifications";
-        MBeanNotificationInfo minfo = new MBeanNotificationInfo(supptypes, name,
-                descr);
+        MBeanNotificationInfo minfo = new MBeanNotificationInfo(supptypes, name, descr);
         info[0] = minfo;
         return info;
     }
@@ -366,8 +359,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 for (NotificationHolder nl : notifListeners) {
                     log.log(Level.FINE, "having one with obj {0}", nl.getObj());
                     try {
-                        if ((nl.getFilter() == null) ||
-                                nl.getFilter().isNotificationEnabled(notif)) {
+                        if ((nl.getFilter() == null) || nl.getFilter().isNotificationEnabled(notif)) {
                             nl.getNL().handleNotification(notif, nl.getObj());
                         }
                     } catch (Exception exnot) {
@@ -376,9 +368,7 @@ public final class AgentIndexRunner implements AgentIndexRunnerMBean, Notificati
                 }
             }
         } catch (Exception ex) {
-            log.log(Level.SEVERE,
-                    "Exception during notification sending: " + ex.getMessage(),
-                    ex);
+            log.log(Level.SEVERE, "Exception during notification sending: " + ex.getMessage(), ex);
         }
     }
 }

@@ -34,12 +34,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class LispAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {
-            "LISP",
-            "LSP",
-            "EL",
-            "SCM",
-    };
+    private static final String[] SUFFIXES = {"LISP", "LSP", "EL", "SCM",};
 
     public LispAnalyzerFactory() {
         super(null, SUFFIXES, null, null, "text/plain", Genre.PLAIN);
@@ -51,8 +46,7 @@ public class LispAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
-            throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         LispAnalyzer.writeXref(in, out, defs, project);
     }
 }

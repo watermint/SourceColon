@@ -32,9 +32,7 @@ import org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
  * Factory for analyzer that tells that image files can be displayed.
  */
 public class ImageAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {
-            "PNG", "GIF", "JPEG", "JPG", "TIFF", "BMP"
-    };
+    private static final String[] SUFFIXES = {"PNG", "GIF", "JPEG", "JPG", "TIFF", "BMP"};
 
     public ImageAnalyzerFactory() {
         super(null, SUFFIXES, null, null, null, Genre.IMAGE);

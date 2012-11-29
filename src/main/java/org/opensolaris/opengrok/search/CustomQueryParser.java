@@ -42,8 +42,7 @@ class CustomQueryParser extends QueryParser {
     CustomQueryParser(String field) {
         super(SearchEngine.LUCENE_VERSION, field, new CompatibleAnalyser());
         setDefaultOperator(AND_OPERATOR);
-        setAllowLeadingWildcard(
-                RuntimeEnvironment.getInstance().isAllowLeadingWildcard());
+        setAllowLeadingWildcard(RuntimeEnvironment.getInstance().isAllowLeadingWildcard());
         // Convert terms to lower case manually to prevent changing the case
         // if the field is case sensitive.
         setLowercaseExpandedTerms(false);
@@ -58,8 +57,7 @@ class CustomQueryParser extends QueryParser {
      */
     private static boolean isCaseSensitive(String field) {
         // Only definition search and reference search are case sensitive
-        return QueryBuilder.DEFS.equals(field) ||
-                QueryBuilder.REFS.equals(field);
+        return QueryBuilder.DEFS.equals(field) || QueryBuilder.REFS.equals(field);
     }
 
     /**
@@ -83,31 +81,22 @@ class CustomQueryParser extends QueryParser {
     // because it uses the analyzer to convert the terms to canonical form.
 
     @Override
-    protected Query getFuzzyQuery(String field, String term, float min)
-            throws ParseException {
+    protected Query getFuzzyQuery(String field, String term, float min) throws ParseException {
         return super.getFuzzyQuery(field, getCanonicalTerm(field, term), min);
     }
 
     @Override
-    protected Query getPrefixQuery(String field, String term)
-            throws ParseException {
+    protected Query getPrefixQuery(String field, String term) throws ParseException {
         return super.getPrefixQuery(field, getCanonicalTerm(field, term));
     }
 
     @Override
-    protected Query getRangeQuery(String field, String term1, String term2,
-                                  boolean inclusive)
-            throws ParseException {
-        return super.getRangeQuery(
-                field,
-                getCanonicalTerm(field, term1),
-                getCanonicalTerm(field, term2),
-                inclusive);
+    protected Query getRangeQuery(String field, String term1, String term2, boolean inclusive) throws ParseException {
+        return super.getRangeQuery(field, getCanonicalTerm(field, term1), getCanonicalTerm(field, term2), inclusive);
     }
 
     @Override
-    protected Query getWildcardQuery(String field, String term)
-            throws ParseException {
+    protected Query getWildcardQuery(String field, String term) throws ParseException {
         return super.getWildcardQuery(field, getCanonicalTerm(field, term));
     }
 }

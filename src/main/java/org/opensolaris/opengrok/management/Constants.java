@@ -43,47 +43,40 @@ public final class Constants {
     /**
      * Property specifying path where log files should be written.
      */
-    public static final String LOG_PATH =
-            "org.opensolaris.opengrok.management.logging.path";
+    public static final String LOG_PATH = "org.opensolaris.opengrok.management.logging.path";
 
     /**
      * Property specifying location of OpenGrok configuration file
      * (configuration.xml).
      */
-    public static final String CONFIG_FILE =
-            "org.opensolaris.opengrok.configuration.file";
+    public static final String CONFIG_FILE = "org.opensolaris.opengrok.configuration.file";
 
     /**
      * Property specifying URL to JMX service. If this property is
      * not set, an URL using the RMI protocol will be generated from
      * {@link #JMX_HOST}, {@link #JMX_PORT} and {@link #RMI_PORT}.
      */
-    public static final String JMX_URL =
-            "org.opensolaris.opengrok.management.url";
+    public static final String JMX_URL = "org.opensolaris.opengrok.management.url";
 
     /**
      * Property specifying JMX server host. We use localhost by default.
      */
-    public static final String JMX_HOST =
-            "org.opensolaris.opengrok.management.host";
+    public static final String JMX_HOST = "org.opensolaris.opengrok.management.host";
 
     /**
      * Property specifying JMX server port. We use 9292 by default.
      */
-    public static final String JMX_PORT =
-            "org.opensolaris.opengrok.management.port";
+    public static final String JMX_PORT = "org.opensolaris.opengrok.management.port";
 
     /**
      * Property specifying port on which the RMI registry is listening. By
      * default, we generate the RMI port by adding one to the JMX port.
      */
-    public static final String RMI_PORT =
-            "org.opensolaris.opengrok.management.rmi.port";
+    public static final String RMI_PORT = "org.opensolaris.opengrok.management.rmi.port";
 
     /**
      * Property specifying whether an embedded RMI registry should be started
      * for a server that uses the RMI JMX protocol.
      */
-    public static final String RMI_START =
-            "org.opensolaris.opengrok.management.rmi.startRegistry";
+    public static final String RMI_START = "org.opensolaris.opengrok.management.rmi.startRegistry";
 }

@@ -34,17 +34,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class CAnalyzerFactory extends FileAnalyzerFactory {
-    private static final String[] SUFFIXES = {
-            "C",
-            "H",
-            "I",
-            "L",
-            "Y",
-            "LEX",
-            "YACC",
-            "D",
-            "S",
-            "XS",                   // Mainly found in perl directories
+    private static final String[] SUFFIXES = {"C", "H", "I", "L", "Y", "LEX", "YACC", "D", "S", "XS",                   // Mainly found in perl directories
             "X",                    // rpcgen input files
     };
 
@@ -58,8 +48,7 @@ public class CAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
-            throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         CAnalyzer.writeXref(in, out, defs, project);
     }
 }

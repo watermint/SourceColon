@@ -65,9 +65,7 @@ public final class BZip2Analyzer extends FileAnalyzer {
         }
         BufferedInputStream gzis = new BufferedInputStream(new CBZip2InputStream(in));
         String path = doc.get("path");
-        if (path != null &&
-                (path.endsWith(".bz2") || path.endsWith(".BZ2") || path.endsWith(".bz"))
-                ) {
+        if (path != null && (path.endsWith(".bz2") || path.endsWith(".BZ2") || path.endsWith(".bz"))) {
             String newname = path.substring(0, path.lastIndexOf('.'));
             fa = AnalyzerGuru.getAnalyzer(gzis, newname);
             if (fa instanceof BZip2Analyzer) {
@@ -82,8 +80,7 @@ public final class BZip2Analyzer extends FileAnalyzer {
                 if (doc.get("t") != null) {
                     doc.removeField("t");
                     if (g == Genre.XREFABLE) {
-                        doc.add(new Field("t", g.typeName(), Field.Store.YES,
-                                Field.Index.NOT_ANALYZED));
+                        doc.add(new Field("t", g.typeName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
                     }
                 }
             }

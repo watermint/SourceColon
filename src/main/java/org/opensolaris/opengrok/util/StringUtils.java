@@ -32,8 +32,7 @@ public final class StringUtils {
         // Only static utility methods
     }
 
-    private static final Pattern javaClassPattern =
-            Pattern.compile("([a-z][A-Za-z]*\\.)+[A-Z][A-Za-z0-9]*");
+    private static final Pattern javaClassPattern = Pattern.compile("([a-z][A-Za-z]*\\.)+[A-Z][A-Za-z0-9]*");
 
     /**
      * Returns true if the string is possibly a full java class name

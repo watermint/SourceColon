@@ -91,10 +91,7 @@ public class FileAnalyzerFactory {
      * @param genre       the genre for this analyzer (if {@code null}, {@code
      *                    Genre.DATA} is used)
      */
-    protected FileAnalyzerFactory(
-            String[] names, String[] suffixes, String[] magics,
-            Matcher matcher, String contentType,
-            Genre genre) {
+    protected FileAnalyzerFactory(String[] names, String[] suffixes, String[] magics, Matcher matcher, String contentType, Genre genre) {
         cachedAnalyzer = new ThreadLocal<>();
         this.names = asList(names);
         this.suffixes = asList(suffixes);
@@ -224,22 +221,19 @@ public class FileAnalyzerFactory {
          * @return an analyzer factory if the contents match, or {@code null}
          *         if they don't match any factory known by this matcher
          */
-        FileAnalyzerFactory isMagic(byte[] contents, InputStream in)
-                throws IOException;
+        FileAnalyzerFactory isMagic(byte[] contents, InputStream in) throws IOException;
     }
 
     /**
      * Write a cross referenced HTML file. Reads the source from {@code in}.
      *
-     *
-     * @param in         input source
-     * @param out        output xref writer
-     * @param defs       definitions for the file (could be {@code null})
-     * @param project    project the file belongs to (could be {@code null})
+     * @param in      input source
+     * @param out     output xref writer
+     * @param defs    definitions for the file (could be {@code null})
+     * @param project project the file belongs to (could be {@code null})
      * @throws java.io.IOException if an error occurs
      */
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
-            throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 }

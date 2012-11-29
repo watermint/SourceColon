@@ -61,8 +61,7 @@ public final class GZIPAnalyzer extends FileAnalyzer {
     public void analyze(Document doc, InputStream in) throws IOException {
         BufferedInputStream gzis = new BufferedInputStream(new GZIPInputStream(in));
         String path = doc.get("path");
-        if (path != null &&
-                (path.endsWith(".gz") || path.endsWith(".GZ") || path.endsWith(".Gz"))) {
+        if (path != null && (path.endsWith(".gz") || path.endsWith(".GZ") || path.endsWith(".Gz"))) {
             String newname = path.substring(0, path.length() - 3);
             fa = AnalyzerGuru.getAnalyzer(gzis, newname);
             if (fa == null) {
@@ -78,8 +77,7 @@ public final class GZIPAnalyzer extends FileAnalyzer {
                 if (doc.get("t") != null) {
                     doc.removeField("t");
                     if (g == Genre.XREFABLE) {
-                        doc.add(new Field("t", g.typeName(), Field.Store.YES,
-                                Field.Index.NOT_ANALYZED));
+                        doc.add(new Field("t", g.typeName(), Field.Store.YES, Field.Index.NOT_ANALYZED));
                     }
                 }
             }

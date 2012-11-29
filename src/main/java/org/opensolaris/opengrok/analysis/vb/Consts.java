@@ -50,8 +50,7 @@ public final class Consts {
         // Util class, can not be constructed.
     }
 
-    private static void populateKeywordSet(Set<String> set, String file)
-            throws IOException {
+    private static void populateKeywordSet(Set<String> set, String file) throws IOException {
         String line, lline;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Consts.class.getResourceAsStream(file), "US-ASCII"))) {
             while ((line = reader.readLine()) != null) {

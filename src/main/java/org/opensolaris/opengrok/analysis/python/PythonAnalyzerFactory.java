@@ -40,15 +40,9 @@ import java.io.Writer;
 public class PythonAnalyzerFactory extends FileAnalyzerFactory {
     //TODO note that .PM below is kind of wrong, since perl already has this and is registered before python analyzer
     // unfortunately we miss code that would be able to share extensions between analyzers
-    private static final String[] SUFFIXES = {
-            "PY"
-    };
+    private static final String[] SUFFIXES = {"PY"};
     //"PM"
-    private static final String[] MAGICS = {
-            "#!/usr/bin/env python",
-            "#!/usr/bin/python",
-            "#!/bin/python"
-    };
+    private static final String[] MAGICS = {"#!/usr/bin/env python", "#!/usr/bin/python", "#!/bin/python"};
 
     public PythonAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -60,8 +54,7 @@ public class PythonAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
-            throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         PythonAnalyzer.writeXref(in, out, defs, project);
     }
 }

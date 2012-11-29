@@ -31,20 +31,8 @@ import java.io.Writer;
 
 public class PhpAnalyzerFactory extends FileAnalyzerFactory {
 
-    private static final String[] SUFFIXES = {
-            "PHP",
-            "PHP3",
-            "PHP4",
-            "PHP5",
-            "PHPS",
-            "PHTML"
-    };
-    private static final String[] MAGICS = {
-            "#!/usr/bin/env php",
-            "#!/usr/bin/php",
-            "#!/bin/php",
-            "<?php"
-    };
+    private static final String[] SUFFIXES = {"PHP", "PHP3", "PHP4", "PHP5", "PHPS", "PHTML"};
+    private static final String[] MAGICS = {"#!/usr/bin/env php", "#!/usr/bin/php", "#!/bin/php", "<?php"};
 
     public PhpAnalyzerFactory() {
         super(null, SUFFIXES, MAGICS, null, "text/plain", Genre.PLAIN);
@@ -56,8 +44,7 @@ public class PhpAnalyzerFactory extends FileAnalyzerFactory {
     }
 
     @Override
-    public void writeXref(Reader in, Writer out, Definitions defs, Project project)
-            throws IOException {
+    public void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         PhpAnalyzer.writeXref(in, out, defs, project);
     }
 }

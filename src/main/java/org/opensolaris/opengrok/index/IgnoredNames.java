@@ -32,48 +32,13 @@ import java.io.File;
  * @author Chandan
  */
 public final class IgnoredNames extends Filter {
-    private static final String[] defaultPatterns = {
-            "SCCS",
-            "CVS",
-            "RCS",
-            "cscope.in.out",
-            "cscope.out.po",
-            "cscope.out.in",
-            "cscope.po.out",
-            "cscope.po.in",
-            "cscope.files",
-            "cscope.out",
-            "Codemgr_wsdata",
-            ".cvsignore",
-            "CVSROOT",
+    private static final String[] defaultPatterns = {"SCCS", "CVS", "RCS", "cscope.in.out", "cscope.out.po", "cscope.out.in", "cscope.po.out", "cscope.po.in", "cscope.files", "cscope.out", "Codemgr_wsdata", ".cvsignore", "CVSROOT",
             // tags are leftover from the time when ctags did not run daemonized
             // "TAGS",
             // "tags",
-            ".svn",
-            ".git",
-            ".repo",
-            ".hg",
-            ".hgtags",
-            ".bzr",
-            ".p4config",
-            ".razor",
-            "*~",
-            "deleted_files",
-            ".make.*",
-            ".del-*",
-            "_MTN",
+            ".svn", ".git", ".repo", ".hg", ".hgtags", ".bzr", ".p4config", ".razor", "*~", "deleted_files", ".make.*", ".del-*", "_MTN",
             // File Extensions for Visual Studio and Mono Projects
-            ".vspscc",
-            ".suo",
-            ".vssscc",
-            ".user",
-            ".ncb",
-            ".gpState",
-            ".snc",
-            ".sln",
-            ".vsmdi",
-            ".dll",
-    };
+            ".vspscc", ".suo", ".vssscc", ".user", ".ncb", ".gpState", ".snc", ".sln", ".vsmdi", ".dll",};
 
     public IgnoredNames() {
         super();

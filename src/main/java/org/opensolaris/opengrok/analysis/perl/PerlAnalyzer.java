@@ -85,9 +85,9 @@ public final class PerlAnalyzer extends PlainAnalyzerBase {
     /**
      * Write a cross referenced HTML file reads the source from in
      *
-     * @param in         Input source
-     * @param out        Output xref writer
-     * @param defs       definitions for the file (could be null)
+     * @param in   Input source
+     * @param out  Output xref writer
+     * @param defs definitions for the file (could be null)
      */
     static void writeXref(Reader in, Writer out, Definitions defs, Project project) throws IOException {
         PerlXref xref = new PerlXref(in);
