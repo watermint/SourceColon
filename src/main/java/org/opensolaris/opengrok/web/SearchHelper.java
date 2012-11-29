@@ -97,11 +97,6 @@ public class SearchHelper {
      */
     public SortOrder order;
     /**
-     * if {@code true} a {@link ParallelMultiSearcher} will be used instead of
-     * a {@link MultiSearcher}.
-     */
-    public boolean parallel;
-    /**
      * Indicate, whether this is search from a cross reference. If {@code true}
      * {@link #executeQuery()} sets {@link #redirect} if certain conditions are
      * met.
@@ -173,7 +168,6 @@ public class SearchHelper {
      * <li>{@link #builder}</li>
      * <li>{@link #dataRoot}</li>
      * <li>{@link #order} (falls back to relevance if unset)</li>
-     * <li>{@link #parallel} (default: false)</li>
      * </ul>
      * Populates/sets:
      * <ul>
@@ -205,12 +199,12 @@ public class SearchHelper {
             if (projects.isEmpty()) {
                 //no project setup
                 FSDirectory dir = FSDirectory.open(indexDir);
-                searcher = new IndexSearcher(dir);
+                searcher = new IndexSearcher(IndexReader.open(dir));
             } else if (projects.size() == 1) {
                 // just 1 project selected
                 FSDirectory dir =
                         FSDirectory.open(new File(indexDir, projects.first()));
-                searcher = new IndexSearcher(dir);
+                searcher = new IndexSearcher(IndexReader.open(dir));
             } else {
                 //more projects
                 IndexReader[] searchables = new IndexReader[projects.size()];

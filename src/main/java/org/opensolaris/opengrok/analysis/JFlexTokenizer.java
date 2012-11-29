@@ -53,6 +53,10 @@ public abstract class JFlexTokenizer extends Tokenizer {
 
     abstract public void yyclose() throws IOException;
 
+    protected JFlexTokenizer() {
+        super(new CharArrayReader(new char[0], 0, 0));
+    }
+
     /**
      * Reinitialize the tokenizer with new contents.
      *
