@@ -42,18 +42,8 @@ Make sure you also have gradle
 Run SourceColon
 
     $ gradle run -Ptarget=<your source code directory>
-    :prepare
-	:jflex
-	:compileJava UP-TO-DATE
-	:processResources UP-TO-DATE
-	:classes UP-TO-DATE
-	:jar UP-TO-DATE
-	:runIndexer
-	:prepareWar
-	:war UP-TO-DATE
-	> Building > :jettyRunWar > Running at http://localhost:8080/SourceColon
 
-Open http://localhost:8080/SourceColon with your browser.
+Open http://localhost:8080/ with your browser.
 
 ## License
 

@@ -96,7 +96,7 @@ public final class Configuration {
     public Configuration() {
         //defaults for an opengrok instance configuration
         setProjects(new ArrayList<Project>());
-        setUrlPrefix("/SourceColon/s?");
+        setUrlPrefix("/s?");
         setCtags(System.getProperty("org.opensolaris.opengrok.analysis.Ctags", "ctags"));
         //below can cause an out of memory error, since it is defaulting to NO LIMIT
         setIndexWordLimit(Integer.MAX_VALUE);
