@@ -87,7 +87,7 @@ jettyRunWar {
 jar {
     destinationDir project.ext.dist
     manifest {
-        attributes('Main-Class': 'org.opensolaris.opengrok.index.Indexer')
+        attributes('Main-Class': 'org.watermint.sourcecolon.org.opensolaris.opengrok.index.Indexer')
     }
     from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
 }

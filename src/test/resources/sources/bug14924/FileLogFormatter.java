@@ -21,7 +21,7 @@
  * Copyright (c) 2008, 2010, Oracle and/or its affiliates. All rights reserved.
  */
 
-package org.opensolaris.opengrok;
+package org.watermint.sourcecolon.org.opensolaris.opengrok;
 
 import java.util.Date;
 import java.util.logging.Formatter;
