@@ -55,7 +55,7 @@ public class CtagsTest {
             ctags.setBinary(RuntimeEnvironment.getInstance().getCtags());
             repository = new TestRepository();
             repository.create(CtagsTest.class.getResourceAsStream(
-                    "/org/opensolaris/opengrok/index/source.zip"));
+                    "/org/watermint/sourcecolon/org/opensolaris/opengrok/index/source.zip"));
         }
     }
 
