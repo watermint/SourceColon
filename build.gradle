@@ -24,13 +24,9 @@ ext {
 }
 
 dependencies {
-    String luceneVersion = '3.6.1'
     String jettyVersion = '8.1.8.v20121106'
     List common = [
-            "org.apache.lucene:lucene-core:$luceneVersion",
-            "org.apache.lucene:lucene-spellchecker:$luceneVersion",
-            "org.apache.bcel:bcel:5.2",
-            "org.apache.ant:ant:1.8.4"
+            "org.apache.solr:solr-core:4.0.0"
     ]
     jflex "de.jflex:maven-jflex-plugin:1.4.3"
     compile common
@@ -78,16 +74,10 @@ sourceSets {
     }
 }
 
-jettyRunWar {
-    if (project.hasProperty('httpPort')) {
-        httpPort = project.httpPort as Integer
-    }
-}
-
 jar {
     destinationDir project.ext.dist
     manifest {
-        attributes('Main-Class': 'org.watermint.sourcecolon.org.opensolaris.opengrok.index.Indexer')
+        attributes('Main-Class': 'org.watermint.sourcecolon.Main')
     }
     from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
 }
@@ -108,23 +98,9 @@ task runIndexer(dependsOn: jar) << {
     }
 }
 
-task prepareWar(dependsOn: [jar, runIndexer]) << {
-    File destWar = new File(project.buildDir, 'war')
-    File baseWar = new File(project.projectDir, 'web')
-    copy {
-        from baseWar
-        into destWar
-    }
-    copy {
-        from jar.archivePath
-        into new File(destWar, 'WEB-INF/lib')
-    }
-}
-
 war {
-    dependsOn prepareWar
     destinationDir project.ext.dist
-    from new File(project.buildDir, 'war')
+    from new File(project.projectDir, 'web')
 }
 
 task runJetty8(type: JavaExec, dependsOn: war) {

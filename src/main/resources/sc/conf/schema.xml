@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="sourcecolon">
+    <types>
+        <fieldtype name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+    </types>
+    <fields>
+        <field name="id" type="string"/>
+        <field name="name" type="string" />
+    </fields>
+</schema>
