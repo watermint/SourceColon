@@ -1,3 +1,0 @@
-This is a versioned textfile & < > -
-http://www.example.com/
-username@example.com
