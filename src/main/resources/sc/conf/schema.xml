@@ -5,6 +5,6 @@
     </types>
     <fields>
         <field name="id" type="string"/>
-        <field name="name" type="string" />
+        <field name="name" type="string" required="false"/>
     </fields>
 </schema>
