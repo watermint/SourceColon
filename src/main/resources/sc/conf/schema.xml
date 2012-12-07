@@ -2,9 +2,17 @@
 <schema name="sourcecolon">
     <types>
         <fieldtype name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+        <fieldtype name="integer" class="solr.LongField" />
+        <fieldtype name="text_ja" class="solr.TextField" positionIncrementGap="100">
+            <analyzer>
+                <tokenizer class="solr.JapaneseTokenizerFactory" />
+            </analyzer>
+        </fieldtype>
     </types>
     <fields>
-        <field name="id" type="string"/>
-        <field name="name" type="string" required="false"/>
+        <field name="id" type="string" indexed="true" />
+        <field name="name" type="string" indexed="true" />
+        <field name="line_number" type="integer" indexed="true" />
+        <field name="line_body" type="text_ja" indexed="true" />
     </fields>
 </schema>

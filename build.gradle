@@ -93,8 +93,9 @@ task runIndexer(dependsOn: jar) << {
     }
 
     ant.java(jar: jar.archivePath, fork: true) {
-        arg(value: '-s')
+        arg(value: 'index')
         arg(value: target)
+        arg(value: 'java')
     }
 }
 

@@ -39,11 +39,9 @@ Make sure you also have gradle
 	JVM: 1.7.0_07 (Oracle Corporation 23.3-b01)
 	OS: Mac OS X 10.7.5 x86_64
 
-Run SourceColon
+Build SourceColon
 
-    $ gradle run -Ptarget=<your source code directory>
-
-Open http://localhost:8080/ with your browser.
+    $ gradle
 
 ## License
 

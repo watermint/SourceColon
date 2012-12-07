@@ -5,3 +5,4 @@
 build
 dist
 src/jflex/java
+src/main/resources/sc/data
