@@ -10,9 +10,10 @@
         </fieldtype>
     </types>
     <fields>
-        <field name="id" type="string" indexed="true" />
-        <field name="name" type="string" indexed="true" />
-        <field name="line_number" type="integer" indexed="true" />
-        <field name="line_body" type="text_ja" indexed="true" />
+        <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false"/>
+        <field name="name" type="string" indexed="true"  stored="true" required="true"/>
+        <field name="line_number" type="integer" indexed="true"  stored="true" required="true"/>
+        <field name="line_body" type="text_ja" indexed="true"  stored="true" required="true"/>
     </fields>
+    <uniqueKey>id</uniqueKey>
 </schema>

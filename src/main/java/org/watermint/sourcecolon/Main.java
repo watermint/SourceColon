@@ -49,7 +49,7 @@ public class Main {
                     break;
                 }
                 SolrInputDocument d = new SolrInputDocument();
-                d.setField("id", f.getAbsolutePath());
+                d.setField("id", f.getAbsolutePath() + ":" + lineNumber);
                 d.setField("name", f.getName());
                 d.setField("line_body", line);
                 d.setField("line_number", lineNumber);
