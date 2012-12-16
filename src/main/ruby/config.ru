@@ -1,6 +1,6 @@
 $:.unshift File.expand_path('../lib', File.dirname(__FILE__))
 
 require 'rubygems'
-require 'sourcecolon/api'
+require 'sourcecolon/app'
 
-run SourceColon::Api
+run SourceColon::App
