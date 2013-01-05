@@ -1,47 +1,53 @@
 package org.watermint.sourcecolon;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.response.SpellCheckResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
-import org.apache.solr.core.CoreContainer;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  */
 public class Main {
-    private EmbeddedSolrServer server = null;
+    private EmbeddedSolrServer getServer() {
+        return Config.getInstance().getServer();
+    }
 
-    public EmbeddedSolrServer getServer() {
-        synchronized (this) {
-            if (server == null) {
-                File home = new File("./src/main/resources");
-                File configFile = new File(home, "solr.xml");
-                CoreContainer container = null;
-                try {
-                    container = new CoreContainer(home.getAbsolutePath(), configFile);
-                } catch (ParserConfigurationException | IOException | SAXException e) {
-                    e.printStackTrace();
-                }
-                server = new EmbeddedSolrServer(container, "sourcecolon");
+    public String hash(String text) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-1");
+            byte[] hashBytes = digest.digest(text.getBytes("UTF-8"));
+            StringBuilder hashString = new StringBuilder();
+
+            for (byte b : hashBytes) {
+                hashString.append(String.format("%02x", b));
             }
 
+            return hashString.toString();
+        } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
-        return server;
     }
 
     public void appendFileContents(File f) {
         System.out.println("Index: " + f.getAbsolutePath());
+
         try (FileInputStream fis = new FileInputStream(f)) {
             InputStreamReader r = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(r);
-            int lineNumber = 1;
+            int seq = 1;
 
             while (true) {
                 String line = br.readLine();
@@ -49,18 +55,19 @@ public class Main {
                     break;
                 }
                 SolrInputDocument d = new SolrInputDocument();
-                d.setField("id", f.getAbsolutePath() + ":" + lineNumber);
-                d.setField("name", f.getName());
-                d.setField("line_body", line);
-                d.setField("line_number", lineNumber);
-
+                d.setField("id", f.getAbsolutePath() + ":" + seq);
+                d.setField("path", f.getAbsolutePath());
+                d.setField("path_hash", hash(f.getAbsolutePath()));
+                d.setField("path_ext", FilenameUtils.getExtension(f.getAbsolutePath()));
+                d.addField("text", line);
+                d.setField("text_seq", seq);
                 try {
                     getServer().add(d);
                 } catch (SolrServerException | IOException e) {
                     e.printStackTrace();
                 }
 
-                lineNumber++;
+                seq++;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,11 +104,36 @@ public class Main {
     public void query(String query) {
         SolrQuery q = new SolrQuery();
         q.setQuery(query);
+        q.setHighlight(true);
+        q.setHighlightSimplePre("<span class=\"keyword\">");
+        q.setHighlightSimplePost("</span>");
+        q.setIncludeScore(true);
+        q.setSortField("text_seq", SolrQuery.ORDER.asc);
+        q.setGetFieldStatistics(true);
+
         try {
             QueryResponse response = getServer().query(q);
             for (SolrDocument d : response.getResults()) {
-                System.out.println(d.getFirstValue("name") + "[" + d.getFirstValue("line_number") + "]: " + d.getFirstValue("line_body"));
+                Map<String, Collection<Object>> m = d.getFieldValuesMap();
+                for (String k : m.keySet()) {
+                    for (Object v : m.get(k)) {
+                        System.out.printf("[%s] : %s\n", k, v);
+                    }
+                }
             }
+            Map<String, Map<String, List<String>>> h = response.getHighlighting();
+            if (h != null) {
+                for (String k : h.keySet()) {
+                    Map<String, List<String>> m = h.get(k);
+                    for (String k2 : m.keySet()) {
+                        for (String k3 : m.get(k2)) {
+                            System.out.printf("Highlighting [%s][%s] => [%s]\n", k, k2, k3);
+                        }
+                    }
+                }
+            }
+
+            System.out.println("");
         } catch (SolrServerException e) {
             e.printStackTrace();
         }
