@@ -14,15 +14,17 @@ module SourceColon
       erb :index
     end
 
-    get "/list" do
+    get "/api/rows/:hash/:start-:end" do
       content_type :json
-      c = org.watermint.sourcecolon.api.Core.new
+      list = []
 
-      begin
-        c.get_list("f88b828ffa4b501067d47ca86f7e6fffdc71b830", 1, 10)
-      rescue
-        ["Error!"]
-      end
+      path_hash = params[:hash]
+      row_start = params[:start].to_i
+      row_end   = params[:end].to_i
+
+      rows = SourceColon::Core::Rows.new
+
+      rows.list(path_hash, row_start, row_end).to_json
     end
   end
 end

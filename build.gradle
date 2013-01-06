@@ -1,21 +1,6 @@
-buildscript {
-    repositories {
-        add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-            name = 'GitHub'
-            addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
-        }
-    }
-
-    dependencies {
-        classpath 'bmuschko:gradle-tomcat-plugin:0.9.5'
-    }
-}
-
 apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'jetty'
-apply plugin: 'tomcat'
-
 
 sourceCompatibility = '1.7'
 archivesBaseName = 'sc'
@@ -29,36 +14,13 @@ repositories {
 }
 
 dependencies {
-    String jerseyVersion = "1.16"
-    def tomcatVersion = '7.0.34'
-    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
-    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
-        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
-    }
-
-    List coreLibraries = [
+    compile "javax:javaee-web-api:6.0",
             "org.rubygems:sinatra:1.3.3",
             "org.apache.solr:solr-core:4.0.0",
-            "org.glassfish.grizzly:grizzly-http-servlet:2.2.18",
-            "com.sun.jersey:jersey-core:$jerseyVersion",
-            "com.sun.jersey:jersey-server:$jerseyVersion",
-            "com.sun.jersey:jersey-client:$jerseyVersion",
-            "com.sun.jersey:jersey-servlet:$jerseyVersion",
-            "com.sun.jersey:jersey-grizzly2:$jerseyVersion",
-            "com.sun.jersey:jersey-json:$jerseyVersion",
             "commons-io:commons-io:2.4",
-            "javax.faces:jsf-api:2.1",
-            "javax.faces:jsf-impl:1.2_15",
             module("org.jruby.rack:jruby-rack:1.1.9") {
                 dependency "org.jruby:jruby-complete:1.7.1"
             }
-    ]
-
-    compile "javax:javaee-web-api:6.0"
-    compile coreLibraries
-    runtime "javax:javaee-web-api:6.0"
-    runtime coreLibraries
 }
 
 sourceSets {

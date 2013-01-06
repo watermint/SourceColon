@@ -1,8 +1,5 @@
 package org.watermint.sourcecolon;
 
-import com.sun.jersey.api.container.ContainerFactory;
-import com.sun.jersey.api.core.PackagesResourceConfig;
-import com.sun.jersey.api.core.ResourceConfig;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -10,21 +7,11 @@ import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
-import org.glassfish.grizzly.http.server.HttpHandler;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.NetworkListener;
-import org.glassfish.grizzly.http.server.ServerConfiguration;
-import org.glassfish.grizzly.servlet.WebappContext;
-import org.jruby.rack.RackFilter;
-import org.jruby.rack.RackServlet;
-import org.jruby.rack.RackServletContextListener;
-import org.watermint.sourcecolon.grizzly.JRubyRackServletHandler;
 
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -156,61 +143,6 @@ public class Main {
         getServer().shutdown();
     }
 
-    public void server() throws IOException {
-        Console console = System.console();
-
-        if (console == null) {
-            System.err.println("No console available.");
-//            System.exit(1);
-        }
-
-        // HTTP Server
-        HttpServer server = new HttpServer();
-        ServerConfiguration sc = server.getServerConfiguration();
-
-        NetworkListener listener = new NetworkListener("grizzly", "localhost", 8080);
-        server.addListener(listener);
-
-        // Jersey configuration
-        Map<String, Object> jerseyParams = new HashMap<>();
-        jerseyParams.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
-
-        ResourceConfig jerseyConfig = new PackagesResourceConfig("org.watermint.sourcecolon.api");
-        jerseyConfig.setPropertiesAndFeatures(jerseyParams);
-
-        // add handler for jersey
-        sc.addHttpHandler(ContainerFactory.createContainer(HttpHandler.class, jerseyConfig));
-
-        // Servlet for JRuby-Rack
-        WebappContext jrubyContext = new WebappContext("JRuby-Rack");
-        jrubyContext.addFilter("Rack-Filter", RackFilter.class);
-        jrubyContext.addServlet("Rack-Servlet", RackServlet.class);
-        jrubyContext.addListener(RackServletContextListener.class);
-
-        JRubyRackServletHandler jrubyHandler = new JRubyRackServletHandler(jrubyContext);
-
-        sc.addHttpHandler(jrubyHandler, "/rack");
-
-        server.start();
-
-        while (true) {
-            if (console == null) {
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                    server.stop();
-                }
-            } else {
-                String command = console.readLine("command 'quit' to terminate: ");
-                if ("quit".equals(command)) {
-                    server.stop();
-                    return;
-                }
-            }
-        }
-    }
-
     public static void usage() {
         System.out.println("usage: SourceColon.jar index path ext");
         System.out.println("usage: SourceColon.jar query query_string");
@@ -239,9 +171,6 @@ public class Main {
                         return;
                     }
                     m.query(args[1]);
-                    break;
-                case "server":
-                    m.server();
                     break;
             }
         } finally {
