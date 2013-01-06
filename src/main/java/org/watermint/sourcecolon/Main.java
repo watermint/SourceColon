@@ -14,12 +14,10 @@ import org.glassfish.grizzly.http.server.HttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.http.server.ServerConfiguration;
-import org.glassfish.grizzly.servlet.ServletHandler;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.jruby.rack.RackFilter;
 import org.jruby.rack.RackServlet;
 import org.jruby.rack.RackServletContextListener;
-import org.watermint.sourcecolon.grizzly.JRubyRackServlet;
 import org.watermint.sourcecolon.grizzly.JRubyRackServletHandler;
 
 import java.io.*;
@@ -191,7 +189,7 @@ public class Main {
 
         JRubyRackServletHandler jrubyHandler = new JRubyRackServletHandler(jrubyContext);
 
-        sc.addHttpHandler(jrubyHandler, "/");
+        sc.addHttpHandler(jrubyHandler, "/rack");
 
         server.start();
 
