@@ -14,11 +14,15 @@ module SourceColon
       erb :index
     end
 
-    get "/ping" do
+    get "/list" do
       content_type :json
-      m = org.watermint.sourcecolon.Mock.new
+      c = org.watermint.sourcecolon.api.Core.new
 
-      ["Pong, ", m.name].to_json
+      begin
+        c.get_list("f88b828ffa4b501067d47ca86f7e6fffdc71b830", 1, 10)
+      rescue
+        ["Error!"]
+      end
     end
   end
 end
