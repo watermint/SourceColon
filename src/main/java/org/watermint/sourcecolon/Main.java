@@ -42,6 +42,19 @@ public class Main {
     public void appendFileContents(File f) {
         System.out.println("Index: " + f.getAbsolutePath());
 
+        try {
+            SolrInputDocument d = new SolrInputDocument();
+            d.setField("id", f.getAbsolutePath());
+            d.setField("type", "file");
+            d.setField("path", f.getAbsolutePath());
+            d.setField("path_hash", hash(f.getAbsolutePath()));
+            d.setField("path_ext", FilenameUtils.getExtension(f.getAbsolutePath()));
+
+            getServer().add(d);
+        } catch (SolrServerException | IOException e) {
+            e.printStackTrace();
+        }
+
         try (FileInputStream fis = new FileInputStream(f)) {
             InputStreamReader r = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(r);
@@ -52,15 +65,17 @@ public class Main {
                 if (line == null) {
                     break;
                 }
-                SolrInputDocument d = new SolrInputDocument();
-                d.setField("id", f.getAbsolutePath() + ":" + seq);
-                d.setField("path", f.getAbsolutePath());
-                d.setField("path_hash", hash(f.getAbsolutePath()));
-                d.setField("path_ext", FilenameUtils.getExtension(f.getAbsolutePath()));
-                d.addField("text", line);
-                d.setField("text_seq", seq);
 
                 try {
+                    SolrInputDocument d = new SolrInputDocument();
+                    d.setField("id", f.getAbsolutePath() + ":" + seq);
+                    d.setField("type", "text");
+                    d.setField("path", f.getAbsolutePath());
+                    d.setField("path_hash", hash(f.getAbsolutePath()));
+                    d.setField("path_ext", FilenameUtils.getExtension(f.getAbsolutePath()));
+                    d.setField("text", line);
+                    d.setField("text_seq", seq);
+
                     getServer().add(d);
                 } catch (SolrServerException | IOException e) {
                     e.printStackTrace();
@@ -79,9 +94,27 @@ public class Main {
             if (files == null) {
                 return;
             }
+            SolrInputDocument d = new SolrInputDocument();
+            d.setField("id", f.getAbsolutePath());
+            d.setField("type", "dir");
+            d.setField("path", f.getAbsolutePath());
+            d.setField("path_hash", hash(f.getAbsolutePath()));
+
             for (File f0 : files) {
                 appendFile(f0, ext);
+                if (f0.isDirectory()) {
+                    d.addField("dir_dirs", f0.getName());
+                } else {
+                    d.addField("dir_files", f0.getName());
+                }
             }
+
+            try {
+                getServer().add(d);
+            } catch (SolrServerException | IOException e) {
+                e.printStackTrace();
+            }
+
             return;
         }
 
