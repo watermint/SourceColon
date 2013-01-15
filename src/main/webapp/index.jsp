@@ -1,3 +1,0 @@
-<html>
-hoge
-</html>
