@@ -1,14 +1,13 @@
 body {
-  padding-top: 60px;
-  padding-bottom: 40px;
+    padding-top: 60px;
+    padding-bottom: 40px;
 }
 
 .sc-logo-brand {
     display: inline-block;
     line-height: 14px;
     vertical-align: text-bottom;
-    background-image: url(../img/icon-64.png);
-    background-repeat: no-repeat;
+    background: url(../img/icon-64.png) no-repeat;
     background-size: 64px 64px;
     width: 64px;
     height: 64px;
