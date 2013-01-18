@@ -12,8 +12,8 @@
   <link rel="icon" href="${pageContext.request.contextPath}/img/icon-16.png" type="image/png"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" media="screen"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui-1.9.2.custom.min.css" media="screen"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prettify.css" media="screen"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sourcecolon.css" media="screen"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prettify.min.css" media="screen"/>
 </head>
 <body>
 <div class="navbar navbar-fixed-top">
