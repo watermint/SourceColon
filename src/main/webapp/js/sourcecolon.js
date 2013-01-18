@@ -32,7 +32,7 @@ var SourceColon = {
     })
   },
   createChunk: function (chunkProfile) {
-    var chunk = $('<div></div>');
+    var chunk = $('<ol class="linenums" start="' + chunkProfile.chunkBegin + '"></ol>');
     var placeHolder = $('<div><h1>Place Holder for ' + chunkProfile.chunkBegin + '</h1></div>');
     var placeHolderHeight = SourceColon.lineHeight * (chunkProfile.chunkEnd - chunkProfile.chunkBegin);
     placeHolder.css('height', placeHolderHeight + 'px');
@@ -64,9 +64,8 @@ var SourceColon = {
         jQuery.each(rows.rows, function (i, d) {
           var n = d.n;
           var t = d.t;
-          var lineNumber = "<span class='label'><a name='" + n + "'></a>" + n + "</span> ";
           var chunkId = chunk.page.fileHash + "-" + n;
-          var row = $("<div id='" + chunkId + "'>" + lineNumber + t + "</div>");
+          var row = $("<li class='L" + n + "'><a name='" + n + "'></a><span class='pln'>" + t + "</span></li>");
 
           chunk.container.append(row);
         });
