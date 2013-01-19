@@ -28,3 +28,7 @@ jar {
     }
     from configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.3'
+}
