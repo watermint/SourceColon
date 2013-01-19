@@ -6,30 +6,20 @@ sourceCompatibility = '1.7'
 archivesBaseName = 'sc'
 
 repositories {
-    maven {
-        url "http://gemjars.org/maven"
-    }
     mavenCentral()
     mavenLocal()
 }
 
 dependencies {
-    compile "javax:javaee-web-api:6.0",
-            "org.rubygems:sinatra:1.3.3",
-            "org.apache.solr:solr-core:4.0.0",
-            "commons-io:commons-io:2.4",
-            module("org.jruby.rack:jruby-rack:1.1.9") {
-                dependency "org.jruby:jruby-complete:1.7.1"
-            }
-}
+    String jerseyVersion = "1.16"
 
-sourceSets {
-    main {
-        resources {
-            srcDir "src/main/ruby"
-            srcDir "src/main/java"
-        }
-    }
+    compile "javax:javaee-web-api:6.0",
+            "com.sun.jersey:jersey-core:$jerseyVersion",
+            "com.sun.jersey:jersey-server:$jerseyVersion",
+            "com.sun.jersey:jersey-client:$jerseyVersion",
+            "com.sun.jersey:jersey-json:$jerseyVersion",
+            "org.apache.solr:solr-core:4.0.0",
+            "commons-io:commons-io:2.4"
 }
 
 jar {
