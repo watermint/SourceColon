@@ -421,16 +421,9 @@ public final class Util {
         if (num > 1) {
             out.write("\n");
         }
-        out.write(anchorClassStart);
-        out.write("line-number");
-        out.write("\" href=\"#");
-        out.write(snum);
-        out.write("\" name=\"");
+        out.write("<a name=\"");
         out.write(snum);
         out.write(closeQuotedTag);
-        out.write("<span class=\"badge\">");
-        out.write(snum);
-        out.write("</span> ");
         out.write(anchorEnd);
     }
 

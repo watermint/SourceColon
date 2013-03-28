@@ -81,21 +81,21 @@ Number = (0[xX][0-9a-fA-F]+|[0-9]+\.[0-9]+|[0-9]+)(([eE][+-]?[0-9]+)?[loxbLOXBjJ
         out.write("&gt;");
 }
 
-{Number}        { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
+{Number}        { out.write(yytext()); }
 
- \"     { yybegin(STRING);out.write("<span class=\"s\">\"");}
- \"\"\" { yybegin(LSTRING);out.write("<span class=\"s\">\"\"\"");}
- \'     { yybegin(QSTRING);out.write("<span class=\"s\">\'");}
- \'\'\' { yybegin(LQSTRING);out.write("<span class=\"s\">\'\'\'");}
- "#"   { yybegin(SCOMMENT);out.write("<span class=\"c\">#");}
+ \"     { yybegin(STRING);out.write("\"");}
+ \"\"\" { yybegin(LSTRING);out.write("\"\"\"");}
+ \'     { yybegin(QSTRING);out.write("\'");}
+ \'\'\' { yybegin(LQSTRING);out.write("\'\'\'");}
+ "#"   { yybegin(SCOMMENT);out.write("#");}
 }
 
 <STRING> {
-  \"     { yybegin(YYINITIAL); out.write("\"</span>"); }
+  \"     { yybegin(YYINITIAL); }
  \\\\   { out.write("\\\\"); }
  \\\"   { out.write("\\\""); }
  {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }
@@ -104,16 +104,16 @@ Number = (0[xX][0-9a-fA-F]+|[0-9]+\.[0-9]+|[0-9]+)(([eE][+-]?[0-9]+)?[loxbLOXBjJ
  "\\\\" { out.write("\\\\"); }
  "\\\'" { out.write("\\\'"); }
  \' {WhiteSpace} \' { out.write(yytext()); }
- \'     { yybegin(YYINITIAL); out.write("'</span>"); }
+ \'     { yybegin(YYINITIAL); out.write("'"); }
  {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }
 
 <LSTRING> {
  \" {WhiteSpace} \"  { out.write(yytext());}
- \"\"\" { yybegin(YYINITIAL); out.write("\"\"\"</span>"); }
+ \"\"\" { yybegin(YYINITIAL); out.write("\"\"\""); }
  \\\\   { out.write("\\\\"); }
  \\\"   { out.write("\\\""); }
 }
@@ -122,12 +122,12 @@ Number = (0[xX][0-9a-fA-F]+|[0-9]+\.[0-9]+|[0-9]+)(([eE][+-]?[0-9]+)?[loxbLOXBjJ
  "\\\\" { out.write("\\\\"); }
  "\\\'" { out.write("\\\'"); }
  \' {WhiteSpace} \' { out.write(yytext()); }
- \'\'\'     { yybegin(YYINITIAL); out.write("'''</span>"); }
+ \'\'\'     { yybegin(YYINITIAL); out.write("'''"); }
 }
 
 <SCOMMENT> {
   {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }

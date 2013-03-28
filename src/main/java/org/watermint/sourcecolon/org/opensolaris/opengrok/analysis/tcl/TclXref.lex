@@ -68,24 +68,23 @@ Number = ([0-9]+\.[0-9]+|[0-9][0-9]*|"#" [boxBOX] [0-9a-fA-F]+)
     writeSymbol(id, Consts.kwd, yyline);
 }
 
-{Number}        { out.write("<span class=\"n\">");
-                  out.write(yytext());
-                  out.write("</span>"); }
+{Number}        {
+                  out.write(yytext()); }
 
- \"     { yybegin(STRING);out.write("<span class=\"s\">\"");}
- "#"    { yybegin(SCOMMENT);out.write("<span class=\"c\">#");}
+ \"     { yybegin(STRING);out.write("\"");}
+ "#"    { yybegin(SCOMMENT);out.write("#");}
 }
 
 <STRING> {
  \" {WhiteSpace} \"  { out.write(yytext()); }
- \"     { yybegin(YYINITIAL); out.write("\"</span>"); }
+ \"     { yybegin(YYINITIAL); out.write("\""); }
  \\\\   { out.write("\\\\"); }
  \\\"   { out.write("\\\""); }
 }
 
 <SCOMMENT> {
   {EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }

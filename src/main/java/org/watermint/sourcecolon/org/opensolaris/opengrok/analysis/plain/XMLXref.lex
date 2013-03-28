@@ -57,26 +57,26 @@ NameChar = {FileChar}|"."
 %%
 
 <YYINITIAL> {
- "<!--"  { yybegin(COMMENT); out.write("<span class=\"c\">&lt;!--"); }
+ "<!--"  { yybegin(COMMENT); out.write("&lt;!--"); }
  "<![CDATA[" {
     yybegin(CDATA);
-    out.write("&lt;<span class=\"n\">![CDATA[</span><span class=\"c\">");
+    out.write("&lt;![CDATA[");
  }
  "<"    { yybegin(TAG); out.write("&lt;");}
 }
 
 <TAG> {
-[a-zA-Z_0-9]+{WhiteSpace}*\= { out.write("<b>"); out.write(yytext()); out.write("</b>"); }
-[a-zA-Z_0-9]+ { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
-\"      { yybegin(STRING); out.write("<span class=\"s\">\""); }
-\'      { yybegin(SSTRING); out.write("<span class=\"s\">'"); }
+[a-zA-Z_0-9]+{WhiteSpace}*\= { out.write(yytext()); }
+[a-zA-Z_0-9]+ { out.write(yytext()); }
+\"      { yybegin(STRING); out.write("\""); }
+\'      { yybegin(SSTRING); out.write("'"); }
 ">"      { yybegin(YYINITIAL); out.write("&gt;"); }
 "<"      { yybegin(YYINITIAL); out.write("&lt;"); }
 }
 
 <STRING> {
  \" {WhiteSpace}* \"  { out.write(yytext());}
- \"     { yybegin(TAG); out.write("\"</span>"); }
+ \"     { yybegin(TAG); out.write("\""); }
 }
 
 <STRING, SSTRING, COMMENT, CDATA> {
@@ -86,16 +86,16 @@ NameChar = {FileChar}|"."
 
 <SSTRING> {
  \' {WhiteSpace}* \'  { out.write(yytext());}
- \'     { yybegin(TAG); out.write("'</span>"); }
+ \'     { yybegin(TAG); out.write("'"); }
 }
 
 <COMMENT> {
-"-->"     { yybegin(YYINITIAL); out.write("--&gt;</span>"); }
+"-->"     { yybegin(YYINITIAL); out.write("--&gt;"); }
 }
 
 <CDATA> {
   "]]>" {
-    yybegin(YYINITIAL); out.write("<span class=\"n\">]]</span></span>&gt;");
+    yybegin(YYINITIAL); out.write("]]&gt;");
   }
 }
 

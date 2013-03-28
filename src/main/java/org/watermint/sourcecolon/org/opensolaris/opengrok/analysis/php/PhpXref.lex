@@ -87,28 +87,28 @@ PodEND = "=cut"
         out.write("&gt;");
 }
 
-{Number}        { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
+{Number}        { out.write(yytext()); }
 
- \"     { yybegin(STRING);out.write("<span class=\"s\">\"");}
- \'     { yybegin(QSTRING);out.write("<span class=\"s\">\'");}
- "#"   { yybegin(SCOMMENT);out.write("<span class=\"c\">#");}
-^ {Pods}   { yybegin(POD);out.write("<span class=\"c\">"+yytext());}
+ \"     { yybegin(STRING);out.write("\"");}
+ \'     { yybegin(QSTRING);out.write("\'");}
+ "#"   { yybegin(SCOMMENT);out.write("#");}
+^ {Pods}   { yybegin(POD);out.write(yytext());}
 }
 
 <POD> {
 ^ {PodEND} .* / {EOL} {
-    yybegin(YYINITIAL); out.write(yytext()+"</span>");
+    yybegin(YYINITIAL); out.write(yytext());
     // without eol lookahead one could perhaps just use below and use yytext().trim() above ?
     //startNewLine();
   }
 }
 
 <STRING> {
-  \"     { yybegin(YYINITIAL); out.write("\"</span>"); }
+  \"     { yybegin(YYINITIAL); out.write("\""); }
  \\\\   { out.write("\\\\"); }
  \\\"   { out.write("\\\""); }
  {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }
@@ -117,16 +117,16 @@ PodEND = "=cut"
  "\\\\" { out.write("\\\\"); }
  "\\\'" { out.write("\\\'"); }
  \' {WhiteSpace} \' { out.write(yytext()); }
- \'     { yybegin(YYINITIAL); out.write("'</span>"); }
+ \'     { yybegin(YYINITIAL); out.write("'"); }
  {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }
 
 <SCOMMENT> {
   {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }

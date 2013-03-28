@@ -60,30 +60,16 @@ import java.util.Stack;
   protected void setLineNumber(int x) { yyline = x; }
 
   private void pushstate(int state, String style) throws IOException {
-    if (!styleStack.empty()) {
-      out.write("</span>");
-    }
-    if (style == null) {
-      out.write("<span>");
-    } else {
-      out.write("<span class=\"" + style + "\">");
-    }
     stateStack.push(yystate());
     styleStack.push(style);
     yybegin(state);
   }
 
   private void popstate() throws IOException {
-    out.write("</span>");
     yybegin(stateStack.pop());
     styleStack.pop();
     if (!styleStack.empty()) {
       String style = styleStack.peek();
-      if (style == null) {
-        out.write("<span>");
-      } else {
-        out.write("<span class=\"" + style + "\">");
-      }
     }
   }
 

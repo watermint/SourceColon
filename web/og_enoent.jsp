@@ -37,14 +37,18 @@ Portions Copyright 2011 Jens Elkner.
     }
 %>
 <%@ include file="og_header.jspf" %>
-<div id="page">
-  <%@ include file="og_menu.jspf" %>
-  <h3 class="error">Error: File not found!</h3>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <%@ include file="og_menu.jspf" %>
+    </div>
+    <div class="span9">
+      <h1 class="error">Error: File not found!</h1>
 
-  <p>The requested resource is not available. <%= configError %>
-  </p>
-    <%
-  }
-/* ---------------------- enoent.jsp end --------------------- */
-%>
+      <p>The requested resource is not available. <%= configError %>
+      </p>
+    </div>
+  </div>
+</div>
+<% } %>
 <%@ include file="og_foot.jspf" %>

@@ -89,23 +89,23 @@ Number = (0[xX][0-9a-fA-F]+|[0-9]+\.[0-9]+|[0-9]+)(([eE][+-]?[0-9]+)?[ufdlUFDL]*
 /*{Hier}
         { out.write(Util.breadcrumbPath(urlPrefix+"defs=",yytext(),'.'));}
 */
-{Number}        { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
+{Number}        { out.write(yytext()); }
 
- \"   { yybegin(STRING);out.write("<span class=\"s\">\"");}
- \'   { yybegin(COMMENT);out.write("<span class=\"c\">\'");}
+ \"   { yybegin(STRING);out.write("\"");}
+ \'   { yybegin(COMMENT);out.write("\'");}
 }
 
 <STRING> {
  \" {WhiteSpace} \"  { out.write(yytext());}
-  \"     { yybegin(YYINITIAL); out.write("\"</span>"); }
+  \"     { yybegin(YYINITIAL); out.write("\""); }
   \\\\   { out.write("\\\\"); }
- \\\"   { yybegin(YYINITIAL); out.write("\\\"</span>"); }
+ \\\"   { yybegin(YYINITIAL); out.write("\\\""); }
  
 }
 
 <COMMENT> {
   {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }

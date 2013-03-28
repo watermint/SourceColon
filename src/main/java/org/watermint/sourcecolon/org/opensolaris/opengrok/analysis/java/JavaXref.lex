@@ -94,18 +94,18 @@ ParamName = {Identifier} | "<" {Identifier} ">"
 /*{Hier}
         { out.write(Util.breadcrumbPath(urlPrefix+"defs=",yytext(),'.'));}
 */
-{Number}        { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
+{Number}        { out.write(yytext()); }
 
- \"     { yybegin(STRING);out.write("<span class=\"s\">\"");}
- \'     { yybegin(QSTRING);out.write("<span class=\"s\">\'");}
- "/**" / [^/] { yybegin(JAVADOC);out.write("<span class=\"c\">/**");}
- "/*"   { yybegin(COMMENT);out.write("<span class=\"c\">/*");}
- "//"   { yybegin(SCOMMENT);out.write("<span class=\"c\">//");}
+ \"     { yybegin(STRING);out.write("\"");}
+ \'     { yybegin(QSTRING);out.write("\'");}
+ "/**" / [^/] { yybegin(JAVADOC);out.write("/**");}
+ "/*"   { yybegin(COMMENT);out.write("/*");}
+ "//"   { yybegin(SCOMMENT);out.write("//");}
 }
 
 <STRING> {
  \" {WhiteSpace} \"  { out.write(yytext());}
- \"     { yybegin(YYINITIAL); out.write("\"</span>"); }
+ \"     { yybegin(YYINITIAL); out.write("\""); }
  \\\\   { out.write("\\\\"); }
  \\\"   { out.write("\\\""); }
 }
@@ -114,11 +114,11 @@ ParamName = {Identifier} | "<" {Identifier} ">"
  "\\\\" { out.write("\\\\"); }
  "\\\'" { out.write("\\\'"); }
  \' {WhiteSpace} \' { out.write(yytext()); }
- \'     { yybegin(YYINITIAL); out.write("'</span>"); }
+ \'     { yybegin(YYINITIAL); out.write("'"); }
 }
 
 <COMMENT, JAVADOC> {
-"*/"    { yybegin(YYINITIAL); out.write("*/</span>"); }
+"*/"    { yybegin(YYINITIAL); out.write("*/"); }
 }
 
 <JAVADOC> {
@@ -126,19 +126,19 @@ ParamName = {Identifier} | "<" {Identifier} ">"
   {JavadocWithClassArg} {WhiteSpace} {ClassName} {
     String text = yytext();
     String[] tokens = text.split(WHITE_SPACE, 2);
-    out.append("<strong>").append(tokens[0]).append("</strong>")
+    out.append(tokens[0])
       .append(text.substring(tokens[0].length(),
                              text.length() - tokens[1].length()))
-      .append("<em>").append(tokens[1]).append("</em>");
+      .append(tokens[1]);
   }
   "@" {Identifier} {
-    out.append("<strong>").append(yytext()).append("</strong>");
+    out.append(yytext());
   }
 }
 
 <SCOMMENT> {
   {WhiteSpace}*{EOL} {
-    yybegin(YYINITIAL); out.write("</span>");
+    yybegin(YYINITIAL);
     startNewLine();
   }
 }

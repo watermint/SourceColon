@@ -62,8 +62,8 @@ Number = ([0-9]+\.[0-9]+|[0-9][0-9]*|"0x" [0-9a-fA-F]+ )([udl]+)?
 
 %%
 <YYINITIAL>{
- ^{Label} { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
- ^[^ \t\f\r\n]+ { String commentStr = yytext(); yybegin(LCOMMENT);out.write("<span class=\"c\">"+commentStr);}
+ ^{Label} { out.write(yytext()); }
+ ^[^ \t\f\r\n]+ { String commentStr = yytext(); yybegin(LCOMMENT);out.write(commentStr);}
 
 {Identifier} {
     String id = yytext();
@@ -85,14 +85,14 @@ Number = ([0-9]+\.[0-9]+|[0-9][0-9]*|"0x" [0-9a-fA-F]+ )([udl]+)?
 */
 {Number}        { out.write("<span class=\"n\">"); out.write(yytext()); out.write("</span>"); }
 
- \"     { yybegin(STRING);out.write("<span class=\"s\">\"");}
- \'     { yybegin(QSTRING);out.write("<span class=\"s\">\'");}
- \!     { yybegin(SCOMMENT);out.write("<span class=\"c\">!");}
+ \"     { yybegin(STRING);out.write("\"");}
+ \'     { yybegin(QSTRING);out.write("\'");}
+ \!     { yybegin(SCOMMENT);out.write("!");}
 }
 
 <STRING> {
  \" {WhiteSpace} \"  { out.write(yytext());}
- \"     { yybegin(YYINITIAL); out.write("\"</span>"); }
+ \"     { yybegin(YYINITIAL); out.write("\""); }
  \\\\   { out.write("\\\\"); }
  \\\"   { out.write("\\\""); }
 }
@@ -101,15 +101,15 @@ Number = ([0-9]+\.[0-9]+|[0-9][0-9]*|"0x" [0-9a-fA-F]+ )([udl]+)?
  "\\\\" { out.write("\\\\"); }
  "\\'" { out.write("\\\'"); }
  \' {WhiteSpace} \' { out.write(yytext()); }
- \'     { yybegin(YYINITIAL); out.write("'</span>"); }
+ \'     { yybegin(YYINITIAL); out.write("'"); }
 }
 
 <COMMENT> {
-"*/"    { yybegin(YYINITIAL); out.write("*/</span>"); }
+"*/"    { yybegin(YYINITIAL); out.write("*/"); }
 }
 
 <SCOMMENT> {
-{WhiteSpace}*{EOL}      { yybegin(YYINITIAL); out.write("</span>");
+{WhiteSpace}*{EOL}      { yybegin(YYINITIAL); out.write("");
                   startNewLine();}
 }
 
@@ -117,7 +117,7 @@ Number = ([0-9]+\.[0-9]+|[0-9][0-9]*|"0x" [0-9a-fA-F]+ )([udl]+)?
 "&"     {out.write( "&amp;");}
 "<"     {out.write( "&lt;");}
 ">"     {out.write( "&gt;");}
-{WhiteSpace}*{EOL}      { yybegin(YYINITIAL); out.write("</span>");
+{WhiteSpace}*{EOL}      { yybegin(YYINITIAL);
                   startNewLine();}
  {WhiteSpace}   { out.write(yytext()); }
  [!-~]  { out.write(yycharat(0)); }

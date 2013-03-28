@@ -105,9 +105,3 @@ function toggleSourceLineNumber() {
   $("a.line-number").toggle();
 }
 
-function fixNavBarAnchorPosition() {
-  window.addEventListener("hashchange", function() { scrollBy(0, -60); })
-  if (window.location.hash != "") {
-    scrollBy(0, -60);
-  }
-}

@@ -20,14 +20,13 @@ Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
 Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
---%><%@page import="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"
-%>
-<div class="container">
-  <div style="margin-top: 60px" class="well well-small muted credit">
-    Indexes created <span class="label label-info"><%= PageConfig.get(request).getEnv().getDateForLastIndexRun() %></span>.
-    Served by <i class="logo-sourcecolon"></i> <a href="https://github.com/watermint/SourceColon">Source:</a> based on
-  <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>.
-  </div>
-</div>
-</body>
-</html>
+--%>
+<%@page import="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"
+    %>
+<br/>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/prettify.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/sourcecolon.js"></script>
+</bod></html>

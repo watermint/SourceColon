@@ -67,30 +67,30 @@ EOL = \r|\n|\r\n
     }
 
     {Number} {
-        out.append("<span class=\"n\">").append(yytext()).append("</span>");
+        out.append(yytext());
     }
 
-    "'" { yybegin(STRING); out.append("<span class=\"s\">'"); }
+    "'" { yybegin(STRING); out.append("'"); }
 
-    \" { yybegin(QUOTED_IDENTIFIER); out.append("<span class=\"s\">\""); }
+    \" { yybegin(QUOTED_IDENTIFIER); out.append("\""); }
 
-    "--" { yybegin(SINGLE_LINE_COMMENT); out.append("<span class=\"c\">--"); }
+    "--" { yybegin(SINGLE_LINE_COMMENT); out.append("--"); }
 
     "/*" {
         yybegin(BRACKETED_COMMENT);
         commentLevel = 1;
-        out.append("<span class=\"c\">/*");
+        out.append("/*");
     }
 }
 
 <STRING> {
     "''" { out.append("''"); }
-    "'"   { yybegin(YYINITIAL); out.append("'</span>"); }
+    "'"   { yybegin(YYINITIAL); out.append("'"); }
 }
 
 <QUOTED_IDENTIFIER> {
     \"\" { out.append("\"\""); }
-    \"   { yybegin(YYINITIAL); out.append("\"</span>"); }
+    \"   { yybegin(YYINITIAL); out.append("\""); }
 }
 
 <SINGLE_LINE_COMMENT> {

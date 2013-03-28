@@ -22,8 +22,8 @@ Portions Copyright 2011 Jens Elkner.
 --%>
 <%@ page session="false" isErrorPage="true" import="
 java.io.PrintWriter,
-java.io.StringWriter,
-org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
+                                                    java.io.StringWriter,
+                                                    org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
     %>
 <%
   /* ---------------------- error.jsp start --------------------- */
@@ -39,19 +39,21 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
     }
 %>
 <%@ include file="og_header.jspf" %>
-<div id="page">
-  <div id="sbar">
-    <%@ include file="og_menu.jspf" %>
-  </div>
-  <h3 class="error">There was an error!</h3>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <%@ include file="og_menu.jspf" %>
+    </div>
+    <div class="span9">
+      <h1 class="error">There was an error!</h1>
 
-  <p class="error"><%= configError %>
-  </p>
-    <%
-    if (exception != null) {
-    %>
-  <p class="error"><%= exception.getMessage() %>
-  </p>
+      <p class="error"><%= configError %>
+      </p>
+      <%
+        if (exception != null) {
+      %>
+      <p class="error"><%= exception.getMessage() %>
+      </p>
         <pre><%
           StringWriter wrt = new StringWriter();
           PrintWriter prt = new PrintWriter(wrt);
@@ -59,12 +61,14 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
           prt.close();
           out.write(Util.htmlize(wrt.toString()));
         %></pre>
-    <%
-    } else {
-        %><p class="error">Unknown Error</p>
-    <%
-    }
-  }
-/* ---------------------- error.jsp end --------------------- */
-%>
+      <%
+      } else {
+      %><p class="error">Unknown Error</p>
+      <%
+        }
+      %>
+    </div>
+  </div>
+</div>
+<% } %>
 <%@ include file="og_foot.jspf" %>

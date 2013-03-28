@@ -6,9 +6,15 @@
     cfg.setTitle("Search");
 %>
 <%@ include file="og_header.jspf" %>
-<div class="container">
-  <%@ include file="og_menu.jspf" %>
-  <%@ include file="index_body.html" %>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span3">
+      <%@ include file="og_menu.jspf" %>
+    </div>
+    <div class="span9">
+      <%@ include file="index_body.html" %>
+    </div>
+  </div>
 </div>
 <% } %>
 <%@ include file="og_foot.jspf" %>

@@ -150,7 +150,7 @@ public final class Results {
         for (Map.Entry<String, ArrayList<Document>> entry :
                 createMap(sh.searcher, sh.hits, start, end).entrySet()) {
             String parent = entry.getKey();
-            out.write("<tr class=\"success\"><td colspan=\"3\"><a href=\"");
+            out.write("<tr class=\"info\"><td colspan=\"3\"><a href=\"");
             out.write(xrefPrefixE);
             out.write(Util.URIEncodePath(parent));
             out.write("/\">");

@@ -90,13 +90,10 @@ public class DirectoryListing {
     public List<String> listTo(File dir, Writer out, String path, List<String> files) throws IOException {
         // TODO this belongs to a jsp, not here
         ArrayList<String> readMes = new ArrayList<>();
-        int offset = -1;
 
         out.write("<table class=\"table table-striped\">");
         out.write("<tr class=\"info\"><td/><td><strong>Name</strong></td><td><strong>Date</strong></td><td><strong>Size</strong></td>");
-        if (offset > 0) {
-            out.write("<td><strong>Description</strong></td>");
-        }
+        out.write("<td><strong>Description</strong></td>");
         out.write("</tr>");
         IgnoredNames ignoredNames = RuntimeEnvironment.getInstance().getIgnoredNames();
 

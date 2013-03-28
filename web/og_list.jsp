@@ -85,105 +85,10 @@ $(document).ready(function () {
           if (catfiles[i] == null) {
             continue;
           }
-%><h3><%= readMes.get(i) %>
-</h3>
-
-<div id="src">
-    <pre><%
-      Util.dump(out, catfiles[i], catfiles[i].getName().endsWith(".gz"));
-    %></pre>
-</div>
+%><h3><%= readMes.get(i) %></h3>
+<pre class="prettyprint linenums"><code><% Util.dump(out, catfiles[i], catfiles[i].getName().endsWith(".gz")); %></code></pre>
 <%
     }
-  }
-} else if (rev.length() != 0) {
-  // requesting a previous revision
-  FileAnalyzerFactory a = AnalyzerGuru.find(basename);
-  Genre g = AnalyzerGuru.getGenre(a);
-  String error = null;
-  if (g == Genre.PLAIN || g == Genre.HTML || g == null) {
-    InputStream in = null;
-    if (in != null) {
-      try {
-        if (g == null) {
-          a = AnalyzerGuru.find(in);
-          g = AnalyzerGuru.getGenre(a);
-        }
-        if (g == Genre.DATA || g == Genre.XREFABLE
-            || g == null) {
-%>
-<div id="src">
-  Binary file [Click <a href="<%= rawPath %>?<%= rev
-        %>">here</a> to download]
-</div>
-<%
-} else {
-%>
-<div id="src">
-    <span class="pagetitle"><%= basename %> revision <%=
-    rev.substring(2) %></span>
-    <pre><%
-      if (g == Genre.PLAIN) {
-        // We don't have any way to get definitions
-        // for old revisions currently.
-        Definitions defs = null;
-        //not needed yet
-        //annotation.writeTooltipMap(out);
-        r = new InputStreamReader(in);
-        AnalyzerGuru.writeXref(a, r, out, defs,
-            Project.getProject(resourceFile));
-      } else if (g == Genre.IMAGE) {
-    %></pre>
-  <img src="<%= rawPath %>?<%= rev %>"/>
-    <pre><%
-    } else if (g == Genre.HTML) {
-      r = new InputStreamReader(in);
-      Util.dump(out, r);
-    } else {
-    %> Click <a href="<%= rawPath %>?<%= rev %>">download <%= basename %>
-    </a><%
-          }
-        }
-      } catch (IOException e) {
-        error = e.getMessage();
-      } finally {
-        if (r != null) {
-          try {
-            r.close();
-            in = null;
-          } catch (Exception e) { /* ignore */ }
-        }
-        if (in != null) {
-          try {
-            in.close();
-          } catch (Exception e) { /* ignore */ }
-        }
-      }
-    %></pre>
-</div>
-<%
-} else {
-%>
-<h3 class="error">Error reading file</h3><%
-  if (error != null) {
-%>
-<p class="error"><%= error %>
-</p><%
-    }
-  }
-} else if (g == Genre.IMAGE) {
-%>
-<div id="src">
-  <img src="<%= rawPath %>?<%= rev %>"/>
-</div>
-<%
-} else {
-%>
-<div id="src">
-  Binary file [Click <a href="<%= rawPath %>?<%= rev
-        %>">here</a> to download]
-</div>
-<%
   }
 } else {
   // requesting cross referenced file
@@ -191,11 +96,9 @@ $(document).ready(function () {
   xrefFile = cfg.findDataFile();
   if (xrefFile != null) {
 %>
-<div id="src">
-    <pre><%
+    <pre class="prettyprint linenums"><code><%
       Util.dump(out, xrefFile, xrefFile.getName().endsWith(".gz"));
-    %></pre>
-</div>
+    %></code></pre>
 <%
 } else {
   // annotate
@@ -210,25 +113,21 @@ $(document).ready(function () {
     }
     if (g == Genre.IMAGE) {
 %>
-<div id="src">
   <img src="<%= rawPath %>"/>
-</div>
 <%
 } else if (g == Genre.HTML) {
   r = new InputStreamReader(bin);
   Util.dump(out, r);
 } else if (g == Genre.PLAIN) {
 %>
-<div id="src">
-    <pre><%
+    <pre class="prettyprint linenums"><code><%
       // We're generating xref for the latest revision, so we can
       // find the definitions in the index.
       Definitions defs = IndexDatabase.getDefinitions(resourceFile);
       r = new InputStreamReader(bin);
       AnalyzerGuru.writeXref(a, r, out, defs,
           Project.getProject(resourceFile));
-    %></pre>
-</div>
+    %></code></pre>
 <%
 } else {
 %>
