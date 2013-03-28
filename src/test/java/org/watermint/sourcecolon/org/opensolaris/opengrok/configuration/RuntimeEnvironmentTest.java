@@ -236,7 +236,7 @@ public class RuntimeEnvironmentTest {
                 address.replace("@", " (at) ") : address;
 
         String expectedOutput =
-                "<a class=\"line-number\" href=\"#1\" name=\"1\"><span class=\"badge\">1</span> </a>"
+                "<a name=\"1\"></a>"
                         + expectedAddress;
 
         assertEquals(expectedOutput, out.toString());

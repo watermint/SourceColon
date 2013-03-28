@@ -127,12 +127,12 @@ public class UtilTest {
         StringWriter out = new StringWriter();
         // hmmm - where do meaningful test start?
         Util.readableLine(42, out);
-        assertEquals("\n<a class=\"line-number\" href=\"#42\" name=\"42\"><span class=\"badge\">42</span> </a>",
+        assertEquals("\n<a name=\"42\"></a>",
                 out.toString());
 
         out.getBuffer().setLength(0); // clear buffer
         Util.readableLine(110, out);
-        assertEquals("\n<a class=\"line-number\" href=\"#110\" name=\"110\"><span class=\"badge\">110</span> </a>",
+        assertEquals("\n<a name=\"110\"></a>",
                 out.toString());
     }
 
