@@ -31,14 +31,9 @@ java.io.InputStream,
 java.io.OutputStream,
 org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"
     %>
-<%@
-
-    include file="og_pageconfig.jspf"
-
-    %>
 <%
   {
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
 
     File f = cfg.getResourceFile();
     InputStream in = null;

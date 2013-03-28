@@ -36,7 +36,7 @@ Portions Copyright 2011 Jens Elkner.
 <%
   /* ---------------------- more.jsp start --------------------- */
   {
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
     QueryBuilder qbuilder = cfg.getQueryBuilder();
 
     try {

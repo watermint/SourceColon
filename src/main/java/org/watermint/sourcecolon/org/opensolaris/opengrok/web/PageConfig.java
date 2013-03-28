@@ -795,6 +795,14 @@ public final class PageConfig {
     }
 
     /**
+     * Setup page configurations into HttpServletRequest
+     * @param request
+     */
+    public static void configure(HttpServletRequest request) {
+        get(request);
+    }
+
+    /**
      * Get the config wrt. the given request. If there is none yet, a new config
      * gets created, attached to the request and returned.
      * <p/>
@@ -813,7 +821,7 @@ public final class PageConfig {
         return pcfg;
     }
 
-    private static final String ATTR_NAME = PageConfig.class.getCanonicalName();
+    private static final String ATTR_NAME = "pageconfig"; //PageConfig.class.getCanonicalName();
     private HttpServletRequest req;
 
     private PageConfig(HttpServletRequest req) {

@@ -28,7 +28,6 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.SearchHelper,
 org.watermint.sourcecolon.org.opensolaris.opengrok.web.SortOrder,
 org.watermint.sourcecolon.org.opensolaris.opengrok.web.Suggestion"
     %>
-<%@ include file="og_projects.jspf" %>
 <%!
   private StringBuilder createUrl(SearchHelper sh, boolean menu) {
     StringBuilder url = new StringBuilder(64);
@@ -44,15 +43,12 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Suggestion"
       Util.appendQuery(url, "refs", qb.getRefs());
       Util.appendQuery(url, "path", qb.getPath());
     }
-    if (sh.projects != null && sh.projects.size() != 0) {
-      Util.appendQuery(url, "project", cfg.getRequestedProjectsAsString());
-    }
     return url;
   }
 %><%
   /* ---------------------- search.jsp start --------------------- */
   {
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
 
     long starttime = System.currentTimeMillis();
 

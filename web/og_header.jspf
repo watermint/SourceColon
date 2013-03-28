@@ -1,35 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"
-        import="
-        org.watermint.sourcecolon.org.opensolaris.opengrok.Info,
-        org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"
-        %>
-<%@include file="og_pageconfig.jspf" %>
+        import="org.watermint.sourcecolon.org.opensolaris.opengrok.Info,
+                org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <%
-    {
-      cfg = PageConfig.get(request);
-  %>
+  <% { PageConfig.configure(request); } %>
   <meta name="robots" content="noindex,nofollow"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=8"/>
-  <link rel="icon" href="<%=request.getContextPath()%>/img/icon-16.png" type="image/png"/>
-  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css" media="screen">
-  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/jquery-ui-1.9.2.custom.min.css" media="screen">
-  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/sourcecolon.css" media="screen">
-  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/prettify.css" type="text/css" />
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.8.3.min.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-ui-1.9.2.custom.min.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/prettify.js"></script>
-  <script type="text/javascript" src="<%=request.getContextPath()%>/js/sourcecolon.js"></script>
-  <title><%=cfg.getTitle()%>
-  </title>
-  <%
-    }
-  %>
+  <link rel="icon" href="${pageContext.request.contextPath}/img/icon-16.png" type="image/png"/>
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css" media="screen">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/jquery-ui-1.9.2.custom.min.css" media="screen">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sourcecolon.css" media="screen">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prettify.css" type="text/css" />
+  <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui-1.9.2.custom.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/js/prettify.js"></script>
+  <script type="text/javascript" src="${pageContext.request.contextPath}/js/sourcecolon.js"></script>
+  <title>${pageconfig.title}</title>
 </head>
-<body >
+<body>
 <br />

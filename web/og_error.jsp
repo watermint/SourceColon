@@ -25,10 +25,11 @@ java.io.PrintWriter,
                                                     java.io.StringWriter,
                                                     org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
     %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
   /* ---------------------- error.jsp start --------------------- */
   {
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
     cfg.setTitle("Error!");
 
     String configError = "";

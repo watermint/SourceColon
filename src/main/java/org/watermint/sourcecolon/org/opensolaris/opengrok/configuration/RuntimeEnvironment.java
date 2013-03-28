@@ -282,18 +282,24 @@ public final class RuntimeEnvironment {
         threadConfig.get().setHitsPerPage(hitsPerPage);
     }
 
+    private static Boolean exuberantCtagsAvailable = null;
+
     /**
      * Validate that I have a Exuberant ctags program I may use
      *
      * @return true if success, false otherwise
      */
     public boolean validateExuberantCtags() {
+        if (exuberantCtagsAvailable != null) {
+            return exuberantCtagsAvailable;
+        }
         Executor executor = new Executor(new String[]{getCtags(), "--version"});
-
         executor.exec(false);
         String output = executor.getOutputString();
 
-        return !(output == null || !output.contains("Exuberant Ctags"));
+        exuberantCtagsAvailable = !(output == null || !output.contains("Exuberant Ctags"));
+
+        return exuberantCtagsAvailable;
     }
 
     /**

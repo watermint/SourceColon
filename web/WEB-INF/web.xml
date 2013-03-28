@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd">
-<web-app>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         id="serv" version="3.0">
     <display-name>Source:</display-name>
     <description>Yet another source browser</description>
     <!--
@@ -18,32 +20,26 @@
 
     <servlet>
         <servlet-name>search</servlet-name>
-        <display-name>Source Finder</display-name>
         <jsp-file>/og_search.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>lister</servlet-name>
-        <display-name>Source lister</display-name>
         <jsp-file>/og_list.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>more</servlet-name>
-        <display-name>Shows more matching lines</display-name>
         <jsp-file>/og_more.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>raw</servlet-name>
-        <display-name>Raw Source lister</display-name>
         <jsp-file>/og_raw.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>error</servlet-name>
-        <display-name>Error Handler</display-name>
         <jsp-file>/og_error.jsp</jsp-file>
     </servlet>
     <servlet>
         <servlet-name>enoent</servlet-name>
-        <display-name>File not found handler</display-name>
         <jsp-file>/og_enoent.jsp</jsp-file>
     </servlet>
     <servlet-mapping>

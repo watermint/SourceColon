@@ -36,19 +36,7 @@ java.io.File,
 <%
   /* ---------------------- mast.jsp start --------------------- */
   {
-    cfg = PageConfig.get(request);
-    // jel: hmmm - questionable for dynamic content
-    long flast = cfg.getLastModified();
-    if (request.getDateHeader("If-Modified-Since") >= flast) {
-      response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
-      return;
-    }
-    response.setDateHeader("Last-Modified", flast);
-
-    // Use UTF-8 if no encoding is specified in the request
-    if (request.getCharacterEncoding() == null) {
-      request.setCharacterEncoding("UTF-8");
-    }
+    PageConfig cfg = PageConfig.get(request);
 
     // set the default page title
     String path = cfg.getPath();

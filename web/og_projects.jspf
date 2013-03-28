@@ -35,7 +35,7 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project" %>
       request.setCharacterEncoding("UTF-8");
     }
 
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
     cfg.getEnv().setUrlPrefix(request.getContextPath() + Prefix.SEARCH_R + "?");
 
     String projects = cfg.getRequestedProjectsAsString();

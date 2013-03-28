@@ -47,7 +47,7 @@ $(document).ready(function () {
 <%
   /* ---------------------- list.jsp start --------------------- */
   {
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
     String rev = cfg.getRequestedRevision();
 
     File resourceFile = cfg.getResourceFile();

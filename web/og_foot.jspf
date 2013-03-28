@@ -21,8 +21,10 @@ Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
 --%>
-<%@page import="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"
-    %>
+<%@ page %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <br/>
 
-</bod></html>
+</bod>
+</html>

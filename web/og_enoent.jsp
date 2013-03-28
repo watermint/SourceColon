@@ -21,6 +21,7 @@ Portions Copyright 2011 Jens Elkner.
 
 --%>
 <%@page session="false" isErrorPage="true" import="org.watermint.sourcecolon.org.opensolaris.opengrok.web.Prefix" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
   /* ---------------------- enoent.jsp start --------------------- */
   {
