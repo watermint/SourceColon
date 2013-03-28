@@ -1,4 +1,4 @@
-package org.watermint.sourcecolon;
+package org.watermint.sourcecolon.solr;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;

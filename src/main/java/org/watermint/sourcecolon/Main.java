@@ -7,6 +7,7 @@ import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrInputDocument;
+import org.watermint.sourcecolon.solr.Config;
 
 import java.io.*;
 import java.security.MessageDigest;
