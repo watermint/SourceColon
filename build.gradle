@@ -34,7 +34,8 @@ dependencies {
             "org.apache.lucene:lucene-core:$luceneVersion",
             "org.apache.lucene:lucene-spellchecker:$luceneVersion",
             "org.apache.bcel:bcel:5.2",
-            "org.apache.ant:ant:1.8.4"
+            "org.apache.ant:ant:1.8.4",
+            "com.ibm.icu:icu4j:50.1.1",
     ]
     jflex "de.jflex:maven-jflex-plugin:1.4.3"
     compile common

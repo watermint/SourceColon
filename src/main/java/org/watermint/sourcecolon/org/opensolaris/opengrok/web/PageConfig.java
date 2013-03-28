@@ -30,7 +30,7 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.logging.Level;
