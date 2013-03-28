@@ -41,6 +41,7 @@ java.io.BufferedInputStream,
 <script type="text/javascript">/* <![CDATA[ */
 $(document).ready(function () {
   updateNavigationSymbolContents();
+  prettyPrint();
 });
 /* ]]> */</script>
 <%
@@ -78,6 +79,18 @@ $(document).ready(function () {
       DirectoryListing dl = new DirectoryListing();
       List<String> files = cfg.getResourceFileList();
       if (!files.isEmpty()) {
+        %>
+<form class="navbar-search pull-right" action="<%= request.getContextPath() + Prefix.SEARCH_P %>">
+  <input type="hidden" name="path" value="<%= cfg.getSearchOnlyIn()[0] %>"/>
+  <div class="input-prepend input-append">
+    <span class="add-on">Search under <strong><%= cfg.getCrossFilename() %></strong></span>
+    <input type="text" class="search-query" placeholder="Search under <%= cfg.getCrossFilename() %>" id="search"
+           name="q"/>
+    <button class="btn" type="button">Search</button>
+  </div>
+</form>
+<h2>Files</h2>
+<%
         List<String> readMes = dl.listTo(resourceFile, out, path, files);
         File[] catfiles = cfg.findDataFiles(readMes);
         for (int i = 0; i < catfiles.length; i++) {

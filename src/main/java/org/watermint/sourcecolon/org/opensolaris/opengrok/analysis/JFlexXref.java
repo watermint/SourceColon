@@ -178,12 +178,12 @@ public abstract class JFlexXref {
      */
     public void write(Writer out) throws IOException {
         this.out = out;
-        writeSymbolTable();
         setLineNumber(0);
         startNewLine();
         while (yylex() != yyeof) { // NOPMD while statement intentionally empty
             // nothing to do here, yylex() will do the work
         }
+        writeSymbolTable();
     }
 
     /**
@@ -228,8 +228,7 @@ public abstract class JFlexXref {
             }
         }
 
-        out.append("<script type=\"text/javascript\">/* <![CDATA[ */\n");
-        out.append("function getNavigationSymbols(){return [");
+        out.append("<script type=\"text/javascript\"> function getNavigationSymbols(){return [");
 
         boolean first = true;
         for (Style style : DEFINITION_STYLES) {
@@ -261,7 +260,7 @@ public abstract class JFlexXref {
             }
         }
         /* no LF intentionally - xml is whitespace aware ... */
-        out.append("];} /* ]]> */</script>");
+        out.append("];} </script>");
     }
 
     /**
@@ -309,7 +308,7 @@ public abstract class JFlexXref {
 
         if (keywords != null && keywords.contains(symbol)) {
             // This is a keyword, so we don't create a link.
-            out.append("<b>").append(symbol).append("</b>");
+            out.append(symbol);
 
         } else if (defs != null && defs.hasDefinitionAt(symbol, line, strs)) {
             // This is the definition of the symbol.
@@ -344,13 +343,8 @@ public abstract class JFlexXref {
             out.append("</a>");
 
         } else if (defs != null && defs.occurrences(symbol) == 1) {
-            // This is a reference to a symbol defined exactly once in this file.
-            String style_class = "d";
-
             // Generate a direct link to the symbol definition.
-            out.append("<a class=\"");
-            out.append(style_class);
-            out.append("\" href=\"#");
+            out.append("<a href=\"#");
             out.append(symbol);
             out.append("\">");
             out.append(symbol);

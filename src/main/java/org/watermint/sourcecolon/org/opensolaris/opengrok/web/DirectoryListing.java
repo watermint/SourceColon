@@ -93,7 +93,6 @@ public class DirectoryListing {
 
         out.write("<table class=\"table table-striped\">");
         out.write("<tr class=\"info\"><td/><td><strong>Name</strong></td><td><strong>Date</strong></td><td><strong>Size</strong></td>");
-        out.write("<td><strong>Description</strong></td>");
         out.write("</tr>");
         IgnoredNames ignoredNames = RuntimeEnvironment.getInstance().getIgnoredNames();
 
@@ -132,7 +131,6 @@ public class DirectoryListing {
                 }
                 out.write("</td>");
                 PrintDateSize(out, child, dateFormatter);
-                out.write("<td/>");
                 out.write("</tr>");
             }
         }

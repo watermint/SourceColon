@@ -28,11 +28,11 @@ After include you are here: /body/div#page/div#content/
 --%>
 <%@ page session="false" errorPage="og_error.jsp" import="
 java.io.File,
-java.io.IOException,
-org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project,
-org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig,
-org.watermint.sourcecolon.org.opensolaris.opengrok.web.Prefix,
-org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util" %>
+                                                          java.io.IOException,
+                                                          org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project,
+                                                          org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig,
+                                                          org.watermint.sourcecolon.org.opensolaris.opengrok.web.Prefix,
+                                                          org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util" %>
 <%
   /* ---------------------- mast.jsp start --------------------- */
   {
@@ -72,18 +72,8 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util" %>
       <%@ include file="og_menu.jspf" %>
     </div>
     <div class="span9">
-
-      <div class="navbar">
-        <div class="navbar-inner">
-          <form class="navbar-search pull-right" action="<%= context + Prefix.SEARCH_P %>">
-            <input type="hidden" name="path" value="<%= cfg.getSearchOnlyIn()[0] %>"/>
-            <input type="text" class="search-query" placeholder="Search under <%= cfg.getCrossFilename() %>" id="search"
-                   name="q"/>
-          </form>
-        </div>
-      </div>
       <ul class="breadcrumb">
         <%= Util.breadcrumbPath(context + Prefix.XREF_P, path, '/', "", true, cfg.isDir(), true) %>
       </ul>
 
-<% } %>
+        <% } %>
