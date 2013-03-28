@@ -184,7 +184,7 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Suggestion"
           thispage = totalHits - start;
         }
       %>
-      <div class="container">
+
         <p class="pagetitle">Searched <b><%= searchHelper.query
         %>
         </b> (Results <b><%= start + 1 %> - <%= thispage + start
@@ -212,12 +212,9 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Suggestion"
           </ul>
         </div>
         <% } %>
-      </div>
-      <div class="container">
         <p class="muted pull-right">
           Completed in <span class="label label-info"><%= System.currentTimeMillis() - starttime %></span> milliseconds
         </p>
-      </div>
     </div>
   </div>
 </div>

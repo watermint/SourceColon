@@ -98,7 +98,6 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util" %>
         </div>
       </div>
       <ul class="breadcrumb">
-        <a href="<%= context + Prefix.XREF_P %>/">xref</a>:
         <%= Util.breadcrumbPath(context + Prefix.XREF_P, path, '/', "", true, cfg.isDir(), true) %>
       </ul>
 
