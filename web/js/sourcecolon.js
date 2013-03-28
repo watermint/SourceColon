@@ -19,89 +19,36 @@
 /*
  * Copyright (c) 2009, 2010, Oracle and/or its affiliates. All rights reserved.
  * Portions Copyright 2011 Jens Elkner.
+ * Portions Copyright 2013 Takayuki Okazaki.
  */
-
-function pageReadyList() {
-  document.sym_div_width = 240;
-  document.sym_div_height_max = 480;
-  document.sym_div_top = 100;
-  document.sym_div_left_margin = 40;
-  document.sym_div_height_margin = 40;
-  document.highlight_count = 0;
-  $(window).resize(function() {
-    if (document.sym_div_shown == 1) {
-      document.sym_div.style.left = get_sym_div_left() + "px";
-      document.sym_div.style.height = get_sym_div_height() + "px";
-    }
-  });
-}
-
-/* ------ Navigation window for definitions ------ */
-/**
- * Create the Navigation toggle link as well as its contents.
- */
-function getNavigationSymbolContents() {
-  var contents = "";
-  if (typeof getNavigationSymbols != 'function') {
-    return contents;
-  }
-
-  var symbol_classes = getNavigationSymbols();
-  for ( var i = 0; i < symbol_classes.length; i++) {
-    if (i > 0) {
-      contents += "<br/>";
-    }
-    var symbol_class = symbol_classes[i];
-    var class_name = symbol_class[1];
-    var symbols = symbol_class[2];
-    contents += "<b>" + symbol_class[0] + "</b><br/>";
-
-    for (var j = 0; j < symbols.length; j++) {
-      var symbol = symbols[j][0];
-      var line = symbols[j][1];
-      contents += "<a href=\"#" + line + "\" class=\"" + class_name + "\">"
-          + escape_html(symbol) + "</a><br/>";
-    }
-  }
-
-  return contents;
-}
 
 function escape_html(string) {
   return string.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 }
 
-// Toggle the display of the 'Navigation' window used to highlight definitions.
-function toggleSourceNavigation() {
-  if (document.sym_div == null) {
-    document.sym_div = document.createElement("div");
-    document.sym_div.id = "sym_div";
-    document.sym_div_container = document.createElement("div");
-    document.sym_div_container.className = "modal-body";
-    document.sym_div_container.innerHTML = getNavigationSymbolContents();
-    document.sym_div.appendChild(document.sym_div_container);
-    document.body.appendChild(document.sym_div);
-
-    $('#sym_div').dialog({
-      title: "Navigation",
-      closeOnEscape: false,
-      resizable: false,
-      closeText: 'Close',
-      show: "fade",
-      hide: "fade",
-      dialogClass: "modal",
-      position: { my: "right", at: "right-60", of: window },
-      open: function(event, ui) {
-        $(this).parent().find('div.ui-dialog-titlebar').addClass('modal-header');
-      }
-    })
-  } else {
-    $('#sym_div').dialog("open");
+function updateNavigationSymbolContents() {
+  if (typeof getNavigationSymbols != 'function') {
+    return;
   }
-}
 
-// Toggle the display of line numbers.
-function toggleSourceLineNumber() {
-  $("a.line-number").toggle();
-}
+  var naviContainer = document.getElementById("code-navigation");
 
+  var symbol_classes = getNavigationSymbols();
+  var contents = "<h2>Navigation</h2>";
+  for (var i = 0; i < symbol_classes.length; i++) {
+    var symbol_class = symbol_classes[i];
+    var class_name = symbol_class[1];
+    var symbols = symbol_class[2];
+    contents += "<h3>" + symbol_class[0] + "</h3><ul class='unstyled'>";
+
+    for (var j = 0; j < symbols.length; j++) {
+      var symbol = symbols[j][0];
+      var line = symbols[j][1];
+      contents += "<li><a href=\"#" + line + "\" class=\"" + class_name + "\">"
+          + escape_html(symbol) + "</a></li>";
+    }
+    contents += "</ul>";
+  }
+
+  naviContainer.innerHTML = contents;
+}

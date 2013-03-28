@@ -75,21 +75,6 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util" %>
 
       <div class="navbar">
         <div class="navbar-inner">
-          <ul class="nav">
-            <% if (!cfg.isDir()) { %>
-            <% if (cfg.getPrefix() == Prefix.XREF_P) { %>
-            <li>
-              <a href="javascript:toggleSourceLineNumber();return false;"
-                 title="<%= "Show or hide line numbers (might be slower if file has more than 10 000 lines)." %>">Line#</a>
-            </li>
-            <li>
-              <a href="javascript:toggleSourceNavigation();return false;" title="Show or hide symbol list.">Navigate</a>
-            </li>
-            <% } %>
-            <li><a href="<%= context + Prefix.RAW_P + uriEncodedPath + (rev.length() == 0 ? "" : "?") + rev %>">Download</a>
-            </li>
-            <% } %>
-          </ul>
           <form class="navbar-search pull-right" action="<%= context + Prefix.SEARCH_P %>">
             <input type="hidden" name="path" value="<%= cfg.getSearchOnlyIn()[0] %>"/>
             <input type="text" class="search-query" placeholder="Search under <%= cfg.getCrossFilename() %>" id="search"

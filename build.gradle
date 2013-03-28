@@ -107,6 +107,7 @@ task runIndexer(dependsOn: jar) << {
     }
 
     ant.java(jar: jar.archivePath, fork: true) {
+        jvmarg(value: '-Dfile.encoding=UTF-8')
         arg(value: '-s')
         arg(value: target)
     }
@@ -134,6 +135,7 @@ war {
 task runJetty8(type: JavaExec, dependsOn: war) {
     main = "org.mortbay.jetty.runner.Runner"
     args = [war.archivePath]
+    jvmArgs '-Dfile.encoding=UTF-8'
     classpath configurations.jetty8
 }
 

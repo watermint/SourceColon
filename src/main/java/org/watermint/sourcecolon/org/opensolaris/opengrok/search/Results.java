@@ -150,7 +150,7 @@ public final class Results {
         for (Map.Entry<String, ArrayList<Document>> entry :
                 createMap(sh.searcher, sh.hits, start, end).entrySet()) {
             String parent = entry.getKey();
-            out.write("<tr class=\"info\"><td colspan=\"3\"><a href=\"");
+            out.write("<tr class=\"info\"><td colspan=\"2\"><a href=\"");
             out.write(xrefPrefixE);
             out.write(Util.URIEncodePath(parent));
             out.write("/\">");
@@ -160,14 +160,7 @@ public final class Results {
             for (Document doc : entry.getValue()) {
                 String rpath = doc.get("path");
                 String rpathE = Util.URIEncodePath(rpath);
-                out.write("<tr><td><a href=\"");
-                out.write(xrefPrefixE);
-                out.write(rpathE);
-                out.write("?a=true\" title=\"Annotate\"><i class=\"icon-pencil\"></i></a> <a href=\"");
-                out.write(rawPrefixE);
-                out.write(rpathE);
-                out.write("\" title=\"Download\"><i class=\"icon-download-alt\"></i></a>");
-                out.write("</td>");
+                out.write("<tr>");
                 out.write("<td><a href=\"");
                 out.write(xrefPrefixE);
                 out.write(rpathE);

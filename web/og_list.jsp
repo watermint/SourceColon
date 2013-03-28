@@ -40,8 +40,7 @@ java.io.BufferedInputStream,
 <%@include file="og_mast.jsp" %>
 <script type="text/javascript">/* <![CDATA[ */
 $(document).ready(function () {
-  pageReadyList();
-  fixNavBarAnchorPosition();
+  updateNavigationSymbolContents();
 });
 /* ]]> */</script>
 <%

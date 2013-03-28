@@ -71,7 +71,7 @@ document.xrefPath = '<%= request.getContextPath() + Prefix.XREF_P %>';
   }
 %>
 
-<div class="well sidebar-nav affix">
+<div class="well sidebar-nav ">
   <h1><a href="<%= request.getContextPath() %>/"><img src="<%= request.getContextPath() %>/img/icon-64.png"
                                                       class="img-rounded"/></a></h1>
 
@@ -99,12 +99,12 @@ document.xrefPath = '<%= request.getContextPath() + Prefix.XREF_P %>';
                value="<%= Util.formQuoteEscape(queryParams.getPath()) %>"/>
       </li>
       <li>
-        <div class="pull-right">
           <input class="btn btn-primary" type="submit" value="Search"/>
-        </div>
       </li>
     </ul>
   </form>
+  <div id="code-navigation">
+  </div>
   <br/>
 
   <div class="muted">
