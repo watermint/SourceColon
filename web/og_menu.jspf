@@ -22,30 +22,13 @@ Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
 Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
+Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
-<%@page import="
-java.util.SortedSet,
-                java.util.TreeMap,
-                java.util.Map.Entry,
-                java.util.List,
-                java.util.HashMap,
-                java.util.ArrayList,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
-    %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-  {
-    PageConfig cfg = PageConfig.get(request);
-    boolean ctagsAvailable = cfg.getEnv().validateExuberantCtags();
-    QueryBuilder queryParams = cfg.getQueryBuilder();
-
-%>
-
+<%@page %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="well sidebar-nav ">
-  <h1><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/img/icon-64.png"
-                                                      class="img-rounded"/></a></h1>
+  <h1><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/img/icon-64.png" class="img-rounded"/></a></h1>
 
   <form action="${pageContext.request.contextPath}/search">
     <ul class="nav nav-list">
@@ -56,41 +39,31 @@ java.util.SortedSet,
     <h2>Search</h2>
     <ul class="nav nav-list" style="padding: 0">
       <li>
-        <input class="input-medium" type="text" name="q" placeholder="Text"
-               value="<%= Util.formQuoteEscape(queryParams.getFreetext()) %>"/>
+        <input class="input-medium" type="text" name="q" placeholder="Text" value="${pageconfig.queryBuilder.freeTextQuoted}"/>
       </li>
       <li>
-        <input class="input-medium" type="text" name="defs" id="s2" placeholder="Definition"
-               value="<%= Util.formQuoteEscape(queryParams.getDefs()) %>"/>
+        <input class="input-medium" type="text" name="defs" id="s2" placeholder="Definition" value="${pageconfig.queryBuilder.defsQuoted}"/>
       </li>
       <li>
-        <input class="input-medium" type="text" name="refs" id="s3" placeholder="Symbol"
-               value="<%= Util.formQuoteEscape(queryParams.getRefs()) %>"/>
+        <input class="input-medium" type="text" name="refs" id="s3" placeholder="Symbol" value="${pageconfig.queryBuilder.refsQuoted}"/>
       </li>
       <li>
-        <input class="input-medium" type="text" name="path" id="s4" placeholder="Path"
-               value="<%= Util.formQuoteEscape(queryParams.getPath()) %>"/>
+        <input class="input-medium" type="text" name="path" id="s4" placeholder="Path" value="${pageconfig.queryBuilder.pathQuoted}"/>
       </li>
       <li>
-          <input class="btn btn-primary" type="submit" value="Search"/>
+        <input class="btn btn-primary" type="submit" value="Search"/>
       </li>
     </ul>
   </form>
-  <div id="code-navigation">
-  </div>
+  <div id="code-navigation"></div>
   <br/>
-
   <div class="muted">
     <small>
       Indices created <br/><span
-        class="label label-info"><%= cfg.getEnv().getDateForLastIndexRun() %></span><br/>
+        class="label label-info">${runtime.dateForLastIndexRun}</span><br/>
       Served by <i class="logo-sourcecolon"></i> <a href="https://github.com/watermint/SourceColon">Source:</a>
       <br/>
       based on <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>
     </small>
   </div>
 </div>
-
-<%
-  }
-%>

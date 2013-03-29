@@ -799,7 +799,8 @@ public final class PageConfig {
      * @param request
      */
     public static void configure(HttpServletRequest request) {
-        get(request);
+        PageConfig config = get(request);
+        request.setAttribute("runtime", config.getEnv());
     }
 
     /**

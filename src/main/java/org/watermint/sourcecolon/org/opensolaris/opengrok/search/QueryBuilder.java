@@ -29,6 +29,7 @@ import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,6 +72,10 @@ public class QueryBuilder {
         return getQueryText(FULL);
     }
 
+    public String getFreeTextQuoted() {
+        return Util.formQuoteEscape(getFreetext());
+    }
+
     /**
      * Set search string for the "defs" field.
      *
@@ -88,6 +93,10 @@ public class QueryBuilder {
      */
     public String getDefs() {
         return getQueryText(DEFS);
+    }
+
+    public String getDefsQuoted() {
+        return Util.formQuoteEscape(getDefs());
     }
 
     /**
@@ -108,6 +117,9 @@ public class QueryBuilder {
     public String getRefs() {
         return getQueryText(REFS);
     }
+    public String getRefsQuoted() {
+        return Util.formQuoteEscape(getRefs());
+    }
 
     /**
      * Set search string for the "path" field.
@@ -127,6 +139,10 @@ public class QueryBuilder {
     public String getPath() {
         return getQueryText(PATH);
     }
+    public String getPathQuoted() {
+        return Util.formQuoteEscape(getPath());
+    }
+
 
     /**
      * Get a map containing the query text for each of the fields that have
