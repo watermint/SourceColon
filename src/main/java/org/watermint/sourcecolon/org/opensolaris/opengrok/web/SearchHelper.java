@@ -43,9 +43,7 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.LineMat
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.QueryMatchers;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -691,6 +689,90 @@ public class SearchHelper {
                 e.printStackTrace();
                 throw new RuntimeException(e);
             }
+        }
+
+        return result;
+    }
+
+    public String getSearchResultTable() {
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(content);
+
+        try {
+            Results.prettyPrint(writer, this, getStart(), getThisPageEndIndex());
+            writer.flush();
+            return content.toString();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    private String createUrl(boolean menu) {
+        StringBuilder url = new StringBuilder(64);
+        QueryBuilder qb = getBuilder();
+        if (menu) {
+            url.append("search?");
+        } else {
+            Util.appendQuery(url, "sort", order.toString());
+        }
+        if (qb != null) {
+            Util.appendQuery(url, "q", qb.getFreetext());
+            Util.appendQuery(url, "defs", qb.getDefs());
+            Util.appendQuery(url, "refs", qb.getRefs());
+            Util.appendQuery(url, "path", qb.getPath());
+        }
+        return url.toString();
+    }
+
+    private List<Map<String,Object>> paging = null;
+
+    public List<Map<String,Object>> getPaging() {
+        if (paging == null) {
+            paging = createPaging();
+        }
+        return paging;
+    }
+
+    public boolean isPagingEnabled() {
+        return getPaging().size() > 0;
+    }
+
+    public List<Map<String,Object>> createPaging() {
+        List<Map<String,Object>> result = new ArrayList<>();
+
+        int pagesStart = getStart() - getMaxItems() * (getStart() / getMaxItems() % 10 + 1);
+        int labelStart = 1;
+        if (pagesStart < 0) {
+            pagesStart = 0;
+        } else {
+            labelStart = pagesStart / getMaxItems() + 1;
+        }
+
+        int label = labelStart;
+        int labelEnd = label + 11;
+        String params = createUrl(false);
+
+        for (int i = pagesStart; i < getTotalHits() && labelStart < labelEnd; i += getMaxItems()) {
+            Map<String,Object> page = new HashMap<>();
+
+            if (label == labelStart && label != 1) {
+                page.put("label", "&lt;&lt;");
+            } else if (label == labelEnd && i < getTotalHits()) {
+                page.put("label", "&gt;&gt;");
+            } else {
+                page.put("label", label);
+            }
+
+            if (i <= getStart() && getStart() <= i + getMaxItems()) {
+                page.put("active", true);
+                page.put("link", "#");
+            } else {
+                page.put("active", false);
+                page.put("link", getContextPath() + Prefix.SEARCH_R + "?n=" + getMaxItems() + "&start=" + i + params);
+            }
+            label++;
+            result.add(page);
         }
 
         return result;
