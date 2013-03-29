@@ -24,7 +24,7 @@ Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:layout pageTitle="Search">
   <%--@elvariable id="pageConfig" type="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"--%>
 
@@ -96,9 +96,7 @@ Portions Copyright (c) 2013 Takayuki Okazaki.
 
       <c:out value="${paging}" escapeXml="false"/>
 
-      <table class="table table-striped">
-        ${pageConfig.currentSearchHelper.searchResultTable}
-      </table>
+      <table class="table table-striped">${pageConfig.currentSearchHelper.searchResultTable}</table>
 
       <c:out value="${paging}" escapeXml="false"/>
     </c:otherwise>

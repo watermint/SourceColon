@@ -26,7 +26,7 @@
   <script type="text/javascript" src="${pageContext.request.contextPath}/js/sourcecolon.js"></script>
 </head>
 <body>
-<h1>Layout finished!</h1>
+<br />
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span3">
@@ -84,6 +84,7 @@
     </div>
   </div>
 </div>
+<br />
 <script type="text/javascript">${pageScript}</script>
 </body>
 </html>

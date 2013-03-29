@@ -764,12 +764,12 @@ public class SearchHelper {
                 page.put("label", label);
             }
 
-            if (i <= getStart() && getStart() <= i + getMaxItems()) {
+            if (i <= getStart() && getStart() < i + getMaxItems()) {
                 page.put("active", true);
                 page.put("link", "#");
             } else {
                 page.put("active", false);
-                page.put("link", getContextPath() + Prefix.SEARCH_R + "?n=" + getMaxItems() + "&start=" + i + params);
+                page.put("link", getContextPath() + Prefix.SEARCH_R + "?n=" + getMaxItems() + "&amp;start=" + i + params);
             }
             label++;
             result.add(page);
@@ -778,11 +778,16 @@ public class SearchHelper {
         return result;
     }
 
-    public int getThisPageEndIndex() {
-        if (getMaxItems() < getTotalHits() && (getStart() + getMaxItems() < getTotalHits())) {
+    public int getThisPageIndex() {
+        if (getMaxItems() < getTotalHits() && (getStart() + getMaxItems()) < getTotalHits()) {
             return getMaxItems();
         }
         return getTotalHits() - getStart();
+    }
+
+
+    public int getThisPageEndIndex() {
+        return getThisPageIndex() + getStart();
     }
 
     /**
