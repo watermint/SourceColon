@@ -55,4 +55,20 @@ public class Suggestion {
     public Suggestion(String name) {
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String[] getFreetext() {
+        return freetext;
+    }
+
+    public String[] getRefs() {
+        return refs;
+    }
+
+    public String[] getDefs() {
+        return defs;
+    }
 }

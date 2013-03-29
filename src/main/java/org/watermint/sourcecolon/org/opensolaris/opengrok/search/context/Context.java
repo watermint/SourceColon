@@ -48,11 +48,15 @@ import java.util.logging.Level;
 
 public class Context {
 
-    private final LineMatcher[] m;
+    private final LineMatcher[] lineMatchers;
     static final int MAXFILEREAD = 1024 * 1024;
     private char[] buffer;
     private PlainLineTokenizer tokens;
     private String queryAsURI;
+
+    public LineMatcher[] getLineMatchers() {
+        return lineMatchers;
+    }
 
     /**
      * Map whose keys tell which fields to look for in the source file, and
@@ -76,8 +80,8 @@ public class Context {
      */
     public Context(Query query, Map<String, String> queryStrings) {
         QueryMatchers qm = new QueryMatchers();
-        m = qm.getMatchers(query, tokenFields);
-        if (m != null) {
+        lineMatchers = qm.getMatchers(query, tokenFields);
+        if (lineMatchers != null) {
             buildQueryAsURI(queryStrings);
             buffer = new char[MAXFILEREAD];
             tokens = new PlainLineTokenizer((Reader) null);
@@ -85,7 +89,7 @@ public class Context {
     }
 
     public boolean isEmpty() {
-        return m == null;
+        return lineMatchers == null;
     }
 
     /**
@@ -131,7 +135,7 @@ public class Context {
                               String morePrefix, String path, Definitions tags,
                               boolean limit, List<Hit> hits) {
         alt = !alt;
-        if (m == null) {
+        if (lineMatchers == null) {
             IOUtils.close(in);
             return false;
         }
@@ -144,7 +148,7 @@ public class Context {
             matchingTags = new TreeMap<>();
             try {
                 for (Definitions.Tag tag : tags.getTags()) {
-                    for (LineMatcher aM : m) {
+                    for (LineMatcher aM : lineMatchers) {
                         if (aM.match(tag.symbol) == LineMatcher.MATCHED) {
                             /* desc[0] is matched symbol
                              * desc[1] is line number
@@ -241,7 +245,7 @@ public class Context {
             int matchState = LineMatcher.NOT_MATCHED;
             int matchedLines = 0;
             while ((token = tokens.yylex()) != null && (!lim || matchedLines < 10)) {
-                for (LineMatcher aM : m) {
+                for (LineMatcher aM : lineMatchers) {
                     matchState = aM.match(token);
                     if (matchState == LineMatcher.MATCHED) {
                         tokens.printContext();

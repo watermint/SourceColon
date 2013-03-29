@@ -20,8 +20,92 @@ CDDL HEADER END
 
 Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
+Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<t:layout pageTitle="Search">
+  <%--@elvariable id="pageConfig" type="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"--%>
+
+  <c:choose>
+    <c:when test="${pageConfig.currentSearchHelper.errorMsg != null}">
+      <h2>Error</h2>
+
+      <div class="alert alert-error">${pageConfig.currentSearchQueryErrorMessage}</div>
+    </c:when>
+
+    <c:when test="${empty(pageConfig.currentSearchHelper.hits)}">
+      <div class="alert">No hits for <code>${pageConfig.currentQueryString}</code></div>
+      <c:forEach var="suggestion" items="${pageConfig.currentSearchHelper.suggestions}">
+        Do you mean (for ${suggestion.name}):
+        <ul class="inline">
+          <c:forEach var="text" items="${suggestion.freetext}">
+            <li><a href="${pageContext.request.contextPath}/search?q=${text}">${text}</a></li>
+          </c:forEach>
+          <c:forEach var="text" items="${suggestion.defs}">
+            <li>Defs: <a href="${pageContext.request.contextPath}/search?defs=${text}">${text}</a></li>
+          </c:forEach>
+          <c:forEach var="text" items="${suggestion.refs}">
+            <li>Symbol: <a href="${pageContext.request.contextPath}/search?refs=${text}">${text}</a></li>
+          </c:forEach>
+        </ul>
+      </c:forEach>
+    </c:when>
+
+    <c:otherwise>
+      <ul class="nav nav-tabs">
+        <c:forEach var="order" items="${pageConfig.sortOrderList}">
+          <c:choose>
+            <c:when test="${order.active}">
+              <li class="active"><a href="#">${order.name}</a></li>
+            </c:when>
+            <c:otherwise>
+              <li><a href="${order.link}">${order.name}</a></li>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+      </ul>
+
+      <div>
+        Searched <code>${pageConfig.currentQueryString}</code>
+        (Results <strong>${pageConfig.currentSearchHelper.start + 1}</strong>
+        - <strong>${pageConfig.currentSearchHelper.thisPageEndIndex}</strong>
+        of <strong>${pageConfig.currentSearchHelper.totalHits}</strong>)
+        sorted by <span class="label label-info">${pageConfig.currentSearchHelper.order.desc}</span>
+      </div>
+
+      <br/>
+
+      <table class="table table-striped">
+        <c:forEach var="dir" items="${pageConfig.currentSearchHelper.searchResults}">
+          <tr class="info">
+            <td colspan="2"><a href="${dir.link}">${dir.label}</a></td>
+          </tr>
+          <c:forEach var="file" items="${dir.files}">
+            <tr>
+              <td>
+                <a href="${file.link}">${file.label}</a>
+              </td>
+              <td>
+                <ul>
+                  <c:forEach var="line" items="${file.lines}">
+                    <li>
+                      <a href="${line.link}"><span class="badge">${line.lineNumber}</span> ${line.summary}</a>
+                    </li>
+                  </c:forEach>
+                </ul>
+              </td>
+            </tr>
+          </c:forEach>
+        </c:forEach>
+      </table>
+    </c:otherwise>
+    
+  </c:choose>
+</t:layout>
+
+
 <%@page session="false" errorPage="og_error.jsp" import="
 java.util.List,
 org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder,
@@ -74,21 +158,7 @@ org.watermint.sourcecolon.org.opensolaris.opengrok.web.Suggestion"
       <%@ include file="og_menu.jspf" %>
     </div>
     <div class="span9">
-      <ul class="nav nav-tabs"><%
-        StringBuilder url = createUrl(searchHelper, true).append("&amp;sort=");
-        for (SortOrder o : SortOrder.values()) {
-          if (searchHelper.order == o) {
-      %>
-        <li class="active"><a href="#"><%= o.getDesc() %></a></li>
-        <%
-        } else {
-        %>
-        <li><a href="<%= url %><%= o %>"><%= o.getDesc() %></a></li>
-        <%
-            }
-          }
-        %>
-      </ul>
+
       <%
         // TODO spellchecking cycle below is not that great and we only create
         // suggest links for every token in query, not for a query as whole

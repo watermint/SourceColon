@@ -63,7 +63,7 @@ public final class Results {
      * @throws CorruptIndexException
      * @throws IOException
      */
-    private static Map<String, ArrayList<Document>>
+    public static Map<String, ArrayList<Document>>
     createMap(IndexSearcher searcher, ScoreDoc[] hits, int startIdx, int stopIdx)
             throws IOException {
         LinkedHashMap<String, ArrayList<Document>> dirHash =
@@ -83,7 +83,7 @@ public final class Results {
         return dirHash;
     }
 
-    private static String getTags(File basedir, String path, boolean compressed) {
+    public static String getTags(File basedir, String path, boolean compressed) {
         char[] content = new char[1024 * 8];
         FileInputStream fis = null;
         GZIPInputStream gis = null;

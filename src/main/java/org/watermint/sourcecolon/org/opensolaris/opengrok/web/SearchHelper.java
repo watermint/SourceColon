@@ -24,6 +24,7 @@
 package org.watermint.sourcecolon.org.opensolaris.opengrok.web;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.MultiReader;
 import org.apache.lucene.queryParser.ParseException;
@@ -33,18 +34,19 @@ import org.apache.lucene.store.FSDirectory;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.CompatibleAnalyser;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.search.Results;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.Summarizer;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.Context;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.LineMatcher;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.QueryMatchers;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.SortedSet;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -119,6 +121,79 @@ public class SearchHelper {
      * list of docs which result from the executing the query
      */
     public ScoreDoc[] hits;
+
+    public File getDataRoot() {
+        return dataRoot;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public boolean isCompressed() {
+        return compressed;
+    }
+
+    public File getSourceRoot() {
+        return sourceRoot;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public int getMaxItems() {
+        return maxItems;
+    }
+
+    public QueryBuilder getBuilder() {
+        return builder;
+    }
+
+    public SortOrder getOrder() {
+        return order;
+    }
+
+    public boolean isCrossRefSearch() {
+        return isCrossRefSearch;
+    }
+
+    public String getRedirect() {
+        return redirect;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public IndexSearcher getSearcher() {
+        return searcher;
+    }
+
+    public ScoreDoc[] getHits() {
+        return hits;
+    }
+
+    public int getTotalHits() {
+        return totalHits;
+    }
+
+    public Query getQuery() {
+        return query;
+    }
+
+    public SortedSet<String> getProjects() {
+        return projects;
+    }
+
+    public Context getSourceContext() {
+        return sourceContext;
+    }
+
+    public Summarizer getSummerizer() {
+        return summerizer;
+    }
+
     /**
      * total number of hits
      */
@@ -198,8 +273,7 @@ public class SearchHelper {
                 searcher = new IndexSearcher(IndexReader.open(dir));
             } else if (projects.size() == 1) {
                 // just 1 project selected
-                FSDirectory dir =
-                        FSDirectory.open(new File(indexDir, projects.first()));
+                FSDirectory dir = FSDirectory.open(new File(indexDir, projects.first()));
                 searcher = new IndexSearcher(IndexReader.open(dir));
             } else {
                 //more projects
@@ -273,8 +347,7 @@ public class SearchHelper {
             // Bug #3900: Check if this is a search for a single term, and that
             // term is a definition. If that's the case, and we only have one match,
             // we'll generate a direct link instead of a listing.
-            boolean isSingleDefinitionSearch =
-                    (query instanceof TermQuery) && (builder.getDefs() != null);
+            boolean isSingleDefinitionSearch = (query instanceof TermQuery) && (builder.getDefs() != null);
 
             // Attempt to create a direct link to the definition if we search for
             // one single definition term AND we have exactly one match AND there
@@ -294,9 +367,7 @@ public class SearchHelper {
             // @TODO fix me. I should try to figure out where the exact hit is
             // instead of returning a page with just _one_ entry in....
             if (uniqueDefinition && hits != null && hits.length > 0 && isCrossRefSearch) {
-                redirect = contextPath + Prefix.XREF_P
-                        + Util.URIEncodePath(searcher.doc(hits[0].doc).get("path"))
-                        + '#' + Util.URIEncode(((TermQuery) query).getTerm().text());
+                redirect = contextPath + Prefix.XREF_P + Util.URIEncodePath(searcher.doc(hits[0].doc).get("path")) + '#' + Util.URIEncode(((TermQuery) query).getTerm().text());
             }
         } catch (BooleanQuery.TooManyClauses e) {
             errorMsg = "Too many results for wildcard!";
@@ -308,8 +379,7 @@ public class SearchHelper {
 
     private static final Pattern TABSPACE = Pattern.compile("[\t ]+");
 
-    private static void getSuggestion(String term, SpellChecker checker,
-                                      List<String> result) throws IOException {
+    private static void getSuggestion(String term, SpellChecker checker, List<String> result) throws IOException {
         if (term == null) {
             return;
         }
@@ -344,9 +414,7 @@ public class SearchHelper {
         if (projects.isEmpty()) {
             spellIndex = new File[]{new File(dataRoot, "spellIndex")};
         } else if (projects.size() == 1) {
-            spellIndex = new File[]{
-                    new File(dataRoot, "spellIndex/" + projects.first())
-            };
+            spellIndex = new File[]{new File(dataRoot, "spellIndex/" + projects.first())};
         } else {
             spellIndex = new File[projects.size()];
             int ii = 0;
@@ -361,11 +429,9 @@ public class SearchHelper {
             if (!aSpellIndex.exists()) {
                 continue;
             }
-            FSDirectory spellDirectory = null;
             SpellChecker checker = null;
             Suggestion s = new Suggestion(aSpellIndex.getName());
-            try {
-                spellDirectory = FSDirectory.open(aSpellIndex);
+            try (FSDirectory spellDirectory = FSDirectory.open(aSpellIndex)) {
                 checker = new SpellChecker(spellDirectory);
                 getSuggestion(builder.getFreetext(), checker, dummy);
                 s.freetext = dummy.toArray(new String[dummy.size()]);
@@ -385,9 +451,6 @@ public class SearchHelper {
             } catch (IOException e) {
                 log.log(Level.WARNING, "Got excption while getting spelling suggestions: ", e);
             } finally {
-                if (spellDirectory != null) {
-                    spellDirectory.close();
-                }
                 if (checker != null) {
                     try {
                         checker.close();
@@ -398,6 +461,246 @@ public class SearchHelper {
             }
         }
         return res;
+    }
+
+    public class ResultDirectory {
+        private String label;
+        private String link;
+        private List<ResultFile> files;
+
+        public ResultDirectory() {
+            files = new ArrayList<>();
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public void setFiles(List<ResultFile> files) {
+            this.files = files;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public List<ResultFile> getFiles() {
+            return files;
+        }
+    }
+
+    public class ResultFile {
+        private String label;
+        private String link;
+        private List<ResultLine> lines;
+        private String linkMore;
+        private boolean moreResults;
+
+        public ResultFile() {
+            lines = new ArrayList<>();
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public void setLines(List<ResultLine> lines) {
+            this.lines = lines;
+        }
+
+        public void setLinkMore(String linkMore) {
+            this.linkMore = linkMore;
+        }
+
+        public void setMoreResults(boolean moreResults) {
+            this.moreResults = moreResults;
+        }
+
+        public boolean isMoreResults() {
+            return moreResults;
+        }
+
+        public String getLinkMore() {
+
+            return linkMore;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public List<ResultLine> getLines() {
+            return lines;
+        }
+    }
+
+    public class ResultLine {
+        private int lineNumber;
+        private String line;
+        private String link;
+        private String matchedSymbol;
+        private String type;
+        private String summary;
+
+        public void setLineNumber(int lineNumber) {
+            this.lineNumber = lineNumber;
+        }
+
+        public void setLine(String line) {
+            this.line = line;
+        }
+
+        public void setLink(String link) {
+            this.link = link;
+        }
+
+        public void setMatchedSymbol(String matchedSymbol) {
+            this.matchedSymbol = matchedSymbol;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public void setSummary(String summary) {
+            this.summary = summary;
+        }
+
+        public String getSummary() {
+            return summary;
+        }
+
+        public int getLineNumber() {
+            return lineNumber;
+        }
+
+        public String getLink() {
+            return link;
+        }
+
+        public String getLine() {
+            return line;
+        }
+
+        public String getMatchedSymbol() {
+            return matchedSymbol;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    public List<ResultDirectory> getSearchResults() {
+        List<ResultDirectory> result = new ArrayList<>();
+        Map<String, ResultDirectory> directories = new HashMap<>();
+        Map<String, ResultFile> files = new HashMap<>();
+        Map<String, Map<String, ResultFile>> filesOfDirs = new HashMap<>();
+        File xrefDataDir = new File(getDataRoot(), Prefix.XREF_P.toString());
+
+        for (int i = getStart(); i < getThisPageEndIndex(); i++) {
+            int docId = getHits()[i].doc;
+            try {
+                Document doc = getSearcher().doc(docId);
+                String path = doc.get("path");
+                String parent = path.substring(0, path.lastIndexOf('/'));
+
+                ResultDirectory dir;
+                if (!directories.containsKey(parent)) {
+                    dir = new ResultDirectory();
+                    dir.setLabel(parent);
+                    dir.setLink(getContextPath() + Prefix.XREF_P + Util.URIEncodePath(parent));
+
+                    directories.put(parent, dir);
+                    result.add(dir);
+                } else {
+                    dir = directories.get(parent);
+                }
+
+                ResultFile file;
+                if (!files.containsKey(path)) {
+                    file = new ResultFile();
+                    file.setLabel(path.substring(path.lastIndexOf('/') + 1));
+                    file.setLink(getContextPath() + Prefix.XREF_P + Util.URIEncodePath(path));
+
+                    files.put(path, file);
+                } else {
+                    file = files.get(path);
+                }
+
+                if (!filesOfDirs.containsKey(parent)) {
+                    HashMap<String, ResultFile> filesOfDir = new HashMap<>();
+                    filesOfDir.put(path, file);
+                    filesOfDirs.put(parent, filesOfDir);
+                    dir.getFiles().add(file);
+                } else if (!filesOfDirs.get(parent).containsKey(path)) {
+                    filesOfDirs.get(parent).put(path, file);
+                    dir.getFiles().add(file);
+                }
+
+                FileAnalyzer.Genre genre = FileAnalyzer.Genre.get(doc.get("t"));
+
+                if (genre == FileAnalyzer.Genre.XREFABLE) {
+                    ResultLine line = new ResultLine();
+                    String tags = Results.getTags(xrefDataDir, path, isCompressed());
+                    String summary = getSummerizer().getSummary(tags).toString();
+                    line.setSummary(summary);
+                    file.getLines().add(line);
+
+                } else if (genre == FileAnalyzer.Genre.HTML) {
+                    ResultLine line = new ResultLine();
+                    String tags = Results.getTags(getSourceRoot(), path, false);
+                    String summary = getSummerizer().getSummary(tags).toString();
+                    line.setSummary(summary);
+                    file.getLines().add(line);
+                } else {
+                    Fieldable tagsField = doc.getFieldable("tags");
+                    Definitions tags = Definitions.deserialize(tagsField.getBinaryValue());
+                    for (Definitions.Tag tag : tags.getTags()) {
+                        for (LineMatcher lineMatcher : getSourceContext().getLineMatchers()) {
+                            if (lineMatcher.match(tag.symbol) == LineMatcher.MATCHED) {
+                                ResultLine line = new ResultLine();
+                                line.setSummary(tag.text);
+                                line.setLine(tag.text);
+                                line.setLineNumber(tag.line);
+                                line.setMatchedSymbol(tag.symbol);
+                                line.setType(tag.type);
+
+                                file.getLines().add(line);
+                            }
+                        }
+                    }
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        }
+
+        return result;
+    }
+
+    public int getThisPageEndIndex() {
+        if (getMaxItems() < getTotalHits() && (getStart() + getMaxItems() < getTotalHits())) {
+            return getMaxItems();
+        }
+        return getTotalHits() - getStart();
     }
 
     /**

@@ -822,6 +822,14 @@ public final class PageConfig {
         return dataRoot;
     }
 
+    private SearchHelper currentSearchHelper = null;
+    public SearchHelper getCurrentSearchHelper() {
+        if (currentSearchHelper == null) {
+            currentSearchHelper = prepareSearch().prepareExec(getRequestedProjects()).executeQuery().prepareSummary();
+        }
+        return currentSearchHelper;
+    }
+
     /**
      * Prepare a search helper with all required information, ready to execute
      * the query implied by the related request parameters and cookies.
@@ -934,6 +942,7 @@ public final class PageConfig {
             return null;
         }
     }
+
     public String getCurrentMatch() {
         ByteArrayOutputStream content = new ByteArrayOutputStream();
         OutputStreamWriter writer = new OutputStreamWriter(content);
@@ -948,6 +957,47 @@ public final class PageConfig {
             e.printStackTrace();
             return "";
         }
+    }
+
+    private StringBuilder createUrl(SearchHelper sh, boolean menu) {
+        StringBuilder url = new StringBuilder(64);
+        QueryBuilder qb = sh.builder;
+        if (menu) {
+            url.append("search?");
+        } else {
+            Util.appendQuery(url, "sort", sh.order.toString());
+        }
+        if (qb != null) {
+            Util.appendQuery(url, "q", qb.getFreetext());
+            Util.appendQuery(url, "defs", qb.getDefs());
+            Util.appendQuery(url, "refs", qb.getRefs());
+            Util.appendQuery(url, "path", qb.getPath());
+        }
+        return url;
+    }
+
+    public List<Map<String, Object>> getSortOrderList() {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        StringBuilder url = createUrl(getCurrentSearchHelper(), true).append("&amp;sort=");
+        for (SortOrder o : SortOrder.values()) {
+            Map<String,Object> order = new HashMap<>();
+            if (getCurrentSearchHelper().order == o) {
+                order.put("active", true);
+                order.put("link", "#");
+            } else {
+                order.put("active", false);
+                order.put("link", url + o.toString());
+            }
+            order.put("name", o.getDesc());
+            list.add(order);
+        }
+
+        return list;
+    }
+
+    public String getCurrentSearchQueryErrorMessage() {
+        return Util.htmlize(getCurrentSearchHelper().getErrorMsg());
     }
 
     /**
