@@ -20,6 +20,7 @@
 /*
  * Copyright (c) 2011 Jens Elkner.
  * Copyright (c) 2011, Oracle and/or its affiliates. All rights reserved.
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.web;
 
@@ -735,7 +736,7 @@ public class SearchHelper {
     }
 
     public boolean isPagingEnabled() {
-        return getPaging().size() > 0;
+        return getPaging().size() > 1;
     }
 
     public List<Map<String,Object>> createPaging() {

@@ -67,38 +67,32 @@ Portions Copyright (c) 2013 Takayuki Okazaki.
         </c:forEach>
       </ul>
 
-      <div>
+      <p>
         Searched <code>${pageConfig.currentQueryString}</code>
         (Results <strong>${pageConfig.currentSearchHelper.start + 1}</strong>
         - <strong>${pageConfig.currentSearchHelper.thisPageEndIndex}</strong>
         of <strong>${pageConfig.currentSearchHelper.totalHits}</strong>)
         sorted by <span class="label label-info">${pageConfig.currentSearchHelper.order.desc}</span>
-      </div>
-
-      <c:set var="paging">
-        <c:if test="${pageConfig.currentSearchHelper.pagingEnabled}">
-          <div class="pagination">
-            <ul>
-              <c:forEach var="page" items="${pageConfig.currentSearchHelper.paging}">
-                <c:choose>
-                  <c:when test="${page.active}">
-                    <li class="active"><a href="#">${page.label}</a></li>
-                  </c:when>
-                  <c:otherwise>
-                    <li><a href="${page.link}">${page.label}</a></li>
-                  </c:otherwise>
-                </c:choose>
-              </c:forEach>
-            </ul>
-          </div>
-        </c:if>
-      </c:set>
-
-      <c:out value="${paging}" escapeXml="false"/>
+      </p>
 
       <table class="table table-striped">${pageConfig.currentSearchHelper.searchResultTable}</table>
 
-      <c:out value="${paging}" escapeXml="false"/>
+      <c:if test="${pageConfig.currentSearchHelper.pagingEnabled}">
+        <div class="pagination">
+          <ul>
+            <c:forEach var="page" items="${pageConfig.currentSearchHelper.paging}">
+              <c:choose>
+                <c:when test="${page.active}">
+                  <li class="active"><a href="#">${page.label}</a></li>
+                </c:when>
+                <c:otherwise>
+                  <li><a href="${page.link}">${page.label}</a></li>
+                </c:otherwise>
+              </c:choose>
+            </c:forEach>
+          </ul>
+        </div>
+      </c:if>
     </c:otherwise>
   </c:choose>
 </t:layout>

@@ -15,6 +15,7 @@
  * information: Portions Copyright [yyyy] [name of copyright owner]
  *
  * CDDL HEADER END
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 
 package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.csharp;

@@ -20,6 +20,7 @@
 /*
  * Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
  * Use is subject to license terms.
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis;
 

@@ -20,6 +20,7 @@
 /*
  * Copyright 2005 Trond Norbye.  All rights reserved.
  * Use is subject to license terms.
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.search;
 

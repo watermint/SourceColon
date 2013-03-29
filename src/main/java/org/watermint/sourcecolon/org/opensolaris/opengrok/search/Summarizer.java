@@ -15,6 +15,7 @@
  */
 
 // modified by Lubos Kosco 2010 to upgrade lucene to 3.0.0
+// Portions Copyright (c) 2013 Takayuki Okazaki.
 
 // TODO : rewrite this to use Highlighter from lucene contrib ...
 

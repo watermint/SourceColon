@@ -42,7 +42,9 @@ dependencies {
     compile "javax:javaee-web-api:6.0"
     runtime common
     testCompile "junit:junit:4.8.2"
-    jetty8 "org.mortbay.jetty:jetty-runner:$jettyVersion"
+    jetty8 "org.mortbay.jetty:jetty-runner:$jettyVersion",
+            "jstl:jstl:1.2"
+
 }
 
 task cleanup << {

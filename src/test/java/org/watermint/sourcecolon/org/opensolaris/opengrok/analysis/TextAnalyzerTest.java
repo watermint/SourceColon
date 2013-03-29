@@ -20,6 +20,7 @@
 /*
  * Copyright 2010 Sun Micosystems.  All rights reserved.
  * Use is subject to license terms.
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 
 package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis;

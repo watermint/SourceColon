@@ -21,6 +21,7 @@
  * Copyright (c) 2008, 2011, Oracle and/or its affiliates. All rights reserved.
  *
  * Portions Copyright 2011 Jens Elkner.
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.index;
 

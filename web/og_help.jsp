@@ -20,6 +20,7 @@ Copyright 2007 Sun Microsystems, Inc.  All rights reserved.
 Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
+Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
 <%@ page session="false" errorPage="og_error.jsp" %>

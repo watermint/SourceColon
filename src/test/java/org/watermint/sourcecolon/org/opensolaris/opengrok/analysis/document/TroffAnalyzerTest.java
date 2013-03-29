@@ -19,6 +19,7 @@
 
 /*
  * Copyright 2009 - 2011 Jens Elkner.
+ * Portions Copyright (c) 2013 Takayuki Okazaki.
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.document;
 

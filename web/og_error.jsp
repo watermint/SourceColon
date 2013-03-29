@@ -18,6 +18,7 @@ CDDL HEADER END
 
 Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
+Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
 <%@ page session="false" isErrorPage="true" %>
