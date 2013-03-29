@@ -22,43 +22,21 @@ Copyright 2010 Sun Microsystems, Inc.  All rights reserved.
 Use is subject to license terms.
 
 Portions Copyright 2011 Jens Elkner.
+Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
-<%@page import="
-                java.io.FileReader,
-                java.util.logging.Level,
-                org.apache.lucene.search.Query,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.Context"
-    %>
-<%@include file="og_mast.jsp" %>
-<%
-  /* ---------------------- more.jsp start --------------------- */
-  {
-    PageConfig cfg = PageConfig.get(request);
-    QueryBuilder qbuilder = cfg.getQueryBuilder();
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<t:layout pageTitle="Search">
+  <%--@elvariable id="pageConfig" type="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"--%>
+  <ul class="breadcrumb">
+      ${pageConfig.breadcrumbPath}
+  </ul>
+  <h1>Lines Matching</h1>
 
-    try {
-      Query tquery = qbuilder.build();
-      if (tquery != null) {
-        Context sourceContext = new Context(tquery, qbuilder.getQueries());
-%><p><span class="pagetitle">Lines Matching <b><%= tquery %>
-</b></span></p>
+  <div class="alert alert-info">
+  ${pageConfig.currentQueryString}
+  </div>
 
-<div id="more" style="line-height:1.5em;">
-    <pre><%
-      sourceContext.getContext(new FileReader(cfg.getResourceFile()), out,
-          request.getContextPath() + Prefix.XREF_P, null, cfg.getPath(),
-          null, false, null);
-    %></pre>
-</div>
-<%
-      }
-    } catch (Exception e) {
-      OpenGrokLogger.getLogger().log(Level.WARNING, e.getMessage());
-    }
-  }
-/* ---------------------- more.jsp end --------------------- */
-%>
-<%@ include file="og_foot.jspf" %>
+  <pre>${pageConfig.currentMatch}</pre>
+</t:layout>

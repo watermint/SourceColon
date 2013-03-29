@@ -353,11 +353,11 @@ public final class Util {
         float l = num;
         NumberFormat formatter = (NumberFormat) FORMATTER.clone();
         if (l < 1024) {
-            return formatter.format(l) + ' '; // for none-dirs append 'B'? ...
+            return formatter.format(l) + " bytes"; // for none-dirs append 'B'? ...
         } else if (l < 1048576) {
             return (formatter.format(l / 1024) + " KiB");
         } else {
-            return ("<b>" + formatter.format(l / 1048576) + " MiB</b>");
+            return (formatter.format(l / 1048576) + " MiB");
         }
     }
 

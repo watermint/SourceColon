@@ -23,15 +23,25 @@
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.web;
 
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.Query;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.AnalyzerGuru;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.index.IgnoredNames;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.index.IndexDatabase;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.Context;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import java.io.*;
 import java.security.InvalidParameterException;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,8 +106,7 @@ public final class PageConfig {
                 dirFileList = Collections.emptyList();
             } else {
                 Arrays.sort(files, String.CASE_INSENSITIVE_ORDER);
-                dirFileList =
-                        Collections.unmodifiableList(Arrays.asList(files));
+                dirFileList = Collections.unmodifiableList(Arrays.asList(files));
             }
         }
         return dirFileList;
@@ -253,9 +262,7 @@ public final class PageConfig {
      */
     public String[] getSearchOnlyIn() {
         if (isDir()) {
-            return path.length() == 0
-                    ? new String[]{"/", "/", "disabled=\"\""}
-                    : new String[]{path, path, ""};
+            return path.length() == 0 ? new String[]{"/", "/", "disabled=\"\""} : new String[]{path, path, ""};
         }
         String[] res = new String[3];
         res[0] = path.substring(0, path.lastIndexOf('/') + 1);
@@ -325,8 +332,7 @@ public final class PageConfig {
      */
     public SortedSet<String> getRequestedProjects() {
         if (requestedProjects == null) {
-            requestedProjects =
-                    getRequestedProjects("project", "OpenGrokProject");
+            requestedProjects = getRequestedProjects("project", "OpenGrokProject");
         }
         return requestedProjects;
     }
@@ -394,8 +400,7 @@ public final class PageConfig {
      *                   lists used as fallback
      * @return a possible empty set but never {@code null}.
      */
-    protected SortedSet<String> getRequestedProjects(String paramName,
-                                                     String cookieName) {
+    protected SortedSet<String> getRequestedProjects(String paramName, String cookieName) {
         TreeSet<String> set = new TreeSet<>();
         List<Project> projects = getEnv().getProjects();
         if (projects == null) {
@@ -531,9 +536,7 @@ public final class PageConfig {
         if (check4on) {
             File newFile = new File(getSourceRootPath() + "/on/" + getPath());
             if (newFile.canRead()) {
-                return req.getContextPath() + req.getServletPath() + "/on"
-                        + getUriEncodedPath()
-                        + (newFile.isDirectory() ? trailingSlash(path) : "");
+                return req.getContextPath() + req.getServletPath() + "/on" + getUriEncodedPath() + (newFile.isDirectory() ? trailingSlash(path) : "");
             }
         }
         return null;
@@ -588,8 +591,7 @@ public final class PageConfig {
      */
     public boolean resourceNotAvailable() {
         getIgnoredNames();
-        return getResourcePath().equals("/") || ignoredNames.ignore(getPath())
-                || ignoredNames.ignore(resourceFile.getParentFile().getName());
+        return getResourcePath().equals("/") || ignoredNames.ignore(getPath()) || ignoredNames.ignore(resourceFile.getParentFile().getName());
     }
 
     /**
@@ -605,23 +607,19 @@ public final class PageConfig {
     }
 
     private static String trailingSlash(String path) {
-        return path.length() == 0 || path.charAt(path.length() - 1) != '/'
-                ? "/"
-                : "";
+        return path.length() == 0 || path.charAt(path.length() - 1) != '/' ? "/" : "";
     }
 
     private File checkFile(File dir, String name, boolean compressed) {
         File f = null;
         if (compressed) {
             f = new File(dir, name + ".gz");
-            if (f.exists() && f.isFile()
-                    && f.lastModified() >= resourceFile.lastModified()) {
+            if (f.exists() && f.isFile() && f.lastModified() >= resourceFile.lastModified()) {
                 return f;
             }
         }
         f = new File(dir, name);
-        if (f.exists() && f.isFile()
-                && f.lastModified() >= resourceFile.lastModified()) {
+        if (f.exists() && f.isFile() && f.lastModified() >= resourceFile.lastModified()) {
             return f;
         }
         return null;
@@ -635,14 +633,12 @@ public final class PageConfig {
         File f = null;
         if (compressed) {
             f = new File(dir, name + ".gz");
-            if (f.exists() && f.isFile()
-                    && f.lastModified() >= lresourceFile.lastModified()) {
+            if (f.exists() && f.isFile() && f.lastModified() >= lresourceFile.lastModified()) {
                 return f;
             }
         }
         f = new File(dir, name);
-        if (f.exists() && f.isFile()
-                && f.lastModified() >= lresourceFile.lastModified()) {
+        if (f.exists() && f.isFile() && f.lastModified() >= lresourceFile.lastModified()) {
             return f;
         }
         return null;
@@ -667,15 +663,20 @@ public final class PageConfig {
             return new File[0];
         }
         File[] res = new File[filenames.size()];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = findDataFile(filenames.get(i));
+        }
+        return res;
+    }
+
+    public File findDataFile(String filename) {
         File dir = new File(getEnv().getDataRootPath() + Prefix.XREF_P + path);
         if (dir.exists() && dir.isDirectory()) {
             getResourceFile();
             boolean compressed = getEnv().isCompressXref();
-            for (int i = res.length - 1; i >= 0; i--) {
-                res[i] = checkFileResolve(dir, filenames.get(i), compressed);
-            }
+            return checkFileResolve(dir, filename, compressed);
         }
-        return res;
+        return null;
     }
 
     /**
@@ -688,8 +689,75 @@ public final class PageConfig {
      * @return {@code null} if not found, the file otherwise.
      */
     public File findDataFile() {
-        return checkFile(new File(getEnv().getDataRootPath() + Prefix.XREF_P),
-                path, env.isCompressXref());
+        return checkFile(new File(getEnv().getDataRootPath() + Prefix.XREF_P), path, env.isCompressXref());
+    }
+
+    public File getCurrentDataFile() {
+        return findDataFile();
+    }
+
+    public String getFileTimestamp(File file) {
+        long now = System.currentTimeMillis();
+        Format dateFormatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+
+        if (now - file.lastModified() < 86400000) {
+            return "Today";
+        } else {
+            return dateFormatter.format(file.lastModified());
+        }
+    }
+
+    public List<Map<String, String>> getDirectoryFiles() {
+        List<Map<String, String>> files = new ArrayList<>();
+        IgnoredNames ignoredNames = getEnv().getIgnoredNames();
+
+        for (String filename : getResourceFileList()) {
+            if (ignoredNames.ignore(filename)) {
+                continue;
+            }
+
+            File file = new File(getResourceFile(), filename);
+            Map<String, String> f = new HashMap<>();
+
+            if (file.isDirectory()) {
+                f.put("link", Util.URIEncodePath(filename) + "/");
+                f.put("name", "<strong>" + filename + "</strong>/");
+            } else {
+                f.put("link", Util.URIEncodePath(filename));
+                f.put("name", filename);
+            }
+            f.put("date", getFileTimestamp(file));
+            f.put("size", Util.readableSize(file.length()));
+
+            files.add(f);
+        }
+
+        return files;
+    }
+
+    public FileAnalyzer.Genre getGenre() {
+        FileAnalyzerFactory a = AnalyzerGuru.find(getResourceFile().getName());
+        return AnalyzerGuru.getGenre(a);
+    }
+
+    public boolean isImage() {
+        return getGenre() == FileAnalyzer.Genre.IMAGE;
+    }
+
+    public boolean isHTML() {
+        return getGenre() == FileAnalyzer.Genre.HTML;
+    }
+
+    public boolean isPlain() {
+        return getGenre() == FileAnalyzer.Genre.PLAIN;
+    }
+
+    public boolean isBinary() {
+        return getGenre() == FileAnalyzer.Genre.DATA;
+    }
+
+    public boolean isXrefable() {
+        return getGenre() == FileAnalyzer.Genre.XREFABLE;
     }
 
     /**
@@ -707,8 +775,7 @@ public final class PageConfig {
             getPrefix();
             if (prefix != Prefix.XREF_P) {
                 //if it is an existing dir perhaps people wanted dir xref
-                return req.getContextPath() + Prefix.XREF_P
-                        + getUriEncodedPath() + trailingSlash(path);
+                return req.getContextPath() + Prefix.XREF_P + getUriEncodedPath() + trailingSlash(path);
             }
             String ts = trailingSlash(path);
             if (ts.length() != 0) {
@@ -745,14 +812,11 @@ public final class PageConfig {
         if (dataRoot == null) {
             String tmp = getEnv().getDataRootPath();
             if (tmp == null || tmp.length() == 0) {
-                throw new InvalidParameterException("dataRoot parameter is not "
-                        + "set in configuration.xml!");
+                throw new InvalidParameterException("dataRoot parameter is not " + "set in configuration.xml!");
             }
             dataRoot = new File(tmp);
             if (!(dataRoot.isDirectory() && dataRoot.canRead())) {
-                throw new InvalidParameterException("The configured dataRoot '"
-                        + tmp
-                        + "' refers to a none-exsting or unreadable directory!");
+                throw new InvalidParameterException("The configured dataRoot '" + tmp + "' refers to a none-exsting or unreadable directory!");
             }
         }
         return dataRoot;
@@ -794,8 +858,101 @@ public final class PageConfig {
         return sh;
     }
 
+    public String getBreadcrumbPath() {
+        return Util.breadcrumbPath(req.getContextPath() + Prefix.XREF_P, getPath(), '/', "", true, isDir(), true);
+    }
+
+    public Map<String, File> getReadmeFiles() {
+        Map<String, File> files = new HashMap<>();
+        for (String file : getResourceFileList()) {
+            if (file.startsWith("README") || file.endsWith("README") || file.startsWith("readme")) {
+                File data = findDataFile(file);
+                if (data != null) {
+                    files.put(file, data);
+                }
+            }
+        }
+        return files;
+    }
+
+    public String getHtmlContents() {
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(content);
+        try {
+            try (BufferedInputStream bin = new BufferedInputStream(new FileInputStream(getResourceFile()))) {
+                Util.dump(writer, new InputStreamReader(bin));
+                writer.flush();
+                return content.toString();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return "";
+        }
+    }
+
+    public String getPlainContents() {
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(content);
+        try {
+            try (BufferedInputStream bin = new BufferedInputStream(new FileInputStream(getResourceFile()))) {
+                Definitions defs = null;
+
+                defs = IndexDatabase.getDefinitions(resourceFile);
+                FileAnalyzerFactory a = AnalyzerGuru.find(resourceFile.getName());
+                AnalyzerGuru.writeXref(a, new InputStreamReader(bin), writer, defs, Project.getProject(resourceFile));
+
+                writer.flush();
+                return content.toString();
+            }
+        } catch (IOException | ParseException | ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            return "";
+        }
+    }
+
+    public String fileContents(File dataFile) {
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(content);
+
+        Util.dump(writer, dataFile, dataFile.getName().endsWith(".gz"));
+        try {
+            writer.flush();
+            return content.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public String getCurrentQueryString() {
+        QueryBuilder queryBuilder = getQueryBuilder();
+
+        try {
+            return queryBuilder.build().toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public String getCurrentMatch() {
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+        OutputStreamWriter writer = new OutputStreamWriter(content);
+        QueryBuilder queryBuilder = getQueryBuilder();
+
+        try {
+            Context sourceContext = new Context(queryBuilder.build(), queryBuilder.getQueries());
+            sourceContext.getContext(new FileReader(getResourceFile()), writer, req.getContextPath() + Prefix.XREF_P, null, getPath(), null, false, null);
+            writer.flush();
+            return content.toString();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
     /**
      * Setup page configurations into HttpServletRequest
+     *
      * @param request
      */
     public static void configure(HttpServletRequest request) {

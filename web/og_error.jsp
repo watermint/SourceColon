@@ -20,56 +20,19 @@ Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
 
 --%>
-<%@ page session="false" isErrorPage="true" import="
-java.io.PrintWriter,
-                                                    java.io.StringWriter,
-                                                    org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util"
-    %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-  /* ---------------------- error.jsp start --------------------- */
-  {
-    PageConfig cfg = PageConfig.get(request);
-    cfg.setTitle("Error!");
+<%@ page session="false" isErrorPage="true" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<t:layout pageTitle="File not found">
+  <%--@elvariable id="exception" type="java.lang.Exception"--%>
+  <h1>Error</h1>
 
-    String configError = "";
-    if (cfg.getSourceRootPath().isEmpty()) {
-      configError = "CONFIGURATION parameter has not been configured in " + "web.xml! Please configure your webapp.";
-    } else if (!cfg.getEnv().getSourceRootFile().isDirectory()) {
-      configError = "The source root specified in your configuration does " + "not point to a valid directory! Please configure your webapp.";
-    }
-%>
-<%@ include file="og_header.jspf" %>
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span3">
-      <%@ include file="og_menu.jspf" %>
-    </div>
-    <div class="span9">
-      <h1 class="error">There was an error!</h1>
-
-      <p class="error"><%= configError %>
-      </p>
-      <%
-        if (exception != null) {
-      %>
-      <p class="error"><%= exception.getMessage() %>
-      </p>
-        <pre><%
-          StringWriter wrt = new StringWriter();
-          PrintWriter prt = new PrintWriter(wrt);
-          exception.printStackTrace(prt);
-          prt.close();
-          out.write(Util.htmlize(wrt.toString()));
-        %></pre>
-      <%
-      } else {
-      %><p class="error">Unknown Error</p>
-      <%
-        }
-      %>
-    </div>
-  </div>
-</div>
-<% } %>
-<%@ include file="og_foot.jspf" %>
+  <c:choose>
+    <c:when test="${exception}">
+      ${exception}
+    </c:when>
+    <c:otherwise>
+      Unknown error.
+    </c:otherwise>
+  </c:choose>
+</t:layout>

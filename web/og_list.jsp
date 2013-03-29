@@ -1,6 +1,4 @@
 <%--
-$Id$
-
 CDDL HEADER START
 
 The contents of this file are subject to the terms of the
@@ -20,148 +18,61 @@ CDDL HEADER END
 
 Copyright (c) 2005, 2011, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
+Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
-<%@page import="
-java.io.BufferedInputStream,
-                java.io.FileInputStream,
-                java.io.InputStream,
-                java.io.InputStreamReader,
-                java.io.Reader,
-                java.util.List,
-                java.util.Set,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.AnalyzerGuru,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.index.IndexDatabase,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer.Genre,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzerFactory,
-                org.watermint.sourcecolon.org.opensolaris.opengrok.web.DirectoryListing"
-    %>
-<%@include file="og_mast.jsp" %>
-<script type="text/javascript">/* <![CDATA[ */
-$(document).ready(function () {
-  updateNavigationSymbolContents();
-  prettyPrint();
-});
-/* ]]> */</script>
-<%
-  /* ---------------------- list.jsp start --------------------- */
-  {
-    PageConfig cfg = PageConfig.get(request);
-    String rev = cfg.getRequestedRevision();
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<t:layout pageTitle="Search" pageScript="updateNavigationSymbolContents(); prettyPrint();">
+  <%--@elvariable id="pageConfig" type="org.watermint.sourcecolon.org.opensolaris.opengrok.web.PageConfig"--%>
+  <c:set var="rawPath" value="${pageContext.request.contextPath}/raw/${pageConfig.path}"/>
+  <ul class="breadcrumb">
+      ${pageConfig.breadcrumbPath}
+  </ul>
+  <c:choose>
+    <c:when test="${pageConfig.dir && !empty(pageConfig.resourceFileList)}">
+      <form class="navbar-search pull-right" action="${pageContext.request.contextPath}/search">
+        <input type="hidden" name="path" value="${pageConfig.searchOnlyIn[0]}"/>
 
-    File resourceFile = cfg.getResourceFile();
-    String path = cfg.getPath();
-    String basename = resourceFile.getName();
-    String rawPath = request.getContextPath() + Prefix.RAW_P + path;
-    Reader r = null;
-    if (cfg.isDir()) {
-      // valid resource is requested
-      // mast.jsp assures, that resourceFile is valid and not /
-      // see cfg.resourceNotAvailable()
-      Project activeProject = Project.getProject(resourceFile);
-      String cookieValue = cfg.getRequestedProjectsAsString();
-      if (activeProject != null) {
-        Set<String> projects = cfg.getRequestedProjects();
-        if (!projects.contains(activeProject.getProjectId())) {
-          projects.add(activeProject.getProjectId());
-          // update cookie
-          cookieValue = cookieValue.length() == 0
-              ? activeProject.getProjectId()
-              : activeProject.getProjectId() + '/' + cookieValue;
-          Cookie cookie = new Cookie("sourcecolon_prj", cookieValue);
-          // TODO hmmm, projects.jspf doesn't set a path
-          cookie.setPath(request.getContextPath() + '/');
-          response.addCookie(cookie);
-        }
-      }
-      // requesting a directory listing
-      DirectoryListing dl = new DirectoryListing();
-      List<String> files = cfg.getResourceFileList();
-      if (!files.isEmpty()) {
-        %>
-<form class="navbar-search pull-right" action="<%= request.getContextPath() + Prefix.SEARCH_P %>">
-  <input type="hidden" name="path" value="<%= cfg.getSearchOnlyIn()[0] %>"/>
-  <div class="input-prepend input-append">
-    <span class="add-on">Search under <strong><%= cfg.getCrossFilename() %></strong></span>
-    <input type="text" class="search-query" placeholder="Search under <%= cfg.getCrossFilename() %>" id="search"
-           name="q"/>
-    <button class="btn" type="button">Search</button>
-  </div>
-</form>
-<h2>Files</h2>
-<%
-        List<String> readMes = dl.listTo(resourceFile, out, path, files);
-        File[] catfiles = cfg.findDataFiles(readMes);
-        for (int i = 0; i < catfiles.length; i++) {
-          if (catfiles[i] == null) {
-            continue;
-          }
-%><h3><%= readMes.get(i) %></h3>
-<pre class="prettyprint linenums"><code><% Util.dump(out, catfiles[i], catfiles[i].getName().endsWith(".gz")); %></code></pre>
-<%
-    }
-  }
-} else {
-  // requesting cross referenced file
-  File xrefFile = null;
-  xrefFile = cfg.findDataFile();
-  if (xrefFile != null) {
-%>
-    <pre class="prettyprint linenums"><code><%
-      Util.dump(out, xrefFile, xrefFile.getName().endsWith(".gz"));
-    %></code></pre>
-<%
-} else {
-  // annotate
-  BufferedInputStream bin =
-      new BufferedInputStream(new FileInputStream(resourceFile));
-  try {
-    FileAnalyzerFactory a = AnalyzerGuru.find(basename);
-    Genre g = AnalyzerGuru.getGenre(a);
-    if (g == null) {
-      a = AnalyzerGuru.find(bin);
-      g = AnalyzerGuru.getGenre(a);
-    }
-    if (g == Genre.IMAGE) {
-%>
-  <img src="<%= rawPath %>"/>
-<%
-} else if (g == Genre.HTML) {
-  r = new InputStreamReader(bin);
-  Util.dump(out, r);
-} else if (g == Genre.PLAIN) {
-%>
-    <pre class="prettyprint linenums"><code><%
-      // We're generating xref for the latest revision, so we can
-      // find the definitions in the index.
-      Definitions defs = IndexDatabase.getDefinitions(resourceFile);
-      r = new InputStreamReader(bin);
-      AnalyzerGuru.writeXref(a, r, out, defs,
-          Project.getProject(resourceFile));
-    %></code></pre>
-<%
-} else {
-%>
-Click <a href="<%= rawPath %>">download <%= basename %>
-</a><%
-          }
-        } finally {
-          if (r != null) {
-            try {
-              r.close();
-              bin = null;
-            } catch (Exception e) { /* ignore */ }
-          }
-          if (bin != null) {
-            try {
-              bin.close();
-            } catch (Exception e) { /* ignore */ }
-          }
-        }
-      }
-    }
-  }
-/* ---------------------- list.jsp end --------------------- */
-%>
-<%@ include file="og_foot.jspf" %>
+        <div class="input-prepend input-append">
+          <span class="add-on">Search under <strong>${pageConfig.crossFilename}</strong></span>
+          <input type="text" class="search-query" placeholder="Search under ${pageConfig.crossFilename}" name="q"/>
+          <button class="btn" type="button">Search</button>
+        </div>
+      </form>
+      <h2>Files</h2>
+
+      <table class="table table-striped">
+        <tr class="info"><th>Name</th><th>Date</th><th>Size</th></tr>
+        <c:forEach var="file" items="${pageConfig.directoryFiles}">
+          <tr>
+            <td><a href="${file.link}">${file.name}</a></td>
+            <td>${file.date}</td>
+            <td>${file.size}</td>
+          </tr>
+        </c:forEach>
+      </table>
+
+      <c:forEach var="readme" items="${pageConfig.readmeFiles}">
+        <h3>${readme.key}</h3>
+
+        <pre class="prettyprint linenums"><code>${pageConfig.fileContents(readme.value)}</code></pre>
+      </c:forEach>
+    </c:when>
+    <c:when test="${pageConfig.currentDataFile != null}">
+      <pre class="prettyprint linenums"><code>${pageConfig.fileContents(pageConfig.currentDataFile)}</code></pre>
+    </c:when>
+    <c:when test="${pageConfig.image}">
+      <img src="${rawPath}"/>
+    </c:when>
+    <c:when test="${pageConfig.HTML}">
+      ${pageConfig.htmlContents}
+    </c:when>
+    <c:when test="${pageConfig.plain}">
+      <pre class="prettyprint linenums"><code>${pageConfig.plainContents}</code></pre>
+    </c:when>
+    <c:otherwise>
+      Download: <a href="${rawPath}">${pageConfig.resourceFile.name}</a>
+    </c:otherwise>
+  </c:choose>
+</t:layout>

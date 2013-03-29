@@ -18,29 +18,13 @@ CDDL HEADER END
 
 Copyright (c) 2005, 2010, Oracle and/or its affiliates. All rights reserved.
 Portions Copyright 2011 Jens Elkner.
-
+Portions Copyright (c) 2013 Takayuki Okazaki.
 --%>
-<%@page session="false" isErrorPage="true" import="org.watermint.sourcecolon.org.opensolaris.opengrok.web.Prefix" %>
+<%@ page session="false" isErrorPage="true" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%
-  /* ---------------------- enoent.jsp start --------------------- */
-  {
-    PageConfig cfg = PageConfig.get(request);
-    cfg.setTitle("File not found");
-    cfg.getEnv().setUrlPrefix(request.getContextPath() + Prefix.SEARCH_R + "?");
-%>
-<%@ include file="og_header.jspf" %>
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span3">
-      <%@ include file="og_menu.jspf" %>
-    </div>
-    <div class="span9">
-      <h1 class="error">Error: File not found!</h1>
+<t:layout pageTitle="File not found">
+  <h1>Error: File not found</h1>
 
-      The requested resource is not available.
-    </div>
-  </div>
-</div>
-<% } %>
-<%@ include file="og_foot.jspf" %>
+  The requested resource is not available.
+</t:layout>
