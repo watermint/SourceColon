@@ -110,15 +110,15 @@ public class UtilTest {
 
     @Test
     public void redableSize() {
-        assertEquals("0 ", Util.readableSize(0));
-        assertEquals("1 ", Util.readableSize(1));
-        assertEquals("-1 ", Util.readableSize(-1));
-        assertEquals("1,000 ", Util.readableSize(1000));
+        assertEquals("0 bytes", Util.readableSize(0));
+        assertEquals("1 bytes", Util.readableSize(1));
+        assertEquals("-1 bytes", Util.readableSize(-1));
+        assertEquals("1,000 bytes", Util.readableSize(1000));
         assertEquals("1 KiB", Util.readableSize(1024));
         assertEquals("2.4 KiB", Util.readableSize(2500));
-        assertEquals("<b>1.4 MiB</b>", Util.readableSize(1474560));
-        assertEquals("<b>3,584.4 MiB</b>", Util.readableSize(3758489600L));
-        assertEquals("<b>8,796,093,022,208 MiB</b>",
+        assertEquals("1.4 MiB", Util.readableSize(1474560));
+        assertEquals("3,584.4 MiB", Util.readableSize(3758489600L));
+        assertEquals("8,796,093,022,208 MiB",
                 Util.readableSize(Long.MAX_VALUE));
     }
 
