@@ -25,17 +25,9 @@ Portions Copyright 2011 Jens Elkner.
 <%
   /* ---------------------- enoent.jsp start --------------------- */
   {
-    cfg = PageConfig.get(request);
+    PageConfig cfg = PageConfig.get(request);
     cfg.setTitle("File not found");
-
-    String context = request.getContextPath();
-    cfg.getEnv().setUrlPrefix(context + Prefix.SEARCH_R + "?");
-    String configError = "";
-    if (cfg.getSourceRootPath().isEmpty()) {
-      configError = "CONFIGURATION parameter has not been configured in " + "web.xml! Please configure your webapp.";
-    } else if (!cfg.getEnv().getSourceRootFile().isDirectory()) {
-      configError = "The source root specified in your configuration does " + "not point to a valid directory! Please configure your webapp.";
-    }
+    cfg.getEnv().setUrlPrefix(request.getContextPath() + Prefix.SEARCH_R + "?");
 %>
 <%@ include file="og_header.jspf" %>
 <div class="container-fluid">
@@ -46,8 +38,7 @@ Portions Copyright 2011 Jens Elkner.
     <div class="span9">
       <h1 class="error">Error: File not found!</h1>
 
-      <p>The requested resource is not available. <%= configError %>
-      </p>
+      The requested resource is not available.
     </div>
   </div>
 </div>

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" errorPage="og_error.jsp" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ include file="og_projects.jspf" %>
 <% {
     PageConfig cfg = PageConfig.get(request);
     cfg.setTitle("Search");

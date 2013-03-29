@@ -23,9 +23,12 @@ Portions Copyright 2011 Jens Elkner.
 
 --%>
 <%@page session="false" errorPage="og_error.jsp" import="
+java.util.List,
+org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder,
 org.watermint.sourcecolon.org.opensolaris.opengrok.search.Results,
 org.watermint.sourcecolon.org.opensolaris.opengrok.web.SearchHelper,
 org.watermint.sourcecolon.org.opensolaris.opengrok.web.SortOrder,
+org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util,
 org.watermint.sourcecolon.org.opensolaris.opengrok.web.Suggestion"
     %>
 <%!

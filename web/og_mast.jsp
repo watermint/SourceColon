@@ -46,12 +46,11 @@ java.io.File,
     cfg.getEnv().setUrlPrefix(context + Prefix.SEARCH_R + "?");
 
     String uriEncodedPath = cfg.getUriEncodedPath();
-    String rev = cfg.getRequestedRevision();
 %>
 <%@ include file="og_header.jspf" %>
 <script type="text/javascript">
-  document.hash = '<%= cfg.getDocumentHash() %>';
-  document.rev = '<%= rev %>';
+  document.hash = '${pageconfig.documentHash}';
+  document.rev = '${pageconfig.requestedRevision}';
   document.link = '<%= context + Prefix.XREF_P + uriEncodedPath %>';
 </script>
 <div class="container-fluid">
@@ -63,5 +62,4 @@ java.io.File,
       <ul class="breadcrumb">
         <%= Util.breadcrumbPath(context + Prefix.XREF_P, path, '/', "", true, cfg.isDir(), true) %>
       </ul>
-
         <% } %>
