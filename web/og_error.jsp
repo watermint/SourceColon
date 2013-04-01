@@ -21,7 +21,7 @@ Portions Copyright 2011 Jens Elkner.
 Portions Copyright (c) 2013 Takayuki Okazaki.
 
 --%>
-<%@ page session="false" isErrorPage="true" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" isErrorPage="true" %>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:layout pageTitle="File not found">
