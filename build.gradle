@@ -116,7 +116,7 @@ task runIndexer(dependsOn: jar) << {
     }
 }
 
-task prepareWar(dependsOn: [jar, runIndexer]) << {
+task prepareWar(dependsOn: jar) << {
     File destWar = new File(project.buildDir, 'war')
     File baseWar = new File(project.projectDir, 'web')
     copy {
@@ -145,5 +145,5 @@ task runJetty8(type: JavaExec, dependsOn: war) {
 task all(dependsOn: [build, war, runIndexer]) {
 }
 
-task run(dependsOn: runJetty8) {
+task run(dependsOn: [all, runJetty8]) {
 }
