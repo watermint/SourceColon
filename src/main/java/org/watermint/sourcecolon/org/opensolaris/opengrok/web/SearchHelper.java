@@ -754,7 +754,7 @@ public class SearchHelper {
         int labelEnd = label + 11;
         String params = createUrl(false);
 
-        for (int i = pagesStart; i < getTotalHits() && labelStart < labelEnd; i += getMaxItems()) {
+        for (int i = pagesStart; i < getTotalHits() && label < labelEnd; i += getMaxItems()) {
             Map<String,Object> page = new HashMap<>();
 
             if (label == labelStart && label != 1) {
