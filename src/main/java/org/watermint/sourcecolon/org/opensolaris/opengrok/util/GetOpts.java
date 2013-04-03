@@ -33,7 +33,7 @@ import java.util.List;
  * options and arguments, so this version will stop processing options as soon
  * as it encounters an argument.
  */
-public class GetOpt {
+public class GetOpts {
     private static class Option {
         char option;
         String argument;
@@ -46,12 +46,12 @@ public class GetOpt {
     private final String opts;
 
     /**
-     * Creates a new instance of GetOpt
+     * Creates a new instance of GetOpts
      *
      * @param argv argument vector
      * @param opts the list of allowed options
      */
-    public GetOpt(String[] argv, String opts) {
+    public GetOpts(String[] argv, String opts) {
         options = new ArrayList<>();
         current = -1;
         optionIndex = -1;

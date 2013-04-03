@@ -32,7 +32,7 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Configur
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.Executor;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.util.GetOpt;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.util.GetOpts;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,10 +92,10 @@ public final class Indexer {
         int noThreads = 2 + (2 * Runtime.getRuntime().availableProcessors());
 
         // Parse command line options:
-        GetOpt getOpt = new GetOpt(argv, cmdOptions.getCommandString());
+        GetOpts getOpts = new GetOpts(argv, cmdOptions.getCommandString());
 
         try {
-            getOpt.parse();
+            getOpts.parse();
         } catch (ParseException ex) {
             System.err.println("OpenGrok: " + ex.getMessage());
             System.err.println(cmdOptions.getUsage());
@@ -108,9 +108,9 @@ public final class Indexer {
 
             // We need to read the configuration file first, since we
             // will try to overwrite options..
-            while ((cmd = getOpt.getOpt()) != -1) {
+            while ((cmd = getOpts.getOpt()) != -1) {
                 if (cmd == 'R') {
-                    cfg = Configuration.read(new File(getOpt.getOptionArgument()));
+                    cfg = Configuration.read(new File(getOpts.getOptionArgument()));
                     break;
                 }
             }
@@ -120,8 +120,8 @@ public final class Indexer {
             }
 
             // Now we can handle all the other options..
-            getOpt.reset();
-            while ((cmd = getOpt.getOpt()) != -1) {
+            getOpts.reset();
+            while ((cmd = getOpts.getOpt()) != -1) {
                 switch (cmd) {
                     case 'x':
                         createDict = true;
@@ -139,13 +139,13 @@ public final class Indexer {
                         addProjects = true;
                         break;
                     case 'p':
-                        defaultProject = getOpt.getOptionArgument();
+                        defaultProject = getOpts.getOptionArgument();
                         break;
                     case 'c':
-                        cfg.setCtags(getOpt.getOptionArgument());
+                        cfg.setCtags(getOpts.getOptionArgument());
                         break;
                     case 'w': {
-                        String webapp = getOpt.getOptionArgument();
+                        String webapp = getOpts.getOptionArgument();
                         if (webapp.charAt(0) != '/' && !webapp.startsWith("http")) {
                             webapp = "/" + webapp;
                         }
@@ -157,10 +157,10 @@ public final class Indexer {
                     }
                     break;
                     case 'W':
-                        configFilename = getOpt.getOptionArgument();
+                        configFilename = getOpts.getOptionArgument();
                         break;
                     case 'N':
-                        allowedSymlinks.add(getOpt.getOptionArgument());
+                        allowedSymlinks.add(getOpts.getOptionArgument());
                         break;
                     case 'n':
                         runIndex = false;
@@ -174,7 +174,7 @@ public final class Indexer {
                         break;
 
                     case 's': {
-                        File sourceRoot = new File(getOpt.getOptionArgument());
+                        File sourceRoot = new File(getOpts.getOptionArgument());
                         if (!sourceRoot.isDirectory()) {
                             System.err.println("ERROR: Source root must be a directory");
                             System.exit(1);
@@ -183,7 +183,7 @@ public final class Indexer {
                         break;
                     }
                     case 'd': {
-                        File dataRoot = new File(getOpt.getOptionArgument());
+                        File dataRoot = new File(getOpts.getOptionArgument());
                         if (!dataRoot.exists() && !dataRoot.mkdirs()) {
                             System.err.println("ERROR: Cannot create data root");
                             System.exit(1);
@@ -196,15 +196,15 @@ public final class Indexer {
                         break;
                     }
                     case 'i':
-                        cfg.getIgnoredNames().add(getOpt.getOptionArgument());
+                        cfg.getIgnoredNames().add(getOpts.getOptionArgument());
                         break;
                     case 'I':
-                        cfg.getIncludedNames().add(getOpt.getOptionArgument());
+                        cfg.getIncludedNames().add(getOpts.getOptionArgument());
                         break;
                     case 'Q':
-                        if (getOpt.getOptionArgument().equalsIgnoreCase(ON)) {
+                        if (getOpts.getOptionArgument().equalsIgnoreCase(ON)) {
                             cfg.setQuickContextScan(true);
-                        } else if (getOpt.getOptionArgument().equalsIgnoreCase(OFF)) {
+                        } else if (getOpts.getOptionArgument().equalsIgnoreCase(OFF)) {
                             cfg.setQuickContextScan(false);
                         } else {
                             System.err.println("ERROR: You should pass either \"on\" or \"off\" as argument to -Q");
@@ -215,7 +215,7 @@ public final class Indexer {
                         break;
                     case 'm': {
                         try {
-                            cfg.setIndexWordLimit(Integer.parseInt(getOpt.getOptionArgument()));
+                            cfg.setIndexWordLimit(Integer.parseInt(getOpts.getOptionArgument()));
                         } catch (NumberFormatException exp) {
                             System.err.println("ERROR: Failed to parse argument to \"-m\": " + exp.getMessage());
                             System.exit(1);
@@ -223,9 +223,9 @@ public final class Indexer {
                         break;
                     }
                     case 'a':
-                        if (getOpt.getOptionArgument().equalsIgnoreCase(ON)) {
+                        if (getOpts.getOptionArgument().equalsIgnoreCase(ON)) {
                             cfg.setAllowLeadingWildcard(true);
-                        } else if (getOpt.getOptionArgument().equalsIgnoreCase(OFF)) {
+                        } else if (getOpts.getOptionArgument().equalsIgnoreCase(OFF)) {
                             cfg.setAllowLeadingWildcard(false);
                         } else {
                             System.err.println("ERROR: You should pass either \"on\" or \"off\" as argument to -a");
@@ -237,7 +237,7 @@ public final class Indexer {
                         break;
 
                     case 'A': {
-                        String[] arg = getOpt.getOptionArgument().split(":");
+                        String[] arg = getOpts.getOptionArgument().split(":");
                         if (arg.length != 2) {
                             System.err.println("ERROR: You must specify: -A extension:class");
                             System.err.println("       Ex: -A foo:org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.c.CAnalyzer");
@@ -266,16 +266,16 @@ public final class Indexer {
                     break;
                     case 'T':
                         try {
-                            noThreads = Integer.parseInt(getOpt.getOptionArgument());
+                            noThreads = Integer.parseInt(getOpts.getOptionArgument());
                         } catch (NumberFormatException exp) {
                             System.err.println("ERROR: Failed to parse argument to \"-T\": " + exp.getMessage());
                             System.exit(1);
                         }
                         break;
                     case 'l':
-                        if (getOpt.getOptionArgument().equalsIgnoreCase(ON)) {
+                        if (getOpts.getOptionArgument().equalsIgnoreCase(ON)) {
                             cfg.setUsingLuceneLocking(true);
-                        } else if (getOpt.getOptionArgument().equalsIgnoreCase(OFF)) {
+                        } else if (getOpts.getOptionArgument().equalsIgnoreCase(OFF)) {
                             cfg.setUsingLuceneLocking(false);
                         } else {
                             System.err.println("ERROR: You should pass either \"on\" or \"off\" as argument to -l");
@@ -293,7 +293,7 @@ public final class Indexer {
                         break;
                     case 't':
                         try {
-                            int tmp = Integer.parseInt(getOpt.getOptionArgument());
+                            int tmp = Integer.parseInt(getOpts.getOptionArgument());
                             cfg.setTabSize(tmp);
                         } catch (NumberFormatException exp) {
                             System.err.println("ERROR: Failed to parse argument to \"-t\": " + exp.getMessage());
@@ -306,7 +306,7 @@ public final class Indexer {
                 }
             }
 
-            int optind = getOpt.getOptionIndex();
+            int optind = getOpts.getOptionIndex();
             if (optind != -1) {
                 while (optind < argv.length) {
                     subFiles.add(argv[optind]);

@@ -35,11 +35,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * JUnit test for org.watermint.sourcecolon.org.opensolaris.opengrok.util.GetOpt
+ * JUnit test for org.watermint.sourcecolon.org.opensolaris.opengrok.util.GetOpts
  */
-public class GetOptTest {
+public class GetOptsTest {
 
-    public GetOptTest() {
+    public GetOptsTest() {
     }
 
     @BeforeClass
@@ -61,7 +61,7 @@ public class GetOptTest {
     @Test
     public void testParseNormal() throws Exception {
         String[] argv = new String[]{"-a", "foo", "-bc", "--", "-f"};
-        GetOpt instance = new GetOpt(argv, "a:bcr:f");
+        GetOpts instance = new GetOpts(argv, "a:bcr:f");
 
         instance.parse();
 
@@ -80,7 +80,7 @@ public class GetOptTest {
     @Test
     public void reset() throws ParseException {
         String[] argv = new String[]{"-a", "foo", "-bc", "argument1"};
-        GetOpt instance = new GetOpt(argv, "a:bc");
+        GetOpts instance = new GetOpts(argv, "a:bc");
 
         instance.parse();
 
@@ -107,12 +107,12 @@ public class GetOptTest {
         assertEquals(3, instance.getOptionIndex());
         assertTrue(instance.getOptionIndex() < argv.length);
         assertEquals("argument1", argv[instance.getOptionIndex()]);
-    } /* Test of reset method, of class GetOpt. */
+    } /* Test of reset method, of class GetOpts. */
 
     @Test
     public void testParseFailure() throws Exception {
         String[] argv = new String[]{"-a"};
-        GetOpt instance = new GetOpt(argv, "a:");
+        GetOpts instance = new GetOpts(argv, "a:");
 
         try {
             instance.parse();
@@ -124,7 +124,7 @@ public class GetOptTest {
             }
         }
 
-        instance = new GetOpt(argv, "b");
+        instance = new GetOpts(argv, "b");
         try {
             instance.parse();
             fail("Parse shall not allow unknown arguments");
