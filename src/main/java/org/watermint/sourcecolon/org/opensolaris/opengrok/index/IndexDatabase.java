@@ -76,16 +76,13 @@ public class IndexDatabase {
     private Filter includedNames;
     private AnalyzerGuru analyzerGuru;
     private File xrefDir;
-    private boolean interrupted;
     private List<IndexChangedListener> listeners;
-    private File dirtyFile;
     private final Object lock = new Object();
-    private boolean dirty;
     private boolean running;
     private List<String> directories;
     private static final Logger log = Logger.getLogger(IndexDatabase.class.getName());
     private Ctags ctags;
-    private LockFactory lockfact;
+    private LockFactory lockFactory;
 
     /**
      * Create a new instance of the Index Database. Use this constructor if
@@ -101,11 +98,11 @@ public class IndexDatabase {
      * Create a new instance of an Index Database for a given project
      *
      * @param project the project to create the database for
-     * @throws java.io.IOException if an errror occurs while creating directories
+     * @throws java.io.IOException if an error occurs while creating directories
      */
     public IndexDatabase(Project project) throws IOException {
         this.project = project;
-        lockfact = new SimpleFSLockFactory();
+        lockFactory = new SimpleFSLockFactory();
         initialize();
     }
 
@@ -148,66 +145,6 @@ public class IndexDatabase {
         }
     }
 
-    /**
-     * Update the index database for a number of sub-directories
-     *
-     * @param executor An executor to run the job
-     * @param listener where to signal the changes to the database
-     * @param paths paths
-     */
-    public static void update(ExecutorService executor, IndexChangedListener listener, List<String> paths) {
-        RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-        List<IndexDatabase> dbs = new ArrayList<>();
-
-        for (String path : paths) {
-            Project project = Project.getProject(path);
-            if (project == null && env.hasProjects()) {
-                log.log(Level.WARNING, "Could not find a project for \"{0}\"", path);
-            } else {
-                IndexDatabase db;
-
-                try {
-                    if (project == null) {
-                        db = new IndexDatabase();
-                    } else {
-                        db = new IndexDatabase(project);
-                    }
-
-                    int idx = dbs.indexOf(db);
-                    if (idx != -1) {
-                        db = dbs.get(idx);
-                    }
-
-                    if (db.addDirectory(path)) {
-                        if (idx == -1) {
-                            dbs.add(db);
-                        }
-                    } else {
-                        log.log(Level.WARNING, "Directory does not exist \"{0}\"", path);
-                    }
-                } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while updating index", e);
-
-                }
-            }
-
-            for (final IndexDatabase db : dbs) {
-                db.addIndexChangedListener(listener);
-                executor.submit(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        try {
-                            db.update();
-                        } catch (Throwable e) {
-                            log.log(Level.SEVERE, "An error occured while updating index", e);
-                        }
-                    }
-                });
-            }
-        }
-    }
-
     @SuppressWarnings("PMD.CollapsibleIfStatements")
     private void initialize() throws IOException {
         synchronized (this) {
@@ -233,10 +170,10 @@ public class IndexDatabase {
             }
 
             if (!env.isUsingLuceneLocking()) {
-                lockfact = NoLockFactory.getNoLockFactory();
+                lockFactory = NoLockFactory.getNoLockFactory();
             }
-            indexDirectory = FSDirectory.open(indexDir, lockfact);
-            spellDirectory = FSDirectory.open(spellDir, lockfact);
+            indexDirectory = FSDirectory.open(indexDir, lockFactory);
+            spellDirectory = FSDirectory.open(spellDir, lockFactory);
             ignoredNames = env.getIgnoredNames();
             includedNames = env.getIncludedNames();
             analyzerGuru = new AnalyzerGuru();
@@ -244,8 +181,6 @@ public class IndexDatabase {
                 xrefDir = new File(env.getDataRootFile(), "xref");
             }
             listeners = new ArrayList<>();
-            dirtyFile = new File(indexDir, "dirty");
-            dirty = dirtyFile.exists();
             directories = new ArrayList<>();
         }
     }
@@ -277,7 +212,7 @@ public class IndexDatabase {
     /**
      * Update the content of this index database
      *
-     * @throws IOException      if an error occurs
+     * @throws IOException if an error occurs
      */
     public void update() throws IOException {
         synchronized (lock) {
@@ -285,7 +220,6 @@ public class IndexDatabase {
                 throw new IOException("Indexer already running!");
             }
             running = true;
-            interrupted = false;
         }
 
         String ctgs = RuntimeEnvironment.getInstance().getCtags();
@@ -316,10 +250,10 @@ public class IndexDatabase {
                     sourceRoot = new File(RuntimeEnvironment.getInstance().getSourceRootFile(), dir);
                 }
 
-                String startuid = Util.path2uid(dir, "");
+                String startUid = Util.path2uid(dir, "");
 
                 try (IndexReader reader = IndexReader.open(indexDirectory)) {
-                    uidIter = reader.terms(new Term("u", startuid)); // init uid iterator
+                    uidIter = reader.terms(new Term("u", startUid)); // init uid iterator
 
                     //TODO below should be optional, since it traverses the tree once more to get total count! :(
                     int file_cnt = 0;
@@ -333,7 +267,7 @@ public class IndexDatabase {
 
                     indexDown(sourceRoot, dir, false, 0, file_cnt);
 
-                    while (uidIter.term() != null && uidIter.term().field().equals("u") && uidIter.term().text().startsWith(startuid)) {
+                    while (uidIter.term() != null && uidIter.term().field().equals("u") && uidIter.term().text().startsWith(startUid)) {
                         removeFile();
                         uidIter.next();
                     }
@@ -357,18 +291,16 @@ public class IndexDatabase {
             }
         }
 
-        if (!isInterrupted() && isDirty()) {
-            createSpellingSuggestions();
-            RuntimeEnvironment env = RuntimeEnvironment.getInstance();
-            File timestamp = new File(env.getDataRootFile(), "timestamp");
-            if (timestamp.exists()) {
-                if (!timestamp.setLastModified(System.currentTimeMillis())) {
-                    log.log(Level.WARNING, "Failed to set last modified time on ''{0}'', used for timestamping the index database.", timestamp.getAbsolutePath());
-                }
-            } else {
-                if (!timestamp.createNewFile()) {
-                    log.log(Level.WARNING, "Failed to create file ''{0}'', used for timestamping the index database.", timestamp.getAbsolutePath());
-                }
+        createSpellingSuggestions();
+        RuntimeEnvironment env = RuntimeEnvironment.getInstance();
+        File timestamp = new File(env.getDataRootFile(), "timestamp");
+        if (timestamp.exists()) {
+            if (!timestamp.setLastModified(System.currentTimeMillis())) {
+                log.log(Level.WARNING, "Failed to set last modified time on ''{0}'', used for time-stamping the index database.", timestamp.getAbsolutePath());
+            }
+        } else {
+            if (!timestamp.createNewFile()) {
+                log.log(Level.WARNING, "Failed to create file ''{0}'', used for time-stamping the index database.", timestamp.getAbsolutePath());
             }
         }
     }
@@ -403,27 +335,6 @@ public class IndexDatabase {
         }
     }
 
-    private boolean isDirty() {
-        synchronized (lock) {
-            return dirty;
-        }
-    }
-
-    private void setDirty() {
-        synchronized (lock) {
-            try {
-                if (!dirty && !dirtyFile.createNewFile()) {
-                    if (!dirtyFile.exists()) {
-                        log.log(Level.FINE, "Failed to create \"dirty-file\": {0}", dirtyFile.getAbsolutePath());
-                    }
-                    dirty = true;
-                }
-            } catch (IOException e) {
-                log.log(Level.FINE, "When creating dirty file: ", e);
-            }
-        }
-    }
-
     /**
      * Remove a stale file (uidIter.term().text()) from the index database
      * (and the xref file)
@@ -454,7 +365,6 @@ public class IndexDatabase {
         if (parent.delete()) {
             log.log(Level.FINE, "Removed empty xref dir:{0}", parent.getAbsolutePath());
         }
-        setDirty();
         for (IndexChangedListener listener : listeners) {
             listener.fileRemoved(path);
         }
@@ -498,7 +408,6 @@ public class IndexDatabase {
                 }
                 fa.writeXref(xrefDir, path);
             }
-            setDirty();
             for (IndexChangedListener listener : listeners) {
                 listener.fileAdded(path, fa.getClass().getSimpleName());
             }
@@ -645,9 +554,6 @@ public class IndexDatabase {
      */
     private int indexDown(File dir, String parent, boolean count_only, int cur_count, int est_total) throws IOException {
         int lcur_count = cur_count;
-        if (isInterrupted()) {
-            return lcur_count;
-        }
 
         if (!accept(dir)) {
             return lcur_count;
@@ -705,22 +611,6 @@ public class IndexDatabase {
         }
 
         return lcur_count;
-    }
-
-    /**
-     * Interrupt the index generation (and the index generation will stop as
-     * soon as possible)
-     */
-    public void interrupt() {
-        synchronized (lock) {
-            interrupted = true;
-        }
-    }
-
-    private boolean isInterrupted() {
-        synchronized (lock) {
-            return interrupted;
-        }
     }
 
     /**
@@ -790,30 +680,30 @@ public class IndexDatabase {
      * @throws IOException If an IO error occurs while reading from the database
      */
     public void listFiles() throws IOException {
-        IndexReader ireader = null;
-        TermEnum iter = null;
+        IndexReader indexReader = null;
+        TermEnum termEnum = null;
 
         try {
-            ireader = IndexReader.open(indexDirectory); // open existing index
-            iter = ireader.terms(new Term("u", "")); // init uid iterator
-            while (iter.term() != null) {
-                log.fine(Util.uid2url(iter.term().text()));
-                iter.next();
+            indexReader = IndexReader.open(indexDirectory); // open existing index
+            termEnum = indexReader.terms(new Term("u", "")); // init uid iterator
+            while (termEnum.term() != null) {
+                log.fine(Util.uid2url(termEnum.term().text()));
+                termEnum.next();
             }
         } finally {
-            if (iter != null) {
+            if (termEnum != null) {
                 try {
-                    iter.close();
+                    termEnum.close();
                 } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing index iterator", e);
+                    log.log(Level.WARNING, "An error occurred while closing index iterator", e);
                 }
             }
 
-            if (ireader != null) {
+            if (indexReader != null) {
                 try {
-                    ireader.close();
+                    indexReader.close();
                 } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing index reader", e);
+                    log.log(Level.WARNING, "An error occurred while closing index reader", e);
                 }
             }
         }
@@ -851,36 +741,36 @@ public class IndexDatabase {
     }
 
     public void listTokens(int freq) throws IOException {
-        IndexReader ireader = null;
-        TermEnum iter = null;
+        IndexReader indexReader = null;
+        TermEnum termEnum = null;
 
         try {
-            ireader = IndexReader.open(indexDirectory);
-            iter = ireader.terms(new Term("defs", ""));
-            while (iter.term() != null) {
-                if (iter.term().field().startsWith("f")) {
-                    if (iter.docFreq() > 16 && iter.term().text().length() > freq) {
-                        log.warning(iter.term().text());
+            indexReader = IndexReader.open(indexDirectory);
+            termEnum = indexReader.terms(new Term("defs", ""));
+            while (termEnum.term() != null) {
+                if (termEnum.term().field().startsWith("f")) {
+                    if (termEnum.docFreq() > 16 && termEnum.term().text().length() > freq) {
+                        log.warning(termEnum.term().text());
                     }
-                    iter.next();
+                    termEnum.next();
                 } else {
                     break;
                 }
             }
         } finally {
-            if (iter != null) {
+            if (termEnum != null) {
                 try {
-                    iter.close();
+                    termEnum.close();
                 } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing index iterator", e);
+                    log.log(Level.WARNING, "An error occurred while closing index iterator", e);
                 }
             }
 
-            if (ireader != null) {
+            if (indexReader != null) {
                 try {
-                    ireader.close();
+                    indexReader.close();
                 } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing index reader", e);
+                    log.log(Level.WARNING, "An error occurred while closing index reader", e);
                 }
             }
         }
@@ -907,9 +797,9 @@ public class IndexDatabase {
             indexDir = new File(indexDir, p.getPath());
         }
         try {
-            FSDirectory fdir = FSDirectory.open(indexDir, NoLockFactory.getNoLockFactory());
-            if (indexDir.exists() && IndexReader.indexExists(fdir)) {
-                ret = IndexReader.open(fdir);
+            FSDirectory fsDirectory = FSDirectory.open(indexDir, NoLockFactory.getNoLockFactory());
+            if (indexDir.exists() && IndexReader.indexExists(fsDirectory)) {
+                ret = IndexReader.open(fsDirectory);
             }
         } catch (Exception ex) {
             log.log(Level.SEVERE, "Failed to open index: {0}", indexDir.getAbsolutePath());
@@ -933,16 +823,16 @@ public class IndexDatabase {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
         String path = env.getPathRelativeToSourceRoot(file, 0);
 
-        IndexReader ireader = getIndexReader(path);
+        IndexReader indexReader = getIndexReader(path);
 
-        if (ireader == null) {
+        if (indexReader == null) {
             // No index, no definitions...
             return null;
         }
 
         try {
             Query q = new QueryBuilder().setPath(path).build();
-            try (IndexSearcher searcher = new IndexSearcher(ireader)) {
+            try (IndexSearcher searcher = new IndexSearcher(indexReader)) {
                 TopDocs top = searcher.search(q, 1);
                 if (top.totalHits == 0) {
                     // No hits, no definitions...
@@ -961,7 +851,7 @@ public class IndexDatabase {
             }
 
         } finally {
-            ireader.close();
+            indexReader.close();
         }
 
         // Didn't find any definitions.
