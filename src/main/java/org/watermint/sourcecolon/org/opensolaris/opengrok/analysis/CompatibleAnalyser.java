@@ -32,10 +32,10 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.plain.PlainSy
 import java.io.Reader;
 
 public final class CompatibleAnalyser extends Analyzer {
-    private PathAnalyzer pather;
+    private PathAnalyzer pathAnalyzer;
 
     public CompatibleAnalyser() {
-        pather = new PathAnalyzer();
+        pathAnalyzer = new PathAnalyzer();
     }
 
     public TokenStream tokenStream(String fieldName, Reader reader) {
@@ -48,7 +48,7 @@ public final class CompatibleAnalyser extends Analyzer {
                 return new PlainSymbolTokenizer(reader);
             case "path":
             case "project":
-                return pather.tokenStream(fieldName, reader);
+                return pathAnalyzer.tokenStream(fieldName, reader);
         }
         return new PlainFullTokenizer(reader);
     }

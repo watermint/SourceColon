@@ -83,12 +83,12 @@ public class FileAnalyzer extends Analyzer {
         HTML("h");
         private String typeName;
 
-        private Genre(String typename) {
-            this.typeName = typename;
+        private Genre(String typeName) {
+            this.typeName = typeName;
         }
 
         /**
-         * Get the type name value used to tag lucence documents.
+         * Get the type name value used to tag lucene documents.
          *
          * @return a none-null string.
          */

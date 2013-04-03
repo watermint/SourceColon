@@ -95,7 +95,7 @@ public final class IgnoredNames extends Filter {
      * Should the file be ignored or not?
      *
      * @param name the name of the file to check
-     * @return true if this pathname should be ignored, false otherwise
+     * @return true if this path-name should be ignored, false otherwise
      */
     public boolean ignore(String name) {
         return match(name);

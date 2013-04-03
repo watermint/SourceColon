@@ -33,7 +33,7 @@ import java.util.List;
  * options and arguments, so this version will stop processing options as soon
  * as it encounters an argument.
  */
-public class Getopt {
+public class GetOpt {
     private static class Option {
         char option;
         String argument;
@@ -41,20 +41,20 @@ public class Getopt {
 
     private final List<Option> options;
     private int current;
-    private int optind;
+    private int optionIndex;
     private final String[] argv;
     private final String opts;
 
     /**
-     * Creates a new instance of Getopt
+     * Creates a new instance of GetOpt
      *
      * @param argv argument vector
      * @param opts the list of allowed options
      */
-    public Getopt(String[] argv, String opts) {
+    public GetOpt(String[] argv, String opts) {
         options = new ArrayList<>();
         current = -1;
-        optind = -1;
+        optionIndex = -1;
         this.argv = argv.clone();
         this.opts = opts;
     }
@@ -72,7 +72,7 @@ public class Getopt {
             if (chars.length > 0 && chars[0] == '-') {
                 if (argv[ii].equals("--")) {
                     // End of command line options ;)
-                    optind = ii + 1;
+                    optionIndex = ii + 1;
                     break;
                 }
 
@@ -105,7 +105,7 @@ public class Getopt {
                 ++ii;
             } else {
                 // End of options
-                optind = ii;
+                optionIndex = ii;
                 break;
             }
         }
@@ -139,7 +139,7 @@ public class Getopt {
      *
      * @return the argument or null if none present (or allowed)
      */
-    public String getOptarg() {
+    public String getOptionArgument() {
         String ret = null;
 
         if (current < options.size()) {
@@ -153,7 +153,7 @@ public class Getopt {
      *
      * @return the index of the first argument in the original array
      */
-    public int getOptind() {
-        return optind;
+    public int getOptionIndex() {
+        return optionIndex;
     }
 }

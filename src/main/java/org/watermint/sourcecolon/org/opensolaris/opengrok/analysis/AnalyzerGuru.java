@@ -370,10 +370,10 @@ public class AnalyzerGuru {
                 && (i + 1 < path.length())) {
             path = path.substring(i + 1);
         }
-        int dotpos = path.lastIndexOf('.');
-        if (dotpos >= 0) {
+        int dotPos = path.lastIndexOf('.');
+        if (dotPos >= 0) {
             FileAnalyzerFactory factory =
-                    ext.get(path.substring(dotpos + 1).toUpperCase(Locale.getDefault()));
+                    ext.get(path.substring(dotPos + 1).toUpperCase(Locale.getDefault()));
             if (factory != null) {
                 return factory;
             }

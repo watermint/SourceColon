@@ -24,7 +24,7 @@
 package org.watermint.sourcecolon.org.opensolaris.opengrok.search;
 
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.RuntimeEnvironment;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.util.Getopt;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.util.GetOpt;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -54,9 +54,9 @@ final class Search {
     @SuppressWarnings({"PMD.SwitchStmtsShouldHaveDefault"})
     protected boolean parseCmdLine(String[] argv) {
         engine = new SearchEngine();
-        Getopt getopt = new Getopt(argv, "R:d:r:p:h:f:");
+        GetOpt getOpt = new GetOpt(argv, "R:d:r:p:h:f:");
         try {
-            getopt.parse();
+            getOpt.parse();
         } catch (Exception e) {
             System.err.println(e.getMessage());
             System.err.println(usage);
@@ -64,11 +64,11 @@ final class Search {
         }
 
         int cmd;
-        while ((cmd = getopt.getOpt()) != -1) {
+        while ((cmd = getOpt.getOpt()) != -1) {
             switch (cmd) {
                 case 'R':
                     try {
-                        RuntimeEnvironment.getInstance().readConfiguration(new File(getopt.getOptarg()));
+                        RuntimeEnvironment.getInstance().readConfiguration(new File(getOpt.getOptionArgument()));
                     } catch (Exception e) {
                         System.err.println("Failed to read config file: ");
                         System.err.println(e.getMessage());
@@ -76,19 +76,19 @@ final class Search {
                     }
                     break;
                 case 'd':
-                    engine.setDefinition(getopt.getOptarg());
+                    engine.setDefinition(getOpt.getOptionArgument());
                     break;
                 case 'r':
-                    engine.setSymbol(getopt.getOptarg());
+                    engine.setSymbol(getOpt.getOptionArgument());
                     break;
                 case 'p':
-                    engine.setFile(getopt.getOptarg());
+                    engine.setFile(getOpt.getOptionArgument());
                     break;
                 case 'h':
-                    engine.setHistory(getopt.getOptarg());
+                    engine.setHistory(getOpt.getOptionArgument());
                     break;
                 case 'f':
-                    engine.setFreetext(getopt.getOptarg());
+                    engine.setFreetext(getOpt.getOptionArgument());
                     break;
             }
         }

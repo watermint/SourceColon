@@ -35,11 +35,11 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * JUnit test for org.watermint.sourcecolon.org.opensolaris.opengrok.util.Getopt
+ * JUnit test for org.watermint.sourcecolon.org.opensolaris.opengrok.util.GetOpt
  */
-public class GetoptTest {
+public class GetOptTest {
 
-    public GetoptTest() {
+    public GetOptTest() {
     }
 
     @BeforeClass
@@ -61,58 +61,58 @@ public class GetoptTest {
     @Test
     public void testParseNormal() throws Exception {
         String[] argv = new String[]{"-a", "foo", "-bc", "--", "-f"};
-        Getopt instance = new Getopt(argv, "a:bcr:f");
+        GetOpt instance = new GetOpt(argv, "a:bcr:f");
 
         instance.parse();
 
         assertEquals('a', (char) instance.getOpt());
-        assertEquals("foo", instance.getOptarg());
+        assertEquals("foo", instance.getOptionArgument());
         assertEquals('b', (char) instance.getOpt());
-        assertNull(instance.getOptarg());
+        assertNull(instance.getOptionArgument());
         assertEquals('c', (char) instance.getOpt());
-        assertNull(instance.getOptarg());
+        assertNull(instance.getOptionArgument());
         assertEquals(-1, instance.getOpt());
-        assertEquals(4, instance.getOptind());
-        assertTrue(instance.getOptind() < argv.length);
-        assertEquals("-f", argv[instance.getOptind()]);
+        assertEquals(4, instance.getOptionIndex());
+        assertTrue(instance.getOptionIndex() < argv.length);
+        assertEquals("-f", argv[instance.getOptionIndex()]);
     }
 
     @Test
     public void reset() throws ParseException {
         String[] argv = new String[]{"-a", "foo", "-bc", "argument1"};
-        Getopt instance = new Getopt(argv, "a:bc");
+        GetOpt instance = new GetOpt(argv, "a:bc");
 
         instance.parse();
 
         assertEquals('a', (char) instance.getOpt());
-        assertEquals("foo", instance.getOptarg());
+        assertEquals("foo", instance.getOptionArgument());
         assertEquals('b', (char) instance.getOpt());
-        assertNull(instance.getOptarg());
+        assertNull(instance.getOptionArgument());
         assertEquals('c', (char) instance.getOpt());
-        assertNull(instance.getOptarg());
+        assertNull(instance.getOptionArgument());
         assertEquals(-1, instance.getOpt());
-        assertEquals(3, instance.getOptind());
-        assertTrue(instance.getOptind() < argv.length);
-        assertEquals("argument1", argv[instance.getOptind()]);
+        assertEquals(3, instance.getOptionIndex());
+        assertTrue(instance.getOptionIndex() < argv.length);
+        assertEquals("argument1", argv[instance.getOptionIndex()]);
 
         instance.reset();
 
         assertEquals('a', (char) instance.getOpt());
-        assertEquals("foo", instance.getOptarg());
+        assertEquals("foo", instance.getOptionArgument());
         assertEquals('b', (char) instance.getOpt());
-        assertNull(instance.getOptarg());
+        assertNull(instance.getOptionArgument());
         assertEquals('c', (char) instance.getOpt());
-        assertNull(instance.getOptarg());
+        assertNull(instance.getOptionArgument());
         assertEquals(-1, instance.getOpt());
-        assertEquals(3, instance.getOptind());
-        assertTrue(instance.getOptind() < argv.length);
-        assertEquals("argument1", argv[instance.getOptind()]);
-    } /* Test of reset method, of class Getopt. */
+        assertEquals(3, instance.getOptionIndex());
+        assertTrue(instance.getOptionIndex() < argv.length);
+        assertEquals("argument1", argv[instance.getOptionIndex()]);
+    } /* Test of reset method, of class GetOpt. */
 
     @Test
     public void testParseFailure() throws Exception {
         String[] argv = new String[]{"-a"};
-        Getopt instance = new Getopt(argv, "a:");
+        GetOpt instance = new GetOpt(argv, "a:");
 
         try {
             instance.parse();
@@ -124,7 +124,7 @@ public class GetoptTest {
             }
         }
 
-        instance = new Getopt(argv, "b");
+        instance = new GetOpt(argv, "b");
         try {
             instance.parse();
             fail("Parse shall not allow unknown arguments");

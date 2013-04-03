@@ -142,6 +142,8 @@ public class RuntimeEnvironmentTest {
     @Test
     public void testQuickContextScan() {
         RuntimeEnvironment instance = RuntimeEnvironment.getInstance();
+        assertFalse(instance.isQuickContextScan());
+        instance.setQuickContextScan(true);
         assertTrue(instance.isQuickContextScan());
         instance.setQuickContextScan(false);
         assertFalse(instance.isQuickContextScan());

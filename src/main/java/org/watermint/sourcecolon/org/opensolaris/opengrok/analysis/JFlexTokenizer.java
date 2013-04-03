@@ -37,7 +37,7 @@ import java.io.Reader;
  * this class was created because of lucene 2.4.1 update which introduced char[] in Tokens instead of String
  * lucene 3.0.0 uses AttributeSource instead of Tokens to make things even easier :-D
  * <p/>
- * Generally this is a "template" for all new Tokenizers, so be carefull when changing it,
+ * Generally this is a "template" for all new Tokenizers, so be carefully when changing it,
  * it will impact almost ALL symbol tokenizers in OpenGrok ...
  * <p/>
  * Created on August 24, 2009

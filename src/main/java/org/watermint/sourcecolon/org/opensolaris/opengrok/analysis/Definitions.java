@@ -184,14 +184,13 @@ public class Definitions implements Serializable {
             lines = new HashSet<>();
             symbols.put(internedSymbol, lines);
         }
-        Integer aLine = line;
-        lines.add(aLine);
+        lines.add(line);
 
         // Get per line map
-        LineTagMap line_map = line_maps.get(aLine);
+        LineTagMap line_map = line_maps.get(line);
         if (line_map == null) {
             line_map = new LineTagMap();
-            line_maps.put(aLine, line_map);
+            line_maps.put(line, line_map);
         }
 
         // Insert sym->tag map for this line

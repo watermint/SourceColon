@@ -166,10 +166,10 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util;
 
                         out.write("</a>");
                         if (prevHi) {
-                                out.write(" <i> ");
+                                out.write(" <span class=\"label\"> ");
                                 String[] desc = tags.remove(prevLn);
                                 out.write(desc[2]);
-                                out.write(" </i>");
+                                out.write(" </span>");
                         }
                         out.write("<br/>");
 
@@ -263,7 +263,7 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util;
                         }
 
                         if (out != null) {
-                           out.write("<a class=\"s\" href=\"");
+                           out.write("<a href=\"");
                            out.write(url);
                            String num = String.valueOf(markedLine);
                            out.write(num);
@@ -312,20 +312,20 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util;
                 // Assume that this line has been truncated if we don't find
                 // a newline after looking at maxLooks characters, or if we
                 // reach the end of the buffer and the size of the buffer is
-                // Context.MAXFILEREAD (which means that the file has probably
+                // Context.MAX_FILE_READ (which means that the file has probably
                 // been truncated).
                 if (!newline &&
                       ((i >= maxLooks) ||
-                       (endOfBuffer && (yychar + yylength()) == Context.MAXFILEREAD))) {
+                       (endOfBuffer && (yychar + yylength()) == Context.MAX_FILE_READ))) {
                     out.write(" (&hellip;)");
                 }
 
                                 out.write("</a>");
                                 if (prevHi) {
-                                        out.write(" <i> ");
+                                        out.write(" <span class=\"label\">");
                                         String[] desc = tags.remove(prevLn);
                                         out.write(desc[2]);
-                                        out.write(" </i>");
+                                        out.write("</span>");
                                 }
                                 out.write("<br/>");
                            } else {
@@ -350,11 +350,11 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.web.Util;
                 out.write(desc[1]);
                 out.write("\"><span class=\"badge\">");
                 out.write(desc[1]);
-                out.write("</span> <code>");
+                out.write("</span> ");
                 out.write(Util.htmlize(desc[3]).replace(desc[0], "<strong>" + desc[0] + "</strong>"));
-                out.write("</code></a> <i> ");
+                out.write("</a> <span class=\"label\"> ");
                 out.write(desc[2]);
-                out.write(" </i><br/>");
+                out.write(" </span><br/>");
            }
         } else {
            for(Integer rem : tags.keySet()) {
@@ -397,10 +397,10 @@ Printable = [\@\$\%\^\&\-+=\?\.\:]
                            printWithNum(rest, endPos, markedLine, false);
                            out.write("</a>");
                            if(prevHi){
-                                out.write(" <i> ");
+                                out.write(" <span class=\"label\"> ");
                                 String[] desc = tags.remove(prevLn);
                                 out.write(desc[2]);
-                                out.write("</i> ");
+                                out.write("</span> ");
                            }
                            out.write("<br/>");
                         } else {

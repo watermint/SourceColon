@@ -50,7 +50,7 @@ import java.util.logging.Level;
 public class Context {
 
     private final LineMatcher[] lineMatchers;
-    static final int MAXFILEREAD = 1024 * 1024;
+    static final int MAX_FILE_READ = 1024 * 1024;
     private char[] buffer;
     private PlainLineTokenizer tokens;
     private String queryAsURI;
@@ -84,7 +84,7 @@ public class Context {
         lineMatchers = qm.getMatchers(query, tokenFields);
         if (lineMatchers != null) {
             buildQueryAsURI(queryStrings);
-            buffer = new char[MAXFILEREAD];
+            buffer = new char[MAX_FILE_READ];
             tokens = new PlainLineTokenizer((Reader) null);
         }
     }
@@ -159,11 +159,11 @@ public class Context {
                             String[] desc = {tag.symbol, Integer.toString(tag.line), tag.type, tag.text,};
                             if (in == null) {
                                 if (out == null) {
-                                    Hit hit = new Hit(path, Util.htmlize(desc[3]).replace(desc[0], "<b>" + desc[0] + "</b>"), desc[1], false, alt);
+                                    Hit hit = new Hit(path, Util.htmlize(desc[3]).replace(desc[0], "<strong>" + desc[0] + "</strong>"), desc[1], false, alt);
                                     hits.add(hit);
                                     anything = true;
                                 } else {
-                                    out.write("<a class=\"s\" href=\"");
+                                    out.write("<a href=\"");
                                     out.write(urlPrefixE);
                                     out.write(pathE);
                                     out.write("#");
@@ -171,10 +171,10 @@ public class Context {
                                     out.write("\"><span class=\"badge\">");
                                     out.write(desc[1]);
                                     out.write("</span> ");
-                                    out.write(Util.htmlize(desc[3]).replace(desc[0], "<b>" + desc[0] + "</b>"));
-                                    out.write("</a> <i>");
+                                    out.write(Util.htmlize(desc[3]).replace(desc[0], "<strong>" + desc[0] + "</strong>"));
+                                    out.write("</a> <span class=\"label\">");
                                     out.write(desc[2]);
-                                    out.write("</i><br/>");
+                                    out.write("</span><br/>");
                                     anything = true;
                                 }
                             } else {
@@ -208,7 +208,7 @@ public class Context {
         if (lim) {
             try {
                 charsRead = in.read(buffer);
-                if (charsRead == MAXFILEREAD) {
+                if (charsRead == MAX_FILE_READ) {
                     // we probably only read parts of the file, so set the
                     // truncated flag to enable the [all...] link that
                     // requests all matches

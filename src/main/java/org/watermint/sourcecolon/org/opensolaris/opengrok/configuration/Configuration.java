@@ -32,7 +32,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Placeholder class for all configuration variables. Due to the multithreaded
+ * Placeholder class for all configuration variables. Due to the multi-threaded
  * nature of the web application, each thread will use the same instance of the
  * configuration object for each page request. Class and methods should have
  * package scope, but that didn't work with the XMLDecoder/XMLEncoder.
@@ -102,7 +102,7 @@ public final class Configuration {
         setVerbose(false);
         setPrintProgress(false);
         setGenerateHtml(true);
-        setQuickContextScan(true);
+        setQuickContextScan(false);
         setIgnoredNames(new IgnoredNames());
         setIncludedNames(new Filter());
         setUsingLuceneLocking(false);

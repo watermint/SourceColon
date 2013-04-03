@@ -315,7 +315,7 @@ public final class RuntimeEnvironment {
     /**
      * Specify if we should generate HTML or not during the indexing phase
      *
-     * @param generateHtml set this to true to pregenerate HTML
+     * @param generateHtml set this to true to pre-generate HTML
      */
     public void setGenerateHtml(boolean generateHtml) {
         threadConfig.get().setGenerateHtml(generateHtml);

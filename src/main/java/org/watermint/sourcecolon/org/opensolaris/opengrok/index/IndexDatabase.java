@@ -71,7 +71,7 @@ public class IndexDatabase {
     private FSDirectory indexDirectory;
     private FSDirectory spellDirectory;
     private IndexWriter writer;
-    private TermEnum uidIter;
+    private TermEnum termEnum;
     private IgnoredNames ignoredNames;
     private Filter includedNames;
     private AnalyzerGuru analyzerGuru;
@@ -127,6 +127,7 @@ public class IndexDatabase {
 
         for (IndexDatabase d : dbs) {
             final IndexDatabase db = d;
+            d.updateTimestamp();
             if (listener != null) {
                 db.addIndexChangedListener(listener);
             }
@@ -182,6 +183,7 @@ public class IndexDatabase {
             }
             listeners = new ArrayList<>();
             directories = new ArrayList<>();
+            updateTimestamp();
         }
     }
 
@@ -253,7 +255,7 @@ public class IndexDatabase {
                 String startUid = Util.path2uid(dir, "");
 
                 try (IndexReader reader = IndexReader.open(indexDirectory)) {
-                    uidIter = reader.terms(new Term("u", startUid)); // init uid iterator
+                    termEnum = reader.terms(new Term("u", startUid)); // init uid iterator
 
                     //TODO below should be optional, since it traverses the tree once more to get total count! :(
                     int file_cnt = 0;
@@ -267,9 +269,9 @@ public class IndexDatabase {
 
                     indexDown(sourceRoot, dir, false, 0, file_cnt);
 
-                    while (uidIter.term() != null && uidIter.term().field().equals("u") && uidIter.term().text().startsWith(startUid)) {
+                    while (termEnum.term() != null && termEnum.term().field().equals("u") && termEnum.term().text().startsWith(startUid)) {
                         removeFile();
-                        uidIter.next();
+                        termEnum.next();
                     }
                 }
             }
@@ -278,7 +280,7 @@ public class IndexDatabase {
                 try {
                     writer.close();
                 } catch (IOException e) {
-                    log.log(Level.WARNING, "An error occured while closing writer", e);
+                    log.log(Level.WARNING, "An error occurred while closing writer", e);
                 }
             }
 
@@ -292,6 +294,10 @@ public class IndexDatabase {
         }
 
         createSpellingSuggestions();
+        updateTimestamp();
+    }
+
+    public void updateTimestamp() {
         RuntimeEnvironment env = RuntimeEnvironment.getInstance();
         File timestamp = new File(env.getDataRootFile(), "timestamp");
         if (timestamp.exists()) {
@@ -299,7 +305,11 @@ public class IndexDatabase {
                 log.log(Level.WARNING, "Failed to set last modified time on ''{0}'', used for time-stamping the index database.", timestamp.getAbsolutePath());
             }
         } else {
-            if (!timestamp.createNewFile()) {
+            try {
+                if (!timestamp.createNewFile()) {
+                    log.log(Level.WARNING, "Failed to create file ''{0}'', used for time-stamping the index database.", timestamp.getAbsolutePath());
+                }
+            } catch (IOException e) {
                 log.log(Level.WARNING, "Failed to create file ''{0}'', used for time-stamping the index database.", timestamp.getAbsolutePath());
             }
         }
@@ -336,18 +346,18 @@ public class IndexDatabase {
     }
 
     /**
-     * Remove a stale file (uidIter.term().text()) from the index database
+     * Remove a stale file (termEnum.term().text()) from the index database
      * (and the xref file)
      *
      * @throws java.io.IOException if an error occurs
      */
     private void removeFile() throws IOException {
-        String path = Util.uid2url(uidIter.term().text());
+        String path = Util.uid2url(termEnum.term().text());
 
         for (IndexChangedListener listener : listeners) {
             listener.fileRemove(path);
         }
-        writer.deleteDocuments(uidIter.term());
+        writer.deleteDocuments(termEnum.term());
 
         File xrefFile;
         if (RuntimeEnvironment.getInstance().isCompressXref()) {
@@ -587,17 +597,17 @@ public class IndexDatabase {
                         log.log(Level.INFO, "Progress: {0} ({1}%)", new Object[]{lcur_count, (lcur_count * 100.0f / est_total)});
                     }
 
-                    if (uidIter != null) {
+                    if (termEnum != null) {
                         String uid = Util.path2uid(path, DateTools.timeToString(file.lastModified(), DateTools.Resolution.MILLISECOND)); // construct uid for doc
-                        while (uidIter.term() != null && uidIter.term().field().equals("u") &&
-                                uidIter.term().text().compareTo(uid) < 0) {
+                        while (termEnum.term() != null && termEnum.term().field().equals("u") &&
+                                termEnum.term().text().compareTo(uid) < 0) {
                             removeFile();
-                            uidIter.next();
+                            termEnum.next();
                         }
 
-                        if (uidIter.term() != null && uidIter.term().field().equals("u") &&
-                                uidIter.term().text().compareTo(uid) == 0) {
-                            uidIter.next(); // keep matching docs
+                        if (termEnum.term() != null && termEnum.term().field().equals("u") &&
+                                termEnum.term().text().compareTo(uid) == 0) {
+                            termEnum.next(); // keep matching docs
                             continue;
                         }
                     }
