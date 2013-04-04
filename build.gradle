@@ -19,7 +19,11 @@ dependencies {
             "com.sun.jersey:jersey-client:$jerseyVersion",
             "com.sun.jersey:jersey-json:$jerseyVersion",
             "org.apache.solr:solr-core:4.0.0",
-            "commons-io:commons-io:2.4"
+            "commons-io:commons-io:2.4",
+            "com.ibm.icu:icu4j:50.1.1",
+            "com.google.guava:guava:14.0-rc1"
+
+    testCompile "junit:junit:4.11"
 }
 
 jar {

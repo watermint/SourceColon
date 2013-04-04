@@ -1,4 +1,4 @@
-package org.watermint.sourcecolon;
+package org.watermint.sourcecolon.solr;
 
 /**
  *

@@ -4,7 +4,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.embedded.EmbeddedSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.SolrDocument;
-import org.watermint.sourcecolon.Config;
+import org.watermint.sourcecolon.solr.Config;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
