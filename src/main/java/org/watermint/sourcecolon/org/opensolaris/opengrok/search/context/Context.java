@@ -223,7 +223,7 @@ public class Context {
                     }
                 }
             } catch (IOException e) {
-                OpenGrokLogger.getLogger().log(Level.WARNING, "An error occured while reading data", e);
+                OpenGrokLogger.getLogger().log(Level.WARNING, "An error occurred while reading data", e);
                 return anything;
             }
             if (charsRead == 0) {

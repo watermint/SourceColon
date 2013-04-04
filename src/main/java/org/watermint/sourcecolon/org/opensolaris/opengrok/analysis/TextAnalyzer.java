@@ -23,6 +23,7 @@ package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis;
 import com.ibm.icu.text.CharsetDetector;
 import com.ibm.icu.text.CharsetMatch;
 import org.apache.lucene.document.Document;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,10 +36,7 @@ public abstract class TextAnalyzer extends FileAnalyzer {
     }
 
     public final void analyze(Document doc, InputStream in) throws IOException {
-        CharsetDetector detector = new CharsetDetector();
-        CharsetMatch match = detector.setText(in).detect();
-        in.reset();
-        analyze(doc, new InputStreamReader(in, match.getName()));
+        analyze(doc, IOUtils.readerWithCharsetDetect(in));
     }
 
     protected abstract void analyze(Document doc, Reader reader) throws IOException;

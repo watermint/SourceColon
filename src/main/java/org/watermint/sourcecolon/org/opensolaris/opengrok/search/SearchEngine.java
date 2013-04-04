@@ -325,8 +325,8 @@ public class SearchEngine {
                 if (sourceContext != null) {
                     try {
                         if (Genre.PLAIN == genre && (source != null)) {
-                            hasContext = sourceContext.getContext(new InputStreamReader(new FileInputStream(source +
-                                    filename)), null, null, null, filename,
+                            hasContext = sourceContext.getContext(IOUtils.readerWithCharsetDetect(source +
+                                    filename), null, null, null, filename,
                                     tags, nhits > 100, ret);
                         } else if (Genre.XREFABLE == genre && data != null && summarizer != null) {
                             int l = 0;

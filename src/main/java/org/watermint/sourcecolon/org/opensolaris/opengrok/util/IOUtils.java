@@ -24,8 +24,10 @@
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.util;
 
-import java.io.Closeable;
-import java.io.IOException;
+import com.ibm.icu.text.CharsetDetector;
+import com.ibm.icu.text.CharsetMatch;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -43,6 +45,31 @@ public final class IOUtils {
 
     private IOUtils() {
         // singleton
+    }
+
+    public static Reader readerWithCharsetDetect(String path) throws FileNotFoundException {
+        return readerWithCharsetDetect(new BufferedInputStream(new FileInputStream(path)));
+    }
+
+    public static Reader readerWithCharsetDetect(File f) throws FileNotFoundException {
+        return readerWithCharsetDetect(new BufferedInputStream(new FileInputStream(f)));
+    }
+
+    public static Reader readerWithCharsetDetect(InputStream is) {
+        CharsetDetector detector = new CharsetDetector();
+        try {
+            CharsetMatch match = detector.setText(is).detect();
+            is.reset();
+            return new InputStreamReader(is, match.getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+            try {
+                is.reset();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            return new InputStreamReader(is);
+        }
     }
 
     public static void close(Closeable c) {

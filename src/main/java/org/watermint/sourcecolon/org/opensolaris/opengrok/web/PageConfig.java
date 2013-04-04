@@ -36,6 +36,7 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.index.IgnoredNames;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.index.IndexDatabase;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.QueryBuilder;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.Context;
+import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -951,7 +952,7 @@ public final class PageConfig {
 
         try {
             Context sourceContext = new Context(queryBuilder.build(), queryBuilder.getQueries());
-            sourceContext.getContext(new FileReader(getResourceFile()), writer, req.getContextPath() + Prefix.XREF_P, null, getPath(), null, false, null);
+            sourceContext.getContext(IOUtils.readerWithCharsetDetect(getResourceFile()), writer, req.getContextPath() + Prefix.XREF_P, null, getPath(), null, false, null);
             writer.flush();
             return content.toString();
         } catch (IOException | ParseException e) {

@@ -185,9 +185,10 @@ public final class Results {
                         String htags = getTags(sh.sourceRoot, rpath, false);
                         out.write(sh.summerizer.getSummary(htags).toString());
                     } else {
-                        FileReader r = genre == Genre.PLAIN
-                                ? new FileReader(new File(sh.sourceRoot, rpath))
-                                : null;
+                        Reader r = null;
+                        if (genre == Genre.PLAIN) {
+                            r = IOUtils.readerWithCharsetDetect(new File(sh.sourceRoot, rpath));
+                        }
                         sh.sourceContext.getContext(r, out, xrefPrefix,
                                 morePrefix, rpath, tags, true, null);
                     }
