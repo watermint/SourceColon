@@ -10,7 +10,6 @@ import java.io.*;
 
 /**
  * Configuration.
- *
  * This class is not thread-safe.
  */
 public class Config {
@@ -19,6 +18,11 @@ public class Config {
     private EmbeddedSolrServer server;
     private CoreContainer coreContainer;
 
+    /**
+     * Singleton instance.
+     *
+     * @return config.
+     */
     public static Config getInstance() {
         if (instance == null) {
             instance = new Config();
@@ -26,17 +30,47 @@ public class Config {
         return instance;
     }
 
+    /**
+     * Constructor for singleton.
+     */
     private Config() {
         this.homePath = System.getProperty("user.home") + File.separator + ".sourcecolon";
         prepare();
     }
 
+    /**
+     * Constructor with homePath for unit test.
+     *
+     * @param homePath home path.
+     */
+    protected Config(String homePath) {
+        this.homePath = homePath;
+        prepare();
+    }
+
+    /**
+     * Home path.
+     *
+     * @return home path.
+     */
+    public String getHomePath() {
+        return homePath;
+    }
+
+    /**
+     * Prepare configuration.
+     */
     public void prepare() {
         copyIfNecessary("/", "solr.xml");
         copyIfNecessary("/rows/conf", "rows/conf/schema.xml");
         copyIfNecessary("/rows/conf", "rows/conf/solrconfig.xml");
     }
 
+    /**
+     * Solr Server.
+     *
+     * @return server instance.
+     */
     public EmbeddedSolrServer getServer() {
         if (coreContainer == null) {
             try {
@@ -53,6 +87,12 @@ public class Config {
         return server;
     }
 
+    /**
+     * Copy file from resource.
+     *
+     * @param distPath     destination path.
+     * @param resourcePath resource path.
+     */
     private void copyIfNecessary(String distPath, String resourcePath) {
         File distDir = new File(homePath + File.separator + distPath);
         if (!distDir.exists()) {
