@@ -97,7 +97,7 @@ Portions Copyright (c) 2013 Takayuki Okazaki.
             <span class="label label-info">${runtime.dateForLastIndexRun}</span><br/>
             Served by <i class="logo-sourcecolon"></i> <a href="https://github.com/watermint/SourceColon">Source:</a>
             <br/>
-            based on <a href="http://www.opensolaris.org/os/project/opengrok/" title="OpenGrok">OpenGrok</a>
+            based on <a href="http://opengrok.github.com/OpenGrok/" title="OpenGrok">OpenGrok</a>
           </small>
         </div>
       </div>

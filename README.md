@@ -2,7 +2,7 @@
 
 ![Source:](https://raw.github.com/watermint/SourceColon/master/doc/icon-64.png)
 
-Source code search based upon [OpenGrok](http://hub.opensolaris.org/bin/view/Project+opengrok/).
+Source code search based upon [OpenGrok](http://opengrok.github.com/OpenGrok/).
 
 [![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon.png)
 
