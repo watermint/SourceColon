@@ -80,7 +80,7 @@ public class CtagsTest {
     /**
      * Helper method that gets the definitions for a file in the repository.
      *
-     * @param file file name relative to source root
+     * @param fileName file name relative to source root
      * @return the definitions found in the file
      */
     private static Definitions getDefs(String fileName) throws Exception {
