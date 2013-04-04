@@ -24,8 +24,6 @@
 
 package org.watermint.sourcecolon.org.opensolaris.opengrok.util;
 
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
-
 import java.io.*;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Arrays;
@@ -119,12 +117,7 @@ public class Executor {
             }
         }
 
-        OpenGrokLogger.getLogger().log(Level.FINE,
-                "Executing command {0} in directory {1}",
-                new Object[]{
-                        processBuilder.command(),
-                        processBuilder.directory(),
-                });
+        log.log(Level.FINE, "Executing command {0} in directory {1}", new Object[]{processBuilder.command(), processBuilder.directory(),});
 
         Process process = null;
         try {
@@ -140,8 +133,7 @@ public class Executor {
                         err.processStream(errorStream);
                     } catch (IOException ex) {
                         if (reportExceptions) {
-                            OpenGrokLogger.getLogger().log(Level.SEVERE,
-                                    "Error during process pipe listening", ex);
+                            log.log(Level.SEVERE, "Error during process pipe listening", ex);
                         }
                     }
                 }
@@ -156,13 +148,11 @@ public class Executor {
             stderr = err.getBytes();
         } catch (IOException e) {
             if (reportExceptions) {
-                OpenGrokLogger.getLogger().log(Level.SEVERE,
-                        "Failed to read from process: " + cmdList.get(0), e);
+                log.log(Level.SEVERE, "Failed to read from process: " + cmdList.get(0), e);
             }
         } catch (InterruptedException e) {
             if (reportExceptions) {
-                OpenGrokLogger.getLogger().log(Level.SEVERE,
-                        "Waiting for process interrupted: " + cmdList.get(0), e);
+                log.log(Level.SEVERE, "Waiting for process interrupted: " + cmdList.get(0), e);
             }
         } finally {
             try {
@@ -170,12 +160,14 @@ public class Executor {
                     ret = process.exitValue();
                 }
             } catch (IllegalThreadStateException e) {
-                process.destroy();
+                if (process != null) {
+                    process.destroy();
+                }
             }
         }
 
         if (ret != 0 && reportExceptions) {
-            int MAX_MSG_SZ = 512; /* limit to avoid floodding the logs */
+            int MAX_MSG_SZ = 512; /* limit to avoid flooding the logs */
             StringBuilder msg = new StringBuilder("Non-zero exit status ")
                     .append(ret).append(" from command ")
                     .append(processBuilder.command().toString())
@@ -194,7 +186,7 @@ public class Executor {
                     msg.append(new String(stderr));
                 }
             }
-            OpenGrokLogger.getLogger().log(Level.WARNING, msg.toString());
+            log.log(Level.WARNING, msg.toString());
         }
 
         return ret;
@@ -256,9 +248,9 @@ public class Executor {
     }
 
     /**
-     * Get an inputstreamto read the output the process wrote to the error stream.
+     * Get an inputStream to read the output the process wrote to the error stream.
      *
-     * @return An inputstream for reading the process error stream
+     * @return An inputStream for reading the process error stream
      */
     public InputStream getErrorStream() {
         return new ByteArrayInputStream(stderr);

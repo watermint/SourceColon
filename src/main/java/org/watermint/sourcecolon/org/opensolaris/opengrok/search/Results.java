@@ -29,7 +29,6 @@ import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.TagFilter;
@@ -43,12 +42,14 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 /**
  * @author Chandan slightly rewritten by Lubos Kosco
  */
 public final class Results {
+    private static final Logger log = Logger.getLogger(Results.class.getName());
     private Results() {
         // Util class, should not be constructed
     }
@@ -104,9 +105,7 @@ public final class Results {
             int len = r.read(content);
             return new String(content, 0, len);
         } catch (Exception e) {
-            OpenGrokLogger.getLogger().log(
-                    Level.WARNING, "An error reading tags from " + basedir + path
-                    + (compressed ? ".gz" : ""), e);
+            log.log(Level.WARNING, "An error reading tags from " + basedir + path + (compressed ? ".gz" : ""), e);
         } finally {
             IOUtils.close(r);
             IOUtils.close(gis);

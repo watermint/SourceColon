@@ -35,7 +35,6 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.CompatibleAnalyser;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer.Genre;
@@ -50,6 +49,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -115,6 +115,7 @@ public class SearchEngine {
     private int hitsPerPage = RuntimeEnvironment.getInstance().getHitsPerPage();
     private int cachePages = RuntimeEnvironment.getInstance().getCachePages();
     int totalHits = 0;
+    private static final Logger log = Logger.getLogger(SearchEngine.class.getName());
 
     private ScoreDoc[] hits;
     private TopScoreDocCollector collector;
@@ -240,8 +241,7 @@ public class SearchEngine {
                 }
             }
         } catch (Exception e) {
-            OpenGrokLogger.getLogger().log(
-                    Level.WARNING, SEARCH_EXCEPTION_MSG, e);
+            log.log(Level.WARNING, SEARCH_EXCEPTION_MSG, e);
         }
 
         if (!docs.isEmpty()) {
@@ -254,7 +254,7 @@ public class SearchEngine {
                 }
                 summarizer = new Summarizer(query, analyzer);
             } catch (Exception e) {
-                OpenGrokLogger.getLogger().log(Level.WARNING, "An error occured while creating summary", e);
+                log.log(Level.WARNING, "An error occured while creating summary", e);
             }
         }
         return hits.length;
@@ -287,8 +287,7 @@ public class SearchEngine {
             try {
                 searcher.search(query, collector);
             } catch (Exception e) { // this exception should never be hit, since search() will hit this before
-                OpenGrokLogger.getLogger().log(
-                        Level.WARNING, SEARCH_EXCEPTION_MSG, e);
+                log.log(Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             }
             hits = collector.topDocs().scoreDocs;
             Document d = null;
@@ -297,8 +296,7 @@ public class SearchEngine {
                 try {
                     d = searcher.doc(docId);
                 } catch (Exception e) {
-                    OpenGrokLogger.getLogger().log(
-                            Level.SEVERE, SEARCH_EXCEPTION_MSG, e);
+                    log.log(Level.SEVERE, SEARCH_EXCEPTION_MSG, e);
                 }
                 docs.add(d);
             }
@@ -355,11 +353,11 @@ public class SearchEngine {
                                 }
                             }
                         } else {
-                            OpenGrokLogger.getLogger().warning("Unknown genre: " + genre + " for " + filename);
+                            log.warning("Unknown genre: " + genre + " for " + filename);
                             hasContext |= sourceContext.getContext(null, null, null, null, filename, tags, false, ret);
                         }
                     } catch (FileNotFoundException exp) {
-                        OpenGrokLogger.getLogger().warning("Couldn't read summary from " + filename + " (" + exp.getMessage() + ")");
+                        log.warning("Couldn't read summary from " + filename + " (" + exp.getMessage() + ")");
                         hasContext |= sourceContext.getContext(null, null, null, null, filename, tags, false, ret);
                     }
                 }
@@ -367,8 +365,7 @@ public class SearchEngine {
                     ret.add(new Hit(filename, "...", "", false, alt));
                 }
             } catch (IOException | ClassNotFoundException e) {
-                OpenGrokLogger.getLogger().log(
-                        Level.WARNING, SEARCH_EXCEPTION_MSG, e);
+                log.log(Level.WARNING, SEARCH_EXCEPTION_MSG, e);
             }
         }
 

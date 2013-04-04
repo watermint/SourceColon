@@ -27,13 +27,13 @@ package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -53,6 +53,7 @@ import java.util.zip.GZIPOutputStream;
  * @author Chandan
  */
 public class FileAnalyzer extends Analyzer {
+    private static final Logger log = Logger.getLogger(FileAnalyzer.class.getName());
 
     protected Project project;
     private final FileAnalyzerFactory factory;
@@ -155,7 +156,7 @@ public class FileAnalyzer extends Analyzer {
         if ("path".equals(fieldName) || "project".equals(fieldName)) {
             return new PathTokenizer(reader);
         }
-        OpenGrokLogger.getLogger().log(Level.WARNING, "Have no analyzer for: {0}", fieldName);
+        log.log(Level.WARNING, "Have no analyzer for: {0}", fieldName);
         return null;
     }
 

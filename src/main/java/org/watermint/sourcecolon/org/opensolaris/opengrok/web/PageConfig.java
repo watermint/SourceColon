@@ -534,12 +534,9 @@ public final class PageConfig {
      *         used to redirect the client to the propper path.
      */
     public String getOnRedirect() {
-        boolean check4on = true;
-        if (check4on) {
-            File newFile = new File(getSourceRootPath() + "/on/" + getPath());
-            if (newFile.canRead()) {
-                return req.getContextPath() + req.getServletPath() + "/on" + getUriEncodedPath() + (newFile.isDirectory() ? trailingSlash(path) : "");
-            }
+        File newFile = new File(getSourceRootPath() + "/on/" + getPath());
+        if (newFile.canRead()) {
+            return req.getContextPath() + req.getServletPath() + "/on" + getUriEncodedPath() + (newFile.isDirectory() ? trailingSlash(path) : "");
         }
         return null;
     }
@@ -825,6 +822,7 @@ public final class PageConfig {
     }
 
     private SearchHelper currentSearchHelper = null;
+
     public SearchHelper getCurrentSearchHelper() {
         if (currentSearchHelper == null) {
             currentSearchHelper = prepareSearch().prepareExec(getRequestedProjects()).executeQuery().prepareSummary();
@@ -983,7 +981,7 @@ public final class PageConfig {
 
         StringBuilder url = createUrl(getCurrentSearchHelper(), true).append("&amp;sort=");
         for (SortOrder o : SortOrder.values()) {
-            Map<String,Object> order = new HashMap<>();
+            Map<String, Object> order = new HashMap<>();
             if (getCurrentSearchHelper().order == o) {
                 order.put("active", true);
                 order.put("link", "#");
@@ -1000,16 +998,6 @@ public final class PageConfig {
 
     public String getCurrentSearchQueryErrorMessage() {
         return Util.htmlize(getCurrentSearchHelper().getErrorMsg());
-    }
-
-    /**
-     * Setup page configurations into HttpServletRequest
-     *
-     * @param request
-     */
-    public static void configure(HttpServletRequest request) {
-        PageConfig config = get(request);
-        request.setAttribute("runtime", config.getEnv());
     }
 
     /**

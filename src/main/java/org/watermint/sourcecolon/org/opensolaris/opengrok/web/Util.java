@@ -25,7 +25,6 @@
 package org.watermint.sourcecolon.org.opensolaris.opengrok.web;
 
 import org.watermint.sourcecolon.org.opensolaris.opengrok.Info;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.*;
@@ -45,6 +44,8 @@ import java.util.zip.GZIPInputStream;
  * Class for useful functions.
  */
 public final class Util {
+    private static final Logger log = Logger.getLogger(Util.class.getName());
+
     private Util() {
         // singleton
     }
@@ -671,8 +672,7 @@ public final class Util {
             dump(out, in);
             return true;
         } catch (IOException e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING,
-                    "An error occured while piping file " + file + ": ", e);
+            log.log(Level.WARNING, "An error occured while piping file " + file + ": ", e);
         } finally {
             IOUtils.close(in);
             IOUtils.close(gis);

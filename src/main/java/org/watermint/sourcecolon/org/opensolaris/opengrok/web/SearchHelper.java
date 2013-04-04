@@ -32,7 +32,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.*;
 import org.apache.lucene.search.spell.SpellChecker;
 import org.apache.lucene.store.FSDirectory;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.CompatibleAnalyser;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer;
@@ -41,7 +40,6 @@ import org.watermint.sourcecolon.org.opensolaris.opengrok.search.Results;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.Summarizer;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.Context;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.LineMatcher;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.search.context.QueryMatchers;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.IOUtils;
 
 import java.io.*;
@@ -818,7 +816,7 @@ public class SearchHelper {
             sourceContext = new Context(query, builder.getQueries());
             summerizer = new Summarizer(query, new CompatibleAnalyser());
         } catch (Exception e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, "Summerizer: {0}", e.getMessage());
+            log.log(Level.WARNING, "Summerizer: {0}", e.getMessage());
         }
         return this;
     }

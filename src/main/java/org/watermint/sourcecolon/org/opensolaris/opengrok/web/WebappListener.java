@@ -23,7 +23,6 @@
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.web;
 
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 
 import javax.servlet.ServletContext;
@@ -32,6 +31,7 @@ import javax.servlet.ServletContextListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Populate the Mercurial Repositories
@@ -39,6 +39,8 @@ import java.util.logging.Level;
  * @author Trond Norbye
  */
 public final class WebappListener implements ServletContextListener {
+    private static final Logger log = Logger.getLogger(WebappListener.class.getName());
+
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         ServletContext context = servletContextEvent.getServletContext();
@@ -50,12 +52,12 @@ public final class WebappListener implements ServletContextListener {
         }
 
         if (!new File(config).exists()) {
-            OpenGrokLogger.getLogger().severe("Missing configuration. CONFIGURATION section missing in web.xml");
+            log.severe("Missing configuration. CONFIGURATION section missing in web.xml");
         } else {
             try {
                 env.readConfiguration(new File(config));
             } catch (IOException ex) {
-                OpenGrokLogger.getLogger().log(Level.WARNING, "OpenGrok Configuration error. Failed to read config file: ", ex);
+                log.log(Level.WARNING, "OpenGrok Configuration error. Failed to read config file: ", ex);
             }
         }
     }

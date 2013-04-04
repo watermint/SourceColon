@@ -306,23 +306,6 @@ public final class Configuration {
 
     private transient String dtagsEftar = null;
 
-    /**
-     * Get the eftar file, which contains definition tags.
-     *
-     * @return {@code null} if there is no such file, the file otherwise.
-     */
-    public File getDtagsEftar() {
-        if (dtagsEftar == null) {
-            File tmp = new File(getDataRoot() + "/" + EFTAR_DTAGS_FILE);
-            if (tmp.canRead()) {
-                dtagsEftar = tmp.getName();
-            } else {
-                dtagsEftar = "";
-            }
-        }
-        return dtagsEftar.isEmpty() ? null : new File(dtagsEftar);
-    }
-
     public Set<String> getAllowedSymlinks() {
         return allowedSymlinks;
     }
@@ -358,12 +341,6 @@ public final class Configuration {
 
     }
 
-    public String getXMLRepresentationAsString() {
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        this.encodeObject(bos);
-        return bos.toString();
-    }
-
     private void encodeObject(OutputStream out) {
         XMLEncoder e = new XMLEncoder(new BufferedOutputStream(out));
         e.writeObject(this);
@@ -376,14 +353,6 @@ public final class Configuration {
         }
     }
 
-
-    public static Configuration makeXMLStringAsConfiguration(String xmlconfig) throws IOException {
-        final Configuration ret;
-        final ByteArrayInputStream in = new ByteArrayInputStream(xmlconfig.getBytes());
-        ret = decodeObject(in);
-        return ret;
-    }
-
     private static Configuration decodeObject(InputStream in) throws IOException {
         XMLDecoder d = new XMLDecoder(new BufferedInputStream(in));
         final Object ret = d.readObject();
@@ -394,5 +363,4 @@ public final class Configuration {
         }
         return (Configuration) ret;
     }
-
 }

@@ -150,7 +150,7 @@ public class Summary {
      * Returns an array of all of this summary's fragments.
      */
     public Fragment[] getFragments() {
-        return (Fragment[]) fragments.toArray(FRAGMENT_PROTO);
+        return fragments.toArray(FRAGMENT_PROTO);
     }
 
     /**

@@ -26,7 +26,6 @@
 package org.watermint.sourcecolon.org.opensolaris.opengrok.index;
 
 import org.watermint.sourcecolon.org.opensolaris.opengrok.Info;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Configuration;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.Project;
@@ -128,10 +127,6 @@ public final class Indexer {
                         runIndex = false;
                         break;
 
-                    case 'q':
-                        cfg.setVerbose(false);
-                        OpenGrokLogger.setOGConsoleLogLevel(Level.WARNING);
-                        break;
                     case 'e':
                         cfg.setGenerateHtml(false);
                         break;
@@ -167,7 +162,6 @@ public final class Indexer {
                         break;
                     case 'v':
                         cfg.setVerbose(true);
-                        OpenGrokLogger.setOGConsoleLogLevel(Level.INFO);
                         break;
                     case 'C':
                         cfg.setPrintProgress(true);

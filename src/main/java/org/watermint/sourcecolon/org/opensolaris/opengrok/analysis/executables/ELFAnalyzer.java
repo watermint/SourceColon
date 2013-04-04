@@ -26,7 +26,6 @@ package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.executables;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.plain.PlainFullTokenizer;
@@ -40,6 +39,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Analyzes ELF (Executable and Linking Format) files.
@@ -49,6 +49,7 @@ import java.util.logging.Level;
  * @author Trond Norbye
  */
 public final class ELFAnalyzer extends FileAnalyzer {
+    private static final Logger log = Logger.getLogger(ELFAnalyzer.class.getName());
 
     private StringBuilder content;
     private PlainFullTokenizer plainfull;
@@ -100,7 +101,7 @@ public final class ELFAnalyzer extends FileAnalyzer {
         ELFHeader eh = new ELFHeader(fmap);
 
         if (eh.e_shnum <= 0) {
-            OpenGrokLogger.getLogger().log(Level.FINE, "Skipping file, no section headers");
+            log.log(Level.FINE, "Skipping file, no section headers");
             return;
         }
 
@@ -108,7 +109,7 @@ public final class ELFAnalyzer extends FileAnalyzer {
         ELFSection stringSection = new ELFSection(fmap);
 
         if (stringSection.sh_size == 0) {
-            OpenGrokLogger.getLogger().log(Level.FINE, "Skipping file, no section name string table");
+            log.log(Level.FINE, "Skipping file, no section name string table");
             return;
         }
 

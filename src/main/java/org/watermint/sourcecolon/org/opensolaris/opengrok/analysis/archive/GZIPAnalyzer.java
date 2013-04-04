@@ -26,13 +26,13 @@ package org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.archive;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.AnalyzerGuru;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzer;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.FileAnalyzerFactory;
 
 import java.io.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -42,6 +42,7 @@ import java.util.zip.GZIPInputStream;
  * @author Chandan
  */
 public final class GZIPAnalyzer extends FileAnalyzer {
+    private static final Logger log = Logger.getLogger(GZIPAnalyzer.class.getName());
     private Genre g;
 
     @Override
@@ -68,7 +69,7 @@ public final class GZIPAnalyzer extends FileAnalyzer {
             fa = AnalyzerGuru.getAnalyzer(gzis, newname);
             if (fa == null) {
                 this.g = Genre.DATA;
-                OpenGrokLogger.getLogger().log(Level.WARNING, "Did not analyze {0}, detected as data.", newname);
+                log.log(Level.WARNING, "Did not analyze {0}, detected as data.", newname);
             } else { // cant recurse!
                 if (fa.getGenre() == Genre.PLAIN || fa.getGenre() == Genre.XREFABLE) {
                     this.g = Genre.XREFABLE;

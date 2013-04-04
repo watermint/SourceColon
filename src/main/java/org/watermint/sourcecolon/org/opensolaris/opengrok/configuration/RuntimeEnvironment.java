@@ -23,7 +23,6 @@
  */
 package org.watermint.sourcecolon.org.opensolaris.opengrok.configuration;
 
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.index.Filter;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.index.IgnoredNames;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.util.Executor;
@@ -94,7 +93,7 @@ public final class RuntimeEnvironment {
             }
             return file.getCanonicalPath();
         } catch (IOException ex) {
-            OpenGrokLogger.getLogger().log(Level.SEVERE, "Failed to get canonical path", ex);
+            log.log(Level.SEVERE, "Failed to get canonical path", ex);
             return s;
         }
     }

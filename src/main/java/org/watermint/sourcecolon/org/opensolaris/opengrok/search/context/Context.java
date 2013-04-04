@@ -31,7 +31,6 @@
 package org.watermint.sourcecolon.org.opensolaris.opengrok.search.context;
 
 import org.apache.lucene.search.Query;
-import org.watermint.sourcecolon.org.opensolaris.opengrok.OpenGrokLogger;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.analysis.Definitions;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.configuration.RuntimeEnvironment;
 import org.watermint.sourcecolon.org.opensolaris.opengrok.search.Hit;
@@ -46,8 +45,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Context {
+    private static final Logger log = Logger.getLogger(Context.class.getName());
 
     private final LineMatcher[] lineMatchers;
     static final int MAX_FILE_READ = 1024 * 1024;
@@ -187,7 +188,7 @@ public class Context {
             } catch (Exception e) {
                 if (hits != null) {
                     // @todo verify why we ignore all exceptions?
-                    OpenGrokLogger.getLogger().log(Level.WARNING, "Could not get context for " + path, e);
+                    log.log(Level.WARNING, "Could not get context for " + path, e);
                 }
             }
         }
@@ -223,7 +224,7 @@ public class Context {
                     }
                 }
             } catch (IOException e) {
-                OpenGrokLogger.getLogger().log(Level.WARNING, "An error occurred while reading data", e);
+                log.log(Level.WARNING, "An error occurred while reading data", e);
                 return anything;
             }
             if (charsRead == 0) {
@@ -266,7 +267,7 @@ public class Context {
                 out.write("<a href=\"" + Util.URIEncodePath(morePrefix) + pathE + "?" + queryAsURI + "\"><i class=\"icon-hand-right\"></i> more...</a>");
             }
         } catch (IOException e) {
-            OpenGrokLogger.getLogger().log(Level.WARNING, "Could not get context for " + path, e);
+            log.log(Level.WARNING, "Could not get context for " + path, e);
         } finally {
             IOUtils.close(in);
 
@@ -274,7 +275,7 @@ public class Context {
                 try {
                     out.flush();
                 } catch (IOException e) {
-                    OpenGrokLogger.getLogger().log(Level.WARNING, "Failed to flush stream: ", e);
+                    log.log(Level.WARNING, "Failed to flush stream: ", e);
                 }
             }
         }

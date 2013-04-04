@@ -300,7 +300,7 @@ public class Summarizer {
      * Get the terms from a query and adds them to hightailed
      * a stream of tokens
      *
-     * @param query
+     * @param query query
      */
     private void getTerms(Query query) {
         if (query instanceof BooleanQuery) {

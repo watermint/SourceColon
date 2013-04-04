@@ -61,7 +61,7 @@ import java.util.*;
 
 /**
  * Manages and provides Analyzers as needed. Please see
- * <a href="http://www.opensolaris.org/os/project/opengrok/manual/internals/">
+ * <a href="https://github.com/OpenGrok/OpenGrok/wiki/OpenGrok-Internals">
  * this</a> page for a great description of the purpose of the AnalyzerGuru.
  * <p/>
  * Created on September 22, 2005
