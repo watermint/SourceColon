@@ -10,39 +10,13 @@ Source code search based upon [OpenGrok](http://hub.opensolaris.org/bin/view/Pro
 
 Provide simplified interface to search large scale source code tree.
 
-## Requirements
-
-* [Java SE 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
-* [Gradle](http://www.gradle.org/)
-
-## Quick Start
-
-Make sure your Java is later than Java SE 7 (1.7.0_xx or above)
-
-    $ java -version
-    java version "1.7.0_07"
-	Java(TM) SE Runtime Environment (build 1.7.0_07-b10)
-	Java HotSpot(TM) 64-Bit Server VM (build 23.3-b01, mixed mode)
-	  
-Make sure you also have gradle
-
-	$ gradle -v
-	
-	------------------------------------------------------------
-	Gradle 1.3
-	------------------------------------------------------------
-	
-	Gradle build time: 2012年11月20日 11時37分38秒 UTC
-	Groovy: 1.8.6
-	Ant: Apache Ant(TM) version 1.8.4 compiled on May 22 2012
-	Ivy: 2.2.0
-	JVM: 1.7.0_07 (Oracle Corporation 23.3-b01)
-	OS: Mac OS X 10.7.5 x86_64
-
-Build SourceColon
-
-    $ gradle
-
 ## License
 
-CDDL 1.0. Please refer LICENSE.txt for more details.
+The MIT License (MIT) Copyright (c) 2013 Takayuki Okazaki
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
