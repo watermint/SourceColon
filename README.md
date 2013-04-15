@@ -4,7 +4,7 @@
 
 Source code search engine.
 
-[![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon.png)
+[![Build Status](https://travis-ci.org/watermint/SourceColon)](https://travis-ci.org/watermint/SourceColon.png)
 [![Build Status](https://buildhive.cloudbees.com/job/watermint/job/SourceColon/badge/icon)](https://buildhive.cloudbees.com/job/watermint/job/SourceColon/)
 
 # Objective
