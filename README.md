@@ -2,15 +2,16 @@
 
 ![Source:](https://raw.github.com/watermint/SourceColon/master/doc/icon-64.png)
 
-Source code search based upon [OpenGrok](http://hub.opensolaris.org/bin/view/Project+opengrok/).
+Source code search engine.
 
 [![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon.png)
+[![Build Status](https://buildhive.cloudbees.com/job/watermint/job/SourceColon/badge/icon)](https://buildhive.cloudbees.com/job/watermint/job/SourceColon/)
 
-## Objective
+# Objective
 
 Provide simplified interface to search large scale source code tree.
 
-## License
+# License
 
 The MIT License (MIT) Copyright (c) 2013 Takayuki Okazaki
 

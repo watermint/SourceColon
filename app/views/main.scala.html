@@ -8,11 +8,62 @@
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
     <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap-responsive.min.css")">
-    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon-64.png")">
 </head>
 <body>
-    <div class="container">
-        @content
+    <br />
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span3">
+                <div class="well sidebar-nav ">
+                    <h1><a href="@routes.Admin.index()/">
+                        <img src="@routes.Assets.at("images/icon-64.png")" class="img-rounded"/></a>
+                    </h1>
+
+                    <form action="@routes.Admin.index()">
+                        <ul class="nav nav-list">
+                            <li><a href="#"><i class="icon-folder-open"></i> Xref</a></li>
+                            <li><a href="#"><i class="icon-info-sign"></i> Help</a></li>
+                        </ul>
+
+                        <h2>Search</h2>
+                        <ul class="nav nav-list" style="padding: 0">
+                            <li>
+                                <input class="input-medium" type="text" name="q" placeholder="Text"
+                                value=""/>
+                            </li>
+                            <li>
+                                <input class="input-medium" type="text" name="defs" id="s2" placeholder="Definition"
+                                value=""/>
+                            </li>
+                            <li>
+                                <input class="input-medium" type="text" name="refs" id="s3" placeholder="Symbol"
+                                value=""/>
+                            </li>
+                            <li>
+                                <input class="input-medium" type="text" name="path" id="s4" placeholder="Path"
+                                value=""/>
+                            </li>
+                            <li>
+                                <input class="btn btn-primary" type="submit" value="Search"/>
+                            </li>
+                        </ul>
+                    </form>
+                    <div id="code-navigation"></div>
+                    <br/>
+
+                    <div class="muted">
+                        <small>
+                            <span class="label label-info"></span><br/>
+                                Served by <i class="logo-sourcecolon"></i> <a href="https://github.com/watermint/SourceColon">Source:</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="span9">
+                @content
+            </div>
+        </div>
     </div>
     <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
     <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
