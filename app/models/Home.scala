@@ -7,15 +7,15 @@ import java.io.File
  * Source: Home Directory
  */
 object Home {
-  lazy val basePath = Play.current.configuration.getString("sourcecolon.home") match {
-    case Some(h) => h
-    case None =>
-      System.getProperty("user.home") + File.separator + ".sourcecolon"
-  }
+  /**
+   * Home directory compatibility level.
+   */
+  lazy val compatibilityLevel = "r4"
 
-  lazy val release = Play.current.configuration.getString("sourcecolon.compatibility").getOrElse("dev")
+  lazy val basePath = Play.current.configuration.getString("sourcecolon.home").
+    getOrElse(System.getProperty("user.home") + File.separator + ".sourcecolon")
 
-  lazy val path = basePath + File.separator + release
+  lazy val path = basePath + File.separator + compatibilityLevel
 
   lazy val elasticSearchHome = path + File.separator + "elasticsearch"
 }
