@@ -1,3 +1,5 @@
+.gradle
+/build
 logs
 project/project
 project/target
