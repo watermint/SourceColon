@@ -3,8 +3,10 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Admin.index
-GET     /files                      controllers.Admin.files
+GET     /                           controllers.FileFinder.index
+GET     /enqueue/:path              controllers.FileFinder.enqueue(path)
+GET     /files                      controllers.FileFinder.files(query: String)
 
 # Map static resources from the /public folder to the /assets URL path
+GET     /assets/javascripts/routes  controllers.FileFinder.jsRoutes()
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

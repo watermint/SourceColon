@@ -1,0 +1,9 @@
+@(files: Seq[models.search.ManagedFile] = Seq())
+
+<table class="table table-striped">
+    @for(file <- files) {
+        <tr>
+        <td>@file.path</td>
+        </tr>
+    }
+</table>

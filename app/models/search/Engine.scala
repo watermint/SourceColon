@@ -5,10 +5,9 @@ import org.elasticsearch.common.settings.ImmutableSettings
 import org.elasticsearch.node.{NodeBuilder, Node}
 import models.Home
 import play.api.libs.json.{Writes, Json, Reads}
-import org.elasticsearch.indices.IndexMissingException
 import org.apache.lucene.index.IndexNotFoundException
 import play.api.Logger
-import org.elasticsearch.index.query.{QueryBuilders, QueryBuilder}
+import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.action.search.SearchPhaseExecutionException
 
 object Engine {
@@ -24,6 +23,7 @@ object Engine {
   lazy val client: Client = node.client()
 
   def startup() {
+    client.admin()
   }
 
   def shutdown() {

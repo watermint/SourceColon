@@ -1,22 +1,30 @@
-@(files: Seq[models.search.ManagedFile] = Seq())
-@import helper.twitterBootstrap._
+@(message: String)(implicit req: RequestHeader)
+
 @main("Source:") {
-    <h1>Source:</h1>
+    <h1> Source: </h1>
 
-    @helper.form(action = routes.Admin.files(), args = 'id -> "filesForm"){
-        @helper.inputText(
-            field = Admin.filesForm("q"),
-            args = '_label -> "Quick Search"
-        )
-    }
+    <form>
+        <input type="text" id="quick_path_search" autocomplete="off" spellcheck="false"/>
+    </form>
 
-    <h1>Files</h1>
+    <div id="quick_path_search_result"></div>
 
-    <table class="table table-striped">
-        @for(file <- files){
-            <tr>
-                <td>@file.path</td>
-            </tr>
-        }
-    </table>
+    <script type="text/javascript" src="@routes.FileFinder.jsRoutes()"></script>
+    <script type="text/javascript">
+              var emptyQuery = "";
+              jsRoutes.controllers.FileFinder.files(emptyQuery).ajax({
+                success: function(data) {
+                  $("#quick_path_search_result").html(data);
+                }
+              });
+
+              $('#quick_path_search').keyup(function(d) {
+                var query = $('#quick_path_search').val();
+                jsRoutes.controllers.FileFinder.files(query).ajax({
+                  success: function(data) {
+                    $("#quick_path_search_result").html(data);
+                  }
+                })
+              })
+    </script>
 }
