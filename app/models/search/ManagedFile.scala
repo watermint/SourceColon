@@ -7,7 +7,8 @@ import play.api.libs.json.JsSuccess
 
 trait ManagedObject
 
-case class ManagedFile(name: String,
+case class ManagedFile(path: String,
+                       name: String,
                        directory: String,
                        size: Long,
                        updated: DateTime) extends ManagedObject {
@@ -17,6 +18,7 @@ case class ManagedFile(name: String,
 object ManagedFile {
   def apply(file: File, basePath: File): ManagedFile = {
     ManagedFile(
+      relativePath(file, basePath),
       file.getName,
       file.getParentFile.getCanonicalPath,
       file.length(),
@@ -31,6 +33,7 @@ object ManagedFile {
   implicit object ManagedFileFormat extends Format[ManagedFile] {
     def reads(json: JsValue): JsResult[ManagedFile] = JsSuccess(
       ManagedFile(
+        (json \ "path").as[String],
         (json \ "name").as[String],
         (json \ "directory").as[String],
         (json \ "size").as[Long],
@@ -40,6 +43,7 @@ object ManagedFile {
 
     def writes(o: ManagedFile): JsValue = JsObject(
       List(
+        "path" -> JsString(o.path),
         "name" -> JsString(o.name),
         "directory" -> JsString(o.directory),
         "size" -> JsNumber(o.size),

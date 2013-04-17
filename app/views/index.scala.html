@@ -1,7 +1,22 @@
-@(message: String)
-
+@(files: Seq[models.search.ManagedFile] = Seq())
+@import helper.twitterBootstrap._
 @main("Source:") {
     <h1>Source:</h1>
 
-    @message
+    @helper.form(action = routes.Admin.files(), args = 'id -> "filesForm"){
+        @helper.inputText(
+            field = Admin.filesForm("q"),
+            args = '_label -> "Quick Search"
+        )
+    }
+
+    <h1>Files</h1>
+
+    <table class="table table-striped">
+        @for(file <- files){
+            <tr>
+                <td>@file.path</td>
+            </tr>
+        }
+    </table>
 }

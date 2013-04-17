@@ -22,7 +22,7 @@ class IndexerActor extends Actor {
           case Some(mf) =>
             Logger.debug("Index exists: " + docId)
           case None =>
-            Engine.index("files", "file", docId, ManagedFile(task.file, task.basePath))
+            Engine.set("files", "file", docId, ManagedFile(task.file, task.basePath))
         }
       }
     }

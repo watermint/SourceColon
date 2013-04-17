@@ -12,7 +12,8 @@ object ApplicationBuild extends Build {
     anorm,
     "org.apache.tika" % "tika-parsers" % "1.3",
     "org.elasticsearch" % "elasticsearch" % "0.20.6",
-    "org.watermint" % "sourcecolon-code-prettify" % "r1"
+    "org.watermint" % "sourcecolon-code-prettify" % "r1",
+    "com.spatial4j" % "spatial4j" % "0.3"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
