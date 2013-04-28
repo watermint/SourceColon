@@ -14,7 +14,7 @@ object Engine {
 
   case class IndexResult(docType: String, docId: String, version: Long)
 
-  case class GetResult[T <: ManagedObject](docType: String, docId: String, version: Long, content: T)
+  case class GetResult[T](docType: String, docId: String, version: Long, content: T)
 
   lazy val node: Node = NodeBuilder.nodeBuilder().local(false).settings(
     ImmutableSettings.settingsBuilder().put("path.home", Home.elasticSearchHome)
@@ -30,7 +30,7 @@ object Engine {
     node.close()
   }
 
-  def set[T <: ManagedObject](docIndex: String, docType: String, docId: String, content: T)(implicit writes: Writes[T]): Option[IndexResult] = {
+  def set[T](docIndex: String, docType: String, docId: String, content: T)(implicit writes: Writes[T]): Option[IndexResult] = {
     val json = Json.toJson(content).toString()
     val response = client.prepareIndex(docIndex, docType, docId).
       setSource(json).
@@ -46,7 +46,7 @@ object Engine {
     )
   }
 
-  def get[T <: ManagedObject](docIndex: String, docType: String, docId: String)(implicit reads: Reads[T]): Option[GetResult[T]] = {
+  def get[T](docIndex: String, docType: String, docId: String)(implicit reads: Reads[T]): Option[GetResult[T]] = {
     try {
       val response = client.prepareGet(docIndex, docType, docId).execute().actionGet()
       if (response.isExists) {
@@ -74,7 +74,7 @@ object Engine {
     }
   }
 
-  def search[T <: ManagedObject](docIndex: String, docType: String, query: QueryBuilder)(implicit reads: Reads[T]): Option[Seq[T]] = {
+  def search[T](docIndex: String, docType: String, query: QueryBuilder)(implicit reads: Reads[T]): Option[Seq[T]] = {
     try {
       val response = client.prepareSearch(docIndex).
         setTypes(docType).

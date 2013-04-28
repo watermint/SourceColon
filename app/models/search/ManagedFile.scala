@@ -5,13 +5,11 @@ import org.joda.time.DateTime
 import play.api.libs.json._
 import play.api.libs.json.JsSuccess
 
-trait ManagedObject
-
 case class ManagedFile(path: String,
                        name: String,
                        directory: String,
                        size: Long,
-                       updated: DateTime) extends ManagedObject {
+                       updated: DateTime) {
 
 }
 
