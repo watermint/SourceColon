@@ -7,12 +7,13 @@ import scala.io.Source
 /**
  *
  */
-class IndexerSpec extends Specification {
-  "SourceLine" should {
+class SourceLineParserSpec extends Specification {
+  "SourceLineParser" should {
     "printed line should parsed as tokens" in {
       val slp = SourceLineParser()
 
-      slp.printedLineTokens("""<span class="pln">source!</span>""") must equalTo(Map(Token.tokenPlain -> Seq("source!")))
+      slp.printedLineTokens("""<span class="pln">source!</span>""") must equalTo(
+        Map(SourceToken.tokenPlain -> Seq("source!")))
 
       // Tokens below should be ignored
       slp.printedLineTokens("""<span class="kwd">source!</span>""") must equalTo(Map())
@@ -21,10 +22,11 @@ class IndexerSpec extends Specification {
     }
 
     "parse source code" in {
-      val file = new File("app/models/Indexer.scala")
+      val slp = SourceLineParser()
+      val file = new File("app/models/SourceLineParser.scala")
       val src = Source.fromFile(file)
       val plain = src.getLines().toList.mkString("\n")
-      val slp = SourceLineParser()
+      src.close()
 
       val content = slp.fromFile(FileMeta(file), plain)
 
@@ -32,13 +34,23 @@ class IndexerSpec extends Specification {
         c =>
           printf("%03d: ", c.lineNumber)
           printf("%-30s ", c.plain.substring(0, 29 min c.plain.length))
-          c.prettified foreach {
+          c.printed foreach {
             p =>
               printf("| %-50s ", p.substring(0, 49 min p.length))
               printf("| %s", c.tokens.toString())
           }
           println("")
       }
+
+      content.size must greaterThan(1)
+      content.seq.find {
+        c =>
+          c.tokens.getOrElse(SourceToken.tokenType, Seq()).find {
+            t =>
+              t == "SourceLineParser"
+          }.isDefined
+      }.isDefined must beTrue
+
     }
   }
 }
