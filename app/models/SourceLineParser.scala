@@ -5,6 +5,7 @@ import scala.xml.XML
 
 
 case class SourceLineParser(minimumTokenChars: Int = 2,
+                            maximumFileSize: Int = 1048576,
                             commentPunctuations: Seq[String] = SourceLineParser.defaultCommentPunctuations,
                             stringPunctuations: Seq[String] = SourceLineParser.defaultStringPunctuations) {
 
@@ -94,10 +95,9 @@ case class SourceLineParser(minimumTokenChars: Int = 2,
 
 object SourceLineParser {
   lazy val defaultCommentPunctuations = Seq(
-    """^\/\*\*""",
-    """^\/\*""",
-    """^\*""",
-    """^\#""",
+    """^\/\*\**""",
+    """^\/\/\/*""",
+    """^##*""",
     """^'""",
     """\*\/$"""
   )

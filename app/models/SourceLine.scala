@@ -7,7 +7,9 @@ case class SourceLine(file: FileMeta,
                       lineNumber: Int,
                       plain: String,
                       printed: Option[String] = None,
-                      tokens: Map[SourceToken, Seq[String]] = Map())
+                      tokens: Map[SourceToken, Seq[String]] = Map()) {
+  lazy val lineId = file.file.toString + "*" + lineNumber
+}
 
 object SourceLine {
 
