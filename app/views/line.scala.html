@@ -1,0 +1,16 @@
+@(lines: Seq[models.SourceLine] = Seq())
+
+<table class="table table-striped">
+    <tr>
+        <th>File</th>
+        <th>Line #</th>
+        <th>Line</th>
+    </tr>
+    @for(line <- lines) {
+        <tr>
+        <td>@line.file.file</td>
+        <td>@line.lineNumber</td>
+        <td>@Html(line.printed.get)</td>
+        </tr>
+    }
+</table>

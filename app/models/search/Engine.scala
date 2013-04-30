@@ -30,7 +30,8 @@ object Engine {
     node.close()
   }
 
-  def set[T](docIndex: String, docType: String, docId: String, content: T)(implicit writes: Writes[T]): Option[IndexResult] = {
+  def set[T](docIndex: String, docType: String, docId: String, content: T)
+            (implicit writes: Writes[T]): Option[IndexResult] = {
     val json = Json.toJson(content).toString()
     val response = client.prepareIndex(docIndex, docType, docId).
       setSource(json).
@@ -74,11 +75,17 @@ object Engine {
     }
   }
 
-  def search[T](docIndex: String, docType: String, query: QueryBuilder)(implicit reads: Reads[T]): Option[Seq[T]] = {
+  def search[T](docIndex: String,
+                docType: String,
+                query: QueryBuilder,
+                offset: Int = 0,
+                size: Int = 10)(implicit reads: Reads[T]): Option[Seq[T]] = {
     try {
       val response = client.prepareSearch(docIndex).
         setTypes(docType).
         setQuery(query).
+        setFrom(offset).
+        setSize(size).
         execute().
         actionGet()
 

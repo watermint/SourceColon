@@ -10,10 +10,6 @@ import play.api.data.Forms._
 import org.elasticsearch.index.query.QueryBuilders
 
 object FileFinder extends Controller {
-  val filesForm = Form(
-    "q" -> optional(text)
-  )
-
   def jsRoutes = Action {
     implicit request =>
       Ok(

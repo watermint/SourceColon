@@ -1,0 +1,30 @@
+@(message: String)(implicit req: RequestHeader)
+
+@main("Source:") {
+    <h1> Source: </h1>
+
+    <form>
+        <input type="text" id="quick_path_search" autocomplete="off" spellcheck="false"/>
+    </form>
+
+    <div id="quick_path_search_result"></div>
+
+    <script type="text/javascript" src="@routes.LineSearch.jsRoutes()"></script>
+    <script type="text/javascript">
+            var emptyQuery = "";
+            jsRoutes.controllers.LineSearch.lines(emptyQuery).ajax({
+            success: function(data) {
+            $("#quick_path_search_result").html(data);
+            }
+            });
+
+            $('#quick_path_search').keyup(function(d) {
+            var query = $('#quick_path_search').val();
+            jsRoutes.controllers.LineSearch.lines(query).ajax({
+            success: function(data) {
+            $("#quick_path_search_result").html(data);
+            }
+            })
+            })
+    </script>
+}
