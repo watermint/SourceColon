@@ -6,7 +6,7 @@ import play.api.Logger
 import org.apache.tika.metadata.{HttpHeaders, Metadata}
 import org.apache.tika.parser.AutoDetectParser
 import org.apache.tika.sax.BodyContentHandler
-import models.{FileMeta, SourceLineParser}
+import models.{SourceFile, FileMeta, SourceLineParser}
 
 case class IndexTask(file: File, basePath: File)
 
@@ -57,6 +57,12 @@ class IndexerActor extends Actor {
             Engine.set("lines", "line", l.lineId, l)
         }
 
+        val sf = SourceFile(
+          FileMeta(task.file),
+          lines.flatMap(_.printed)
+        )
+
+        Engine.set("files", "source", sf.fileId, sf)
       }
     }
     case task: IndexTask => {
