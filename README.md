@@ -12,7 +12,7 @@ Provide simplified interface to search large scale source code tree.
 
 ## Prerequisites
 
-* [Java SE 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html)
+* [Java SE 7](http://www.oracle.com/technetwork/java/javase/downloads/index.html) or later.
 * Optional: [Exuberant Ctags](http://ctags.sourceforge.net/) 
 	* Excuberant Ctags provides tags for codes. Tags are used in definition search and navigation (class, function, variable index of each code).
 
@@ -20,11 +20,13 @@ Provide simplified interface to search large scale source code tree.
 
 Make sure your Java is later than Java SE 7 (1.7.0_xx or above)
 
-	% java -version
-	java version "1.7.0_17"
-	Java(TM) SE Runtime Environment (build 1.7.0_17-b02)
-	Java HotSpot(TM) 64-Bit Server VM (build 23.7-b01, mixed mode)
-	  
+```sh
+% java -version
+java version "1.8.0_25"
+Java(TM) SE Runtime Environment (build 1.8.0_25-b17)
+Java HotSpot(TM) 64-Bit Server VM (build 25.25-b02, mixed mode)
+```
+
 Run SourceColon
 
     $ ./gradlew -Ptarget=<your source code directory>
