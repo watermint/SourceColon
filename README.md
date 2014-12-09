@@ -4,7 +4,7 @@
 
 Source code search based upon [OpenGrok](http://opengrok.github.com/OpenGrok/).
 
-[![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon.png)
+[![Build Status](https://travis-ci.org/watermint/SourceColon.png)](https://travis-ci.org/watermint/SourceColon)
 
 ## Objective
 
