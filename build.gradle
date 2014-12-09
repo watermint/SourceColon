@@ -8,7 +8,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 configurations {
-    jetty8
+    jetty
     jflex
 }
 
@@ -30,7 +30,7 @@ ext {
 
 dependencies {
     String luceneVersion = '3.6.1'
-    String jettyVersion = '8.1.8.v20121106'
+    String jettyVersion = '9.2.5.v20141112'
     List common = [
             "org.apache.lucene:lucene-core:$luceneVersion",
             "org.apache.lucene:lucene-spellchecker:$luceneVersion",
@@ -43,8 +43,8 @@ dependencies {
     compile "javax:javaee-web-api:6.0"
     runtime common
     testCompile "junit:junit:4.8.2"
-    jetty8 "org.mortbay.jetty:jetty-runner:$jettyVersion",
-            "jstl:jstl:1.2"
+    jetty "org.eclipse.jetty:jetty-runner:$jettyVersion",
+          "jstl:jstl:1.2"
 
 }
 
@@ -136,15 +136,23 @@ war {
     from new File(project.buildDir, 'war')
 }
 
-task runJetty8(type: JavaExec, dependsOn: war) {
-    main = "org.mortbay.jetty.runner.Runner"
+task testJetty(type: JavaExec) {
+    main = 'org.eclipse.jetty.runner.Runner'
+    args = ['--version']
+    jvmArgs '-Dfile.encoding=UTF-8'
+    classpath configurations.jetty
+    ignoreExitValue true
+}
+
+task runJetty(type: JavaExec, dependsOn: war) {
+    main = 'org.eclipse.jetty.runner.Runner'
     args = [war.archivePath]
     jvmArgs '-Dfile.encoding=UTF-8'
-    classpath configurations.jetty8
+    classpath configurations.jetty
 }
 
 task all(dependsOn: [build, war, runIndexer]) {
 }
 
-task run(dependsOn: [all, runJetty8]) {
+task run(dependsOn: [all, runJetty]) {
 }
